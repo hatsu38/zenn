@@ -1,0 +1,21 @@
+title: "PostgreSQL の EXPLAIN と内部のしくみ"
+summary: "本番で遭遇した遅いクエリの原因を、EXPLAIN の出力を 1 行ずつ読んで見つけられるようになるための本。cost / actual time / loops / BUFFERS の意味に加えて、Seq Scan / Index Scan / Nested Loop などのノード、ページとヒープタプル、visibility map、VACUUM と MVCC、統計情報といった PostgreSQL 内部のしくみまで踏み込みます。Docker で立ち上がるサンプル DB と章別クエリ集付き。"
+topics: ["postgresql", "database", "sql", "explain", "performance"]
+# TODO(human): 公開準備が整ったら published: true に切り替える。有料化するなら price: 200〜5000 に
+published: false
+price: 0
+# 本に含めるチャプターを順番に並べましょう
+chapters:
+  - 01-encounter
+  - 02-analyze
+  - 03-scan-selection
+  - 04-index-only-scan
+  - 05-sort
+  - 06-nested-loop
+  - 07-hash-merge-join
+  - 08-buffers
+  - 09-statistics
+  - 10-vacuum-mvcc
+  - 11-planner-control
+  - 12-anti-patterns
+  - 13-cheatsheet
