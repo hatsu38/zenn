@@ -6,26 +6,20 @@ topics: ["githubactions", "typescript", "github", "ci", "octokit"]
 published: false
 ---
 
-<!--
-記事執筆の方針メモ（公開前に削除）
-- 対象 OSS: https://github.com/hatsu38/ghtrack
-- 構成スタイル: 開発記（着想 → 実装 → 設計の見直し → dogfood）
-- 想定読者: GitHub Actions を日常的に使う開発者全般
-- 文字数目標: 5,000〜8,000 字
--->
 
 ## はじめに
 
-GitHub Actions の CI の時間が過去と比べてどの程度早くなったのか知りたいことがあると思います。
-今まで、そういうのをやりたいと思った時は、
+「最近 CI 遅くない？」とか「早くなった？」と感じたとき、過去と比較する方法がパッと出てこなくて困ったことがよくあります。
 
-- CIの時間をGCSにjsonを送信して、BigQueryで閲覧できるようにしたり
-- GitHub コメント や Artifact で残すなどをしていました。
+- CI の実行結果を BigQuery に流す仕組みを組むのは大袈裟
+- Artifact に残しても並べて見れないし、日数が経つと消える可能性がある
+- GitHub のコメントは流れていってしまう
 
-しかし、それらが毎回やるのが面倒と思って作ったのが [ghtrack](https://github.com/hatsu38/ghtrack) というカスタムアクションです。使ってみたら結構便利だったので、紹介 & 設計で工夫したポイントを紹介します。
+って面倒があり、「workflow に 数行足すだけで、過去全 run の duration が時系列グラフで見られる」ようにしたい。と思って作ったのが [ghtrack](https://github.com/hatsu38/ghtrack) というカスタムアクションです。
 
-![ghtrack の概要：workflow に 1 行足すと Chart.js のグラフが生える](/images/ghtrack-actions-duration-tracker/hero.png)
+https://github.com/hatsu38/ghtrack
 
+会社のリポジトリとかにはもう入れているのですが、使ってみたら結構便利だったので、紹介 & 設計で工夫したポイントを紹介します。
 
 ## ghtrack とは
 
@@ -39,30 +33,32 @@ https://hatsu38.github.io/ghtrack/
 
 ![ghtrack のダッシュボード（unit-test workflow の例）](/images/ghtrack-actions-duration-tracker/unit-test-ci-ghtrack.png)
 
-CIの日毎の時間がここに並んでいます。
-またその時間がさらに詳細に、どのJobに時間がかかっているか、どのStepに時間かかっているかもわかります。
-さらに、日毎 / 週毎 / Run毎 に分割してみることができます。
+CI の日毎の時間がここに並んでいます。
 
-自分が見たいと思っていたものを全部載せています。
+その時間をさらに詳細に、**どのJobに時間がかかっているか、どのStepに時間かかっているか**もわかります。
 
-ここからは、ghtrack を作るときに考えた設計の話を書いていきます。
+さらに、**日毎 / 週毎 / Run毎 に分割**してみることができます。
+
+便利ですね〜。自分が見たいと思っていたものを全部載せています！
+
+ということで、ここからは、ghtrack を作るときに考えた設計の話を書いていきます。
 
 
 ## 設計の概要
 
-詳しい設計の話に入る前に、ghtrack の動作フロー全体を一度ざっと紹介します。
-利用者から見ると、CI の workflow の最後に以下のような 1 step 足すだけで使えます。
+まずは、簡単に ghtrack の動作フロー全体を一度ざっと紹介します。
+利用者から見ると、CI の workflow の最後に以下のような 1 step 足すだけで使えます。便利ですねぇ。
 
 ```yml
     steps:
-      - uses: hatsu38/ghtrack@0.6
+      - uses: hatsu38/ghtrack@v1
 ```
 
-この Step を追加すると、そのリポジトリの `gh-pages` に CI 結果が json で溜まっていって、GitHub Pages がそれを Chart.js で表示してくれる、というだけの形です。
+この Step を追加すると、そのリポジトリの `gh-pages` に CI 結果が json で溜まっていって、GitHub Pages がそれを Chart.js で表示してくれる、という形です。
 
 で、やっていることは
 
-1. **`action.yml`** で workflow から呼ばれる（`uses: hatsu38/ghtrack@0.6` の 1 行）
+1. **`action.yml`** で workflow から呼ばれる（`uses: hatsu38/ghtrack@v1` の 1 行）
 2. **`src/collect.ts`** で `listJobsForWorkflowRun` を叩いて、自分が動いている workflow run の job / step duration を取得する
 3. **`src/storage.ts`** で `gh-pages` に per-run JSON を追記して、`index.html`（Chart.js のダッシュボード）も同梱する
 
@@ -95,7 +91,7 @@ jobs:
       contents: write   # gh-pages への push に必要
       actions: read     # workflow run / job の API 取得に必要
     steps:
-      - uses: hatsu38/ghtrack@0.6
+      - uses: hatsu38/ghtrack@v1
 ```
 
 ghtrack 側の `action.yml` では、これに対応して inputs と runs を定義しています。
@@ -115,26 +111,28 @@ runs:
   main: dist/index.js
 ```
 
-`github-token` は default で `${{ github.token }}` を使うようにしているので、利用者は何も渡さなくても `contents: write` 権限の付いた token が自動で流れてきますね。
+`github-token` は default で [`${{ github.token }}`](https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication) を使うようにしているので、利用者は何も渡さなくて大丈夫です。workflow 側の [`permissions:` 設定](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#permissions) で `contents: write` を付けておけば、その権限の付いた token が自動で流れてきます。
 
-そして `track-name` のデフォルトは workflow ファイル名（`test.yml` → `test`）です。これは作ってから運用してみて変更したもので、デフォルトをファイル名にすると嬉しいことが あってこうしました。
+そして `track-name` のデフォルトは workflow ファイル名（`test.yml` → `test`）にしています。これは作ってから運用してみて変えたもので、ファイル名をキーにしておくと、次の 2 つの嬉しさがあります。
 
-#### a. 何も指定しなくても複数 workflow が自然に分かれる
-
-`test.yml` と `e2e.yml` を両方通すと、それぞれ `data/test/` と `data/e2e/` に蓄積されます。利用者は track-name を渡さなくて済むので、ghtrack を `uses` する 1 行だけで複数 workflow をまとめて track できる形になっています。
-
-#### b. workflow ファイル名は同一リポ内で必ず一意
+#### a. workflow ファイル名は同一リポ内で必ず一意
 
 job 名や workflow YAML の `name:` 属性ではなく、ファイル名（basename）をキーにすると、複数 workflow のデータが path で衝突しません。
 
-自分のリポジトリでは `test` という名前の job が `unit_test.yml` と `e2e.yml` の両方にいました。job 名や `name:` をキーにしていたら別 workflow のデータがダッシュボード上で混ざってしまうところで、実際にそれで困ったことがあります。ファイル名なら GitHub Actions の workflow 一覧の単位そのままなので、衝突の心配がないですね（しかも `name:` と違って、そうそう変更されない）。
+たとえば自分のリポジトリでは、`test` という名前の job が `unit_test.yml` と `e2e.yml` の両方にいました。もし job 名や `name:` をキーにしていたら、別 workflow のデータがダッシュボード上で混ざってしまうところでした。
 
-#### c. matrix shard などで明示的に上書きもできる
+ファイル名なら GitHub Actions の workflow 一覧の単位そのままなので、衝突の心配がありません。しかも `name:` と違って、そうそう変更されないですしね。
 
-matrix shard などで 1 workflow を複数 track に分けたいときは `track-name: e2e-shard-${{ matrix.shard }}` のように上書きできるので、デフォルトのファイル名キーで困ったときの逃げ道も用意してあります。
+#### b. matrix shard などで明示的に上書きもできる
+
+matrix shard などで「1 workflow を複数 track に分けたい」ときは、`track-name: e2e-shard-${{ matrix.shard }}` のように上書きできます。デフォルトのファイル名キーで困ったときの逃げ道も用意してあります。
 
 
-ちなみに ghtrack の **最初の最初は workflow を区別する仕組みすら無くて、`data/data.json` 1 ファイルに全 run を詰め込んでいました**。1 つのグラフに全 workflow が乗るのが見やすいかなと思っていたんですが、運用してみたら流石に見づらすぎて、複数 workflow を分けたくなったタイミングで manifest と track-name を一緒に入れました。そこで「毎回 track-name を指定させるのは面倒」だったので、デフォルトをファイル名にした、という流れですね。
+ちなみに ghtrack の **最初の最初は、workflow を区別する仕組みすら無くて `data/data.json` 1 ファイルに全 run を詰め込んでいました**。
+
+「1 つのグラフに全 workflow が乗るほうが見やすいかな」と思っていたんですが、運用してみたら流石に見づらすぎて、複数 workflow を分けたくなったタイミングで manifest と track-name を一緒に入れた、という経緯です。
+
+そこで「毎回 track-name を指定させるのは面倒」だったので、デフォルトをファイル名にした、という流れでした。
 
 ### 2. collect.ts で listJobsForWorkflowRun を使って duration を取得
 
@@ -155,11 +153,53 @@ const jobEntries: JobEntry[] = jobs.map((job) => ({
 }));
 ```
 
+シンプルなコードですが、運用してみると地味にハマりどころがあって、それぞれ意識して書いた箇所があるので紹介します。
+
+#### Octokit の `paginate` を必ず通す
+
+`listJobsForWorkflowRun` は `per_page` の上限が **100** で、それを超える job は次ページに回ります。GitHub の REST API は [`Link` ヘッダで次ページの URL を返す方式](https://docs.github.com/en/rest/using-the-rest-api/using-pagination-in-the-rest-api)なので、これを自動で辿ってくれる [`octokit.paginate`](https://github.com/octokit/plugin-paginate-rest.js) を経由しないと、matrix shard が多い workflow で **エラーも出さずに job を取りこぼす** ことになってしまうんですよね。
+
+たとえば `shards=8 × OS=3 × Node=3` で 72 job、ここに [reusable workflow](https://docs.github.com/en/actions/sharing-automations/reusing-workflows)（別の workflow ファイルを `uses:` で呼び出して 1 つの run にまとめる仕組み）を組み合わせると簡単に 100 を超えます。matrix が多い workflow ほど duration トラッカーの価値が大きいので、ここは最初から `paginate` で通すようにしています。
+
+#### duration の計算で `null` を扱う
+
+`started_at` / `completed_at` は、job / step の状態によって `null` が返ってくることがあります。`computeDurationSec` ではこんな感じで分岐させています。
+
+```typescript:src/collect.ts (computeDurationSec)
+function computeDurationSec(
+  startedAt: string | null | undefined,
+  completedAt: string | null | undefined,
+): number | null {
+  if (!startedAt || !completedAt) return null;
+  const start = new Date(startedAt).getTime();
+  const end = new Date(completedAt).getTime();
+  if (Number.isNaN(start) || Number.isNaN(end)) return null;
+  return (end - start) / 1000;
+}
+```
+
+- どちらかが `null` → duration も `null` を返す（`0` を返すと「一瞬で終わった step」とグラフ上で混同されてしまうので、明示的に "値なし" として描かないようにする）
+- 日付として parse できない値 → 同じく `null` を返す（API のレスポンスが想定外だったときの防御）
+
+これを決めておかないと、`null` と `0` と数値が混ざった汚いデータが `gh-pages` にどんどん蓄積されて、後から掃除するのが大変になります。
+
+#### `status` / `conclusion` も一緒に残しておく
+
+per-run JSON には duration だけでなく `status` / `conclusion` も残しています。理由は **後から取り直せないデータだから** ですね。
+
+duration トラッカーとしては数値だけで動きますが、`conclusion` を持っておくと、後からこんなことができます。
+
+- ダッシュボードで失敗 run を区別できる（赤マーカー表示など）
+- duration 平均から `cancelled` / `timed_out` を除外できる（外れ値で平均が歪まないように）
+- 「直近 1 週間の失敗率」のような副次指標を後付けで足せる
+
+gh-pages 蓄積方式は「過去に遡って再収集」が事実上できないので、取得をしています。
+
 ### 3. storage.ts で gh-pages に per-run JSON を書き出す
 
 取得した Entry を `gh-pages` ブランチに書き出すのが `src/storage.ts` です。書き出し先のファイル構造はこんな感じになっています。
 
-```
+```sh
 gh-pages/
 ├── index.html                            ← Chart.js のダッシュボード
 └── data/
@@ -233,7 +273,7 @@ try {
 
 Git Data API の最後の `updateRef` は、対象 ref の現在値が指定した親 commit と一致しないときに **422 を返してきます**。これは「自分が `base_tree` を読んでから push するまでの間に、他の run が先に push した（＝親 commit が古くなった）」ことを意味します。
 
-ghtrack ではこの 422 を **「他の run に先を越されたから、もう一度やり直そう」のシグナル** として扱って、指数バックオフ + jitter で retry するようにしています。先にロックを取りに行かず、「ぶつかったら後から来たほうがやり直す」というアプローチですね（Optimistic concurrency control / 楽観的並行制御、と呼ばれるパターンです）。
+ghtrack ではこの 422 を **「他の run に先を越されたから、もう一度やり直そう」のシグナル** として扱って、指数バックオフ + jitter で retry するようにしています。先にロックを取りに行かず、「ぶつかったら後から来たほうがやり直す」というアプローチですね（[Optimistic concurrency control / 楽観的並行制御](https://en.wikipedia.org/wiki/Optimistic_concurrency_control) と呼ばれるパターンです）。指数バックオフ + jitter の組み合わせは AWS の有名な記事 [Exponential Backoff And Jitter](https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/) で詳しく解説されています。
 
 ![並行 push の競合と retry の挙動](/images/ghtrack-actions-duration-tracker/concurrent-push-retry.png)
 
@@ -260,7 +300,7 @@ ghtrack は `gh-pages` の root に Chart.js のダッシュボード（`index.h
 
 普通にやるなら、Contents API でリモートの `index.html` を fetch してきて、ローカルと中身を比較して、違っていたら書き込み API を叩く、という流れになります。これだと変更がないときでも **比較のために中身を毎回引き寄せる** ことになって、`index.html` が大きいほど無駄が増えていきます。
 
-Git の内部の仕組みを使うと、この中身の引き寄せを省けます。Git ではファイルの中身が `blob` というオブジェクトとして格納されていて、その識別子（hash）は次の式で決まります。
+Git の内部の仕組みを使うと、この中身の引き寄せを省けます。Git ではファイルの中身が `blob` というオブジェクトとして格納されていて、その識別子（hash）は次の式で決まります（詳しくは Pro Git の [Git Internals - Git Objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects) を参照）。
 
 ```ts
 sha1("blob " + ファイルサイズ + "\0" + 中身)
@@ -344,21 +384,25 @@ manifest 経由のファイル探索フローは、次のとおりです。
 GitHub Pages はディレクトリリスティングを返さないので、`data/` 配下を `ls` するような手段は使えません。manifest と index が **「どのファイルが存在するか」をクライアントに伝える唯一の経路** になっています。
 
 :::message
-**matrix shard を max(wall-clock) で集約する**
+**matrix shard は base 名にまとめて、一番遅い job だけ拾う**
 
-GitHub Actions で `strategy.matrix` を使った job は、`test (8)` や `test (8, ubuntu)` のような括弧付きの名前で複数返ってきます。これを愚直に別 dataset として描くと、たとえば 16 並列の matrix がそのまま 16 本の線になってしまって、チャートが破綻しちゃうんですよね。
+GitHub Actions で `strategy.matrix` を使った job は、`test (8)` や `test (8, ubuntu)` のような括弧付きの名前で、組み合わせの数だけ返ってきます。たとえば 16 並列の matrix なら 16 個、という具合ですね。
 
-ghtrack ではデフォルトで **matrix permutation を base 名（`test`）にまとめて、各 run で `max(matrix node duration)` を表示する** ように集約しています。理由はシンプルで、matrix の wall-clock は `max(matrix nodes)` で決まるからです。**並列実行で CI 全体を実際に待たせているボトルネックノードの推移** が見えるほうが、duration 観測ツールとしては実用的ですよね。
+これを愚直に全部別の線として描いてしまうと、グラフに線が 16 本並んでチャートが完全に破綻するんですよね。
 
-チャート上のチェックボックスで個別ノード展開にも切り替えられるようにしていて、状態は `localStorage` に保存しています。
+そこで ghtrack では、デフォルトでは括弧の中を無視して `test` という base 名で **1 本の線にまとめて**、その run で **一番時間がかかった matrix の job** の duration を表示するようにしています。
+
+理由はシンプルで、matrix は並列実行なので、**全体の所要時間は「一番遅い 1 個」で決まる** からですね。平均でも合計でもなく `max` を取るのが、CI を遅くしている犯人を追いかけるのに一番実用的というわけです。
+
+「いやいや、個別に見たい」という場合は、チャート上のチェックボックスで個別展開もできるようにしていて、その状態は `localStorage` に保存しています。
 :::
 
 ## まとめ
 
-ghtrack を作る過程で得た学びを 3 つに絞ると、次のとおりです。
+ghtrack を作る中で「あ、これ自分の引き出しに増えたな」と思ったポイントを、最後に 3 つだけまとめておきますね。
 
-- **`gh-pages` は時系列データストアとして十分使える**: benchmark-action 方式は duration 以外にもいろいろ応用できます。SaaS を契約せずに「リポ内完結の小さな観測基盤」を作る選択肢として有効です
-- **Git Data API は複数ファイルを 1 commit にまとめる道具として優秀**: `updateRef` の 422 を retry のシグナルにすれば、ロックを取らなくても並行 push を素朴な retry ループで捌けます
-- **「同時実行で競合する」問題は、retry の前にファイル構造で消せないか考える**: ghtrack は per-run file 化で競合点をほぼ消しました。retry は「最後の砦」であって、設計の主役にはしないほうがいいですね
+- **`gh-pages` は時系列データストアとして結構使える**: benchmark-action 方式は duration 以外にもいろいろ応用できそうだなと思いました。SaaS を契約せず、リポ内完結で観測基盤を作る選択肢として案外有効です
+- **Git Data API は複数ファイルを 1 commit にまとめる道具として便利**: `updateRef` の 422 を retry のシグナルとして拾えば、ロックを取らなくても並行 push を素朴な retry ループで捌けるんですよね
+- **「同時実行で競合する」問題は、retry の前にファイル構造で消せないか考えてみる**: ghtrack でも結局 per-run file 化で競合点をほぼ消す形に落ち着きました。retry は「最後の砦」であって、設計の主役にはしないほうがいいかな、と思います
 
-リポジトリは [hatsu38/ghtrack](https://github.com/hatsu38/ghtrack) です。動作を試したい場合は、自リポの workflow に 1 step 足して Pages を有効化するだけで動きます。Issue や PR、フィードバックも歓迎です。
+リポジトリは [hatsu38/ghtrack](https://github.com/hatsu38/ghtrack) です。動作を試したい場合は、自リポの workflow に 1 step 足して Pages を有効化するだけで動きます。Issue や PR、フィードバックも大歓迎です！
