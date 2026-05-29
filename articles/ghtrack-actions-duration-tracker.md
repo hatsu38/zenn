@@ -114,7 +114,7 @@ runs:
 
 `github-token` は default で [`${{ github.token }}`](https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication) を使うようにしているので、利用者は何も渡さなくて大丈夫です。workflow 側の [`permissions:` 設定](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#permissions) で `contents: write` を付けておけば、その権限の付いた token が自動で流れてきます。
 
-そして `track-name` のデフォルトは workflow ファイル名（`test.yml` → `test`）にしています。これは作ってから運用してみて変えたもので、ファイル名をキーにしておくと、次の 2 つの嬉しさがあります。
+そして `track-name` のデフォルトは workflow ファイル名（`test.yml` → `test`）にしています。これは元々は違ったんですが、運用してみて、ファイル名をキーするほうが、次の 2 つの嬉しさがあって良かったです。
 
 #### a. workflow ファイル名は同一リポ内で必ず一意
 
