@@ -4,7 +4,7 @@ emoji: "⏱️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["githubactions", "typescript", "github", "ci", "octokit"]
 published: true
-published_at: "2026-05-30 09:00"
+published_at: "2026-05-30 09:05"
 ---
 
 
@@ -129,11 +129,15 @@ job 名や workflow YAML の `name:` 属性ではなく、ファイル名（base
 matrix shard などで「1 workflow を複数 track に分けたい」ときは、`track-name: e2e-shard-${{ matrix.shard }}` のように上書きできます。デフォルトのファイル名キーで困ったときの逃げ道も用意してあります。
 
 
+:::message
+**元々の設計**
+
 ちなみに ghtrack の **最初の最初は、workflow を区別する仕組みすら無くて `data/data.json` 1 ファイルに全 run を詰め込んでいました**。
 
 「1 つのグラフに全 workflow が乗るほうが見やすいかな」と思っていたんですが、運用してみたら流石に見づらすぎて、複数 workflow を分けたくなったタイミングで manifest と track-name を一緒に入れた、という経緯です。
 
 そこで「毎回 track-name を指定させるのは面倒」だったので、デフォルトをファイル名にした、という流れでした。
+:::
 
 ### 2. collect.ts で listJobsForWorkflowRun を使って duration を取得
 
