@@ -29,7 +29,7 @@ TODO(human): 12 章ぶんを書ききった本人語り。
 
 ## 13.1 EXPLAIN チートシート（1 枚版）
 
-![EXPLAIN プラン一覧チートシート。本書で扱う全プランの一覧表（黄=Scan / 青=Sort / 緑=Join）](/images/cddb89f9abfaca/13-plan-cheatsheet.png)
+![EXPLAIN プラン一覧チートシート。本書で扱う全プランの一覧表（黄=Scan / 青=Sort / 緑=Join）](/images/cddb89f9abfaca/ch13/01-plan-cheatsheet.png)
 
 開発中に EXPLAIN ANALYZE を眺めるときの、自分の頭の使い方を 1 枚にまとめます。
 
@@ -156,7 +156,7 @@ flowchart TD
 - EXPLAIN コマンドの基本動作（実行せずに計画書だけ返す）
 - 出力の 5 つの数字（cost / rows / width）
 - Seq Scan のコスト式 `seq_page_cost × ページ数 + cpu_tuple_cost × 行数`
-- 手計算で `cost=0.00..4951.00` を再現する体験
+- 手計算で `cost=0.00..12181.00` を再現する体験
 
 ### 第 2 章 EXPLAIN ANALYZE
 

@@ -85,7 +85,7 @@ flowchart LR
     D --> B
 ```
 
-![Nested Loop の動き。loops は外側の行数、actual rows は内側の合計](/images/cddb89f9abfaca/05-nested-loop-timeline.png)
+![Nested Loop の動き。loops は外側の行数、actual rows は内側の合計](/images/cddb89f9abfaca/ch06/01-nested-loop-timeline.png)
 
 つまり Nested Loop は **「外側が出した行 × 内側でその行に合うものを引く」** を繰り返す構造。SQL の世界で最も素朴な結合方式です。
 

@@ -85,10 +85,10 @@ SELECT reltuples::bigint, relpages
 FROM pg_class
 WHERE relname = 'articles';
 -- planner_rows | relpages
---       100000 |     3951
+--       100000 |    11181
 ```
 
-`reltuples` は「このテーブルにだいたい何行ある」、`relpages` は「だいたい何ページ占めている」というざっくり統計。1 章で `cost=4951.00` を手計算したときに使ったのもこれです。
+`reltuples` は「このテーブルにだいたい何行ある」、`relpages` は「だいたい何ページ占めている」というざっくり統計。1 章で `cost=12181.00` を手計算したときに使ったのもこれです。
 
 ### pg_stats でカラムごとの詳細を覗く
 
@@ -154,7 +154,7 @@ histogram_bounds = {6, 50, 100, 200, ..., 2000}
 
 `rows` の推定値は、**MCV の頻度 + ヒストグラムの境界** を組み合わせて計算されている、というのが 9.3 のまとめです。WHERE 句の値が MCV に入るか、ヒストグラムのどの区間に入るかで、選択率が決まります。
 
-![pg_stats: MCV と Histogram で選択率を推定。プランナはこの統計情報から rows 推定を出す](/images/cddb89f9abfaca/11-histogram-mcv-selectivity.png)
+![pg_stats: MCV と Histogram で選択率を推定。プランナはこの統計情報から rows 推定を出す](/images/cddb89f9abfaca/ch09/01-histogram-mcv-selectivity.png)
 
 ---
 

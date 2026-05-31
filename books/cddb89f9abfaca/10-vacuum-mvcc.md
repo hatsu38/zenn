@@ -58,7 +58,7 @@ flowchart LR
     V1 -. 古いバージョン .-> V2
 ```
 
-![MVCC: タプルの可視範囲を TXN ID 軸で線分表示。UPDATE で v1 → v2 が生まれ、v1 は dead tuple になる](/images/cddb89f9abfaca/07-mvcc-tuple-timeline.png)
+![MVCC: タプルの可視範囲を TXN ID 軸で線分表示。UPDATE で v1 → v2 が生まれ、v1 は dead tuple になる](/images/cddb89f9abfaca/ch10/01-mvcc-tuple-timeline.png)
 
 それぞれのタプルは **どのトランザクションから見えるか** を示す情報を持っています。それが次に出てくる `xmin` / `xmax` です。
 
@@ -150,7 +150,7 @@ VACUUM が何をするか、ざっくりこんなところです。
 
 通常の VACUUM は **テーブルを縮めない** ことに注意。dead tuple の領域を「再利用 OK」とマークするだけで、ディスク上のサイズは変わりません。それでも shared_buffers のヒット率や `Heap Fetches: 0` の維持には十分効きます。
 
-![Before / After VACUUM の対比。dead tuple が再利用可能な空きスロットに変わる](/images/cddb89f9abfaca/12-dead-tuple-vacuum.png)
+![Before / After VACUUM の対比。dead tuple が再利用可能な空きスロットに変わる](/images/cddb89f9abfaca/ch10/02-dead-tuple-vacuum.png)
 
 ---
 
@@ -185,7 +185,7 @@ EXPLAIN ANALYZE SELECT count(*) FROM articles;
                                                        QUERY PLAN
 -------------------------------------------------------------------------------------------------------------------------
  Aggregate  (cost=... rows=1 width=8) (actual time=... rows=1 loops=1)
-   ->  Seq Scan on articles  (cost=0.00..4951.00 rows=100000 width=0) (actual time=... rows=100000 loops=1)
+   ->  Seq Scan on articles  (cost=0.00..12181.00 rows=100000 width=0) (actual time=... rows=100000 loops=1)
  Planning Time: ...
  Execution Time: ...
 ```

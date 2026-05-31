@@ -51,7 +51,7 @@ EXPLAIN ANALYZE SELECT * FROM articles ORDER BY title;
  Sort  (cost=... rows=100000 width=269) (actual time=... rows=100000 loops=1)
    Sort Key: title
    Sort Method: external merge  Disk: ...kB
-   ->  Seq Scan on articles  (cost=0.00..4951.00 rows=100000 width=269) (actual time=... rows=100000 loops=1)
+   ->  Seq Scan on articles  (cost=0.00..12181.00 rows=100000 width=269) (actual time=... rows=100000 loops=1)
  Planning Time: ...
  Execution Time: ...
 ```
@@ -101,7 +101,7 @@ EXPLAIN ANALYZE SELECT * FROM articles ORDER BY title LIMIT 20;
    ->  Sort  (cost=... rows=100000 width=269) (actual time=... rows=20 loops=1)
          Sort Key: title
          Sort Method: top-N heapsort  Memory: ...kB
-         ->  Seq Scan on articles  (cost=0.00..4951.00 rows=100000 width=269) (actual time=... rows=100000 loops=1)
+         ->  Seq Scan on articles  (cost=0.00..12181.00 rows=100000 width=269) (actual time=... rows=100000 loops=1)
  Planning Time: ...
  Execution Time: ...
 ```
@@ -146,7 +146,7 @@ Sort のサイズが `work_mem` に収まれば、出力には `Sort Method: qui
 
 ところが収まらないと、`Sort Method: external merge Disk: ...kB` のように **外部マージソート** に切り替わります。これは一時ファイルをディスクに書きながら段階的にマージするアルゴリズム。当然メモリ内ソートより遅くなります。
 
-![Sort: work_mem 内 (quicksort) vs work_mem 超過 (external merge + temp file) の 2 パネル対比](/images/cddb89f9abfaca/10-sort-memory-vs-disk.png)
+![Sort: work_mem 内 (quicksort) vs work_mem 超過 (external merge + temp file) の 2 パネル対比](/images/cddb89f9abfaca/ch05/01-sort-memory-vs-disk.png)
 
 5.1 で `SELECT * FROM articles ORDER BY title;`（10 万行を全部並べる）を打ったときに `external merge` が出たのは、`work_mem` がデフォルトの 4MB だと 10 万行 × width=269 ≒ 26MB の Sort には足りないからです。
 
