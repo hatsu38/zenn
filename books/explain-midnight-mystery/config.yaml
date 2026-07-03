@@ -1,0 +1,21 @@
+title: "午前2時のEXPLAIN ─ 実行計画は嘘をつかない"
+summary: "深夜のアラートから始まる、遅いクエリの犯人捜し。2年目エンジニアの湊が、無口な先輩・桐生とともに EXPLAIN の出力を「捜査資料」として読み解いていく技術小説。物語仕立てで進みながら、EXPLAIN の実出力・cost の手計算・実行計画の読み方まで、技術書「PostgreSQL の EXPLAIN と内部のしくみ」と同じ実測値で学べます。"
+topics: ["postgresql", "database", "sql", "explain", "performance"]
+published: false
+price: 0
+# 小説版の章構成。技術書版 (cddb89f9abfaca) の 13 章と対応させる予定:
+#   第1話 = 技術書ch01 (EXPLAINの基本)      ... 以降、執筆したら chapters に追加していく
+chapters:
+  - 01-midnight-alert
+  - 02-caught-in-the-act
+  - 03-the-bidding
+  - 04-perfect-crime
+  - 05-price-of-order
+  - 06-the-perpetrator
+  - 07-losing-bidders
+  - 08-counting-bloodstains
+  - 09-the-mastermind
+  - 10-pile-of-bodies
+  - 11-negotiation
+  - 12-other-charges
+  - 13-detectives-notebook
