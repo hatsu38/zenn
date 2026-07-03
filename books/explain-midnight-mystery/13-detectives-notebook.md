@@ -99,6 +99,9 @@ EXPLAIN (ANALYZE, BUFFERS) SELECT ...;
 | Memoize | 内側の結果をキャッシュ | Cache Hits の比率で効きを読む |
 | Gather | 並列の集約 | loops = 並列数に注意 |
 
+![EXPLAIN プラン一覧チートシート。全プランの一覧表（Scan / Sort / Join）](/images/cddb89f9abfaca/ch13/01-plan-cheatsheet.png)
+*捜査手帳・別紙: 全ノードの人相一覧（1 枚版）*
+
 ### 【単価表と手計算】
 
 | パラメータ | 既定値 | 意味 |

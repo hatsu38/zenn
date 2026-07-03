@@ -85,6 +85,17 @@ RESET enable_bitmapscan;
 
 「**Gather** は『複数プロセスで分担した結果を集約する』ノードだ。Workers 2 + 親分 1 の 3 プロセスが同じサブツリーを手分けして走る。だから並列プランでは、ノードに `loops=3` が付いたりする──**Nested Loop でもないのに loops が付いてたら、並列の分担数を疑え**」
 
+```mermaid
+flowchart TD
+    G["Gather<br/>= 並列結果を集約"] --> L["Leader<br/>= 親分（自分）"]
+    G --> W1["Worker 1"]
+    G --> W2["Worker 2"]
+    L --> S["同じサブツリーを<br/>3 人で分担実行<br/>→ loops=3"]
+    W1 --> S
+    W2 --> S
+```
+*捜査資料: 並列捜査の組織図。3 人が同じ現場を手分けするので、ノードの loops に分担数が付く*
+
 「昨夜のプランには出てませんでしたね」
 
 「サンドボックスの稽古では `SET max_parallel_workers_per_gather = 0` で黙らせてたからな。プランが素直になって読みやすい。関連パラメータは 3 つ押さえておけ──Gather 1 個あたりの最大ワーカー数 `max_parallel_workers_per_gather`、並列の起動オーバーヘッド `parallel_setup_cost`（1,000）、これ未満のテーブルでは並列にしない `min_parallel_table_scan_size`（8MB）。並列も結局、**起動コスト 1,000 を払ってでも得か、という入札**で決まってる」

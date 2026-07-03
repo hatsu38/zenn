@@ -59,6 +59,17 @@ EXPLAIN (ANALYZE, BUFFERS) SELECT * FROM articles;
 ③ Disk             … SSD / HDD の実体
 ```
 
+```mermaid
+flowchart TD
+    A["クエリ実行<br/>「8KB のページ X がほしい」"] --> B{"① shared_buffers に<br/>あるか?"}
+    B -->|あった| C["shared hit<br/>= 最速。syscall 不要"]
+    B -->|なかった| D{"② OS page cache に<br/>あるか?"}
+    D -->|あった| E["shared read<br/>= μs オーダー"]
+    D -->|なかった| F["③ Disk から読む"]
+    F --> G["shared read<br/>= ms オーダー"]
+```
+*捜査資料: 3 階建ての捜索順序。② と ③ は帳簿上どちらも同じ `shared read` に計上される──ここが罠*
+
 「クエリがページを欲しがると、まず ① を見る。あれば `shared hit`──システムコールすら要らない最速の取得だ。無ければ外へ取りに行って `shared read` になる。──で、ここが今夜いちばん引っかかりやすい罠だ。**`shared read` はディスクを読んだという意味ではない**」
 
 「え。read って書いてあるのに」

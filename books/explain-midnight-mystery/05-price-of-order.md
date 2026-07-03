@@ -37,6 +37,9 @@ SHOW work_mem;   -- 4MB
 
 「デフォルト 4MB。今回の Sort は 10 万行、width 269──ざっと 26MB ぶんある。4MB の机で 26MB の書類は並べられない。だから床（ディスク）に広げた。メモリ内ソートより当然遅い。これが第二の代償だ」
 
+![work_mem 内に収まる quicksort と、溢れて一時ファイルに書く external merge の対比](/images/cddb89f9abfaca/ch05/01-sort-memory-vs-disk.png)
+*捜査資料: 机（work_mem）に収まれば quicksort、溢れれば床（ディスクの一時ファイル）で external merge*
+
 「コスト式はどうなってるんですか。Seq Scan みたいに手計算できます？」
 
 「骨格だけ覚えろ。ソースの `cost_sort` を読むと、比較回数の項が `2 × cpu_operator_cost × N × log2(N)`。**N log N** だ。行数が 10 倍になれば、コストは 10 倍じゃなく約 12 倍になる。**Sort は、食わせる行数に対して線形より悪く膨らむ**──ここは今夜の事件の急所だから、覚えておけ」

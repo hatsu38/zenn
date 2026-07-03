@@ -37,6 +37,9 @@ ROLLBACK;
 
 「MVCC は中身を見ない。UPDATE という行為そのものが、旧版に享年を刻んで新版を産む。ついでに、行の生没を直接覗く方法も教えておく」
 
+![MVCC のタプルタイムライン。UPDATE で v1 → v2 が生まれ、v1 は dead tuple になる](/images/cddb89f9abfaca/ch10/01-mvcc-tuple-timeline.png)
+*捜査資料: タプルの生没年表。UPDATE のたびに旧版（v1）が dead tuple としてテーブルに残る*
+
 ```sql
 SELECT ctid, xmin, xmax, id FROM articles LIMIT 5;
 ```
@@ -54,6 +57,9 @@ SELECT ctid, xmin, xmax, id FROM articles LIMIT 5;
 「え。掃除するのに？」
 
 「死体を片付けて『この区画、次の入居者どうぞ』と札を立てるだけだ。ディスク上のファイルサイズは変わらない。物理的に縮めたければ ④ の `VACUUM FULL`──ただしこいつは**テーブルを丸ごとロックして作り直す**劇物だ。本番で気軽に打つものじゃない」
+
+![VACUUM 前後の対比。dead tuple が再利用可能な空きスロットに変わる](/images/cddb89f9abfaca/ch10/02-dead-tuple-vacuum.png)
+*捜査資料: 清掃前と清掃後。死体（dead tuple）は撤去されるが、区画（ページ）はそのまま残る*
 
 「その清掃人、いつ来るんですか」
 
