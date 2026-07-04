@@ -1,0 +1,16 @@
+title: "プロセスは二度死ぬ ── Rubyで暴く並行処理ミステリー"
+summary: "毎朝6時のダイジェストメールが、ある日から同じ人に2通届くようになった。ログは二重、サーバーには「死んだのに消えない」プロセスの群れ。2年目エンジニアが推理小説マニアのSREと組み、fork・ゾンビプロセス・スレッド・レースコンディション・Mutex・デッドロック・GVL・Queueという並行処理の「古典トリック」を、手元で再現できるRubyコードでひとつずつ暴いていく連作ミステリー。コードと出力はすべて実測値です。"
+topics: ["ruby", "process", "thread", "並行処理", "os"]
+published: false
+price: 0
+chapters:
+  - 00-prologue
+  - 01-crime-scene
+  - 02-twin-trick
+  - 03-undying-body
+  - 04-twins-alibi
+  - 05-housemates
+  - 06-broken-alibi
+  - 07-locked-room
+  - 08-one-man-stage
+  - 09-confession
