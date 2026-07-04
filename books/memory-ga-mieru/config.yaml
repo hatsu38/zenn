@@ -1,0 +1,18 @@
+title: "メモリが視える ─ Rubyのヒープを歩く人"
+summary: "毎晩の再起動でしのいでいる、じわじわ太る Rails プロセス。深夜の障害対応で倒れたその夜から、3年目エンジニアの灯には「プロセスの中」が視えるようになった──。視えたものはコードでしか証明できない。GC.stat・ObjectSpace・ヒープダンプを武器に、メモリとGCのしくみを一段ずつ学ぶお仕事×能力小説。登場する Ruby コードと数値はすべて実測値です。"
+topics: ["ruby", "rails", "gc", "performance", "メモリ"]
+published: false
+price: 0
+# 「午前2時のEXPLAIN」と同じ世界観（同じ技術記事投稿サービスの会社、別チーム）。
+# 執筆体制: シリーズバイブルは _bible.md（Zenn には公開されない）。執筆したら chapters に追加していく。
+chapters:
+  - 01-awakening
+  - 02-crowd-inside
+  - 03-growing-lights
+  - 04-nightly-waves
+  - 05-survivors
+  - 06-hard-evidence
+  - intermission-string
+  - 07-body-that-wont-slim
+  - 08-compaction
+  - 09-graduation
