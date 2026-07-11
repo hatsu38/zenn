@@ -3,7 +3,8 @@ title: "GitHub Actions の parallel でデプロイは8分→3分、CI はコス
 emoji: "⚡"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["githubactions", "cicd", "ci", "ecs", "devops"]
-published: false
+published: true
+published_at: 2026-07-11 10:00
 ---
 
 こんにちは、hatsu です。
