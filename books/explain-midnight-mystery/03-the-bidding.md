@@ -3,7 +3,7 @@ title: "第3話 入札 ─ スキャンはこうして選ばれる"
 ---
 
 :::message
-この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/cddb89f9abfaca)第 3 章と同じサンプル DB で再現できます。
+この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/postgres-explain-internals)第 3 章と同じサンプル DB で再現できます。
 :::
 
 ## 1
@@ -30,7 +30,7 @@ title: "第3話 入札 ─ スキャンはこうして選ばれる"
 
 「巻末の索引で『142 ページ』と引いてから、本文の 142 ページを開く、みたいな」
 
-![ヒープページとインデックスページの対応。インデックスタプルの ptr が、対応するヒープタプルを指す](/images/cddb89f9abfaca/ch03/01-heap-index-pages-tuples.png)
+![ヒープページとインデックスページの対応。インデックスタプルの ptr が、対応するヒープタプルを指す](/images/postgres-explain-internals/ch03/01-heap-index-pages-tuples.png)
 *捜査資料: インデックスタプルは「キー + ヒープへのポインタ」だけ。実データはポインタの先のヒープにいる*
 
 「そうだ。そして飛ぶという行為には値段が付く。ページを先頭から順に読む**連続 I/O** は単価 1.0──第 1 話の `seq_page_cost` だ。飛び飛びに読む**ランダム I/O** は単価 4.0、`random_page_cost`。HDD 時代、ヘッドの移動は高くついた。その名残の相場だ。──さあ、撃て。階段の一段目は 1 行ヒットだ」
@@ -46,7 +46,7 @@ EXPLAIN SELECT * FROM articles WHERE id = '0b3f973e-20c5-4459-8010-2bc0882d1102'
 
 「Index Scan。コスト 8.44──第 1 話の Seq Scan は 12181 でしたから、圧倒的に安い」
 
-![Index Scan の動き。インデックスから id の一致を引き、ポインタが指すヒープページにランダム I/O で飛んで 1 行取り出す](/images/cddb89f9abfaca/ch03/04-index-scan-pinpoint.png)
+![Index Scan の動き。インデックスから id の一致を引き、ポインタが指すヒープページにランダム I/O で飛んで 1 行取り出す](/images/postgres-explain-internals/ch03/04-index-scan-pinpoint.png)
 *捜査資料: Index Scan の急襲ルート。索引で居場所を特定し、ヒープの該当ページに一直線*
 
 「1 行取るのに 11,181 ページ読む奴はいない。次、数十行ヒット」
@@ -68,7 +68,7 @@ EXPLAIN SELECT * FROM articles WHERE author_id = 1;
 
 「先に住所リストを作って、回る順番を最適化してから配達に行く……」
 
-![Bitmap Heap Scan の 3 段階。① Bitmap Index Scan が候補のページ位置を集め、② ビットマップを作り、③ ページ順にヒープを読む](/images/cddb89f9abfaca/ch03/05-bitmap-heap-scan-three-steps.png)
+![Bitmap Heap Scan の 3 段階。① Bitmap Index Scan が候補のページ位置を集め、② ビットマップを作り、③ ページ順にヒープを読む](/images/postgres-explain-internals/ch03/05-bitmap-heap-scan-three-steps.png)
 *捜査資料: Bitmap の 3 段作戦。候補収集 → 0/1 の地図作成 → ページ番号順の一斉家宅捜索*
 
 「そうだ。49 行を 1 行ずつ Index Scan で引けばランダム I/O が 49 発、`4.0 × 49` でざっと 196。ビットマップ経由なら並べ直しの前処理は掛かるが、ヒープをページ順にまとめ読みできて 191.55。**数点差で Bitmap が落札**した。──次。ヒットを 100 倍にしろ」
@@ -115,7 +115,7 @@ EXPLAIN SELECT * FROM articles WHERE published = true;
 
 「**少なければ飛ぶ。中くらいならまとめ読み。多ければ全部読む**。そして 4 本目と 5 本目を見ろ──カラムが違ってもヒット件数が同じなら、選ばれるプランも同じだ。プラン選択を決めるのは『どのカラムか』じゃない。**『何行ヒットしそうか』**だ」
 
-![プラン選択は選択率で決まる。実機データ点を選択率軸に並べると、Index Scan / Bitmap Heap Scan / Seq Scan の 3 ゾーンに分かれる](/images/cddb89f9abfaca/ch03/06-plan-selection-by-selectivity.png)
+![プラン選択は選択率で決まる。実機データ点を選択率軸に並べると、Index Scan / Bitmap Heap Scan / Seq Scan の 3 ゾーンに分かれる](/images/postgres-explain-internals/ch03/06-plan-selection-by-selectivity.png)
 *捜査資料: 入札結果の勢力図。ヒット率の軸上に、3 つのスキャンの縄張りがはっきり分かれる*
 
 「何行ヒットしそうか……って、つまり rows の*推定*ですよね。第 2 話の」
@@ -234,5 +234,5 @@ EXPLAIN の数字の動きから、ソースコードの 1 行まで、一本の
 - **コスト最小 = 実時間最小は、rows の推定が正しいときだけ**。推定が狂えば入札ごと狂う
 
 :::message
-ヒープページ / インデックスタプルの図解、Bitmap の 3 段階の動き、LIMIT 階段の全データは技術書版の[第 3 章](https://zenn.dev/hatsu38/books/cddb89f9abfaca)にあります。
+ヒープページ / インデックスタプルの図解、Bitmap の 3 段階の動き、LIMIT 階段の全データは技術書版の[第 3 章](https://zenn.dev/hatsu38/books/postgres-explain-internals)にあります。
 :::

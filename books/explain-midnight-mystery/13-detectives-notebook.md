@@ -3,7 +3,7 @@ title: "最終話 捜査手帳 ─ 1枚のチートシート"
 ---
 
 :::message
-この物語はフィクションですが、登場する SQL と EXPLAIN の読み方はすべて実在の PostgreSQL の挙動です。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/cddb89f9abfaca)第 13 章に、本話の「捜査手帳」の完全版（全ノード一覧・単語集・参考文献）があります。
+この物語はフィクションですが、登場する SQL と EXPLAIN の読み方はすべて実在の PostgreSQL の挙動です。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/postgres-explain-internals)第 13 章に、本話の「捜査手帳」の完全版（全ノード一覧・単語集・参考文献）があります。
 :::
 
 ## 1
@@ -99,7 +99,7 @@ EXPLAIN (ANALYZE, BUFFERS) SELECT ...;
 | Memoize | 内側の結果をキャッシュ | Cache Hits の比率で効きを読む |
 | Gather | 並列の集約 | loops = 並列数に注意 |
 
-![EXPLAIN プラン一覧チートシート。全プランの一覧表（Scan / Sort / Join）](/images/cddb89f9abfaca/ch13/01-plan-cheatsheet.png)
+![EXPLAIN プラン一覧チートシート。全プランの一覧表（Scan / Sort / Join）](/images/postgres-explain-internals/ch13/01-plan-cheatsheet.png)
 *捜査手帳・別紙: 全ノードの人相一覧（1 枚版）*
 
 ### 【単価表と手計算】
@@ -177,7 +177,7 @@ EXPLAIN SELECT * FROM articles;
 :::message
 **この本を読み終えたあなたへ**
 
-湊が一晩で駆け抜けた道を、実際に手を動かしながらゆっくり歩けるのが技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/cddb89f9abfaca)です。Docker で立ち上がるサンプル DB と章別クエリ集が付属していて、本作に登場したすべての EXPLAIN 出力（cost=12181 の手計算、LIMIT 17→18 の切替点、rows=49 が嘘になる瞬間）を、あなたの手元で再現できます。
+湊が一晩で駆け抜けた道を、実際に手を動かしながらゆっくり歩けるのが技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/postgres-explain-internals)です。Docker で立ち上がるサンプル DB と章別クエリ集が付属していて、本作に登場したすべての EXPLAIN 出力（cost=12181 の手計算、LIMIT 17→18 の切替点、rows=49 が嘘になる瞬間）を、あなたの手元で再現できます。
 
 午前2時に、あなたの Slack が鳴る前に。
 :::

@@ -3,7 +3,7 @@ title: "第9話 黒幕の名 ─ プランナと統計情報"
 ---
 
 :::message
-この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です（数値の一部は環境により変動するため `...` 表記）。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/cddb89f9abfaca)第 9 章と同じサンプル DB で再現できます。
+この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です（数値の一部は環境により変動するため `...` 表記）。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/postgres-explain-internals)第 9 章と同じサンプル DB で再現できます。
 :::
 
 ## 1
@@ -44,7 +44,7 @@ most_common_freqs = {0.0008, 0.0006, 0.0006, 0.0005, 0.0005}
 
 「MCV に入らなかった*その他大勢*の分布だ。値の範囲を等頻度で区切った境界値のリストで、`BETWEEN 1 AND 100` みたいな範囲条件のとき、『この範囲はヒストグラムの何区間ぶんか』で選択率を出す。第 3 話の `rows=4699`──全体の約 5%──はこっちの計算だ」
 
-![pg_stats の MCV とヒストグラムから選択率を推定するしくみ](/images/cddb89f9abfaca/ch09/01-histogram-mcv-selectivity.png)
+![pg_stats の MCV とヒストグラムから選択率を推定するしくみ](/images/postgres-explain-internals/ch09/01-histogram-mcv-selectivity.png)
 *捜査資料: 黒幕の手口。プランナが見ているのはこの「要約」だけ──等値条件は MCV、範囲条件はヒストグラムで見積もる*
 
 「……推定って、もっと得体の知れないものかと思ってました。ただの度数分布表と掛け算なんだ」
@@ -158,5 +158,5 @@ ANALYZE
 - 相関する 2 カラムの AND（例: `country='JP' AND lang='ja'`）はプランナが独立と仮定して過小推定する → **拡張統計 `CREATE STATISTICS`** で組の分布を持たせる
 
 :::message
-MCV / ヒストグラムによる選択率計算の図解、拡張統計の実験は技術書版の[第 9 章](https://zenn.dev/hatsu38/books/cddb89f9abfaca)にあります。
+MCV / ヒストグラムによる選択率計算の図解、拡張統計の実験は技術書版の[第 9 章](https://zenn.dev/hatsu38/books/postgres-explain-internals)にあります。
 :::

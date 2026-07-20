@@ -56,7 +56,7 @@ total_cost = seq_page_cost × ページ数 + cpu_tuple_cost × 行数
 
 ページコスト（連続読み）と CPU コスト（1 行処理）を足しただけのシンプルな構造。サンプルアプリの articles では `1.0 × 11181 + 0.01 × 100000 = 12181.00` と、出力の `cost=0.00..12181.00` にぴったり一致しました。
 
-![Seq Scan のコスト構造。青の I/O コスト (11,181) と緑の CPU コスト (1,000) の足し算で 12,181.00](/images/cddb89f9abfaca/ch01/04-seq-scan-cost-structure.png)
+![Seq Scan のコスト構造。青の I/O コスト (11,181) と緑の CPU コスト (1,000) の足し算で 12,181.00](/images/postgres-explain-internals/ch01/04-seq-scan-cost-structure.png)
 
 3 章では、まず Seq / Index / Bitmap の動きを並べて押さえ（3.3）、そのあと**同じテーブルでヒット件数を変えるとプランがどう切り替わるか**を観察し（3.4）、最後に **`LIMIT` を付けるとプランが Index Scan に倒れる現象**を実機で詰めます（3.5）。
 
@@ -96,7 +96,7 @@ flowchart LR
 
 インデックスタプルが持っているのは「キー（カラム値）と、そのキーに対応するヒープタプルの位置を指すポインタ」だけ。実データ本体は対応するヒープタプルにあるので、インデックスから引いたあとはポインタを辿ってヒープページを読みに行く、という二段構えになります。Index Scan で「インデックスを引いた後にヒープページを訪問する」と説明される構造の正体がこれです。
 
-![ヒープページ（薄黄）とインデックスページ（薄グレー）の対応。インデックスタプルの ptr が、対応するヒープタプルを指す](/images/cddb89f9abfaca/ch03/01-heap-index-pages-tuples.png)
+![ヒープページ（薄黄）とインデックスページ（薄グレー）の対応。インデックスタプルの ptr が、対応するヒープタプルを指す](/images/postgres-explain-internals/ch03/01-heap-index-pages-tuples.png)
 
 ページを読む I/O にも 2 種類あります。
 
@@ -152,7 +152,7 @@ flowchart LR
     H --> R[該当行 1 件]
 ```
 
-![Index Scan の動き。インデックス（薄グレー）から `id` の一致を引き、ポインタが指すヒープページ（薄黄）にランダム I/O（青）で飛んで 1 行取り出す。本の巻末索引から本文ページに飛ぶイメージ](/images/cddb89f9abfaca/ch03/04-index-scan-pinpoint.png)
+![Index Scan の動き。インデックス（薄グレー）から `id` の一致を引き、ポインタが指すヒープページ（薄黄）にランダム I/O（青）で飛んで 1 行取り出す。本の巻末索引から本文ページに飛ぶイメージ](/images/postgres-explain-internals/ch03/04-index-scan-pinpoint.png)
 
 #### ② `WHERE author_id = 1` → 49 行 → Bitmap Heap Scan
 
@@ -184,11 +184,11 @@ flowchart LR
 
 `Recheck Cond` は「ビットマップが粗い精度（ページ単位）になることがあるので、ヒープ側でもう一度 WHERE を評価し直す」という保険です。ここでは深入りせず、9 章「プランナと統計情報」で再度触れます。
 
-![Bitmap Heap Scan の 3 段階。① Bitmap Index Scan がインデックス（薄グレー）から候補のページ位置を集め、② ビットマップ（どのページに該当行があるかを 0/1 で示す表）を作り、③ Bitmap Heap Scan がページ順にヒープ（薄黄）を読む。ランダム I/O（青）がページ単位に集約される](/images/cddb89f9abfaca/ch03/05-bitmap-heap-scan-three-steps.png)
+![Bitmap Heap Scan の 3 段階。① Bitmap Index Scan がインデックス（薄グレー）から候補のページ位置を集め、② ビットマップ（どのページに該当行があるかを 0/1 で示す表）を作り、③ Bitmap Heap Scan がページ順にヒープ（薄黄）を読む。ランダム I/O（青）がページ単位に集約される](/images/postgres-explain-internals/ch03/05-bitmap-heap-scan-three-steps.png)
 
 ビットマップ自体をもう一段ズームすると、こうなっています。ヒープページごとに「該当行が **ある = 1** / **無い = 0**」の 1 ビットを持つだけのシンプルな構造です。ページ内に何行マッチしていても、ビットは 1 つだけ。
 
-![ビットマップの正体。ヒープページごとに「該当行が ある = ● 1 / 無い = ○ 0」の 1 ビットを持つ短命のメモリ構造。ヒープ（左）とビットマップ（右）を同じ y で並べてあり、各ページとビットの対応が見える](/images/cddb89f9abfaca/ch03/07-bitmap-page-bit-correspondence.png)
+![ビットマップの正体。ヒープページごとに「該当行が ある = ● 1 / 無い = ○ 0」の 1 ビットを持つ短命のメモリ構造。ヒープ（左）とビットマップ（右）を同じ y で並べてあり、各ページとビットの対応が見える](/images/postgres-explain-internals/ch03/07-bitmap-page-bit-correspondence.png)
 
 #### ③ `WHERE author_id BETWEEN 1 AND 100` → 4,699 行 → まだ Bitmap
 
@@ -224,7 +224,7 @@ EXPLAIN SELECT * FROM articles WHERE author_id BETWEEN 1 AND 1500;
 
 ヒープの 11,181 ページを 1 ページずつ先頭から読み、各行に Filter で `author_id >= 1 AND author_id <= 1500` を当てる流れ。WHERE は読み取り量を減らせず、結果件数だけ絞り込まれます。
 
-![Seq Scan の動き。ヒープページ（薄黄）を先頭から順に読み（青の連続 I/O）、各ページに入っている行を 1 つずつ取り出して Filter で判定する。WHERE は読み取り量に効かず、結果件数だけ絞り込まれる](/images/cddb89f9abfaca/ch03/03-seq-scan-page-by-page.png)
+![Seq Scan の動き。ヒープページ（薄黄）を先頭から順に読み（青の連続 I/O）、各ページに入っている行を 1 つずつ取り出して Filter で判定する。WHERE は読み取り量に効かず、結果件数だけ絞り込まれる](/images/postgres-explain-internals/ch03/03-seq-scan-page-by-page.png)
 
 #### ⑤ `WHERE published = true` → 74,643 行 → 別カラムでも同じ Seq Scan
 
@@ -302,7 +302,7 @@ EXPLAIN SELECT * FROM articles WHERE published = true;
 
 ストーリーになっていますね。**ヒット件数が増えるにつれて Index Scan → Bitmap Heap Scan → Seq Scan と切り替わっていく**。プランナは「rows がどれくらいか」を見て、その都度安いノードを選んでいる様子が一覧で見えます。
 
-![プラン選択は選択率で決まる。4 つの実機データ点 (①〜④) を選択率軸に並べると、Index Scan / Bitmap Heap Scan / Seq Scan の 3 ゾーンに自然と分かれる](/images/cddb89f9abfaca/ch03/06-plan-selection-by-selectivity.png)
+![プラン選択は選択率で決まる。4 つの実機データ点 (①〜④) を選択率軸に並べると、Index Scan / Bitmap Heap Scan / Seq Scan の 3 ゾーンに自然と分かれる](/images/postgres-explain-internals/ch03/06-plan-selection-by-selectivity.png)
 
 ### ② 数十行ヒット ─ Bitmap Heap Scan が顔を出す
 

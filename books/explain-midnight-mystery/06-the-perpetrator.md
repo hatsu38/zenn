@@ -3,7 +3,7 @@ title: "第6話 実行犯 ─ Nested Loop の暴走"
 ---
 
 :::message
-この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/cddb89f9abfaca)第 6 章と同じサンプル DB で再現できます。
+この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/postgres-explain-internals)第 6 章と同じサンプル DB で再現できます。
 :::
 
 ## 1
@@ -39,7 +39,7 @@ for each row a in 外側:                  # Bitmap Heap Scan on articles → 24
 
 「二重ループ……そのままの名前なんですね。外側が 1 行進むたびに、内側のループが丸ごと 1 回呼ばれる。だから内側の `loops=249` は、**外側の行数そのもの**なんだ」
 
-![Nested Loop の動き。loops は外側の行数、actual rows は内側の 1 回あたり平均](/images/cddb89f9abfaca/ch06/01-nested-loop-timeline.png)
+![Nested Loop の動き。loops は外側の行数、actual rows は内側の 1 回あたり平均](/images/postgres-explain-internals/ch06/01-nested-loop-timeline.png)
 *捜査資料: 実行犯の犯行手口。外側 249 行 × 内側 1 回ずつの反復訪問──回数が桁で狂えばこのまま凶器になる*
 
 「そうだ。SQL の結合方式の中で、いちばん素朴な奴だ。素朴だから、輝く場面と暴走する場面がはっきり分かれる。──まず、なぜ今回プランナはこいつに落札させたのか。入札額を検算しろ。内側 1 回のコストは？」
@@ -132,5 +132,5 @@ WHERE c.author_id BETWEEN 1 AND 5;
 - 「rows=131 のつもりが 4 桁多かった」とき、Nested Loop の選択自体は*見積もり上は*正しい。**責めるべきはプラン選択ではなく、狂った推定の出どころ**
 
 :::message
-Nested Loop のタイムライン図、Memoize の判定フロー、実機での Memoize 観察は技術書版の[第 6 章](https://zenn.dev/hatsu38/books/cddb89f9abfaca)にあります。
+Nested Loop のタイムライン図、Memoize の判定フロー、実機での Memoize 観察は技術書版の[第 6 章](https://zenn.dev/hatsu38/books/postgres-explain-internals)にあります。
 :::

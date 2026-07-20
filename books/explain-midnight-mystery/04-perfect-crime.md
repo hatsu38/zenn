@@ -3,7 +3,7 @@ title: "第4話 完全犯罪の条件 ─ Index Only Scan"
 ---
 
 :::message
-この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/cddb89f9abfaca)第 4 章と同じサンプル DB で再現できます。
+この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/postgres-explain-internals)第 4 章と同じサンプル DB で再現できます。
 :::
 
 ## 1
@@ -70,7 +70,7 @@ T100 が UPDATE すると
   新しい行: xmin=T100, xmax=0    ← T100 が新しく産む
 ```
 
-![UPDATE が起きると、古い行に削除マーク xmax が刻まれ、新しい行が同じテーブルに追加される](/images/cddb89f9abfaca/ch04/02-mvcc-update-sequence.png)
+![UPDATE が起きると、古い行に削除マーク xmax が刻まれ、新しい行が同じテーブルに追加される](/images/postgres-explain-internals/ch04/02-mvcc-update-sequence.png)
 *捜査資料: UPDATE の現場写真。上書きではなく「旧版に享年を刻んで、新版を追記」。同じ id の行が一時的に 2 つ並ぶ*
 
 「なんでそんな回りくどいことを……」
@@ -103,7 +103,7 @@ T100 が UPDATE すると
 4. **1 なら**、ヒープを開かず「見える」と断定 → `Heap Fetches` は増えない
 5. **0 なら**、ヒープを開いて xmin/xmax を確認 → `Heap Fetches += 1`
 
-![visibility map のビット列とヒープページの 1:1 対応。bit=1 ならヒープを訪問しない](/images/cddb89f9abfaca/ch04/01-visibility-map-bit-correspondence.png)
+![visibility map のビット列とヒープページの 1:1 対応。bit=1 ならヒープを訪問しない](/images/postgres-explain-internals/ch04/01-visibility-map-bit-correspondence.png)
 *捜査資料: 可視性の地図。ヒープページ 1 枚にビット 1 つ。1 が立っているページは現地に行かず「全員シロ」と断定できる*
 
 「サイズ感がミソだ。articles のヒープは 11,181 ページ、約 87MB。visibility map は 1 ページ 2 ビットだから、`11181 × 2bit ÷ 8` で**約 3KB**。87MB の現場検証を、3KB の地図の照会で済ませてる。だから Index Only Scan は速い」
@@ -112,7 +112,7 @@ T100 が UPDATE すると
 
 「いい質問だ。公式ドキュメントの言い回しをそのまま覚えろ──**ビットを立てられるのは VACUUM だけ。データ編集は必ずビットを倒す**。VACUUM が『このページはもう全行可視だ』と確認して 1 を立てる。INSERT / UPDATE / DELETE がそのページに触れた瞬間、0 に戻る。**立てる者と倒す者の、終わらない綱引き**だ」
 
-![visibility map のライフサイクル。VACUUM がビットを立て、INSERT/UPDATE/DELETE がクリアし、autovacuum が立て直すループ](/images/cddb89f9abfaca/ch04/04-visibility-map-lifecycle.png)
+![visibility map のライフサイクル。VACUUM がビットを立て、INSERT/UPDATE/DELETE がクリアし、autovacuum が立て直すループ](/images/postgres-explain-internals/ch04/04-visibility-map-lifecycle.png)
 *捜査資料: 立てる者（VACUUM）と倒す者（データ編集）の攻防記録*
 
 ## 4
@@ -160,5 +160,5 @@ T100 が UPDATE すると
 - 補足: インデックスのキー以外のカラムも返したいなら `CREATE INDEX ... INCLUDE (col)` の**カバリングインデックス**で Index Only Scan 化できる（詰めすぎると肥大化に跳ね返る）
 
 :::message
-xmin/xmax の可視性判定の図解、visibility map のライフサイクル図、INCLUDE 句の詳細は技術書版の[第 4 章](https://zenn.dev/hatsu38/books/cddb89f9abfaca)にあります。
+xmin/xmax の可視性判定の図解、visibility map のライフサイクル図、INCLUDE 句の詳細は技術書版の[第 4 章](https://zenn.dev/hatsu38/books/postgres-explain-internals)にあります。
 :::

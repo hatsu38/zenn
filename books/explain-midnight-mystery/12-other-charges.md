@@ -3,7 +3,7 @@ title: "第12話 余罪の捜査 ─ アンチパターン人相書き"
 ---
 
 :::message
-この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です（数値の一部は環境により変動するため `...` 表記）。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/cddb89f9abfaca)第 12 章と同じサンプル DB で再現できます。
+この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です（数値の一部は環境により変動するため `...` 表記）。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/postgres-explain-internals)第 12 章と同じサンプル DB で再現できます。
 :::
 
 ## 1
@@ -132,5 +132,5 @@ LIMIT 20;
 **3 つの目**: ① Filter 行の関数・キャスト ② Sort と意外な Seq Scan ③ Buffers の read と calls の異常値
 
 :::message
-各パターンの実機出力と直し方の詳細（式インデックスの作成、pg_trgm、pg_stat_statements の設定）は技術書版の[第 12 章](https://zenn.dev/hatsu38/books/cddb89f9abfaca)にあります。
+各パターンの実機出力と直し方の詳細（式インデックスの作成、pg_trgm、pg_stat_statements の設定）は技術書版の[第 12 章](https://zenn.dev/hatsu38/books/postgres-explain-internals)にあります。
 :::
