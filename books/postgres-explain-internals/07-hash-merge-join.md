@@ -93,7 +93,7 @@ flowchart LR
     B --> D
 ```
 
-![Hash Join: Build → Probe の 2 段階。小さい側でハッシュテーブルを作り、大きい側を 1 行ずつ照合](/images/cddb89f9abfaca/ch07/01-hash-join-build-probe.png)
+![Hash Join: Build → Probe の 2 段階。小さい側でハッシュテーブルを作り、大きい側を 1 行ずつ照合](/images/postgres-explain-internals/ch07/01-hash-join-build-probe.png)
 
 1. **Build フェーズ**: 小さいほうのテーブル（authors）を全部読んで、hash テーブルをメモリに作る
 2. **Probe フェーズ**: 大きいほうのテーブル（articles）を 1 行ずつ読みながら、hash テーブルを引いて結合する

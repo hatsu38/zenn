@@ -3,7 +3,7 @@ title: "第10話 死体の山 ─ VACUUM と autovacuum"
 ---
 
 :::message
-この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です（数値の一部は環境により変動するため `...` 表記）。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/cddb89f9abfaca)第 10 章と同じサンプル DB で再現できます。
+この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です（数値の一部は環境により変動するため `...` 表記）。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/postgres-explain-internals)第 10 章と同じサンプル DB で再現できます。
 :::
 
 ## 1
@@ -37,7 +37,7 @@ ROLLBACK;
 
 「MVCC は中身を見ない。UPDATE という行為そのものが、旧版に享年を刻んで新版を産む。ついでに、行の生没を直接覗く方法も教えておく」
 
-![MVCC のタプルタイムライン。UPDATE で v1 → v2 が生まれ、v1 は dead tuple になる](/images/cddb89f9abfaca/ch10/01-mvcc-tuple-timeline.png)
+![MVCC のタプルタイムライン。UPDATE で v1 → v2 が生まれ、v1 は dead tuple になる](/images/postgres-explain-internals/ch10/01-mvcc-tuple-timeline.png)
 *捜査資料: タプルの生没年表。UPDATE のたびに旧版（v1）が dead tuple としてテーブルに残る*
 
 ```sql
@@ -58,7 +58,7 @@ SELECT ctid, xmin, xmax, id FROM articles LIMIT 5;
 
 「死体を片付けて『この区画、次の入居者どうぞ』と札を立てるだけだ。ディスク上のファイルサイズは変わらない。物理的に縮めたければ ④ の `VACUUM FULL`──ただしこいつは**テーブルを丸ごとロックして作り直す**劇物だ。本番で気軽に打つものじゃない」
 
-![VACUUM 前後の対比。dead tuple が再利用可能な空きスロットに変わる](/images/cddb89f9abfaca/ch10/02-dead-tuple-vacuum.png)
+![VACUUM 前後の対比。dead tuple が再利用可能な空きスロットに変わる](/images/postgres-explain-internals/ch10/02-dead-tuple-vacuum.png)
 *捜査資料: 清掃前と清掃後。死体（dead tuple）は撤去されるが、区画（ページ）はそのまま残る*
 
 「その清掃人、いつ来るんですか」
@@ -149,5 +149,5 @@ EXPLAIN ANALYZE SELECT count(*) FROM articles;
 - 深夜障害の実像: バッチも autovacuum もプランナも**全員が仕様どおりに動いて**、組み合わせだけが壊れる。悪者探しではなく、しくみの線を繋いで読むこと
 
 :::message
-MVCC タプルのタイムライン図、VACUUM 前後の対比図、count(\*) と count(id) の Buffers 比較実験は技術書版の[第 10 章](https://zenn.dev/hatsu38/books/cddb89f9abfaca)にあります。
+MVCC タプルのタイムライン図、VACUUM 前後の対比図、count(\*) と count(id) の Buffers 比較実験は技術書版の[第 10 章](https://zenn.dev/hatsu38/books/postgres-explain-internals)にあります。
 :::

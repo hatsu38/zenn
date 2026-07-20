@@ -3,7 +3,7 @@ title: "第5話 並べ替えの代償 ─ Sort と work_mem"
 ---
 
 :::message
-この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です（数値の一部は環境により変動するため `...` 表記）。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/cddb89f9abfaca)第 5 章と同じサンプル DB で再現できます。
+この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です（数値の一部は環境により変動するため `...` 表記）。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/postgres-explain-internals)第 5 章と同じサンプル DB で再現できます。
 :::
 
 ## 1
@@ -37,7 +37,7 @@ SHOW work_mem;   -- 4MB
 
 「デフォルト 4MB。今回の Sort は 10 万行、width 269──ざっと 26MB ぶんある。4MB の机で 26MB の書類は並べられない。だから床（ディスク）に広げた。メモリ内ソートより当然遅い。これが第二の代償だ」
 
-![work_mem 内に収まる quicksort と、溢れて一時ファイルに書く external merge の対比](/images/cddb89f9abfaca/ch05/01-sort-memory-vs-disk.png)
+![work_mem 内に収まる quicksort と、溢れて一時ファイルに書く external merge の対比](/images/postgres-explain-internals/ch05/01-sort-memory-vs-disk.png)
 *捜査資料: 机（work_mem）に収まれば quicksort、溢れれば床（ディスクの一時ファイル）で external merge*
 
 「コスト式はどうなってるんですか。Seq Scan みたいに手計算できます？」
@@ -142,5 +142,5 @@ EXPLAIN SELECT id FROM articles ORDER BY id LIMIT 20;
 - 本番の構図: LIMIT 付きなのに external merge が出るのは、**下流の JOIN が想定外の行数を Sort に食わせている**サイン。主犯は Sort ではなく元栓
 
 :::message
-top-N heapsort の動作フロー図、work_mem 超過の対比図、実機での Sort Method 切り替え実験は技術書版の[第 5 章](https://zenn.dev/hatsu38/books/cddb89f9abfaca)にあります。
+top-N heapsort の動作フロー図、work_mem 超過の対比図、実機での Sort Method 切り替え実験は技術書版の[第 5 章](https://zenn.dev/hatsu38/books/postgres-explain-internals)にあります。
 :::

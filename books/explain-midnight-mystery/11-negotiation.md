@@ -3,7 +3,7 @@ title: "第11話 プランナとの交渉術 ─ enable スイッチと pg_hint_
 ---
 
 :::message
-この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です（数値の一部は環境により変動するため `...` 表記）。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/cddb89f9abfaca)第 11 章と同じサンプル DB で再現できます。
+この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です（数値の一部は環境により変動するため `...` 表記）。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/postgres-explain-internals)第 11 章と同じサンプル DB で再現できます。
 :::
 
 ## 1
@@ -146,5 +146,5 @@ SELECT * FROM articles WHERE id = '...';
 - 静的な `SET` での応急処置はセッション全体に効く劇薬（第 7 話の教訓）。恒久対応は必ず「見積もりを正す」側から
 
 :::message
-enable スイッチ 3 段実験の実測表、並列クエリの図解、pg_hint_plan の導入は技術書版の[第 11 章](https://zenn.dev/hatsu38/books/cddb89f9abfaca)にあります。
+enable スイッチ 3 段実験の実測表、並列クエリの図解、pg_hint_plan の導入は技術書版の[第 11 章](https://zenn.dev/hatsu38/books/postgres-explain-internals)にあります。
 :::

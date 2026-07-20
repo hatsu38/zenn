@@ -3,7 +3,7 @@ title: "第1話 午前2時14分、Slackが鳴る"
 ---
 
 :::message
-この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/cddb89f9abfaca)と同じサンプル DB（[zenn-explain-analyze-sample](https://github.com/hatsu38/zenn-explain-analyze-sample)）で、あなたも同じ数字を再現できます。
+この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/postgres-explain-internals)と同じサンプル DB（[zenn-explain-analyze-sample](https://github.com/hatsu38/zenn-explain-analyze-sample)）で、あなたも同じ数字を再現できます。
 :::
 
 ## 1
@@ -84,7 +84,7 @@ EXPLAIN SELECT * FROM articles;
 
 「**計画書**だ。旅に出る前の地図。『この道を通るつもりだ』という宣言であって、歩いた記録じゃない。だから本番 DB に打っても安全だ──これは覚えておけ。今夜、本番で使う」
 
-![SQL はパース→プラン→実行の 3 段階を通る。EXPLAIN は「プラン」で止めて計画書だけを返す](/images/cddb89f9abfaca/ch01/01-sql-three-phases.png)
+![SQL はパース→プラン→実行の 3 段階を通る。EXPLAIN は「プラン」で止めて計画書だけを返す](/images/postgres-explain-internals/ch01/01-sql-three-phases.png)
 *捜査資料: SQL は「パース → プラン → 実行」の 3 段階。EXPLAIN は 2 段目で止まり、現場（実行）には踏み込まない*
 
 画面には、たった 1 行の答えが出ていた。
@@ -179,7 +179,7 @@ WHERE relname = 'articles';
 
 「PostgreSQL はテーブルを 8KB の**ページ**という単位で持ってる。articles は 11,181 ページ、約 87MB。プランナが思っている行数は 100,000。──さあ、式に入れろ。電卓を出せ」
 
-![ヒープページ俯瞰と 1 ページ拡大。約 9 タプル × 11,181 ページ ≈ 100,000 行](/images/cddb89f9abfaca/ch01/03-heap-page-tuple-structure.png)
+![ヒープページ俯瞰と 1 ページ拡大。約 9 タプル × 11,181 ページ ≈ 100,000 行](/images/postgres-explain-internals/ch01/03-heap-page-tuple-structure.png)
 *捜査資料: articles の現場見取り図。8KB のページが 11,181 枚並び、1 ページに約 9 行が詰まって計 10 万行*
 
 僕は言われたとおり、深夜 2 時半に電卓を叩いた。
@@ -200,7 +200,7 @@ EXPLAIN の出力を見返す。`cost=0.00..12181.00`。
 
 「それがコストの正体だ。I/O の作業量 11,181 と、CPU の作業量 1,000 の足し算。難解な統計モデルなんて裏にいない。**出どころが分かる数字は、もう怖くない**」
 
-![Seq Scan のコスト構造。I/O コスト (11,181) と CPU コスト (1,000) の足し算で 12,181.00](/images/cddb89f9abfaca/ch01/04-seq-scan-cost-structure.png)
+![Seq Scan のコスト構造。I/O コスト (11,181) と CPU コスト (1,000) の足し算で 12,181.00](/images/postgres-explain-internals/ch01/04-seq-scan-cost-structure.png)
 *捜査資料: cost=12181.00 の解剖図。I/O の 11,181 と CPU の 1,000 の単純な足し算*
 
 「rows=100000 も pg_class の reltuples そのままなんですね。じゃあ width=852 は？」
@@ -285,5 +285,5 @@ EXPLAIN の出力は `cost=0.00..28182.00`。また、ぴったり合った。
 - `EXPLAIN ANALYZE` は**実際に実行される**。UPDATE / DELETE に付けるときは要注意（→ 第2話）
 
 :::message
-式の導出や `random_page_cost` などの残りのパラメータ、演習問題は、技術書版の[第 1 章](https://zenn.dev/hatsu38/books/cddb89f9abfaca)に詳しくあります。小説版と技術書版は同じサンプル DB・同じ実測値で対応しています。
+式の導出や `random_page_cost` などの残りのパラメータ、演習問題は、技術書版の[第 1 章](https://zenn.dev/hatsu38/books/postgres-explain-internals)に詳しくあります。小説版と技術書版は同じサンプル DB・同じ実測値で対応しています。
 :::

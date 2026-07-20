@@ -154,7 +154,7 @@ histogram_bounds = {6, 50, 100, 200, ..., 2000}
 
 `rows` の推定値は、**MCV の頻度 + ヒストグラムの境界** を組み合わせて計算されている、というのが 9.3 のまとめです。WHERE 句の値が MCV に入るか、ヒストグラムのどの区間に入るかで、選択率が決まります。
 
-![pg_stats: MCV と Histogram で選択率を推定。プランナはこの統計情報から rows 推定を出す](/images/cddb89f9abfaca/ch09/01-histogram-mcv-selectivity.png)
+![pg_stats: MCV と Histogram で選択率を推定。プランナはこの統計情報から rows 推定を出す](/images/postgres-explain-internals/ch09/01-histogram-mcv-selectivity.png)
 
 ---
 

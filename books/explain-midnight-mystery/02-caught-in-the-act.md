@@ -3,7 +3,7 @@ title: "第2話 現行犯逮捕 ─ EXPLAIN ANALYZE"
 ---
 
 :::message
-この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/cddb89f9abfaca)第 2 章と同じサンプル DB で再現できます。
+この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/postgres-explain-internals)第 2 章と同じサンプル DB で再現できます。
 :::
 
 ## 1
@@ -69,7 +69,7 @@ EXPLAIN ANALYZE SELECT * FROM articles;
 
 「そうだ。そして A と B の差は、ノードの*性格*を表す。A ≪ B なら『1 行目は早いが全部は長い』タイプ。逆に Sort や集計みたいに**全行読み終わらないと 1 行目すら返せない**ノードは、A が B に張り付く。`LIMIT 1` で速くなるかどうかも、ここを見れば見当が付く」
 
-![A ≪ B 型（Seq Scan）と A ≒ B 型（Sort）を時間軸上で対比。A は最初の 1 行が返るまで、B は全行返し切るまでの実測 ms](/images/cddb89f9abfaca/ch02/01-actual-time-startup-total.png)
+![A ≪ B 型（Seq Scan）と A ≒ B 型（Sort）を時間軸上で対比。A は最初の 1 行が返るまで、B は全行返し切るまでの実測 ms](/images/postgres-explain-internals/ch02/01-actual-time-startup-total.png)
 *捜査資料: actual time=A..B の 2 つの性格。左は「1 行目が早い」Seq Scan 型、右は「全行揃うまで沈黙する」Sort 型*
 
 「末尾の 2 行は？」
@@ -154,7 +154,7 @@ WHERE a.author_id BETWEEN 1 AND 5;
 | 10 倍以上 | プラン選択を間違えていそう | 統計情報・相関カラム・LIKE を疑う |
 | 100 倍以上 | プランが暴走している疑い | 統計を取り直す。`pg_stats` で内訳を見る |
 
-![推定 rows と実測 actual rows の乖離。当たっているケースと外れているケースの対比](/images/cddb89f9abfaca/ch02/02-rows-divergence-bar-chart.png)
+![推定 rows と実測 actual rows の乖離。当たっているケースと外れているケースの対比](/images/postgres-explain-internals/ch02/02-rows-divergence-bar-chart.png)
 *捜査資料: 供述（推定 rows）と監視カメラ（actual rows）の突き合わせ。棒の高さが揃わないノードが捜査対象*
 
 「なんでズレがそんなに問題なんですか？ 推定が外れても、結果は正しく返るんですよね」
@@ -217,5 +217,5 @@ WHERE a.author_id BETWEEN 1 AND 5;
 - 実測値は毎回ブレる（キャッシュの温まり具合）。ブレの正体は BUFFERS の回で
 
 :::message
-`actual time` の A..B の図解や演習（`tags` での基本確認、`loops=3` を最小構成で観察する JOIN）は技術書版の[第 2 章](https://zenn.dev/hatsu38/books/cddb89f9abfaca)にあります。
+`actual time` の A..B の図解や演習（`tags` での基本確認、`loops=3` を最小構成で観察する JOIN）は技術書版の[第 2 章](https://zenn.dev/hatsu38/books/postgres-explain-internals)にあります。
 :::

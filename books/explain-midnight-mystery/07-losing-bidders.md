@@ -3,7 +3,7 @@ title: "第7話 選ばれなかった入札者 ─ Hash Join と Merge Join"
 ---
 
 :::message
-この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です（数値の一部は環境により変動するため `...` 表記）。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/cddb89f9abfaca)第 7 章と同じサンプル DB で再現できます。
+この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です（数値の一部は環境により変動するため `...` 表記）。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/postgres-explain-internals)第 7 章と同じサンプル DB で再現できます。
 :::
 
 ## 1
@@ -36,7 +36,7 @@ JOIN authors au ON a.author_id = au.id;
 
 「動きは 2 幕構成だ。第 1 幕、**Build**──小さいほう（authors 2,000 行）を全部読んで、結合キーで引ける**ハッシュ表**をメモリに作る。author_id を言えば即座に著者が出てくる名簿だ。第 2 幕、**Probe**──大きいほう（articles 10 万行）を 1 行ずつ流しながら、名簿を引いて結合する」
 
-![Hash Join の Build → Probe の 2 段階。小さい側でハッシュテーブルを作り、大きい側を 1 行ずつ照合](/images/cddb89f9abfaca/ch07/01-hash-join-build-probe.png)
+![Hash Join の Build → Probe の 2 段階。小さい側でハッシュテーブルを作り、大きい側を 1 行ずつ照合](/images/postgres-explain-internals/ch07/01-hash-join-build-probe.png)
 *捜査資料: 本来の落札者の仕事ぶり。第 1 幕で名簿を作り、第 2 幕で照合するだけ──両テーブルとも 1 回しか読まない*
 
 「Nested Loop と決定的に違うのは……内側を 249 回とか呼ばない、ってところですか」
@@ -138,5 +138,5 @@ RESET enable_mergejoin;
 - 誤ったプランで 12 秒のクエリが、正しいプラン（Hash Join）なら 0.4 秒──**「正しいプランの存在証明」**は、犯人がプランナの入力（統計）側にいることの証拠になる
 
 :::message
-Build/Probe の図解、work_mem を絞って Batches が増える実験、enable スイッチ 3 連の比較は技術書版の[第 7 章](https://zenn.dev/hatsu38/books/cddb89f9abfaca)にあります。
+Build/Probe の図解、work_mem を絞って Batches が増える実験、enable スイッチ 3 連の比較は技術書版の[第 7 章](https://zenn.dev/hatsu38/books/postgres-explain-internals)にあります。
 :::

@@ -3,7 +3,7 @@ title: "第8話 血痕を数える ─ BUFFERS とキャッシュ"
 ---
 
 :::message
-この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です（数値の一部は環境により変動するため `...` 表記）。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/cddb89f9abfaca)第 8 章と同じサンプル DB で再現できます。
+この物語はフィクションですが、登場する SQL と EXPLAIN の出力はすべて実測値です（数値の一部は環境により変動するため `...` 表記）。技術書版[「PostgreSQL の EXPLAIN と内部のしくみ」](https://zenn.dev/hatsu38/books/postgres-explain-internals)第 8 章と同じサンプル DB で再現できます。
 :::
 
 ## 1
@@ -122,5 +122,5 @@ flowchart TD
 - キャッシュヒットでも**枚数が桁違いなら遅い**。Nested Loop 暴走は「速い取得 × 百万回」で殺しに来る。Sort の一時ファイルはディスク実書きなので、実行ごとの揺らぎの震源になる
 
 :::message
-キャッシュ 3 階層の判定フロー図、cold/warm 実験の実測表、pg_prewarm の使い方は技術書版の[第 8 章](https://zenn.dev/hatsu38/books/cddb89f9abfaca)にあります。
+キャッシュ 3 階層の判定フロー図、cold/warm 実験の実測表、pg_prewarm の使い方は技術書版の[第 8 章](https://zenn.dev/hatsu38/books/postgres-explain-internals)にあります。
 :::
