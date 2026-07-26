@@ -189,6 +189,8 @@ flowchart TD
 
 ### 並列クエリの設定
 
+設定値をいくつまで上げるかは運用チューニングの領分ですが、EXPLAIN に出てくる `Workers Planned` の数がどこから来るのかを知るために、3 つのパラメータを確認しておきます。
+
 ```sql
 SHOW max_parallel_workers_per_gather;       -- 例: 2
 SHOW parallel_setup_cost;                   -- 1000.0
