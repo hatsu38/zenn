@@ -196,8 +196,8 @@ zip 時代に感じていた「画像がバラバラで文脈が分からない�
 
 ## Artifact は結局は Azure Blob Storage の署名付き URL
 
-ところで、この Artifact の URL はどこまで公開されているのでしょうか。
-社内の diff やスクショを載せた HTML を置いている以上、気になるところなので確認してきました。
+ところで、社内の diff やスクショを載せた HTML を置くので、Artifact の URL がどこまで公開されているのかは気になりますよね。
+なので、確認してきました。
 
 Artifact の URL（`github.com/<owner>/<repo>/actions/runs/<run_id>/artifacts/<artifact_id>`）を開くと、実際には Azure Blob Storage の署名付き URL（SAS）にリダイレクトされます。
 リダイレクト先はこんな形の URL です（2026-08-13 に実測したもの。ハッシュや署名は省略しています）。
