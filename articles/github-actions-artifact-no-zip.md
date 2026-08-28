@@ -7,7 +7,9 @@ published: false
 publication_name: "she_techblog"
 ---
 
-こんにちは、hatsu です。
+こんにちは、SHE株式会社でエンジニアをしています hatsu です。
+日頃は CI の速度改善をしたり、Flaky テストを直したり、300 個以上のカラムに not null 制約を加えていったり、そういう改善をしています。
+今回はそんな中でも、GitHub Actions の Artifact に関しての話です。
 
 最近知ったのですが、2026年2月26日 に GitHub Actions の Artifact が [zip 化なしでアップロードできるようになった](https://github.blog/changelog/2026-02-26-github-actions-now-supports-uploading-and-downloading-non-zipped-artifacts/)んですね。
 
