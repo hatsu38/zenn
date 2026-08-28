@@ -243,7 +243,7 @@ zip 解凍なしで表示できる仕組みも、この URL に現れていま�
 この「クエリパラメータでレスポンスヘッダーを上書きする」挙動は [サービス SAS の作成（Microsoft Learn）](https://learn.microsoft.com/ja-jp/rest/api/storageservices/create-service-sas)で定義されている公式の仕様で、URL 全体の構成例は [サービス SAS の例（Microsoft Learn）](https://learn.microsoft.com/ja-jp/rest/api/storageservices/service-sas-examples)にも載っています。
 `sk` で始まるパラメータ群は user delegation SAS（アカウントキーではなく Microsoft Entra ID の資格情報で署名する方式）のもので、[ユーザー委任 SAS の作成（Microsoft Learn）](https://learn.microsoft.com/ja-jp/rest/api/storageservices/create-user-delegation-sas)に定義があります。
 
-権限チェックが行われる場所は、AWS S3 の presigned URL などでもおなじみの、署名付き URL の一般的な形です。
+ちなみに、権限チェックはこうなっていました。
 
 - ログインとリポジトリの read 権限のチェックは、github.com 側のリダイレクト前にだけ行われる
 - リダイレクト後の Azure 側は署名しか見ない。つまり署名が有効な間（実測で10分5秒）は、GitHub にログインしていない第三者でもこの URL を開ける
