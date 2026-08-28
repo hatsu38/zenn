@@ -260,10 +260,3 @@ AI のおかげで、人間が読むための HTML を作るコストは一気�
 リポジトリの権限で守られた URL が発行されて、PR に貼れて、期限が来たら勝手に消える。
 一時的なレポートの共有に欲しいものが、追加のインフラなしで全部そろっています。
 CI で HTML レポートを作っているなら、`archive: false`、ぜひ試してみてください。
-
-## 参考リンク
-
-- [GitHub Actions now supports uploading and downloading non-zipped artifacts（GitHub Changelog）](https://github.blog/changelog/2026-02-26-github-actions-now-supports-uploading-and-downloading-non-zipped-artifacts/)
-- [REST API endpoints for GitHub Actions artifacts（GitHub Docs）](https://docs.github.com/ja/rest/actions/artifacts)
-- [Shared Access Signatures（SAS）の概要（Microsoft Learn）](https://learn.microsoft.com/ja-jp/azure/storage/common/storage-sas-overview)
-- [Allowed hosts for GitHub Action Summaries（GitHub community discussion）](https://github.com/orgs/community/discussions/46211)（Artifact の配信元ホスト `productionresultssa*.blob.core.windows.net` への言及がある）
