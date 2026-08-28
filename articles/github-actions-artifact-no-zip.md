@@ -33,10 +33,10 @@ Anthropic 社内でよく使われているという Claude Code の [`/eli5` �
 
 私も PR のレビューのために、変更内容を HTML で図解させるのを個人的にやっていました。
 手元で使うぶんには十分満足していました。
-ただ、これだけ便利なら、毎回自動で生成して、チームの全員が使えるようにしたくなります。
+ただ、これだけ便利なら、毎回自動で生成して、チームの全員が使えるようにしたくなりますよね。
 共有の手段はいくつかあって、HTML 共有サービスを自作して社内限定で共有する人もいますし、Claude の [Artifacts 機能](https://www.anthropic.com/news/artifacts) で共有リンクを作る手もあります。
 
-↓は `/eli5 RFC 10008: HTTP QUERY Method` で生成された HTML。
+↓は `/eli5 RFC 10008: HTTP QUERY Method` で生成された HTML（お手紙ごっこって可愛いw）。
 
 ![/eli5 で生成された RFC 10008 の図解 HTML の冒頭](/images/github-actions-artifact-no-zip/eli5-rfc-10008.png =450x)
 *生成された HTML の冒頭部分。この調子で「困りごと → 解決 → 比較表」まで図解が続く*
@@ -52,7 +52,7 @@ Anthropic 社内でよく使われているという Claude Code の [`/eli5` �
 
 ## zip 化がオプションになった
 
-この欠点が、冒頭で紹介した zip 化不要の変更でようやく解消されました。
+この欠点が、冒頭で紹介した zip 化不要の変更でようやく解消されました。素晴らしい！
 
 - [`actions/upload-artifact`](https://github.com/actions/upload-artifact) の `with.archive` を `false` にすると、zip を作らずにアップロードする
 - `archive: true`（デフォルト）や v7 より前でアップロードした Artifact は、今までどおり zip のまま
