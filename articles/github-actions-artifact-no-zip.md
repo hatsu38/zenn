@@ -31,15 +31,15 @@ publication_name: "she_techblog"
 コードや設計を人間が理解する手助けとして AI に HTML を作らせる、という使い方がこの1年で一気に広がった気がします。
 Anthropic 社内でよく使われているという Claude Code の [`/eli5` スキル](https://github.com/anthropics/claude-plugins-community/tree/main/eli5)（5歳児にもわかるように大きな画像と少ない文章で説明するスキル）が話題になったり、ポッドキャスト [oss4.fun #96](https://oss4.fun/episode/96/) では t-wada さんが「人に優しい HTML」という話題で、人間が読むための HTML を AI に作らせる頻度が増えた話をされていたり。
 
-私も PR のレビューのために、変更内容を HTML で図解させるのを個人的にやっていました。
-手元で使うぶんには十分満足していました。
-ただ、これだけ便利なら、毎回自動で生成して、チームの全員が使えるようにしたくなりますよね。
-共有の手段はいくつかあって、HTML 共有サービスを自作して社内限定で共有する人もいますし、Claude の [Artifacts 機能](https://www.anthropic.com/news/artifacts) で共有リンクを作る手もあります。
-
 ↓は `/eli5 RFC 10008: HTTP QUERY Method` で生成された HTML（お手紙ごっこって可愛いw）。
 
 ![/eli5 で生成された RFC 10008 の図解 HTML の冒頭](/images/github-actions-artifact-no-zip/eli5-rfc-10008.png =450x)
 *生成された HTML の冒頭部分。この調子で「困りごと → 解決 → 比較表」まで図解が続く*
+
+私も PR のレビューのために、変更内容を HTML で図解させるのを個人的にやっていました。
+手元で使うぶんには十分満足していました。
+ただ、これだけ便利なら、毎回自動で生成して、チームの全員が使えるようにしたくなりますよね。
+共有の手段はいくつかあって、HTML 共有サービスを自作して社内限定で共有する人もいますし、Claude の [Artifacts 機能](https://www.anthropic.com/news/artifacts) で共有リンクを作る手もあります。
 
 ただ、CI で毎回自動生成する場合は、アップロードするのは人ではなく CI なので、ワークフローから機械的にアップロードできて、PR に貼る URL がその場で手に入ってほしいんですよね。
 
