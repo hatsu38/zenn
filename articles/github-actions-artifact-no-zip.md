@@ -120,7 +120,7 @@ Artifact の URL を開くと、こんなレビューガイドが表示されま
       [📄 レビューガイドを開く](${{ steps.upload.outputs.artifact-url }})
 ```
 
-push のたびに新しいコメントを積むと PR のスレッドが埋まるので、[find-comment](https://github.com/peter-evans/find-comment) と [create-or-update-comment](https://github.com/peter-evans/create-or-update-comment) で同じマーカーのコメントを毎回上書きしています。
+コメントが増えないように、新しく push されたら以前のコメントを上書きするようにしています。
 Artifact 名とコメント本文の両方に head の SHA を入れているのは、新しい push があるとガイドの中身が古い head に対するものになるためです。
 レビュアーが SHA を突き合わせて、最新の変更に対するガイドかどうかを確認できるようにしています。
 
