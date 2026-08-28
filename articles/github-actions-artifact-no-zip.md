@@ -199,20 +199,49 @@ zip 時代に感じていた「画像がバラバラで文脈が分からない�
 Artifact の URL（`github.com/<owner>/<repo>/actions/runs/<run_id>/artifacts/<artifact_id>`）を開くと、実際には Azure Blob Storage の署名付き URL（SAS）にリダイレクトされます。
 このリダイレクト先の URL は、GitHub にログインしてなくても誰でも見れてしまうので、ここだけは利用する前に、具体的にどういう形になっているのかを確認しました。
 
-リダイレクト先はこんな形の URL です（2026-08-13 に実測したもの。ハッシュや署名は省略しています）。
+リダイレクト先はこんな形の URL です（2026-08-13 に実測したもの。ハッシュ・署名・GUID は省略しています）。
 
 ```
 https://productionresultssa14.blob.core.windows.net/actions-results/…/artifacts/….html
-  ?rscd=inline%3B+filename%3D%22report.html%22   ← インライン表示の指定
-  &rsct=text%2Fhtml                              ← Content-Type
-  &st=2026-08-13T11%3A54%3A08Z                   ← 有効期間の開始
-  &se=2026-08-13T12%3A04%3A13Z                   ← 有効期間の終了（開始の10分5秒後）
-  &sig=…                                         ← 署名
+  ?rscd=inline%3B+filename%3D%22report.html%22
+  &rsct=text%2Fhtml
+  &se=2026-08-13T12%3A04%3A13Z
+  &sig=…
+  &ske=2026-08-13T12%3A59%3A10Z
+  &skoid=…
+  &sks=b
+  &skt=2026-08-13T08%3A59%3A10Z
+  &sktid=…
+  &skv=2025-11-05
+  &sp=r
+  &spr=https
+  &sr=b
+  &st=2026-08-13T11%3A54%3A08Z
+  &sv=2025-11-05
 ```
+
+それぞれのパラメータの意味はこうです。
+
+| パラメータ | 今回の値 | 意味 |
+| --- | --- | --- |
+| `sv` | 2025-11-05 | 署名に使う Storage サービスのバージョン |
+| `sr` | b | 対象リソース。b は blob 単体 |
+| `sp` | r | 権限。r は読み取りのみ（書き込み・削除は不可） |
+| `st` | 2026-08-13T11:54:08Z | 有効期間の開始 |
+| `se` | 2026-08-13T12:04:13Z | 有効期間の終了（開始の10分5秒後） |
+| `spr` | https | HTTPS のみ許可 |
+| `sig` | （省略） | 署名本体 |
+| `skoid` / `sktid` | （GUID） | 署名した Microsoft Entra ID のプリンシパルとテナント（GitHub 側のもの） |
+| `skt` / `ske` | 08:59:10Z 〜 12:59:10Z | 署名に使った user delegation key の有効期間 |
+| `sks` / `skv` | b / 2025-11-05 | 委任キーの対象サービスとバージョン |
+| `rscd` | inline; filename="report.html" | レスポンスの Content-Disposition を上書き |
+| `rsct` | text/html | レスポンスの Content-Type を上書き |
+
 
 zip 解凍なしで表示できる仕組みも、この URL に現れています。
 `rsct=text/html` と `rscd=inline` が付与されることで、ブラウザがダウンロードではなくインライン表示を選ぶわけです（`inline` の挙動は [Content-Disposition（MDN）](https://developer.mozilla.org/ja/docs/Web/HTTP/Reference/Headers/Content-Disposition)を参照）。
 この「クエリパラメータでレスポンスヘッダーを上書きする」挙動は [サービス SAS の作成（Microsoft Learn）](https://learn.microsoft.com/ja-jp/rest/api/storageservices/create-service-sas)で定義されている公式の仕様で、URL 全体の構成例は [サービス SAS の例（Microsoft Learn）](https://learn.microsoft.com/ja-jp/rest/api/storageservices/service-sas-examples)にも載っています。
+`sk` で始まるパラメータ群は user delegation SAS（アカウントキーではなく Microsoft Entra ID の資格情報で署名する方式）のもので、[ユーザー委任 SAS の作成（Microsoft Learn）](https://learn.microsoft.com/ja-jp/rest/api/storageservices/create-user-delegation-sas)に定義があります。
 
 面白いのが、権限チェックが行われる場所です。
 
