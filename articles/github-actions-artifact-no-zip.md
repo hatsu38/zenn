@@ -13,18 +13,20 @@ publication_name: "she_techblog"
 
 最近知ったのですが、2026年2月26日 に GitHub Actions の Artifact が [zip 化なしでアップロードできるようになった](https://github.blog/changelog/2026-02-26-github-actions-now-supports-uploading-and-downloading-non-zipped-artifacts/)んですね。
 
-これが個人的には大変便利で、非常に良く利用しています。
-詳しくは後述しますが、今までプルリクエストを出すときに、デザインの確認のためにも、動作確認の結果もスクショして載せていたんですよね。で、GitHub CLI(ghコマンド) や GitHub API では、プルリクエストのディスクリプションに画像を添付できなかったので、AI に自動化させるには、「AI に Chrome を立ち上げさせて...」などしていて非常に不便だったんです。
+これが個人的にかなり便利で、今ではよく使っています。
+詳しくは後述しますが、今までプルリクエストを出すときに、デザインや動作確認の結果をスクショして載せていたんですよね。
+ただ、GitHub CLI（gh コマンド）や GitHub API では、プルリクエストのディスクリプションに画像を添付できません。
+そのため AI に自動化させようとすると、「AI に Chrome を立ち上げさせて...」などとやる必要があり、非常に不便でした。
 
 そんな悩みが、この Artifact の zip 化不要の変更で、解決して嬉しかったので、詳しく紹介していきます。
 
 ## TL;DR
 
-- [`actions/upload-artifact@v7`](https://github.com/actions/upload-artifact/releases/tag/v7.0.0) の `archive: false` で、Artifact が zip 化されずにアップロードされる
+- [`actions/upload-artifact@v7`](https://github.com/actions/upload-artifact/releases/tag/v7.0.0) の `archive: false` で、Artifact が zip 化されずにアップロードされる（アップロードできるのは単一ファイルのみ）
 - 単一ファイルの HTML や画像なら、Artifact の URL を開くだけでブラウザにそのまま表示される。プライベートリポジトリなら read 権限を持つ人しか開けないので、**Org 内限定の共有にちょうどいい**
 - PR の変更概要をまとめたレビューガイドと、動作確認のスクリーンショットをまとめたレポートの2つを CI で生成し、Bot が URL を PR にコメントする運用にしている
 - スクリーンショットは base64 で HTML に埋め込めば、画像が何枚あっても Artifact 1つ、URL 1つで済む
-- 実体は Azure Blob Storage の署名付き URL で、リダイレクト後の URL は期限内（実測で約10分）なら未ログインでも開ける。リダイレクト後の URL は共有しちゃだめ
+- 実体は Azure Blob Storage の署名付き URL で、今回確認した URL は期限内（実測で約10分）なら未ログインでも開けた。リダイレクト後の URL は共有しちゃだめ
 
 ## AI に「人間が読むための HTML」を作らせる場面が増えた
 
@@ -41,13 +43,13 @@ Anthropic 社内でよく使われているという Claude Code の [`/eli5` �
 ただ、これだけ便利なら、毎回自動で生成して、チームの全員が使えるようにしたくなりますよね。
 共有の手段はいくつかあって、HTML 共有サービスを自作して社内限定で共有する人もいますし、Claude の [Artifacts 機能](https://www.anthropic.com/news/artifacts) で共有リンクを作る手もあります。
 
-ただ、CI で毎回自動生成する場合は、アップロードするのは人ではなく CI なので、ワークフローから機械的にアップロードできて、PR に貼る URL がその場で手に入ってほしいんですよね。
+ただ、CI で毎回自動生成する場合は、アップロードするのは人ではなく CI なので、ワークフローから機械的にアップロードできて、そのまま PR に貼れる URL がほしいんですよね。
 
 そのアップロードしたファイルを見せたい相手も「そのリポジトリのレビュアー」がメインなので、アクセス制御はリポジトリの権限とそろっていると便利です。で、GitHub Actions の Artifact なら、`upload-artifact` のステップ1つでアップロードでき、リポジトリの権限がそのままアクセス制御になります。
 
 しかし大きな欠点が「zip でしか取り出せない」ことでした。
 せっかく HTML を作っても、レビュアーは zip をダウンロードして、展開して、ようやく開ける。
-しかも Artifact が載っている場所が分かりづらかったり遷移するのが面倒だったりするため、本当に必要にならないと見られませんでした。
+しかも Actions の画面から Artifact まで辿るのも少し面倒なので、本当に必要にならないと見られませんでした。
 実際、CI で動かしていた Playwright のテストの画面撮影結果を zip の Artifact にしていたのですが、まぁ見ないんですよね。
 
 ## zip 化がオプションになった
@@ -55,6 +57,7 @@ Anthropic 社内でよく使われているという Claude Code の [`/eli5` �
 この欠点が、冒頭で紹介した zip 化不要の変更でようやく解消されました。素晴らしい！
 
 - [`actions/upload-artifact`](https://github.com/actions/upload-artifact) の `with.archive` を `false` にすると、zip を作らずにアップロードする
+- `archive: false` でアップロードできるのは単一ファイルのみ。`name` は無視され、ファイル名がそのまま Artifact 名になる
 - `archive: true`（デフォルト）や v7 より前でアップロードした Artifact は、今までどおり zip のまま
 
 ```yaml
@@ -92,8 +95,7 @@ Artifact の URL を開くと、こんなレビューガイドが表示されま
   id: upload
   uses: actions/upload-artifact@v7
   with:
-    name: review-guide-pr${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
-    path: review-guide.html
+    path: review-guide.html # archive: false では name は無視され、ファイル名が Artifact 名になる
     archive: false
     retention-days: 3
 
@@ -121,12 +123,12 @@ Artifact の URL を開くと、こんなレビューガイドが表示されま
 ```
 
 コメントが増えないように、新しく push されたら以前のコメントを上書きするようにしています。
-Artifact 名とコメント本文の両方に head の SHA を入れているのは、新しい push があるとガイドの中身が古い head に対するものになるためです。
+コメント本文に head の SHA を入れているのは、新しい push があるとガイドの中身が古い head に対するものになるためです。
 レビュアーが SHA を突き合わせて、最新の変更に対するガイドかどうかを確認できるようにしています。
 
 気に入っているのは、このレポートのライフサイクルです。
 CI が作って、Bot が貼って、`retention-days: 3` で3日後に勝手に消える。
-恒久的なドキュメントではない使い捨てのレポートなので、消し忘れの心配がなく、Storage の使用量もたまりません。
+恒久的なドキュメントではない使い捨てのレポートなので、消し忘れの心配がなく、Artifact がずっと残り続けることもありません。
 そして URL は、プライベートリポジトリなら read 権限がある人しか開けないので、公開ホスティングと違って「社外に見える場所に置いてしまった」事故も起きません。
 
 ## 実例②：動作確認のスクショが何枚あっても、HTML 1枚で見せられる
@@ -190,11 +192,11 @@ zip 時代に感じていた「画像がバラバラで文脈が分からない�
     retention-days: 14
 ```
 
-「非圧縮にできるからすべて非圧縮にする」のではなく、「開いた瞬間に見たいものだけ非圧縮の HTML にまとめ、大きいファイルは zip のままリンクで逃がす」という使い分けに落ち着きました。
+「何でも `archive: false` にする」のではなく、「開いた瞬間に見たいものだけ zip 化なしの HTML にまとめ、大きいファイルは zip のままリンクで逃がす」という使い分けに落ち着きました。
 まぁその結果、動画まで見る機会は全然ないんですけどね。
 やっぱり zip をダウンロードして展開して確認するのは面倒すぎます。
 
-## Artifact は結局は Azure Blob Storage の署名付き URL
+## Artifact の URL の先は Azure Blob Storage の署名付き URL
 
 Artifact の URL（`github.com/<owner>/<repo>/actions/runs/<run_id>/artifacts/<artifact_id>`）を開くと、実際には Azure Blob Storage の署名付き URL（SAS）にリダイレクトされます。
 このリダイレクト先の URL は、GitHub にログインしてなくても誰でも見れてしまうので、ここだけは利用する前に、具体的にどういう形になっているのかを確認しました。
@@ -240,10 +242,9 @@ https://productionresultssa14.blob.core.windows.net/actions-results/…/artifact
 
 zip 解凍なしで表示できる仕組みも、この URL に現れています。
 `rsct=text/html` と `rscd=inline` が付与されることで、ブラウザがダウンロードではなくインライン表示を選ぶわけです（`inline` の挙動は [Content-Disposition（MDN）](https://developer.mozilla.org/ja/docs/Web/HTTP/Reference/Headers/Content-Disposition)を参照）。
-この「クエリパラメータでレスポンスヘッダーを上書きする」挙動は [サービス SAS の作成（Microsoft Learn）](https://learn.microsoft.com/ja-jp/rest/api/storageservices/create-service-sas)で定義されている公式の仕様で、URL 全体の構成例は [サービス SAS の例（Microsoft Learn）](https://learn.microsoft.com/ja-jp/rest/api/storageservices/service-sas-examples)にも載っています。
-`sk` で始まるパラメータ群は user delegation SAS（アカウントキーではなく Microsoft Entra ID の資格情報で署名する方式）のもので、[ユーザー委任 SAS の作成（Microsoft Learn）](https://learn.microsoft.com/ja-jp/rest/api/storageservices/create-user-delegation-sas)に定義があります。
+今回の URL は user delegation SAS（アカウントキーではなく Microsoft Entra ID の資格情報で署名する方式。`sk` で始まるパラメータ群がその印です）で、この「クエリパラメータでレスポンスヘッダーを上書きする」挙動も含めて、各パラメータの仕様は [ユーザー委任 SAS の作成（Microsoft Learn）](https://learn.microsoft.com/ja-jp/rest/api/storageservices/create-user-delegation-sas)に載っています。
 
-ちなみに、権限チェックはこうなっています。
+ちなみに、今回確認した挙動では、権限チェックはこうなっていました。
 
 - ログインとリポジトリの read 権限のチェックは、github.com 側のリダイレクト前にだけ行われる
 - リダイレクト後の Azure 側は署名しか見ない。つまり署名が有効な間（実測で10分5秒）は、GitHub にログインしていない第三者でもこの URL を開ける
@@ -256,7 +257,8 @@ zip 解凍なしで表示できる仕組みも、この URL に現れていま�
 
 AI に HTML を作ってもらうようになって、人間が読むための HTML を作るコストがかなり下がりました。
 PR の変更概要や動作確認の結果も、Markdown のコメントに詰め込むより、HTML にした方が個人的にはかなり見やすいです。
-そうなると次に困るのが「この HTML、どこに置くんだ」というところで、zip 化不要になった GitHub Actions の Artifact がかなりちょうどよかったんですよね。
+せっかく HTML を作れるなら、チームのみんなが簡単に見られる形で共有したい。
+そこで、zip 化不要になった GitHub Actions の Artifact がかなりちょうどよかったんですよね。
 CI からアップロードできて、PR に URL を貼れて、リポジトリの権限も使えて、用が済んだら勝手に消えてくれる。
 zip にしなくてよくなっただけで、Artifact の使い道がこんなに広がるとは思っていませんでした。
 CI で生成したレポートの共有先に困っている人の参考になれば嬉しいです。
