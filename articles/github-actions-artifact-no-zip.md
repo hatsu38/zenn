@@ -3,7 +3,8 @@ title: "PR の概要や動作確認結果を HTML にして共有するのに、
 emoji: "📄"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["githubactions", "cicd", "ci", "artifact"]
-published: false
+published: true
+published_at: 2026-08-31 09:00
 publication_name: "she_techblog"
 ---
 
