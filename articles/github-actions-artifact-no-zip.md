@@ -1,6 +1,6 @@
 ---
-title: "PR の概要や動作確認結果を HTML にして共有するのに、zip 化不要になった Artifact がちょうどよかった"
-emoji: "📄"
+title: "PR の概要や動作確認結果を HTML で共有するのに、zip 不要の GitHub Actions Artifact がちょうどよかった"
+emoji: "📦"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["githubactions", "cicd", "ci", "artifact"]
 published: true
