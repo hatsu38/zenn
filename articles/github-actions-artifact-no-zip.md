@@ -14,20 +14,20 @@ publication_name: "she_techblog"
 
 最近知ったのですが、2026年2月26日 に GitHub Actions の Artifact が [zip 化なしでアップロードできるようになった](https://github.blog/changelog/2026-02-26-github-actions-now-supports-uploading-and-downloading-non-zipped-artifacts/)んですね。
 
-これが個人的にかなり便利で、今ではよく使っています。
-詳しくは後述しますが、今までプルリクエストを出すときに、デザインや動作確認の結果をスクショして載せていたんですよね。
-ただ、GitHub CLI（gh コマンド）や GitHub API では、プルリクエストのディスクリプションに画像を添付できません。
+これがかなり便利で、今ではよく使っています。
+詳しくは後述しますが、今までプルリクエストを出すときには、デザインや動作確認の結果をスクショして載せていました。
+ただ、2026年8月現在、通常利用している安定版の GitHub CLI（gh コマンド）や GitHub API では、プルリクエストのディスクリプションに画像を添付できません。
+なお、2026年8月18日には、画像や動画をアップロードできる [`--attach` の preview build](https://github.com/cli/cli/issues/13256#issuecomment-5330474190) も公開されています。お、ついに！と思ったのですが、この記事を書いている時点ではまだ正式には入っていません。
 そのため AI に自動化させようとすると、「AI に Chrome を立ち上げさせて...」などとやる必要があり、非常に不便でした。
 
-そんな悩みが、この Artifact の zip 化不要の変更で、解決して嬉しかったので、詳しく紹介していきます。
+そんな悩みに、Artifact の zip 化不要の変更がちょうどハマりました。使ってみたらかなり便利だったので、詳しく紹介していきます。
 
 ## TL;DR
 
 - [`actions/upload-artifact@v7`](https://github.com/actions/upload-artifact/releases/tag/v7.0.0) の `archive: false` で、Artifact が zip 化されずにアップロードされる（アップロードできるのは単一ファイルのみ）
-- 単一ファイルの HTML や画像なら、Artifact の URL を開くだけでブラウザにそのまま表示される。プライベートリポジトリなら read 権限を持つ人しか開けないので、**Org 内限定の共有にちょうどいい**
+- 単一ファイルの HTML や画像なら、Artifact の URL を開くだけでブラウザにそのまま表示される。プライベートリポジトリでは、GitHub 側の Artifact URL はリポジトリの read 権限で保護されるので、リポジトリの関係者への共有にちょうどいい
 - PR の変更概要をまとめたレビューガイドと、動作確認のスクリーンショットをまとめたレポートの2つを CI で生成し、Bot が URL を PR にコメントする運用にしている
 - スクリーンショットは base64 で HTML に埋め込めば、画像が何枚あっても Artifact 1つ、URL 1つで済む
-- 実体は Azure Blob Storage の署名付き URL で、今回確認した URL は期限内（実測で約10分）なら未ログインでも開けた。リダイレクト後の URL は共有しちゃだめ
 
 ## AI に「人間が読むための HTML」を作らせる場面が増えた
 
@@ -39,14 +39,14 @@ Anthropic 社内でよく使われているという Claude Code の [`/eli5` �
 ![/eli5 で生成された RFC 10008 の図解 HTML の冒頭](/images/github-actions-artifact-no-zip/eli5-rfc-10008.png =450x)
 *生成された HTML の冒頭部分。この調子で「困りごと → 解決 → 比較表」まで図解が続く*
 
-私も PR のレビューのために、変更内容を HTML で図解させるのを個人的にやっていました。
+PR のレビューのために、変更内容を HTML で図解させることもありました。
 手元で使うぶんには十分満足していました。
-ただ、これだけ便利なら、毎回自動で生成して、チームの全員が使えるようにしたくなりますよね。
-共有の手段はいくつかあって、HTML 共有サービスを自作して社内限定で共有する人もいますし、Claude の [Artifacts 機能](https://www.anthropic.com/news/artifacts) で共有リンクを作る手もあります。
+ただ、これだけ便利なら、毎回自動で生成して、チームの全員が使えるようにしたくなりました。
+共有の手段はいくつかあって、HTML 共有サービスを自作して社内限定で共有する人もいますし、Claude の [Artifacts 機能](https://support.anthropic.com/en/articles/9547008-discovering-publishing-customizing-and-sharing-artifacts) で共有リンクを作る手もあります。
 
-ただ、CI で毎回自動生成する場合は、アップロードするのは人ではなく CI なので、ワークフローから機械的にアップロードできて、そのまま PR に貼れる URL がほしいんですよね。
+ただ、CI で毎回自動生成する場合、アップロードするのは人ではなく CI です。僕がほしかったのは、ワークフローから機械的にアップロードできて、そのまま PR に貼れる URL でした。
 
-そのアップロードしたファイルを見せたい相手も「そのリポジトリのレビュアー」がメインなので、アクセス制御はリポジトリの権限とそろっていると便利です。で、GitHub Actions の Artifact なら、`upload-artifact` のステップ1つでアップロードでき、リポジトリの権限がそのままアクセス制御になります。
+見せたい相手は「そのリポジトリのレビュアー」がメインです。アクセス制御も、リポジトリの権限とそろっているのが理想でした。GitHub Actions の Artifact なら、`upload-artifact` のステップ1つでアップロードでき、リポジトリの権限をそのままアクセス制御に使えます。
 
 しかし大きな欠点が「zip でしか取り出せない」ことでした。
 せっかく HTML を作っても、レビュアーは zip をダウンロードして、展開して、ようやく開ける。
@@ -71,7 +71,7 @@ Anthropic 社内でよく使われているという Claude Code の [`/eli5` �
 ```
 
 単一ファイルをこの設定でアップロードすると、Artifact の URL に遷移するだけで、zip の展開なしにファイルの中身をそのまま開けます。
-HTML をアップロードすればページとして表示され、画像なら画像がそのまま表示される、という具合に、ブラウザで表示できる形式ならインラインで開きます（GitHub へのログインと、リポジトリの read 権限は必要です）。
+HTML をアップロードすればページとして表示され、画像なら画像がそのまま表示される、という具合に、ブラウザで表示できる形式ならインラインで開きます（GitHub 側の Artifact URL を開くには、GitHub へのログインとリポジトリの read 権限が必要です）。
 URL は `steps.upload.outputs.artifact-url` で取れるので、そのまま PR コメントに埋め込めます。
 
 ![Bot が Artifact の URL を PR にコメントした例](/images/github-actions-artifact-no-zip/review-guide-bot-comment.png)
@@ -89,7 +89,7 @@ PR が作られたり push されたりするたびに、AI が diff を解析�
 Artifact の URL を開くと、こんなレビューガイドが表示されます。
 
 ![Artifact の URL を開くと表示されるレビューガイド](/images/github-actions-artifact-no-zip/review-guide.png =600x)
-*「30秒でつかむ」から始まり、影響が出る画面、レビューの経路の順に diff を案内してくれる（ぼかしは筆者によるもの）*
+*「30秒でつかむ」から始まり、影響が出る画面、レビューの経路の順に diff を案内してくれる（一部にぼかしを入れています）*
 
 ```yaml
 - name: Upload review guide artifact
@@ -130,7 +130,9 @@ Artifact の URL を開くと、こんなレビューガイドが表示されま
 気に入っているのは、このレポートのライフサイクルです。
 CI が作って、Bot が貼って、`retention-days: 3` で3日後に勝手に消える。
 恒久的なドキュメントではない使い捨てのレポートなので、消し忘れの心配がなく、Artifact がずっと残り続けることもありません。
-そして URL は、プライベートリポジトリなら read 権限がある人しか開けないので、公開ホスティングと違って「社外に見える場所に置いてしまった」事故も起きません。
+そして PR に貼る GitHub 側の URL は、プライベートリポジトリなら read 権限がある人だけが開けます。
+公開ホスティングを別途用意する必要がなく、URL のアクセス制御をリポジトリ権限に寄せられます。このあたりも地味に嬉しいポイントです。
+ただし、その先で発行される短時間有効な署名付き URL は扱いが異なります。この点は後半で詳しく説明します。
 
 ## 実例②：動作確認のスクショが何枚あっても、HTML 1枚で見せられる
 
@@ -165,7 +167,7 @@ zip 時代に感じていた「画像がバラバラで文脈が分からない�
 *Bot が Artifact の URL を PR にコメントする*
 
 ![URL を開くと表示される動作確認レポート](/images/github-actions-artifact-no-zip/verify-report.png =500x)
-*URL を開くと、結果サマリと手順ごとのスクリーンショットが並んだレポートがそのまま表示される（ぼかしは筆者によるもの）*
+*URL を開くと、結果サマリと手順ごとのスクリーンショットが並んだレポートがそのまま表示される（一部にぼかしを入れています）*
 
 一方で、操作の録画（動画）は base64 で埋め込んでいません。
 動画は数十 MB になりやすく、埋め込むとレポート自体が重くて開けなくなるためです。
@@ -199,10 +201,13 @@ zip 時代に感じていた「画像がバラバラで文脈が分からない�
 
 ## Artifact の URL の先は Azure Blob Storage の署名付き URL
 
-Artifact の URL（`github.com/<owner>/<repo>/actions/runs/<run_id>/artifacts/<artifact_id>`）を開くと、実際には Azure Blob Storage の署名付き URL（SAS）にリダイレクトされます。
-このリダイレクト先の URL は、GitHub にログインしてなくても誰でも見れてしまうので、ここだけは利用する前に、具体的にどういう形になっているのかを確認しました。
+先に結論を書くと、PR に貼るのは必ず `steps.upload.outputs.artifact-url` で得られる GitHub 側の URL（`github.com/<owner>/<repo>/actions/runs/<run_id>/artifacts/<artifact_id>`）にします。
+この URL を開くには GitHub へのログインとリポジトリの read 権限が必要です。
+一方、リダイレクト先の Azure Blob Storage の署名付き URL（SAS）は、署名が有効な間は URL を知っている人ならアクセスできます。URL 自体が一時的なアクセス権になるため、こちらは共有しません。
 
-リダイレクト先はこんな形の URL です（2026-08-13 に実測したもの。ハッシュ・署名・GUID は省略しています）。
+僕は「プライベートリポジトリだから大丈夫」で済ませるのが少し怖かったので、この2段階のアクセス制御がどうなっているのか、実際のリダイレクト先まで確認しました。
+
+リダイレクト先はこんな形の URL です（2026-08-13 に確認したもの。ハッシュ・署名・GUID は省略しています）。
 
 ```
 https://productionresultssa14.blob.core.windows.net/actions-results/…/artifacts/….html
@@ -234,7 +239,7 @@ https://productionresultssa14.blob.core.windows.net/actions-results/…/artifact
 | `se` | 2026-08-13T12:04:13Z | 有効期間の終了（開始の10分5秒後） |
 | `spr` | https | HTTPS のみ許可 |
 | `sig` | （省略） | 署名本体 |
-| `skoid` / `sktid` | （GUID） | 署名した Microsoft Entra ID のプリンシパルとテナント（GitHub 側のもの） |
+| `skoid` / `sktid` | （GUID） | 署名に使われた Microsoft Entra ID のプリンシパルとテナント |
 | `skt` / `ske` | 08:59:10Z 〜 12:59:10Z | 署名に使った user delegation key の有効期間 |
 | `sks` / `skv` | b / 2025-11-05 | 委任キーの対象サービスとバージョン |
 | `rscd` | inline; filename="report.html" | レスポンスの Content-Disposition を上書き |
@@ -245,11 +250,11 @@ zip 解凍なしで表示できる仕組みも、この URL に現れていま�
 `rsct=text/html` と `rscd=inline` が付与されることで、ブラウザがダウンロードではなくインライン表示を選ぶわけです（`inline` の挙動は [Content-Disposition（MDN）](https://developer.mozilla.org/ja/docs/Web/HTTP/Reference/Headers/Content-Disposition)を参照）。
 今回の URL は user delegation SAS（アカウントキーではなく Microsoft Entra ID の資格情報で署名する方式。`sk` で始まるパラメータ群がその印です）で、この「クエリパラメータでレスポンスヘッダーを上書きする」挙動も含めて、各パラメータの仕様は [ユーザー委任 SAS の作成（Microsoft Learn）](https://learn.microsoft.com/ja-jp/rest/api/storageservices/create-user-delegation-sas)に載っています。
 
-ちなみに、今回確認した挙動では、権限チェックはこうなっていました。
+今回確認した挙動では、権限チェックはこうなっていました。
 
-- ログインとリポジトリの read 権限のチェックは、github.com 側のリダイレクト前にだけ行われる
-- リダイレクト後の Azure 側は署名しか見ない。つまり署名が有効な間（実測で10分5秒）は、GitHub にログインしていない第三者でもこの URL を開ける
-- これは GitHub のバグではなく、SAS の仕様どおりの挙動
+- ログインとリポジトリの read 権限のチェックは、github.com 側でリダイレクト前に行われる
+- リダイレクト後の Azure 側では SAS の署名と有効期間がアクセスを制御する。今回確認した URL では、`st` から `se` までが10分5秒で、その間は GitHub にログインしていない第三者でも URL を知っていれば開けた
+- SAS は、署名付き URL を知っている主体に一時的なアクセスを許可する仕組みなので、この挙動は SAS の性質と整合している
 
 というわけで、共有するときは必ず github.com 側の URL を貼りましょう。
 リダイレクト後の長い URL を Slack や Notion に貼ると、数分で 403 になって誰も見られなくなるうえに、期限内は GitHub にログインしていない人でも読めてしまいます。
@@ -257,10 +262,12 @@ zip 解凍なしで表示できる仕組みも、この URL に現れていま�
 ## おわりに
 
 AI に HTML を作ってもらうようになって、人間が読むための HTML を作るコストがかなり下がりました。
-PR の変更概要や動作確認の結果も、Markdown のコメントに詰め込むより、HTML にした方が個人的にはかなり見やすいです。
-せっかく HTML を作れるなら、チームのみんなが簡単に見られる形で共有したい。
-そこで、zip 化不要になった GitHub Actions の Artifact がかなりちょうどよかったんですよね。
-CI からアップロードできて、PR に URL を貼れて、リポジトリの権限も使えて、用が済んだら勝手に消えてくれる。
-zip にしなくてよくなっただけで、Artifact の使い道がこんなに広がるとは思っていませんでした。
-CI で生成したレポートの共有先に困っている人の参考になれば嬉しいです。
+PR の変更概要や動作確認の結果も、Markdown のコメントに詰め込むより、HTML にまとめた方が見やすいです（個人の感想です）。
 
+ただ、せっかく HTML を作っても、見るまでに zip のダウンロードと展開が必要だと、なかなか開いてもらえません。
+HTML をどう作るかと同じくらい、どうやって手軽に見てもらうかも大事でした。
+
+GitHub Actions の Artifact なら、CI からアップロードできて、PR に GitHub 側の URL を貼れます。その URL へのアクセスをリポジトリの権限で制御でき、用が済んだら自動で消えてくれるのも、この用途にちょうどよかったです。
+
+今回一番嬉しかったのは、`archive: false` が使えること自体よりも、レビュアーが URL をひとつ開くだけでレポートを見られるようになったことでした。
+CI で生成した HTML の共有先に困っている人の参考になれば嬉しいです。
