@@ -170,6 +170,8 @@ EXPLAIN (ANALYZE, BUFFERS) SELECT * FROM articles;
 ## 8.6 shared_buffers と effective_cache_size
 
 8 章の最後に、関連する 2 つの設定値を確認します。
+どちらも EXPLAIN の出力そのものではなくサーバー設定の話ですが、BUFFERS の数字がキャッシュの事情でどう変わるかを説明するために、名前と役割だけ押さえておきます。
+サイジングの詳細はチューニングの領分なので、本書では深追いしません。
 
 ### shared_buffers
 
