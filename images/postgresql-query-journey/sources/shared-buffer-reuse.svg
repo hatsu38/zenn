@@ -1,117 +1,50 @@
 <?xml version="1.0" ?>
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1530" viewBox="0 0 640 1530" role="img" aria-labelledby="title description">
-  
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="909" viewBox="0 0 640 909" role="img" aria-labelledby="title desc">
 
-  <title id="title">同じページを、別の接続でも使える</title>
-  <desc id="description">ページ7が未保持の状態から読み込まれ、別のバックエンドに再利用される3場面。説明用の模型。</desc>
-  
+
+  <title id="title">ファイルのページを、メモリで再利用する</title>
+  <desc id="desc">読み込み経路の模型 ／ ページ7は説明用</desc>
+
 
   <defs>
-    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-      <path d="M0 0 L8 4 L0 8" fill="#227b74"/>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+    <marker id="b" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#99631b"/>
     </marker>
   </defs>
-  
 
-  <style>
-text { font-family: "Hiragino Sans", "Noto Sans JP", sans-serif; font-size:24px; fill:#213549; }
-.head { font-size:32px; font-weight:700; } .subtitle {font-size:23px;fill:#526575} .bold {font-weight:700} .small {font-size:22px} .number {font-size:36px;font-weight:700} .accent {fill:#99600c;font-weight:700} .teal {fill:#166b64;font-weight:700}
-.panel {fill:#fff;stroke:#d2dde4;stroke-width:2} .box {fill:#eef3f7;stroke:#acbfcd;stroke-width:2} .memory {fill:#eef8f4;stroke:#77aaa0;stroke-width:2} .page {fill:#fff;stroke:#227b74;stroke-width:3} .empty {fill:#fff;stroke:#9caaa8;stroke-width:2;stroke-dasharray:7 6} .card {fill:#e8f5f1;stroke:#227b74;stroke-width:2} .changed {fill:#fff0d6;stroke:#b87715;stroke-width:3} .edge {fill:none;stroke:#8198a7;stroke-width:3} .arrow {fill:none;stroke:#227b74;stroke-width:3;marker-end:url(#arrow)}
-</style>
-  
 
-  <rect width="640" height="1530" fill="#f5f7f9"/>
-  
+  <style>text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:28px;font-weight:700} .bold{font-weight:700} .small{font-size:21px} .value{font-size:30px;font-weight:700} .muted{font-size:21px;fill:#566c7b} .teal{fill:#176e65;font-weight:700} .panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .row{fill:#dcefe8;stroke:#448b7c;stroke-width:1.5} .edge{fill:none;stroke:#9cabb5;stroke-width:2} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)} .request{fill:none;stroke:#99631b;stroke-width:3;stroke-dasharray:7 5;marker-end:url(#b)}</style>
 
-  <text x="32" y="48" class="head" text-anchor="start">同じページを、別の接続でも使える</text>
-  <text x="32" y="85" class="subtitle" text-anchor="start">共有バッファの変化を追う ／ 説明用の模型</text>
-  <g id="step-1">
-    
 
-    <rect x="16" y="110" width="608" height="450" rx="20" class="panel"/>
-    <rect x="36" y="130" width="40" height="40" rx="12" class="card"/>
-    <text x="56" y="159" class="bold" text-anchor="middle">1</text>
-    <text x="90" y="159" class="bold" text-anchor="start">Aがページ7を必要とする</text>
-    <rect x="38" y="192" width="260" height="48" rx="14" class="box"/>
-    <text x="168" y="224" class="" text-anchor="middle">バックエンドA</text>
-    <rect x="342" y="192" width="260" height="48" rx="14" class="box"/>
-    <text x="472" y="224" class="" text-anchor="middle">バックエンドB</text>
-    <rect x="38" y="302" width="564" height="132" rx="14" class="memory"/>
-    <text x="58" y="337" class="bold" text-anchor="start">共有バッファ</text>
-    <text x="58" y="375" class="subtitle" text-anchor="start">未保持</text>
-    <rect x="420" y="317" width="158" height="102" rx="9" class="empty"/>
-    <text x="499" y="350" class="bold" text-anchor="middle">ページ7</text>
-    <text x="499" y="389" class="small" text-anchor="middle">まだない</text>
-    <path d="M168 242 L168 298" class="arrow"/>
-    <text x="186" y="278" class="small" text-anchor="start">ページ7を要求</text>
-    <rect x="38" y="482" width="260" height="52" rx="14" class="box"/>
-    <text x="168" y="516" class="" text-anchor="middle">OSキャッシュ</text>
-    <rect x="342" y="482" width="260" height="52" rx="14" class="box"/>
-    <text x="472" y="516" class="" text-anchor="middle">ストレージ</text>
-    <text x="320" y="464" class="small" text-anchor="middle">まず、共有バッファにあるか確かめる</text>
-  </g>
-  
-
-  <g id="step-2">
-    
-
-    <rect x="16" y="576" width="608" height="450" rx="20" class="panel"/>
-    <rect x="36" y="596" width="40" height="40" rx="12" class="card"/>
-    <text x="56" y="625" class="bold" text-anchor="middle">2</text>
-    <text x="90" y="625" class="bold" text-anchor="start">読み込んだページを保持する</text>
-    <rect x="38" y="658" width="260" height="48" rx="14" class="box"/>
-    <text x="168" y="690" class="" text-anchor="middle">バックエンドA</text>
-    <rect x="342" y="658" width="260" height="48" rx="14" class="box"/>
-    <text x="472" y="690" class="" text-anchor="middle">バックエンドB</text>
-    <rect x="38" y="768" width="564" height="132" rx="14" class="memory"/>
-    <text x="58" y="803" class="bold" text-anchor="start">共有バッファ</text>
-    <text x="58" y="841" class="teal" text-anchor="start">shared read</text>
-    <rect x="420" y="783" width="158" height="102" rx="9" class="page"/>
-    <text x="499" y="816" class="bold" text-anchor="middle">ページ7</text>
-    <rect x="436" y="829" width="126" height="9" rx="3" fill="#c8e3d9"/>
-    <rect x="436" y="843" width="126" height="9" rx="3" fill="#c8e3d9"/>
-    <rect x="436" y="857" width="126" height="9" rx="3" fill="#c8e3d9"/>
-    <path d="M168 708 L168 764" class="arrow"/>
-    <text x="186" y="744" class="small" text-anchor="start">ページ7を要求</text>
-    <rect x="38" y="948" width="260" height="52" rx="14" class="box"/>
-    <text x="168" y="982" class="" text-anchor="middle">OSキャッシュ</text>
-    <rect x="342" y="948" width="260" height="52" rx="14" class="box"/>
-    <text x="472" y="982" class="" text-anchor="middle">ストレージ</text>
-    <path d="M64 945 L64 905" class="arrow"/>
-    <path d="M368 945 L368 905" class="arrow"/>
-    <text x="86" y="929" class="small" text-anchor="start">あれば使う</text>
-    <text x="390" y="929" class="small" text-anchor="start">なければ読む</text>
-  </g>
-  
-
-  <g id="step-3">
-    
-
-    <rect x="16" y="1042" width="608" height="450" rx="20" class="panel"/>
-    <rect x="36" y="1062" width="40" height="40" rx="12" class="card"/>
-    <text x="56" y="1091" class="bold" text-anchor="middle">3</text>
-    <text x="90" y="1091" class="bold" text-anchor="start">Bが同じページを使う</text>
-    <rect x="38" y="1124" width="260" height="48" rx="14" class="box"/>
-    <text x="168" y="1156" class="" text-anchor="middle">バックエンドA</text>
-    <rect x="342" y="1124" width="260" height="48" rx="14" class="box"/>
-    <text x="472" y="1156" class="" text-anchor="middle">バックエンドB</text>
-    <rect x="38" y="1234" width="564" height="132" rx="14" class="memory"/>
-    <text x="58" y="1269" class="bold" text-anchor="start">共有バッファ</text>
-    <text x="58" y="1307" class="teal" text-anchor="start">shared hit</text>
-    <rect x="420" y="1249" width="158" height="102" rx="9" class="page"/>
-    <text x="499" y="1282" class="bold" text-anchor="middle">ページ7</text>
-    <rect x="436" y="1295" width="126" height="9" rx="3" fill="#c8e3d9"/>
-    <rect x="436" y="1309" width="126" height="9" rx="3" fill="#c8e3d9"/>
-    <rect x="436" y="1323" width="126" height="9" rx="3" fill="#c8e3d9"/>
-    <path d="M472 1174 L472 1230" class="arrow"/>
-    <text x="454" y="1210" class="small" text-anchor="end">ページ7を要求</text>
-    <rect x="38" y="1414" width="260" height="52" rx="14" class="box"/>
-    <text x="168" y="1448" class="" text-anchor="middle">OSキャッシュ</text>
-    <rect x="342" y="1414" width="260" height="52" rx="14" class="box"/>
-    <text x="472" y="1448" class="" text-anchor="middle">ストレージ</text>
-    <text x="320" y="1396" class="small" text-anchor="middle">保持中なら、ファイルの再読込は不要</text>
-  </g>
-  
-
-  <text x="32" y="1520" class="small" text-anchor="start"/>
+  <rect width="640" height="909" fill="#f5f7f9"/>
+  <text x="28" y="46" class="title">ファイルのページを、メモリで再利用する</text>
+  <text x="28" y="83" class="muted">読み込み経路の模型 ／ ページ7は説明用</text>
+  <rect x="20" y="111" width="600" height="505" rx="12" class="memory"/>
+  <text x="40" y="153" class="title">メモリ（RAM）</text>
+  <text x="40" y="189" class="small">実行中にデータを置いて使う場所</text>
+  <rect x="45" y="215" width="550" height="185" rx="12" class="panel"/>
+  <text x="64" y="251" class="bold">PostgreSQLの共有バッファ</text>
+  <rect x="70" y="275" width="151" height="60" rx="12" class="row"/>
+  <text x="85" y="315" class="">ページ7</text>
+  <path d="M231 304 L295 304" class="arrow"/>
+  <text x="312" y="295" class="small">検索で使う</text>
+  <text x="312" y="329" class="teal">あれば hit</text>
+  <text x="64" y="376" class="small">残っていれば、次の検索も同じページを使う</text>
+  <path d="M145 457 L145 408" class="arrow"/>
+  <text x="175" y="438" class="small">なければ読み込む → read</text>
+  <rect x="45" y="463" width="550" height="121" rx="12" class="box"/>
+  <text x="64" y="501" class="bold">OSキャッシュ</text>
+  <text x="64" y="539" class="small">OSがメモリに残したファイルの内容</text>
+  <text x="64" y="569" class="small">ここにあれば、SSDまで読みに行かずに済む</text>
+  <path d="M145 707 L145 622" class="arrow"/>
+  <text x="178" y="662" class="small">OSキャッシュにもなければ</text>
+  <text x="178" y="694" class="small">ストレージから読み込む</text>
+  <rect x="20" y="714" width="600" height="125" rx="12" class="box"/>
+  <text x="40" y="754" class="bold">ストレージ（SSDなど）</text>
+  <rect x="40" y="774" width="290" height="44" rx="12" class="panel"/>
+  <text x="55" y="804" class="small">表のファイル：ページ7</text>
+  <text x="30" y="879" class="small">矢印はデータが読み込まれ、使われる向き。</text>
 </svg>

@@ -28,7 +28,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="20" y="110" width="600" height="635" rx="18" class="panel"/>
     <text x="40" y="150" class="bold" text-anchor="start">共有する領域と、処理ごとの領域</text>
     <rect x="44" y="186" width="256" height="295" rx="12" class="box"/>
-    <text x="172" y="224" class="bold" text-anchor="middle">バックエンドA</text>
+    <text x="172" y="224" class="bold" text-anchor="middle">接続Aの処理</text>
     <rect x="59" y="250" width="226" height="198" rx="12" class="paper"/>
     <text x="74" y="289" class="small" text-anchor="start">ソートなどの作業</text>
     <rect x="74" y="314" width="53" height="60" rx="9" class="card"/>
@@ -40,7 +40,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="74" y="417" class="small" text-anchor="start">work_mem が関係</text>
     <path d="M172 489 L172 548" class="arrow"/>
     <rect x="340" y="186" width="256" height="295" rx="12" class="box"/>
-    <text x="468" y="224" class="bold" text-anchor="middle">バックエンドB</text>
+    <text x="468" y="224" class="bold" text-anchor="middle">接続Bの処理</text>
     <rect x="355" y="250" width="226" height="198" rx="12" class="paper"/>
     <text x="370" y="289" class="small" text-anchor="start">ソートなどの作業</text>
     <rect x="370" y="314" width="53" height="60" rx="9" class="card"/>

@@ -1,64 +1,46 @@
 <?xml version="1.0" ?>
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="870" viewBox="0 0 640 870" role="img" aria-labelledby="title description">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="858" viewBox="0 0 640 858" role="img" aria-labelledby="title desc">
   
 
-  <title id="title">計画の木を、行が上へ進む</title>
-  <desc id="description">数字の小さい順に3件返す模型 ／ 本文の題名順と対応</desc>
+  <title id="title">Index Scanから、Limitへ行が渡る</title>
+  <desc id="desc">ORDER BY title LIMIT 3 の計画の模型</desc>
   
 
   <defs>
     <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
       <path d="M0 0L8 4L0 8" fill="#277b74"/>
     </marker>
+    <marker id="b" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#99631b"/>
+    </marker>
   </defs>
   
 
-  <style>
-text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:30px;font-weight:700} .bold{font-weight:700} .small{font-size:22px} .muted{fill:#566c7b;font-size:22px} .value{font-size:28px;font-weight:700} .teal{fill:#176e65;font-weight:700} .orange{fill:#945e11;font-weight:700}
-.panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .card{fill:#dcefe8;stroke:#448b7c;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .paper{fill:#fff;stroke:#b2c5cc;stroke-width:1.5} .ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5} .edge{fill:none;stroke:#92a7b5;stroke-width:2.5} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)}
-</style>
-  <rect width="640" height="870" fill="#f5f7f9"/>
+  <style>text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:28px;font-weight:700} .bold{font-weight:700} .small{font-size:21px} .value{font-size:30px;font-weight:700} .muted{font-size:21px;fill:#566c7b} .teal{fill:#176e65;font-weight:700} .panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .row{fill:#dcefe8;stroke:#448b7c;stroke-width:1.5} .edge{fill:none;stroke:#9cabb5;stroke-width:2} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)} .request{fill:none;stroke:#99631b;stroke-width:3;stroke-dasharray:7 5;marker-end:url(#b)}</style>
   
 
-  <text x="28" y="45" class="title" text-anchor="start">計画の木を、行が上へ進む</text>
-  <text x="28" y="82" class="muted" text-anchor="start">数字の小さい順に3件返す模型 ／ 本文の題名順と対応</text>
-  
-
-  <g id="diagram">
-    <rect x="20" y="110" width="600" height="670" rx="18" class="panel"/>
-    <text x="40" y="150" class="bold" text-anchor="start">行を返す向きと、要求する向き</text>
-    <rect x="130" y="194" width="380" height="142" rx="12" class="box"/>
-    <text x="152" y="229" class="bold" text-anchor="start">Limit：3行を返す</text>
-    <rect x="152" y="255" width="68" height="60" rx="9" class="card"/>
-    <text x="186.0" y="295.0" class="value" text-anchor="middle">1</text>
-    <rect x="237" y="255" width="68" height="60" rx="9" class="card"/>
-    <text x="271.0" y="295.0" class="value" text-anchor="middle">3</text>
-    <rect x="322" y="255" width="68" height="60" rx="9" class="card"/>
-    <text x="356.0" y="295.0" class="value" text-anchor="middle">6</text>
-    <rect x="130" y="387" width="380" height="142" rx="12" class="box"/>
-    <text x="152" y="422" class="bold" text-anchor="start">Sort：順に並べる</text>
-    <rect x="152" y="448" width="68" height="60" rx="9" class="card"/>
-    <text x="186.0" y="488.0" class="value" text-anchor="middle">1</text>
-    <rect x="237" y="448" width="68" height="60" rx="9" class="card"/>
-    <text x="271.0" y="488.0" class="value" text-anchor="middle">3</text>
-    <rect x="322" y="448" width="68" height="60" rx="9" class="card"/>
-    <text x="356.0" y="488.0" class="value" text-anchor="middle">6</text>
-    <rect x="407" y="448" width="68" height="60" rx="9" class="card"/>
-    <text x="441.0" y="488.0" class="value" text-anchor="middle">8</text>
-    <rect x="130" y="580" width="380" height="142" rx="12" class="box"/>
-    <text x="152" y="615" class="bold" text-anchor="start">Scan：行を読む</text>
-    <rect x="152" y="641" width="68" height="60" rx="9" class="card"/>
-    <text x="186.0" y="681.0" class="value" text-anchor="middle">8</text>
-    <rect x="237" y="641" width="68" height="60" rx="9" class="card"/>
-    <text x="271.0" y="681.0" class="value" text-anchor="middle">3</text>
-    <rect x="322" y="641" width="68" height="60" rx="9" class="card"/>
-    <text x="356.0" y="681.0" class="value" text-anchor="middle">6</text>
-    <rect x="407" y="641" width="68" height="60" rx="9" class="card"/>
-    <text x="441.0" y="681.0" class="value" text-anchor="middle">1</text>
-    <path d="M98 635 L98 257" class="arrow"/>
-    <text x="36" y="433" class="bold" text-anchor="start">行</text>
-    <path d="M550 257 L550 635" class="arrow"/>
-    <text x="567" y="433" class="small" text-anchor="start">要求</text>
-    <text x="30" y="830" class="small" text-anchor="start">Sortは、先頭3行を決める前に入力を調べる。</text>
-  </g>
+  <rect width="640" height="858" fill="#f5f7f9"/>
+  <text x="28" y="46" class="title">Index Scanから、Limitへ行が渡る</text>
+  <text x="28" y="83" class="muted">ORDER BY title LIMIT 3 の計画の模型</text>
+  <rect x="120" y="125" width="400" height="85" rx="12" class="hot"/>
+  <text x="146" y="160" class="bold">psqlへ結果を返す</text>
+  <text x="146" y="191" class="small">最大3行</text>
+  <path d="M200 280 L200 219" class="arrow"/>
+  <text x="225" y="253" class="small">行を返す</text>
+  <rect x="120" y="289" width="400" height="112" rx="12" class="panel"/>
+  <text x="145" y="330" class="value">Limit</text>
+  <text x="145" y="375" class="small">3行受け取ったら要求を止める</text>
+  <path d="M195 515 L195 414" class="arrow"/>
+  <text x="40" y="452" class="small">1行ずつ</text>
+  <text x="40" y="482" class="small">返す</text>
+  <path d="M460 414 L460 515" class="request"/>
+  <text x="476" y="452" class="small">次の行を</text>
+  <text x="476" y="482" class="small">要求</text>
+  <rect x="120" y="530" width="400" height="148" rx="12" class="memory"/>
+  <text x="145" y="570" class="value">Index Scan</text>
+  <text x="145" y="611" class="small">題名の索引順にたどり、</text>
+  <text x="145" y="642" class="small">表から id と title を取り出す</text>
+  <rect x="25" y="720" width="590" height="109" rx="12" class="panel"/>
+  <text x="45" y="761" class="small">実線：行を返す向き ↑</text>
+  <text x="45" y="798" class="small">破線：次の行を要求する向き ↓</text>
 </svg>

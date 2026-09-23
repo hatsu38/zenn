@@ -27,7 +27,7 @@
     "name": "01-index-to-row",
     "chapter": 1,
     "title": "番号で場所を探し、表から行を取り出す",
-    "description": "Index Scanの模型 ／ 索引の内部は第6章で扱う"
+    "description": "Index Scanの模型 ／ 索引の内部は第3章で扱う"
   },
   {
     "name": "01-scan-and-filter",
@@ -62,8 +62,8 @@
   {
     "name": "06-btree-path",
     "chapter": 3,
-    "title": "境界を比べて、読むページを絞る",
-    "description": "B-treeの小さな模型 ／ 実際の項目数はもっと多い"
+    "title": "8を探す：範囲を選んでから、値を探す",
+    "description": "番号1〜9の模型 ／ 矢印は探索で進む向き"
   },
   {
     "name": "06-range-scan",
@@ -80,8 +80,8 @@
   {
     "name": "03-index-reference",
     "chapter": 4,
-    "title": "索引から、表の行へたどる",
-    "description": "参照関係の模型 ／ ページ番号は省略"
+    "title": "索引をたどって、表の行へ届く",
+    "description": "索引3段の模型 ／ 矢印は参照する順番"
   },
   {
     "name": "03-pages-and-rows",
@@ -93,7 +93,7 @@
     "name": "03-row-width",
     "chapter": 4,
     "title": "同じ1,000行でも、8ページと32ページ",
-    "description": "本文の実測サイズを図示 ／ 小枠一つが1ページ"
+    "description": "固定サイズのページに、長さの違う行を入れる"
   },
   {
     "name": "03-storage-question",
@@ -110,8 +110,8 @@
   {
     "name": "shared-buffer-reuse",
     "chapter": 5,
-    "title": "同じページを、別の接続でも使える",
-    "description": "ページを読み込み、別接続で再利用する3コマ"
+    "title": "ファイルのページを、メモリで再利用する",
+    "description": "読み込み経路の模型 ／ ページ7は説明用"
   },
   {
     "name": "04-repeat-observation",
@@ -128,8 +128,8 @@
   {
     "name": "02-execution-tree",
     "chapter": 6,
-    "title": "計画の木を、行が上へ進む",
-    "description": "数字の小さい順に3件返す模型 ／ 本文の題名順と対応"
+    "title": "Index Scanから、Limitへ行が渡る",
+    "description": "ORDER BY title LIMIT 3 の計画の模型"
   },
   {
     "name": "02-client-scene",
@@ -262,5 +262,17 @@
     "chapter": 12,
     "title": "今度は、根拠を持って選べる",
     "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
+    "name": "03-ctid-location",
+    "chapter": 4,
+    "title": "ctid = (0,1) が指す場所",
+    "description": "ページ番号は0から、項目番号は1から数える"
+  },
+  {
+    "name": "02-query-stages",
+    "chapter": 6,
+    "title": "SQLの文字列から、検索結果が返るまで",
+    "description": "題名検索の例 ／ 矢印は処理が進む順番"
   }
 ]

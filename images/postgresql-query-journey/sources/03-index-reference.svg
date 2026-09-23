@@ -1,48 +1,44 @@
 <?xml version="1.0" ?>
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="780" viewBox="0 0 640 780" role="img" aria-labelledby="title description">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="830" viewBox="0 0 640 830" role="img" aria-labelledby="title desc">
   
 
-  <title id="title">索引から、表の行へたどる</title>
-  <desc id="description">参照関係の模型 ／ ページ番号は省略</desc>
+  <title id="title">索引をたどって、表の行へ届く</title>
+  <desc id="desc">索引3段の模型 ／ 矢印は参照する順番</desc>
   
 
   <defs>
     <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
       <path d="M0 0L8 4L0 8" fill="#277b74"/>
     </marker>
+    <marker id="b" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#99631b"/>
+    </marker>
   </defs>
   
 
-  <style>
-text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:30px;font-weight:700} .bold{font-weight:700} .small{font-size:22px} .muted{fill:#566c7b;font-size:22px} .value{font-size:28px;font-weight:700} .teal{fill:#176e65;font-weight:700} .orange{fill:#945e11;font-weight:700}
-.panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .card{fill:#dcefe8;stroke:#448b7c;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .paper{fill:#fff;stroke:#b2c5cc;stroke-width:1.5} .ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5} .edge{fill:none;stroke:#92a7b5;stroke-width:2.5} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)}
-</style>
-  <rect width="640" height="780" fill="#f5f7f9"/>
+  <style>text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:28px;font-weight:700} .bold{font-weight:700} .small{font-size:21px} .value{font-size:30px;font-weight:700} .muted{font-size:21px;fill:#566c7b} .teal{fill:#176e65;font-weight:700} .panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .row{fill:#dcefe8;stroke:#448b7c;stroke-width:1.5} .edge{fill:none;stroke:#9cabb5;stroke-width:2} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)} .request{fill:none;stroke:#99631b;stroke-width:3;stroke-dasharray:7 5;marker-end:url(#b)}</style>
   
 
-  <text x="28" y="45" class="title" text-anchor="start">索引から、表の行へたどる</text>
-  <text x="28" y="82" class="muted" text-anchor="start">参照関係の模型 ／ ページ番号は省略</text>
-  
-
-  <g id="diagram">
-    <rect x="20" y="110" width="600" height="260" rx="18" class="panel"/>
-    <text x="40" y="150" class="bold" text-anchor="start">索引：キーと参照先を保持</text>
-    <rect x="55" y="184" width="175" height="54" rx="12" class="hot"/>
-    <text x="142.5" y="219" class="" text-anchor="middle">キー：42</text>
-    <rect x="342" y="184" width="245" height="54" rx="12" class="box"/>
-    <text x="464.5" y="219" class="" text-anchor="middle">表の行への参照</text>
-    <path d="M236 211 L332 211" class="arrow"/>
-    <text x="55" y="316" class="small" text-anchor="start">索引と表は、別の保存領域</text>
-    <path d="M465 377 L465 428" class="arrow"/>
-    <rect x="20" y="445" width="600" height="300" rx="18" class="panel"/>
-    <text x="40" y="485" class="bold" text-anchor="start">表：参照先のページを確認</text>
-    <rect x="54" y="510" width="530" height="208" rx="14" class="memory"/>
-    <text x="72" y="545" class="bold" text-anchor="start">ページの中の行</text>
-    <rect x="68" y="564" width="502" height="34" rx="6" class="paper"/>
-    <text x="81" y="589" class="small" text-anchor="start">本41</text>
-    <rect x="68" y="607" width="502" height="34" rx="6" class="hot"/>
-    <text x="81" y="632" class="small" text-anchor="start">本42：実験用の本 42</text>
-    <rect x="68" y="650" width="502" height="34" rx="6" class="paper"/>
-    <text x="81" y="675" class="small" text-anchor="start">本43</text>
-  </g>
+  <rect width="640" height="830" fill="#f5f7f9"/>
+  <text x="28" y="46" class="title">索引をたどって、表の行へ届く</text>
+  <text x="28" y="83" class="muted">索引3段の模型 ／ 矢印は参照する順番</text>
+  <rect x="30" y="110" width="580" height="450" rx="12" class="memory"/>
+  <text x="50" y="148" class="bold">題名の索引：3段の経路</text>
+  <rect x="60" y="171" width="520" height="105" rx="12" class="box"/>
+  <text x="82" y="209" class="bold">① 根のページ</text>
+  <text x="82" y="248" class="small">題名の範囲から進む先を選ぶ</text>
+  <path d="M320 277 L320 299" class="arrow"/>
+  <rect x="60" y="300" width="520" height="105" rx="12" class="box"/>
+  <text x="82" y="338" class="bold">② 途中の案内のページ</text>
+  <text x="82" y="377" class="small">さらに狭い範囲を選ぶ</text>
+  <path d="M320 406 L320 428" class="arrow"/>
+  <rect x="60" y="429" width="520" height="105" rx="12" class="box"/>
+  <text x="82" y="467" class="bold">③ 葉のページ</text>
+  <text x="82" y="506" class="small">題名と、表の行の場所を見つける</text>
+  <path d="M320 535 L320 602" class="arrow"/>
+  <rect x="30" y="609" width="580" height="110" rx="12" class="hot"/>
+  <text x="52" y="648" class="">④ 表のページ</text>
+  <text x="52" y="688" class="small">見つけた場所から id と title を取り出す</text>
+  <text x="30" y="763" class="small">索引3ページ ＋ 表1ページという経路の例。</text>
+  <text x="30" y="797" class="small">hit / read の内訳を特定した図ではない。</text>
 </svg>
