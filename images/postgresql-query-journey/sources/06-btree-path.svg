@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="680" viewBox="0 0 640 680" role="img" aria-labelledby="title description">
+  
+
+  <title id="title">境界を比べて、読むページを絞る</title>
+  <desc id="description">B-treeの小さな模型 ／ 実際の項目数はもっと多い</desc>
+  
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+  </defs>
+  
+
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:30px;font-weight:700} .bold{font-weight:700} .small{font-size:22px} .muted{fill:#566c7b;font-size:22px} .value{font-size:28px;font-weight:700} .teal{fill:#176e65;font-weight:700} .orange{fill:#945e11;font-weight:700}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .card{fill:#dcefe8;stroke:#448b7c;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .paper{fill:#fff;stroke:#b2c5cc;stroke-width:1.5} .ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5} .edge{fill:none;stroke:#92a7b5;stroke-width:2.5} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)}
+</style>
+  <rect width="640" height="680" fill="#f5f7f9"/>
+  
+
+  <text x="28" y="45" class="title" text-anchor="start">境界を比べて、読むページを絞る</text>
+  <text x="28" y="82" class="muted" text-anchor="start">B-treeの小さな模型 ／ 実際の項目数はもっと多い</text>
+  
+
+  <g id="diagram">
+    <rect x="20" y="110" width="600" height="485" rx="18" class="panel"/>
+    <text x="40" y="150" class="bold" text-anchor="start">8を探す：進む範囲を一つ選ぶ</text>
+    <rect x="65" y="192" width="510" height="93" rx="12" class="box"/>
+    <text x="320" y="232" class="bold" text-anchor="middle">根のページ：境界は4と7</text>
+    <text x="320" y="266" class="small" text-anchor="middle">4未満 ／ 4以上7未満 ／ 7以上</text>
+    <path d="M320 285 L124 352" class="edge"/>
+    <path d="M320 285 L320 352" class="edge"/>
+    <path d="M320 285 L516 352" class="edge"/>
+    <rect x="42" y="366" width="164" height="137" rx="12" class="box"/>
+    <text x="124" y="404" class="small" text-anchor="middle">葉のページ</text>
+    <rect x="53" y="427" width="42" height="60" rx="9" class="card"/>
+    <text x="74.0" y="467.0" class="value" text-anchor="middle">1</text>
+    <rect x="103" y="427" width="42" height="60" rx="9" class="card"/>
+    <text x="124.0" y="467.0" class="value" text-anchor="middle">2</text>
+    <rect x="153" y="427" width="42" height="60" rx="9" class="card"/>
+    <text x="174.0" y="467.0" class="value" text-anchor="middle">3</text>
+    <rect x="238" y="366" width="164" height="137" rx="12" class="box"/>
+    <text x="320" y="404" class="small" text-anchor="middle">葉のページ</text>
+    <rect x="249" y="427" width="42" height="60" rx="9" class="card"/>
+    <text x="270.0" y="467.0" class="value" text-anchor="middle">4</text>
+    <rect x="299" y="427" width="42" height="60" rx="9" class="card"/>
+    <text x="320.0" y="467.0" class="value" text-anchor="middle">5</text>
+    <rect x="349" y="427" width="42" height="60" rx="9" class="card"/>
+    <text x="370.0" y="467.0" class="value" text-anchor="middle">6</text>
+    <rect x="434" y="366" width="164" height="137" rx="12" class="hot"/>
+    <text x="516" y="404" class="small" text-anchor="middle">葉のページ</text>
+    <rect x="445" y="427" width="42" height="60" rx="9" class="card"/>
+    <text x="466.0" y="467.0" class="value" text-anchor="middle">7</text>
+    <rect x="495" y="427" width="42" height="60" rx="9" class="hot"/>
+    <text x="516.0" y="467.0" class="value" text-anchor="middle">8</text>
+    <rect x="545" y="427" width="42" height="60" rx="9" class="card"/>
+    <text x="566.0" y="467.0" class="value" text-anchor="middle">9</text>
+    <path d="M536 288 L536 351" class="arrow"/>
+    <text x="44" y="555" class="teal" text-anchor="start">8は7以上。右の葉へ進む。</text>
+    <text x="30" y="642" class="bold" text-anchor="start">全部の葉を順に読む必要がない。</text>
+  </g>
+</svg>

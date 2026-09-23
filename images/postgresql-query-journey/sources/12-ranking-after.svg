@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1015" viewBox="0 0 640 1015" role="img" aria-labelledby="title description">
+  
+
+  <title id="title">上位を選んでから題名を付ける</title>
+  <desc id="description">6記録・3冊から上位2冊の模型 ／ 本文では上位20冊</desc>
+  
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+  </defs>
+  
+
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:30px;font-weight:700} .bold{font-weight:700} .small{font-size:22px} .muted{fill:#566c7b;font-size:22px} .value{font-size:28px;font-weight:700} .teal{fill:#176e65;font-weight:700} .orange{fill:#945e11;font-weight:700}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .card{fill:#dcefe8;stroke:#448b7c;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .paper{fill:#fff;stroke:#b2c5cc;stroke-width:1.5} .ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5} .edge{fill:none;stroke:#92a7b5;stroke-width:2.5} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)}
+</style>
+  <rect width="640" height="1015" fill="#f5f7f9"/>
+  
+
+  <text x="28" y="45" class="title" text-anchor="start">上位を選んでから題名を付ける</text>
+  <text x="28" y="82" class="muted" text-anchor="start">6記録・3冊から上位2冊の模型 ／ 本文では上位20冊</text>
+  
+
+  <g id="diagram">
+    <rect x="20" y="110" width="600" height="270" rx="18" class="panel"/>
+    <text x="40" y="150" class="bold" text-anchor="start">① 対象週の記録：6行</text>
+    <rect x="110" y="185" width="130" height="60" rx="9" class="card"/>
+    <text x="175.0" y="225.0" class="value" text-anchor="middle">本1</text>
+    <rect x="256" y="185" width="130" height="60" rx="9" class="card"/>
+    <text x="321.0" y="225.0" class="value" text-anchor="middle">本1</text>
+    <rect x="402" y="185" width="130" height="60" rx="9" class="card"/>
+    <text x="467.0" y="225.0" class="value" text-anchor="middle">本1</text>
+    <rect x="110" y="262" width="130" height="60" rx="9" class="card"/>
+    <text x="175.0" y="302.0" class="value" text-anchor="middle">本2</text>
+    <rect x="256" y="262" width="130" height="60" rx="9" class="card"/>
+    <text x="321.0" y="302.0" class="value" text-anchor="middle">本2</text>
+    <rect x="402" y="262" width="130" height="60" rx="9" class="card"/>
+    <text x="467.0" y="302.0" class="value" text-anchor="middle">本3</text>
+    <rect x="20" y="410" width="600" height="265" rx="18" class="panel"/>
+    <text x="40" y="450" class="bold" text-anchor="start">② 本ごとに数え、上位2冊を選ぶ</text>
+    <rect x="46" y="490" width="174" height="60" rx="9" class="hot"/>
+    <text x="133.0" y="530.0" class="value" text-anchor="middle">本1：3</text>
+    <rect x="235" y="490" width="174" height="60" rx="9" class="hot"/>
+    <text x="322.0" y="530.0" class="value" text-anchor="middle">本2：2</text>
+    <rect x="424" y="490" width="174" height="60" rx="9" class="card"/>
+    <text x="511.0" y="530.0" class="value" text-anchor="middle">本3：1</text>
+    <text x="45" y="628" class="small" text-anchor="start">上位を選ぶ前には、6行すべてを数える</text>
+    <rect x="20" y="705" width="600" height="220" rx="18" class="panel"/>
+    <text x="40" y="745" class="bold" text-anchor="start">③ 上位2冊だけに題名を付ける</text>
+    <rect x="46" y="793" width="260" height="54" rx="12" class="hot"/>
+    <text x="176.0" y="828" class="" text-anchor="middle">本1・星・3件</text>
+    <rect x="336" y="793" width="260" height="54" rx="12" class="hot"/>
+    <text x="466.0" y="828" class="" text-anchor="middle">本2・海・2件</text>
+    <text x="30" y="971" class="bold" text-anchor="start">題名を付ける対象は2行。集計の仕事は残る。</text>
+  </g>
+</svg>

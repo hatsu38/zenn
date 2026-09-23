@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="645" viewBox="0 0 640 645" role="img" aria-labelledby="title description">
+  
+
+  <title id="title">見つけても、そこで終わりとは限らない</title>
+  <desc id="description">5冊へ縮めた模型 ／ 題名に一意性の指定なし</desc>
+  
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+  </defs>
+  
+
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:30px;font-weight:700} .bold{font-weight:700} .small{font-size:22px} .muted{fill:#566c7b;font-size:22px} .value{font-size:28px;font-weight:700} .teal{fill:#176e65;font-weight:700} .orange{fill:#945e11;font-weight:700}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .card{fill:#dcefe8;stroke:#448b7c;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .paper{fill:#fff;stroke:#b2c5cc;stroke-width:1.5} .ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5} .edge{fill:none;stroke:#92a7b5;stroke-width:2.5} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)}
+</style>
+  <rect width="640" height="645" fill="#f5f7f9"/>
+  
+
+  <text x="28" y="45" class="title" text-anchor="start">見つけても、そこで終わりとは限らない</text>
+  <text x="28" y="82" class="muted" text-anchor="start">5冊へ縮めた模型 ／ 題名に一意性の指定なし</text>
+  
+
+  <g id="diagram">
+    <rect x="20" y="110" width="600" height="265" rx="18" class="panel"/>
+    <text x="40" y="150" class="bold" text-anchor="start">本4が一致しても、最後まで調べる</text>
+    <rect x="47" y="190" width="96" height="60" rx="9" class="card"/>
+    <text x="95.0" y="230.0" class="value" text-anchor="middle">本1</text>
+    <rect x="159" y="190" width="96" height="60" rx="9" class="card"/>
+    <text x="207.0" y="230.0" class="value" text-anchor="middle">本2</text>
+    <rect x="271" y="190" width="96" height="60" rx="9" class="card"/>
+    <text x="319.0" y="230.0" class="value" text-anchor="middle">本3</text>
+    <rect x="383" y="190" width="96" height="60" rx="9" class="hot"/>
+    <text x="431.0" y="230.0" class="value" text-anchor="middle">本4</text>
+    <rect x="495" y="190" width="96" height="60" rx="9" class="card"/>
+    <text x="543.0" y="230.0" class="value" text-anchor="middle">本5</text>
+    <path d="M75 280 L559 280" class="arrow"/>
+    <text x="305" y="321" class="small" text-anchor="middle">読む順番 →</text>
+    <rect x="20" y="400" width="600" height="210" rx="18" class="panel"/>
+    <text x="40" y="440" class="bold" text-anchor="start">一致する行をすべて求める検索</text>
+    <text x="44" y="477" class="teal" text-anchor="start">本4：結果へ残す</text>
+    <text x="44" y="523" class="small" text-anchor="start">本5：同じ題名かもしれないので確認</text>
+    <text x="44" y="567" class="bold" text-anchor="start">比較は5回。返すのは1行。</text>
+  </g>
+</svg>

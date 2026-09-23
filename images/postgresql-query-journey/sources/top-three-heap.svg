@@ -1,0 +1,121 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1790" viewBox="0 0 640 1790" role="img" aria-labelledby="title description">
+  
+
+  <title id="title">上位3枚を保つ：入れ替えるのはどれ？</title>
+  <desc id="description">最小ヒープの根3と新しい9を比較し、3を外して9を入れ、根5へ整える。次の2は候補に入れない。説明用の模型。</desc>
+  
+
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8" fill="#227b74"/>
+    </marker>
+  </defs>
+  
+
+  <style>
+text { font-family: "Hiragino Sans", "Noto Sans JP", sans-serif; font-size:24px; fill:#213549; }
+.head { font-size:32px; font-weight:700; } .subtitle {font-size:23px;fill:#526575} .bold {font-weight:700} .small {font-size:22px} .number {font-size:36px;font-weight:700} .accent {fill:#99600c;font-weight:700} .teal {fill:#166b64;font-weight:700}
+.panel {fill:#fff;stroke:#d2dde4;stroke-width:2} .box {fill:#eef3f7;stroke:#acbfcd;stroke-width:2} .memory {fill:#eef8f4;stroke:#77aaa0;stroke-width:2} .page {fill:#fff;stroke:#227b74;stroke-width:3} .empty {fill:#fff;stroke:#9caaa8;stroke-width:2;stroke-dasharray:7 6} .card {fill:#e8f5f1;stroke:#227b74;stroke-width:2} .changed {fill:#fff0d6;stroke:#b87715;stroke-width:3} .edge {fill:none;stroke:#8198a7;stroke-width:3} .arrow {fill:none;stroke:#227b74;stroke-width:3;marker-end:url(#arrow)}
+</style>
+  
+
+  <rect width="640" height="1790" fill="#f5f7f9"/>
+  
+
+  <text x="32" y="48" class="head" text-anchor="start">上位3枚を保つ：入れ替えるのはどれ？</text>
+  <text x="32" y="85" class="subtitle" text-anchor="start">大きい値を残す ／ カードは行の模型</text>
+  <g id="step-1">
+    <rect x="16" y="110" width="608" height="388" rx="20" class="panel"/>
+    <rect x="36" y="130" width="40" height="40" rx="12" class="card"/>
+    <text x="56" y="159" class="bold" text-anchor="middle">1</text>
+    <text x="90" y="159" class="bold" text-anchor="start">根の3と、新しい9を比べる</text>
+    <path d="M242 282 L150 384" class="edge"/>
+    <path d="M242 282 L334 384" class="edge"/>
+    <rect x="206" y="243" width="72" height="64" rx="10" class="changed"/>
+    <text x="242" y="288" class="number" text-anchor="middle">3</text>
+    <rect x="114" y="355" width="72" height="64" rx="10" class="card"/>
+    <text x="150" y="400" class="number" text-anchor="middle">8</text>
+    <rect x="298" y="355" width="72" height="64" rx="10" class="card"/>
+    <text x="334" y="400" class="number" text-anchor="middle">5</text>
+    <text x="504" y="221" class="small" text-anchor="middle">次の入力</text>
+    <rect x="468" y="243" width="72" height="64" rx="10" class="changed"/>
+    <text x="504" y="288" class="number" text-anchor="middle">9</text>
+    <path d="M282 275 L464 275" class="edge"/>
+    <text x="373" y="261" class="small" text-anchor="middle">比較</text>
+    <text x="242" y="213" class="teal" text-anchor="middle">根 ＝ 候補の最小値</text>
+    <text x="38" y="450" class="small" text-anchor="start">9は3より大きい。</text>
+    <text x="38" y="480" class="small" text-anchor="start">最小の候補3を外す。</text>
+  </g>
+  
+
+  <g id="step-2">
+    <rect x="16" y="512" width="608" height="388" rx="20" class="panel"/>
+    <rect x="36" y="532" width="40" height="40" rx="12" class="card"/>
+    <text x="56" y="561" class="bold" text-anchor="middle">2</text>
+    <text x="90" y="561" class="bold" text-anchor="start">3を外し、いったん9を根へ</text>
+    <path d="M242 684 L150 786" class="edge"/>
+    <path d="M242 684 L334 786" class="edge"/>
+    <rect x="206" y="645" width="72" height="64" rx="10" class="changed"/>
+    <text x="242" y="690" class="number" text-anchor="middle">9</text>
+    <rect x="114" y="757" width="72" height="64" rx="10" class="card"/>
+    <text x="150" y="802" class="number" text-anchor="middle">8</text>
+    <rect x="298" y="757" width="72" height="64" rx="10" class="card"/>
+    <text x="334" y="802" class="number" text-anchor="middle">5</text>
+    <text x="504" y="662" class="small" text-anchor="middle">候補の外へ</text>
+    <rect x="468" y="685" width="72" height="64" rx="10" class="card"/>
+    <text x="504" y="730" class="number" text-anchor="middle">3</text>
+    <text x="504" y="775" class="accent" text-anchor="middle">3を除く</text>
+    <text x="242" y="615" class="accent" text-anchor="middle">並びを直している途中</text>
+    <text x="38" y="852" class="small" text-anchor="start">この時点では、親9が子5より大きい。</text>
+    <text x="38" y="882" class="small" text-anchor="start">小さい子5と9を交換する。</text>
+  </g>
+  
+
+  <g id="step-3">
+    <rect x="16" y="914" width="608" height="388" rx="20" class="panel"/>
+    <rect x="36" y="934" width="40" height="40" rx="12" class="card"/>
+    <text x="56" y="963" class="bold" text-anchor="middle">3</text>
+    <text x="90" y="963" class="bold" text-anchor="start">根が5になり、条件が戻る</text>
+    <path d="M242 1086 L150 1188" class="edge"/>
+    <path d="M242 1086 L334 1188" class="edge"/>
+    <rect x="206" y="1047" width="72" height="64" rx="10" class="changed"/>
+    <text x="242" y="1092" class="number" text-anchor="middle">5</text>
+    <rect x="114" y="1159" width="72" height="64" rx="10" class="card"/>
+    <text x="150" y="1204" class="number" text-anchor="middle">8</text>
+    <rect x="298" y="1159" width="72" height="64" rx="10" class="changed"/>
+    <text x="334" y="1204" class="number" text-anchor="middle">9</text>
+    <text x="504" y="1064" class="small" text-anchor="middle">候補は3枚</text>
+    <text x="504" y="1111" class="teal" text-anchor="middle">親 ≦ 子</text>
+    <text x="242" y="1017" class="teal" text-anchor="middle">根 ＝ 候補の最小値</text>
+    <text x="38" y="1254" class="small" text-anchor="start">どの親も、子以下になった。</text>
+    <text x="38" y="1284" class="small" text-anchor="start">候補は5・8・9。根が次の境界。</text>
+  </g>
+  
+
+  <g id="step-4">
+    <rect x="16" y="1316" width="608" height="388" rx="20" class="panel"/>
+    <rect x="36" y="1336" width="40" height="40" rx="12" class="card"/>
+    <text x="56" y="1365" class="bold" text-anchor="middle">4</text>
+    <text x="90" y="1365" class="bold" text-anchor="start">次の2は、候補に入れない</text>
+    <path d="M242 1488 L150 1590" class="edge"/>
+    <path d="M242 1488 L334 1590" class="edge"/>
+    <rect x="206" y="1449" width="72" height="64" rx="10" class="card"/>
+    <text x="242" y="1494" class="number" text-anchor="middle">5</text>
+    <rect x="114" y="1561" width="72" height="64" rx="10" class="card"/>
+    <text x="150" y="1606" class="number" text-anchor="middle">8</text>
+    <rect x="298" y="1561" width="72" height="64" rx="10" class="card"/>
+    <text x="334" y="1606" class="number" text-anchor="middle">9</text>
+    <text x="504" y="1427" class="small" text-anchor="middle">次の入力</text>
+    <rect x="468" y="1449" width="72" height="64" rx="10" class="changed"/>
+    <text x="504" y="1494" class="number" text-anchor="middle">2</text>
+    <path d="M282 1481 L464 1481" class="edge"/>
+    <text x="373" y="1467" class="small" text-anchor="middle">比較</text>
+    <text x="242" y="1419" class="teal" text-anchor="middle">根 ＝ 候補の最小値</text>
+    <text x="38" y="1656" class="small" text-anchor="start">2は根の5より小さい。</text>
+    <text x="38" y="1686" class="small" text-anchor="start">候補はそのまま、5・8・9。</text>
+  </g>
+  
+
+  <text x="32" y="1753" class="bold" text-anchor="start">最後に、残った3枚を出力順へ並べる。</text>
+</svg>

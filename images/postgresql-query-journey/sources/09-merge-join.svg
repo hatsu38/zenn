@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="830" viewBox="0 0 640 830" role="img" aria-labelledby="title description">
+  
+
+  <title id="title">並んだ二つの入力を、先頭から合わせる</title>
+  <desc id="description">Merge Joinの模型 ／ 本の番号は一意、記録は重複あり</desc>
+  
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+  </defs>
+  
+
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:30px;font-weight:700} .bold{font-weight:700} .small{font-size:22px} .muted{fill:#566c7b;font-size:22px} .value{font-size:28px;font-weight:700} .teal{fill:#176e65;font-weight:700} .orange{fill:#945e11;font-weight:700}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .card{fill:#dcefe8;stroke:#448b7c;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .paper{fill:#fff;stroke:#b2c5cc;stroke-width:1.5} .ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5} .edge{fill:none;stroke:#92a7b5;stroke-width:2.5} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)}
+</style>
+  <rect width="640" height="830" fill="#f5f7f9"/>
+  
+
+  <text x="28" y="45" class="title" text-anchor="start">並んだ二つの入力を、先頭から合わせる</text>
+  <text x="28" y="82" class="muted" text-anchor="start">Merge Joinの模型 ／ 本の番号は一意、記録は重複あり</text>
+  
+
+  <g id="diagram">
+    <rect x="20" y="110" width="600" height="300" rx="18" class="panel"/>
+    <text x="40" y="150" class="bold" text-anchor="start">① 両方の先頭が1。記録は二つある</text>
+    <text x="48" y="200" class="bold" text-anchor="start">本</text>
+    <rect x="150" y="160" width="88" height="60" rx="9" class="hot"/>
+    <text x="194.0" y="200.0" class="value" text-anchor="middle">1</text>
+    <rect x="258" y="160" width="88" height="60" rx="9" class="card"/>
+    <text x="302.0" y="200.0" class="value" text-anchor="middle">2</text>
+    <rect x="366" y="160" width="88" height="60" rx="9" class="card"/>
+    <text x="410.0" y="200.0" class="value" text-anchor="middle">3</text>
+    <rect x="474" y="160" width="88" height="60" rx="9" class="card"/>
+    <text x="518.0" y="200.0" class="value" text-anchor="middle">4</text>
+    <text x="48" y="289" class="bold" text-anchor="start">記録</text>
+    <rect x="150" y="249" width="88" height="60" rx="9" class="hot"/>
+    <text x="194.0" y="289.0" class="value" text-anchor="middle">1</text>
+    <rect x="258" y="249" width="88" height="60" rx="9" class="hot"/>
+    <text x="302.0" y="289.0" class="value" text-anchor="middle">1</text>
+    <rect x="366" y="249" width="88" height="60" rx="9" class="card"/>
+    <text x="410.0" y="289.0" class="value" text-anchor="middle">3</text>
+    <rect x="474" y="249" width="88" height="60" rx="9" class="card"/>
+    <text x="518.0" y="289.0" class="value" text-anchor="middle">4</text>
+    <text x="48" y="374" class="small" text-anchor="start">本1と記録1を対応させ、2行返す</text>
+    <rect x="20" y="440" width="600" height="300" rx="18" class="panel"/>
+    <text x="40" y="480" class="bold" text-anchor="start">② 本2と記録3。小さい側を進める</text>
+    <text x="48" y="530" class="bold" text-anchor="start">本</text>
+    <rect x="258" y="490" width="88" height="60" rx="9" class="hot"/>
+    <text x="302.0" y="530.0" class="value" text-anchor="middle">2</text>
+    <rect x="366" y="490" width="88" height="60" rx="9" class="card"/>
+    <text x="410.0" y="530.0" class="value" text-anchor="middle">3</text>
+    <rect x="474" y="490" width="88" height="60" rx="9" class="card"/>
+    <text x="518.0" y="530.0" class="value" text-anchor="middle">4</text>
+    <text x="48" y="619" class="bold" text-anchor="start">記録</text>
+    <rect x="366" y="579" width="88" height="60" rx="9" class="hot"/>
+    <text x="410.0" y="619.0" class="value" text-anchor="middle">3</text>
+    <rect x="474" y="579" width="88" height="60" rx="9" class="card"/>
+    <text x="518.0" y="619.0" class="value" text-anchor="middle">4</text>
+    <text x="48" y="704" class="small" text-anchor="start">本2を進めると、本3と記録3がそろう</text>
+    <text x="30" y="789" class="bold" text-anchor="start">番号順だから、戻らずに対応を探せる。</text>
+  </g>
+</svg>

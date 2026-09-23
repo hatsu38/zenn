@@ -1,0 +1,76 @@
+\set ON_ERROR_STOP on
+\pset pager off
+Pager usage is off.
+SET max_parallel_workers_per_gather = 0;
+SET
+SET jit = off;
+SET
+SET work_mem = '4MB';
+SET
+\echo === ranking ===
+=== ranking ===
+SELECT b.id, b.title, count(*) AS read_count
+FROM books AS b
+JOIN reading_records AS r ON r.book_id = b.id
+WHERE r.finished_at >= timestamp '2026-09-14'
+  AND r.finished_at < timestamp '2026-09-21'
+GROUP BY b.id, b.title
+ORDER BY read_count DESC, b.id ASC
+LIMIT 20;
+  id  |      title      | read_count 
+------+-----------------+------------
+  107 | 実験用の本 107  |          2
+  130 | 実験用の本 130  |          2
+  259 | 実験用の本 259  |          2
+  543 | 実験用の本 543  |          2
+  672 | 実験用の本 672  |          2
+  695 | 実験用の本 695  |          2
+  824 | 実験用の本 824  |          2
+ 1237 | 実験用の本 1237 |          2
+ 1260 | 実験用の本 1260 |          2
+ 1389 | 実験用の本 1389 |          2
+ 1802 | 実験用の本 1802 |          2
+ 1825 | 実験用の本 1825 |          2
+ 1954 | 実験用の本 1954 |          2
+ 2106 | 実験用の本 2106 |          2
+ 2367 | 実験用の本 2367 |          2
+ 2390 | 実験用の本 2390 |          2
+ 2519 | 実験用の本 2519 |          2
+ 2648 | 実験用の本 2648 |          2
+ 2671 | 実験用の本 2671 |          2
+ 2932 | 実験用の本 2932 |          2
+(20 rows)
+
+\echo === size ===
+=== size ===
+SELECT pg_size_pretty(pg_total_relation_size('books')) AS books_with_index,
+       pg_size_pretty(pg_total_relation_size('reading_records')) AS records,
+       pg_size_pretty(pg_database_size(current_database())) AS database;
+ books_with_index | records | database 
+------------------+---------+----------
+ 79 MB            | 85 MB   | 171 MB
+(1 row)
+
+\echo === chapter03 ===
+=== chapter03 ===
+CREATE INDEX books_title_idx ON books (title);
+CREATE INDEX
+ANALYZE books;
+ANALYZE
+\echo === chapter06 ===
+=== chapter06 ===
+EXPLAIN SELECT id, title FROM books ORDER BY title LIMIT 3;
+                                          QUERY PLAN                                          
+----------------------------------------------------------------------------------------------
+ Limit  (cost=0.42..0.57 rows=3 width=30)
+   ->  Index Scan using books_title_idx on books  (cost=0.42..49666.10 rows=1000000 width=30)
+(2 rows)
+
+\echo === chapter07 ===
+=== chapter07 ===
+SELECT count(*) FROM reading_records;
+  count  
+---------
+ 2000000
+(1 row)
+
