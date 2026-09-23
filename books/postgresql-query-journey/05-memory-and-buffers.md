@@ -36,7 +36,23 @@ ANALYZE books;
 SELECT count(*) FROM books;
 ```
 
-件数が1,000であることを確認します。この準備手順は2026年9月22日にDockerのPostgreSQL 18.6で実行確認しました。以降の掲載ログは元の実測例として読み、時間や保存先の数値を一致させる必要はありません。
+準備SQLの実行結果です。2026年9月24日に共有された出力から、入力SQLとpsqlのプロンプトを除いて掲載しています。
+
+```sql
+BEGIN
+CREATE SCHEMA
+CREATE TABLE
+ALTER TABLE
+INSERT 0 1000
+SET
+ANALYZE
+ count
+-------
+  1000
+(1 row)
+```
+
+`INSERT 0 1000`と最後の`count`から、観察用の表に1,000行あると確認できます。このトランザクションは開いたまま観察を続け、観察が終わったところで`ROLLBACK`して片付けます。
 
 次のSQLを3回実行してください。
 
@@ -45,64 +61,68 @@ EXPLAIN (ANALYZE, BUFFERS)
 SELECT id, title FROM books WHERE title = '実験用の本 42';
 ```
 
-本1,000冊の実験環境では、次の結果になりました。この「1回目」は、ここで繰り返した3回のうちの最初です。DBを起動してから最初の検索という意味ではありません。
+2026年9月24日に共有された、本1,000冊での3回分の実行結果です。「1回目」はこの比較の最初であり、DBを起動してから最初の検索という意味ではありません。表の作成・データの挿入・件数確認を行った後の観察です。
 
 ### 1回目
 
 ```sql
-Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.285..0.465 rows=1.00 loops=1)
+Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.018..0.079 rows=1.00 loops=1)
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999
   Buffers: shared hit=8
-Planning Time: 1.044 ms
-Execution Time: 0.823 ms
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.123 ms
+Execution Time: 0.104 ms
 ```
 
 ### 2回目
 
 ```sql
-Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.032..0.163 rows=1.00 loops=1)
+Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.051..0.154 rows=1.00 loops=1)
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999
   Buffers: shared hit=8
-Planning Time: 0.081 ms
-Execution Time: 0.183 ms
+Planning Time: 0.167 ms
+Execution Time: 0.190 ms
 ```
 
 ### 3回目
 
 ```sql
-Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.028..0.122 rows=1.00 loops=1)
+Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.036..0.093 rows=1.00 loops=1)
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999
   Buffers: shared hit=8
-Planning Time: 0.083 ms
-Execution Time: 0.140 ms
+Planning Time: 0.105 ms
+Execution Time: 0.117 ms
 ```
 
 ### 変わったのは、どの値？
 
-記録するのは、時間だけではありません。3回の出力を並べてみます。
+記録するのは、時間だけではありません。3回の出力を並べてみます。表の`shared hit`は、計画作成時ではなく検索の実行時の値です。
 
 | 実行 | 計画 | 返した行 | 除外した行 | shared hit | Planning Time | Execution Time |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| 1回目 | Seq Scan | 1 | 999 | 8 | 1.044 ms | 0.823 ms |
-| 2回目 | Seq Scan | 1 | 999 | 8 | 0.081 ms | 0.183 ms |
-| 3回目 | Seq Scan | 1 | 999 | 8 | 0.083 ms | 0.140 ms |
+| 1回目 | Seq Scan | 1 | 999 | 8 | 0.123 ms | 0.104 ms |
+| 2回目 | Seq Scan | 1 | 999 | 8 | 0.167 ms | 0.190 ms |
+| 3回目 | Seq Scan | 1 | 999 | 8 | 0.105 ms | 0.117 ms |
 
 この表では、変わった値と変わらなかった値を分けて読みます。
 
-- **変わった：** `Execution Time`は0.823 ms、0.183 ms、0.140 msと短くなりました。
-- **変わらなかった：** 3回とも`Seq Scan`で、返した行は1行、除外した行は999行です。調べる行は減っていません。
+- **変わった：** `Execution Time`は0.104 ms、0.190 ms、0.117 msでした。2回目は遅くなり、3回目は再び速くなっています。
+- **変わらなかった：** 3回とも`Seq Scan`で、返した行は1行、除外した行は999行です。`loops=1`なので、毎回1,000行を調べています。
 - **同じだった：** 実行時のバッファアクセスは、3回とも`shared hit=8`です。
 
-つまり、**速くなったことは確認できても、探す方法や調べる量が改善したとは言えません。** `Planning Time`も変わっていますが、これは計画を作る時間で、`Execution Time`とは分けて読みます。
+つまり、**探す方法・調べた行数・実行時のバッファアクセスが同じでも、実行時間は上下しています。** 時間の違いだけを根拠に、調べる量が減ったとは言えません。
+
+`Planning Time`は計画を作る時間で、`Execution Time`とは分けて読みます。1回目の`Planning`の下にある`shared hit=3`も計画作成時のアクセスなので、実行時の8回には足しません。
 
 もう一つ見てほしいのが、**1回目からずっと`shared hit=8`**という点です。3回とも`shared read`は表示されていません。この走査では、最初から共有バッファにあるページを使っています。
 
-なので、今回の結果を「1回目はストレージから読み、2回目からメモリに載ったので速くなった」と説明することはできません。CPUの状態やほかの処理の負荷など、時間に影響しうる要因はありますが、この出力だけでは原因を特定できません。
+そのため、今回の結果を「1回目はストレージから読み、2回目からメモリに載った」と説明することはできません。CPUの状態やほかの処理の負荷など、時間に影響しうる要因はありますが、この出力だけでは変動の原因を特定できません。
 
-自分の結果でも、時間と一緒に計画・行数・BUFFERSを比べてみてください。2回目が必ず速くなるわけではありません。まず、この`hit`が何を表しているのか、ページの置き場所から見ていきましょう。
+自分の結果でも、時間と一緒に計画・行数・BUFFERSを比べてみてください。まず、この`hit`が何を表しているのか、ページの置き場所から見ていきましょう。
 
 ## 読み込んだページを共有バッファに保持する
 
