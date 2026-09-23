@@ -1,0 +1,32 @@
+# 観測記録（2026-09-21 20:08 JST、Docker postgres:18 = PostgreSQL 18.6、コンテナ reading-log-lab、本 100 万冊）
+# ch02-linear-search.sql の最初の版（LIMIT 1 の実験を 100 万冊の段階で行う順番）を実行したときの出力を、
+# セッションの画面から転記したもの。直前に同じ表の全件読み（EXPLAIN ANALYZE、3 回）を実行していた。
+# 同じスクリプトを順番を変えて再実行した際にログを上書きしたため、原本のログは残っていない。
+# 再実行（ch02-syncscan-note-docker-pg18-20260921.txt）では 3 回とも 2 ページで、現象は再現しなかった。
+# 公式文書の synchronize_seqscans の説明（大きな表では途中から読み始めることがある）と整合する観測として記録する。
+
+--- 3. 見つかったところで止まれるか（LIMIT 1、先頭近く）
+                                                  QUERY PLAN                                                   
+---------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=17.672..17.673 rows=1.00 loops=1)
+   Buffers: shared hit=3691
+   ->  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=17.670..17.671 rows=1.00 loops=1)
+         Filter: (title = '実験用の本 42'::text)
+         Rows Removed by Filter: 501737
+         Buffers: shared hit=3691
+ Planning Time: 0.061 ms
+ Execution Time: 17.690 ms
+(8 rows)
+
+--- 3. LIMIT 1、末尾近く
+                                                  QUERY PLAN                                                   
+---------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=19.210..19.220 rows=1.00 loops=1)
+   Buffers: shared hit=3690
+   ->  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=19.209..19.219 rows=1.00 loops=1)
+         Filter: (title = '実験用の本 999958'::text)
+         Rows Removed by Filter: 501653
+         Buffers: shared hit=3690
+ Planning Time: 0.080 ms
+ Execution Time: 19.235 ms
+(8 rows)

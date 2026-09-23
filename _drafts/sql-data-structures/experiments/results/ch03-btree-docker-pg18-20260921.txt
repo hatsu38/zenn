@@ -1,0 +1,319 @@
+# 実行日時: 2026-09-21 22:06:01 JST
+# ホスト: arm64 macOS 26.6.2、Docker postgres:18、コンテナ reading-log-lab
+# 前提: 第2章を終えた状態（本 100 万冊、設定 3 つ反映済み）から続けて実行。books_title_idx はこの実行で作り、残す
+$ docker exec -i reading-log-lab psql -X -U postgres -d reading_log -f - < ch03-btree.sql
+Pager usage is off.
+                                                         version                                                          
+--------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+ max_parallel_workers_per_gather 
+---------------------------------
+ 0
+(1 row)
+
+ work_mem 
+----------
+ 64MB
+(1 row)
+
+--- 0. 表と主キーの目録の大きさ
+ book_count 
+------------
+    1000000
+(1 row)
+
+  relname   | relpages | size  
+------------+----------+-------
+ books      |     7353 | 59 MB
+ books_pkey |     2745 | 22 MB
+(2 rows)
+
+--- 1. 目録の中を見る道具を入れる
+CREATE EXTENSION
+--- 1. 目録の案内ページ（段数）
+ root | level 
+------+-------
+  412 |     2
+(1 row)
+
+--- 1. 根のページの中身
+ type | live_items | btpo_level 
+------+------------+------------
+ r    |         10 |          2
+(1 row)
+
+--- 1. 段ごとのページ数
+ level | pages 
+-------+-------
+     2 |     1
+     1 |    10
+     0 |  2733
+(3 rows)
+
+--- 2. 番号検索（100万冊、1回目）
+                                                      QUERY PLAN                                                      
+----------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_pkey on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.041..0.041 rows=1.00 loops=1)
+   Index Cond: (id = 42)
+   Index Searches: 1
+   Buffers: shared hit=7
+ Planning:
+   Buffers: shared hit=8
+ Planning Time: 0.091 ms
+ Execution Time: 0.070 ms
+(8 rows)
+
+--- 2. 番号検索（100万冊、2回目）
+                                                      QUERY PLAN                                                      
+----------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_pkey on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.005..0.005 rows=1.00 loops=1)
+   Index Cond: (id = 42)
+   Index Searches: 1
+   Buffers: shared hit=4
+ Planning Time: 0.017 ms
+ Execution Time: 0.009 ms
+(6 rows)
+
+--- 2. 番号検索（100万冊、3回目）
+                                                      QUERY PLAN                                                      
+----------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_pkey on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.005..0.005 rows=1.00 loops=1)
+   Index Cond: (id = 42)
+   Index Searches: 1
+   Buffers: shared hit=4
+ Planning Time: 0.016 ms
+ Execution Time: 0.009 ms
+(6 rows)
+
+--- 2. 番号検索（末尾近く）
+                                                      QUERY PLAN                                                      
+----------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_pkey on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.024..0.026 rows=1.00 loops=1)
+   Index Cond: (id = 999958)
+   Index Searches: 1
+   Buffers: shared hit=4
+ Planning Time: 0.072 ms
+ Execution Time: 0.043 ms
+(6 rows)
+
+--- 3. 小さい表の目録の段数（1,000冊と10万冊、一時テーブル）
+SELECT 1000
+ALTER TABLE
+SELECT 100000
+ALTER TABLE
+    index_name    | level | relpages 
+------------------+-------+----------
+ books_small_pkey |     1 |        5
+ books_mid_pkey   |     1 |      276
+ books_pkey       |     2 |     2745
+(3 rows)
+
+Timing is on.
+--- 4. 目録がないときの追加の時間（1万冊、3回、ROLLBACK）
+BEGIN
+Time: 0.089 ms
+INSERT 0 10000
+Time: 19.624 ms
+ROLLBACK
+Time: 0.266 ms
+BEGIN
+Time: 0.387 ms
+INSERT 0 10000
+Time: 18.688 ms
+ROLLBACK
+Time: 0.216 ms
+BEGIN
+Time: 1.175 ms
+INSERT 0 10000
+Time: 21.346 ms
+ROLLBACK
+Time: 0.918 ms
+--- 5. 題名に目録を作る
+CREATE INDEX
+Time: 14113.892 ms (00:14.114)
+Timing is off.
+     relname     | relpages | size  
+-----------------+----------+-------
+ books           |     7721 | 60 MB
+ books_pkey      |     2745 | 22 MB
+ books_title_idx |     4961 | 39 MB
+(3 rows)
+
+ root | level 
+------+-------
+  164 |     2
+(1 row)
+
+--- 5. 題名検索（1回目）
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_title_idx on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.138..0.138 rows=1.00 loops=1)
+   Index Cond: (title = '実験用の本 42'::text)
+   Index Searches: 1
+   Buffers: shared hit=1 read=3
+ Planning:
+   Buffers: shared hit=17
+ Planning Time: 0.197 ms
+ Execution Time: 0.146 ms
+(8 rows)
+
+--- 5. 題名検索（2回目）
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_title_idx on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.033..0.033 rows=1.00 loops=1)
+   Index Cond: (title = '実験用の本 42'::text)
+   Index Searches: 1
+   Buffers: shared hit=4
+ Planning Time: 0.019 ms
+ Execution Time: 0.038 ms
+(6 rows)
+
+--- 5. 題名検索（3回目）
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_title_idx on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.026..0.026 rows=1.00 loops=1)
+   Index Cond: (title = '実験用の本 42'::text)
+   Index Searches: 1
+   Buffers: shared hit=4
+ Planning Time: 0.009 ms
+ Execution Time: 0.028 ms
+(6 rows)
+
+--- 5. 題名検索（真ん中）
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_title_idx on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.083..0.084 rows=1.00 loops=1)
+   Index Cond: (title = '実験用の本 500000'::text)
+   Index Searches: 1
+   Buffers: shared hit=2 read=2
+ Planning Time: 0.020 ms
+ Execution Time: 0.089 ms
+(6 rows)
+
+--- 5. 題名検索（末尾近く）
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_title_idx on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.071..0.072 rows=1.00 loops=1)
+   Index Cond: (title = '実験用の本 999958'::text)
+   Index Searches: 1
+   Buffers: shared hit=2 read=2
+ Planning Time: 0.017 ms
+ Execution Time: 0.076 ms
+(6 rows)
+
+Timing is on.
+--- 6. 目録があるときの追加の時間（1万冊、3回、ROLLBACK）
+BEGIN
+Time: 0.079 ms
+INSERT 0 10000
+Time: 287.795 ms
+ROLLBACK
+Time: 0.173 ms
+BEGIN
+Time: 0.075 ms
+INSERT 0 10000
+Time: 245.557 ms
+ROLLBACK
+Time: 0.099 ms
+BEGIN
+Time: 0.070 ms
+INSERT 0 10000
+Time: 240.274 ms
+ROLLBACK
+Time: 0.185 ms
+Timing is off.
+--- 7. 発展の注記用: 前方一致では目録が使われるか
+                                                 QUERY PLAN                                                 
+------------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..20799.79 rows=103 width=30) (actual time=0.259..57.955 rows=111.00 loops=1)
+   Filter: (title ~~ '実験用の本 4295%'::text)
+   Rows Removed by Filter: 999889
+   Buffers: shared hit=2078 read=5864
+ Planning:
+   Buffers: shared hit=6
+ Planning Time: 0.113 ms
+ Execution Time: 57.976 ms
+(8 rows)
+
+psql:<stdin>:91: ERROR:  unrecognized configuration parameter "lc_collate"
+ datcollate 
+------------
+ en_US.utf8
+(1 row)
+
+ book_count 
+------------
+    1000000
+(1 row)
+
+
+$ docker exec -i reading-log-lab psql -X -U postgres -d reading_log -f - < ch03-cleanup.sql
+Pager usage is off.
+--- 8. 後片付け: 取り消した追加の跡を片付ける前
+     relname     | relpages | size  
+-----------------+----------+-------
+ books           |     7721 | 62 MB
+ books_pkey      |     2745 | 22 MB
+ books_title_idx |     4961 | 40 MB
+(3 rows)
+
+ n_dead_tup 
+------------
+      80000
+(1 row)
+
+VACUUM
+--- 8. 片付けた後
+     relname     | relpages | size  
+-----------------+----------+-------
+ books           |     7353 | 57 MB
+ books_pkey      |     2772 | 22 MB
+ books_title_idx |     5056 | 40 MB
+(3 rows)
+
+ n_dead_tup 
+------------
+          0
+(1 row)
+
+--- 8. 題名検索の全件読み（第2章と同じページ数に戻っているか）
+                                                      QUERY PLAN                                                       
+-----------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_pkey on books  (cost=0.42..12.88 rows=2 width=30) (actual time=0.011..0.012 rows=2.00 loops=1)
+   Index Cond: (id = ANY ('{42,43}'::integer[]))
+   Index Searches: 1
+   Buffers: shared hit=10
+ Planning:
+   Buffers: shared hit=59
+ Planning Time: 0.099 ms
+ Execution Time: 0.016 ms
+(8 rows)
+
+                                                       QUERY PLAN                                                       
+------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=19257.20..19257.21 rows=1 width=8) (actual time=92.908..92.909 rows=1.00 loops=1)
+   Buffers: shared hit=1677 read=5676
+   ->  Seq Scan on books  (cost=0.00..16876.36 rows=952336 width=0) (actual time=0.003..56.999 rows=1000000.00 loops=1)
+         Buffers: shared hit=1677 read=5676
+ Planning:
+   Buffers: shared hit=6
+ Planning Time: 0.020 ms
+ Execution Time: 92.923 ms
+(8 rows)
+
+
+$ （追記）ANALYZE books; を実行し、行数の推定を直す
+ANALYZE
+ relname | relpages | reltuples 
+---------+----------+-----------
+ books   |     7353 |   1000000
+(1 row)
+
+                                  QUERY PLAN                                  
+------------------------------------------------------------------------------
+ Index Scan using books_title_idx on books  (cost=0.42..8.44 rows=1 width=30)
+   Index Cond: (title = '実験用の本 42'::text)
+(2 rows)
+
