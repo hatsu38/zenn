@@ -1,0 +1,14 @@
+title: "いつものSQLで学ぶデータ構造とアルゴリズム"
+summary: "読書記録サービスの困りごとから、PostgreSQLの探索・ソート・結合・集約を学ぶ本です。予想と実験、図解を通じて、ネットやAIで得た改善案を自分の条件で確かめる力を育てます。現在は序章から第7章までの構成を検討する草稿です。"
+topics: ["postgresql", "sql", "アルゴリズム"]
+published: false
+price: 0
+chapters:
+  - 00-prologue
+  - 01-explain-basics
+  - 02-linear-search
+  - 03-btree-index
+  - 04-sort
+  - 05-top-n-heap
+  - 06-join
+  - 07-ranking-revisited

@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="775" viewBox="0 0 640 775" role="img" aria-labelledby="title description">
+  
+
+  <title id="title">接続ごとにプロセスが動く</title>
+  <desc id="description">PIDは今回の例 ／ 配置は共有範囲を示す模型</desc>
+  
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+  </defs>
+  
+
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:30px;font-weight:700} .bold{font-weight:700} .small{font-size:22px} .muted{fill:#566c7b;font-size:22px} .value{font-size:28px;font-weight:700} .teal{fill:#176e65;font-weight:700} .orange{fill:#945e11;font-weight:700}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .card{fill:#dcefe8;stroke:#448b7c;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .paper{fill:#fff;stroke:#b2c5cc;stroke-width:1.5} .ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5} .edge{fill:none;stroke:#92a7b5;stroke-width:2.5} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)}
+</style>
+  <rect width="640" height="775" fill="#f5f7f9"/>
+  
+
+  <text x="28" y="45" class="title" text-anchor="start">接続ごとにプロセスが動く</text>
+  <text x="28" y="82" class="muted" text-anchor="start">PIDは今回の例 ／ 配置は共有範囲を示す模型</text>
+  
+
+  <g id="diagram">
+    <rect x="20" y="110" width="600" height="630" rx="18" class="panel"/>
+    <text x="40" y="150" class="bold" text-anchor="start">二つの接続。データベースは一つ。</text>
+    <rect x="44" y="185" width="256" height="54" rx="12" class="box"/>
+    <text x="172.0" y="220" class="" text-anchor="middle">ターミナルA：psql</text>
+    <path d="M172 247 L172 300" class="arrow"/>
+    <text x="184" y="280" class="small" text-anchor="start">SQL</text>
+    <rect x="44" y="320" width="256" height="184" rx="12" class="box"/>
+    <text x="172" y="360" class="bold" text-anchor="middle">バックエンドA</text>
+    <text x="172" y="400" class="" text-anchor="middle">PID 952</text>
+    <rect x="60" y="427" width="224" height="54" rx="12" class="paper"/>
+    <text x="172.0" y="462" class="" text-anchor="middle">個別の作業領域</text>
+    <path d="M172 504 L172 545" class="edge"/>
+    <path d="M172 545 L320 545" class="edge"/>
+    <rect x="340" y="185" width="256" height="54" rx="12" class="box"/>
+    <text x="468.0" y="220" class="" text-anchor="middle">ターミナルB：psql</text>
+    <path d="M468 247 L468 300" class="arrow"/>
+    <text x="480" y="280" class="small" text-anchor="start">SQL</text>
+    <rect x="340" y="320" width="256" height="184" rx="12" class="box"/>
+    <text x="468" y="360" class="bold" text-anchor="middle">バックエンドB</text>
+    <text x="468" y="400" class="" text-anchor="middle">PID 22521</text>
+    <rect x="356" y="427" width="224" height="54" rx="12" class="paper"/>
+    <text x="468.0" y="462" class="" text-anchor="middle">個別の作業領域</text>
+    <path d="M468 504 L468 545" class="edge"/>
+    <path d="M468 545 L320 545" class="edge"/>
+    <path d="M320 545 L320 578" class="arrow"/>
+    <rect x="54" y="592" width="532" height="54" rx="12" class="card"/>
+    <text x="320.0" y="627" class="" text-anchor="middle">共有バッファ：ページを共有</text>
+    <text x="58" y="705" class="small" text-anchor="start">保存先も同じDB。接続ごとの複製ではない。</text>
+  </g>
+</svg>

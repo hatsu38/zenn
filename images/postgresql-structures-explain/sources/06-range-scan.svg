@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="800" viewBox="0 0 640 800" role="img" aria-labelledby="title description">
+  
+
+  <title id="title">4以上8以下なら、隣の葉も読む</title>
+  <desc id="description">索引の葉をたどる模型 ／ 表への参照は省略</desc>
+  
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+  </defs>
+  
+
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:30px;font-weight:700} .bold{font-weight:700} .small{font-size:22px} .muted{fill:#566c7b;font-size:22px} .value{font-size:28px;font-weight:700} .teal{fill:#176e65;font-weight:700} .orange{fill:#945e11;font-weight:700}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .card{fill:#dcefe8;stroke:#448b7c;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .paper{fill:#fff;stroke:#b2c5cc;stroke-width:1.5} .ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5} .edge{fill:none;stroke:#92a7b5;stroke-width:2.5} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)}
+</style>
+  <rect width="640" height="800" fill="#f5f7f9"/>
+  
+
+  <text x="28" y="45" class="title" text-anchor="start">4以上8以下なら、隣の葉も読む</text>
+  <text x="28" y="82" class="muted" text-anchor="start">索引の葉をたどる模型 ／ 表への参照は省略</text>
+  
+
+  <g id="diagram">
+    <rect x="20" y="110" width="600" height="250" rx="18" class="panel"/>
+    <text x="40" y="150" class="bold" text-anchor="start">① 木をたどり、4がある葉へ</text>
+    <rect x="70" y="181" width="500" height="54" rx="12" class="box"/>
+    <text x="320.0" y="216" class="" text-anchor="middle">境界を見て、4の付近へ進む</text>
+    <path d="M320 243 L320 289" class="arrow"/>
+    <text x="320" y="328" class="teal" text-anchor="middle">ここから範囲を読む</text>
+    <rect x="20" y="390" width="600" height="325" rx="18" class="panel"/>
+    <text x="40" y="430" class="bold" text-anchor="start">② 葉をたどり、8まで取り出す</text>
+    <rect x="44" y="465" width="240" height="206" rx="14" class="memory"/>
+    <text x="62" y="500" class="bold" text-anchor="start">葉A</text>
+    <rect x="58" y="519" width="212" height="34" rx="6" class="paper"/>
+    <text x="71" y="544" class="small" text-anchor="start">4  ← 対象</text>
+    <rect x="58" y="562" width="212" height="34" rx="6" class="paper"/>
+    <text x="71" y="587" class="small" text-anchor="start">5  ← 対象</text>
+    <rect x="58" y="605" width="212" height="34" rx="6" class="paper"/>
+    <text x="71" y="630" class="small" text-anchor="start">6  ← 対象</text>
+    <rect x="356" y="465" width="240" height="206" rx="14" class="memory"/>
+    <text x="374" y="500" class="bold" text-anchor="start">葉B</text>
+    <rect x="370" y="519" width="212" height="34" rx="6" class="hot"/>
+    <text x="383" y="544" class="small" text-anchor="start">7  ← 対象</text>
+    <rect x="370" y="562" width="212" height="34" rx="6" class="hot"/>
+    <text x="383" y="587" class="small" text-anchor="start">8  ← 対象</text>
+    <rect x="370" y="605" width="212" height="34" rx="6" class="paper"/>
+    <text x="383" y="630" class="small" text-anchor="start">9  ← 範囲外</text>
+    <path d="M290 550 L345 550" class="arrow"/>
+    <text x="30" y="759" class="small" text-anchor="start">最初の場所を探す量と、範囲を読む量は別。</text>
+  </g>
+</svg>

@@ -1,0 +1,6 @@
+{
+  "name": "postgresql-book-figures",
+  "private": true,
+  "scripts": { "export": "node export.cjs" },
+  "devDependencies": { "playwright": "1.62.1" }
+}

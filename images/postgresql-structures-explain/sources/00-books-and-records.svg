@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="730" viewBox="0 0 640 730" role="img" aria-labelledby="title description">
+  
+
+  <title id="title">本の冊数と、読了記録の件数</title>
+  <desc id="description">サンプルの2冊・3件で考える</desc>
+  
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+  </defs>
+  
+
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:30px;font-weight:700} .bold{font-weight:700} .small{font-size:22px} .muted{fill:#566c7b;font-size:22px} .value{font-size:28px;font-weight:700} .teal{fill:#176e65;font-weight:700} .orange{fill:#945e11;font-weight:700}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .card{fill:#dcefe8;stroke:#448b7c;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .paper{fill:#fff;stroke:#b2c5cc;stroke-width:1.5} .ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5} .edge{fill:none;stroke:#92a7b5;stroke-width:2.5} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)}
+</style>
+  <rect width="640" height="730" fill="#f5f7f9"/>
+  
+
+  <text x="28" y="45" class="title" text-anchor="start">本の冊数と、読了記録の件数</text>
+  <text x="28" y="82" class="muted" text-anchor="start">サンプルの2冊・3件で考える</text>
+  
+
+  <g id="diagram">
+    <rect x="20" y="110" width="600" height="540" rx="18" class="panel"/>
+    <text x="40" y="150" class="bold" text-anchor="start">1冊の本に、複数の読了記録</text>
+    <rect x="50" y="177" width="240" height="54" rx="12" class="box"/>
+    <text x="170.0" y="212" class="" text-anchor="middle">本1：星の図鑑</text>
+    <rect x="50" y="367" width="240" height="54" rx="12" class="box"/>
+    <text x="170.0" y="402" class="" text-anchor="middle">本2：海の図鑑</text>
+    <rect x="365" y="177" width="225" height="54" rx="12" class="card"/>
+    <text x="477.5" y="212" class="" text-anchor="middle">本1・9月14日</text>
+    <rect x="365" y="259" width="225" height="54" rx="12" class="card"/>
+    <text x="477.5" y="294" class="" text-anchor="middle">本1・9月16日</text>
+    <rect x="365" y="367" width="225" height="54" rx="12" class="card"/>
+    <text x="477.5" y="402" class="" text-anchor="middle">本2・9月15日</text>
+    <path d="M290 204 L365 204" class="edge"/>
+    <path d="M310 204 L310 286" class="edge"/>
+    <path d="M310 286 L365 286" class="edge"/>
+    <path d="M290 394 L365 394" class="edge"/>
+    <text x="52" y="476" class="bold" text-anchor="start">本：2冊</text>
+    <text x="365" y="476" class="bold" text-anchor="start">記録：3件</text>
+    <text x="50" y="545" class="small" text-anchor="start">線は「どの本の記録か」の対応。</text>
+    <text x="50" y="583" class="teal" text-anchor="start">本1は2件、本2は1件と数える。</text>
+    <text x="28" y="692" class="small" text-anchor="start">books.id と reading_records.book_id を対応させる。</text>
+  </g>
+</svg>
