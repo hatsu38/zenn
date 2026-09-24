@@ -1,0 +1,78 @@
+-- 確認用（掲載しない）：追い出す11ページの内訳（fork ごと）
+\set ON_ERROR_STOP on
+SET max_parallel_workers_per_gather = 0;
+SET
+SET jit = off;
+SET
+SET work_mem = '4MB';
+SET
+BEGIN;
+BEGIN
+CREATE SCHEMA book_observation;
+CREATE SCHEMA
+CREATE TABLE book_observation.books
+  (LIKE public.books INCLUDING DEFAULTS INCLUDING CONSTRAINTS);
+CREATE TABLE
+ALTER TABLE book_observation.books ADD PRIMARY KEY (id);
+ALTER TABLE
+INSERT INTO book_observation.books
+SELECT id, title FROM public.books WHERE id BETWEEN 1 AND 1000;
+INSERT 0 1000
+SET LOCAL search_path = book_observation, public;
+SET
+ANALYZE books;
+ANALYZE
+CREATE EXTENSION IF NOT EXISTS pg_buffercache;
+CREATE EXTENSION
+SELECT relforknumber, count(*), bool_or(isdirty) AS any_dirty
+FROM pg_buffercache
+WHERE relfilenode = pg_relation_filenode('books')
+GROUP BY 1 ORDER BY 1;
+ relforknumber | count | any_dirty 
+---------------+-------+-----------
+             0 |     8 | t
+             1 |     3 | f
+(2 rows)
+
+SELECT pg_relation_size('books', 'main') / 8192 AS main_pages,
+       pg_relation_size('books', 'fsm') / 8192 AS fsm_pages,
+       pg_relation_size('books', 'vm') / 8192 AS vm_pages;
+ main_pages | fsm_pages | vm_pages 
+------------+-----------+----------
+          8 |         3 |        0
+(1 row)
+
+SELECT * FROM pg_buffercache_evict_relation('books');
+ buffers_evicted | buffers_flushed | buffers_skipped 
+-----------------+-----------------+-----------------
+              11 |               8 |               0
+(1 row)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title = '実験用の本 42';
+                                             QUERY PLAN                                             
+----------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.341..0.486 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999
+   Buffers: shared read=8
+ Planning:
+   Buffers: shared hit=19
+ Planning Time: 0.088 ms
+ Execution Time: 0.510 ms
+(8 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title = '実験用の本 42';
+                                             QUERY PLAN                                             
+----------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.005..0.037 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999
+   Buffers: shared hit=8
+ Planning Time: 0.016 ms
+ Execution Time: 0.040 ms
+(6 rows)
+
+ROLLBACK;
+ROLLBACK

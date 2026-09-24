@@ -4,7 +4,7 @@ title: "第5章：同じページを、毎回ストレージから読むのか"
 
 ## この章で分かること
 
-一度使ったページは、次の検索で再利用できるのでしょうか。ページを保存するストレージと、実行中に使うメモリの関係を図で確認し、`BUFFERS`の`hit`と`read`を読みます。同じ検索を3回実行した結果から、ページの再利用と、行の条件を調べる処理を区別します。
+一度使ったページは、次の検索で再利用できるのでしょうか。ページを保存するストレージと、実行中に使うメモリの関係を図で確認し、`BUFFERS`の`hit`と`read`を読みます。表のページをメモリから追い出してから同じ検索を3回実行し、ページの再利用と、行の条件を調べる処理を区別します。
 
 ## 同じ検索を、もう一度
 
@@ -78,72 +78,95 @@ ANALYZE
 
 ## 同じ検索を3回実行する
 
-次のSQLを3回実行してください。実行する前に、2回目と3回目で`shared hit`、`shared read`、`Rows Removed by Filter`のそれぞれがどう変わるかを予想してください。
+表を作って1,000行を挿入した直後なので、観察用の表のページは共有バッファに載っているはずです。このまま検索すると1回目から`shared hit`になり、ファイルから読み込む場面を観察できません。
+
+そこで、観察の前に、この表のページを共有バッファから追い出します。`pg_buffercache`は共有バッファの中身を調べる拡張機能で、PostgreSQL 18では`pg_buffercache_evict_relation`で指定した表のページをまとめて追い出せます[^evict]。次の二つを実行してください。
+
+```sql
+CREATE EXTENSION IF NOT EXISTS pg_buffercache;
+SELECT * FROM pg_buffercache_evict_relation('books');
+```
+
+2026年9月25日、DockerのPostgreSQL 18.6で、観察用の表を作った同じトランザクションの中で実行した結果です。
+
+```sql
+CREATE EXTENSION
+ buffers_evicted | buffers_flushed | buffers_skipped
+-----------------+-----------------+-----------------
+              11 |               8 |               0
+(1 row)
+```
+
+`buffers_evicted`の11が、共有バッファから追い出したページの数です。このうち8ページが、第4章で数えた表本体の8ページです。残りの3ページは、表の空き領域を記録しておく付属の領域で、この章では扱いません。`buffers_flushed`の8は、追い出す前にファイルへ書き出したページの数です。挿入したばかりで、ファイルの内容よりメモリ上のページのほうが新しかったためです。この出力から、挿入した直後の表のページが共有バッファに置かれていたことも確かめられます。
+
+[^evict]: スーパーユーザーだけが実行できる、開発者の検証用の関数です。[pg_buffercacheの公式ドキュメント](https://www.postgresql.org/docs/18/pgbuffercache.html)には、追い出したページが別の処理によってすぐ読み戻されることもあると書かれています。本番のDBで使う道具ではありません。`CREATE EXTENSION`もトランザクションの中で実行しているので、章末の`ROLLBACK`で一緒に取り消されます。
+
+続けて、次のSQLを3回実行します。実行する前に、1回目と2回目で`shared hit`、`shared read`、`Rows Removed by Filter`のそれぞれがどうなるかを予想してください。
 
 ```sql
 EXPLAIN (ANALYZE, BUFFERS)
 SELECT id, title FROM books WHERE title = '実験用の本 42';
 ```
 
-2026年9月24日に共有された、本1,000冊での1回目の実行結果です。「1回目」はこの比較の最初であり、DBを起動してから最初の検索という意味ではありません。表の作成、データの挿入、件数確認を行った後の観察です。
+追い出した直後の、1回目の実行結果です。
 
 ```sql
-Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.018..0.079 rows=1.00 loops=1)
+Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.204..1.061 rows=1.00 loops=1)
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999
-  Buffers: shared hit=8
+  Buffers: shared read=8
 Planning:
-  Buffers: shared hit=3
-Planning Time: 0.123 ms
-Execution Time: 0.104 ms
+  Buffers: shared hit=11
+Planning Time: 0.102 ms
+Execution Time: 1.079 ms
 ```
 
 :::details 2回目と3回目の実行結果
 2回目です。
 
 ```sql
-Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.051..0.154 rows=1.00 loops=1)
+Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.005..0.036 rows=1.00 loops=1)
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999
   Buffers: shared hit=8
-Planning Time: 0.167 ms
-Execution Time: 0.190 ms
+Planning Time: 0.016 ms
+Execution Time: 0.040 ms
 ```
 
 3回目です。
 
 ```sql
-Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.036..0.093 rows=1.00 loops=1)
+Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.004..0.071 rows=1.00 loops=1)
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999
   Buffers: shared hit=8
-Planning Time: 0.105 ms
-Execution Time: 0.117 ms
+Planning Time: 0.007 ms
+Execution Time: 0.073 ms
 ```
 :::
 
 3回分を表にまとめます。
 
-| 実行 | 探す方法 | 調べた行 | shared hit | Execution Time |
-| --- | --- | ---: | ---: | ---: |
-| 1回目 | Seq Scan | 1,000 | 8 | 0.104 ms |
-| 2回目 | Seq Scan | 1,000 | 8 | 0.190 ms |
-| 3回目 | Seq Scan | 1,000 | 8 | 0.117 ms |
+| 実行 | 探す方法 | 調べた行 | shared read | shared hit | Execution Time |
+| --- | --- | ---: | ---: | ---: | ---: |
+| 1回目 | Seq Scan | 1,000 | 8 | 表示なし | 1.079 ms |
+| 2回目 | Seq Scan | 1,000 | 表示なし | 8 | 0.040 ms |
+| 3回目 | Seq Scan | 1,000 | 表示なし | 8 | 0.073 ms |
 
-### 3回とも、ページを再利用して1,000行を調べている
+### ページは2回目から再利用され、行は毎回調べている
 
-3回とも、検索の実行中の表示は`shared hit=8`でした。共有バッファにあるページを8回使っていて、`shared read`は表示されていません。表の作成、行の挿入、件数確認でページを使った後なので、この比較は最初からページがメモリにある状態で始まっています。
+1回目は`shared read=8`でした。追い出した直後で共有バッファに1ページもなかったので、8ページをすべてファイルから読み込んでいます。2回目と3回目は`shared hit=8`に変わり、`read`は消えました。1回目に読み込んだページが共有バッファに残っていて、それを使ったと読めます。同じページを毎回ストレージから読むのか、というこの章の問いには、共有バッファに残っていればそのページを使う、と答えられます。
 
-それでも、`Rows Removed by Filter`は毎回999です。返した1行と合わせて、**3回とも1,000行の題名を比べています**。ページの読み込みを省けることと、行を調べなくて済むことは別だと分かります。
+一方、`Rows Removed by Filter`は3回とも999です。返した1行と合わせて、**3回とも1,000行の題名を比べています**。ページを読み込み直す手間は省けても、そのページの中から条件に合う行を探す仕事は省けていません。
 
-この短い実験は、キャッシュによる大きな速度差を示す例ではありません。どの回もページを再利用しており、処理方法と調べた行数も同じです。時間はわずかに上下していますが、この出力だけでは原因を特定できません。
+SQLも、返る1行も、3回とも同じです。それなら前回の答えをそのまま返してもよさそうですが、PostgreSQLはそうしません。共有バッファに置いているのはページであって、検索の答えではないからです。1回目と2回目の間に、別の接続が同じ題名の本を追加したり、この本の題名を書き換えたりしているかもしれません。前回の1行を取っておいて返すと、その変更を見落とします。そのため、実行するたびにページの中の行を確認します。行の変更が他の接続からどう見えるかは、第11章で扱います。
 
-キャッシュによる速度差を調べるなら、ページが共有バッファにない状態と、ある状態を用意して比べる必要があります。ここでの「1回目」は、ページが共有バッファになかった状態の測定とは見なせません。
+時間は1.079 msから0.040 msへ短くなっていますが、それぞれ1回だけの測定です。また、追い出すときに8ページをファイルへ書き出したので、1回目の`read`はOSキャッシュから読んだ可能性が高く、SSDを読む時間を測ったとは言えません。この出力から確かに言えるのは、探す方法と調べた行数が同じまま、`read`が`hit`へ変わったことです。
 
 この区別で、これまでの出力も振り返れます。第1章の題名検索は`shared hit=5112 read=2241`、第2章の同じ検索は`hit=5537 read=1816`、第3章で索引を作る前の検索は`hit=7353`で`read`がありませんでした。同じ表を読み返すうちに`read`が`hit`へ置き換わったと読める可能性がありますが、この間には別のSQLも実行しているので、同じ条件の比較ではありません。
 
 :::details Planningの値は別に読む
-`Planning Time`は計画を作る時間、`Execution Time`は実行の時間です。1回目の`Planning`の下の`shared hit=3`も計画作成時のアクセスなので、検索の実行時の8回には足しません。
+`Planning Time`は計画を作る時間、`Execution Time`は実行の時間です。1回目の`Planning`の下の`shared hit=11`も計画作成時のアクセスなので、検索の実行時の8回には足しません。表の定義などを読んだ回数で、追い出した11ページとは別のものです。
 :::
 
 ## メモリの領域を用途で分ける
