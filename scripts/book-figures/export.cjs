@@ -5,7 +5,7 @@ const { pathToFileURL } = require('node:url');
 const { chromium } = require('playwright');
 
 async function main() {
-  const root = path.resolve(__dirname, '../../images/postgresql-structures-explain');
+  const root = path.resolve(__dirname, '../../images/postgresql-query-journey');
   const sources = path.join(root, 'sources');
   const browser = await chromium.launch({ headless: true });
   try {

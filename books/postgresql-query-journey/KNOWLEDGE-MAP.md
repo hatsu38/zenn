@@ -120,4 +120,4 @@ SQLを動かすプロセスが、計画に従ってデータ構造をたどり�
 
 ## 本文初稿（2026-09-22）
 
-各章を図解付きの本文へ展開した。構成段階の箇条書きは `CHAPTER-SUMMARIES.md` とHTML地図に保持し、原本は `_drafts/postgresql-structures-explain/twelve-chapter-outline/` に保管。本文のSQLと図の検証範囲は `_drafts/postgresql-structures-explain/reader-verification/README.md` を参照。
+各章を図解付きの本文へ展開した。構成段階の箇条書きは `CHAPTER-SUMMARIES.md` とHTML地図に保持し、原本は `_drafts/postgresql-query-journey/twelve-chapter-outline/` に保管。本文のSQLと図の検証範囲は `_drafts/postgresql-query-journey/verification/first-draft-20260922/README.md` を参照。

@@ -31,8 +31,8 @@
 
 ## 今回の草稿の位置付け
 
-- このフォルダは序章から第12章までの本文初稿。中高生でも追えるよう、身近な模型→具体的な操作→技術用語の順に説明する。Summaryと執筆順序はCHAPTER-SUMMARIES.md、元の箇条書きは_drafts/postgresql-structures-explain/twelve-chapter-outlineに保存している。
-- 現行の知識マッピングは同じフォルダの `KNOWLEDGE-MAP.md`。旧7章構成の出典は `_drafts/sql-data-structures/learning-outline.md`。既存の `books/sql-data-structures` の本文とは別に検討する。
+- このフォルダは序章から第12章までの本文初稿。中高生でも追えるよう、身近な模型→具体的な操作→技術用語の順に説明する。Summaryと執筆順序はCHAPTER-SUMMARIES.md、元の箇条書きは_drafts/postgresql-query-journey/twelve-chapter-outlineに保存している。
+- 現行の知識マッピングは同じフォルダの `KNOWLEDGE-MAP.md`。旧7章構成の出典 `_drafts/sql-data-structures/learning-outline.md` と初期版の `books/sql-data-structures` は2026-09-24に削除した（コミット 045d5ba に残る）。序章の過去実測のSQLとログは `_drafts/postgresql-query-journey/verification/prologue-ranking-20260921/` に移した。
 - 各章で予想・実験・図解・条件を変える課題・ランキングへの接続を具体化する。答えを予想より先に見せない。
 - ネットやAIの提案は、前提・減る仕事・確認する出力を言語化して検証する題材として扱う。
 - 既存の数値は対応する実験条件とログを確認して使う。追加提案を実測済みの結果に変えない。
@@ -42,7 +42,7 @@
 - 各章の知識マッピングに、前提・関連知識・到達点・解説の深さを記載する。
 
 - 主実験は本100万冊・読了記録200万件まで。序章の過去実測（2,000万件・一時テーブル）と条件を混同しない。
-- 検証ログは `_drafts/postgresql-structures-explain/reader-verification/` に残す。説明用の模型とログからの実測抜粋を区別する。
+- 検証ログは `_drafts/postgresql-query-journey/verification/` に残す。説明用の模型とログからの実測抜粋を区別する。
 
 ## 日本語の推敲
 
@@ -65,9 +65,9 @@
 
 ## 新構成の編集方針
 
-- 元の `books/postgresql-structures-explain` を変更せず、このフォルダで比較検討する。
+- 元の12章版 `books/postgresql-structures-explain` は2026-09-24に削除した（コミット 20b1122 に残る）。旧章番号との対応は `README.md` の「新しい順序」を参照する。
 - 第1〜3章は検索の疑問を追い、第4〜6章はアクセスの意味からページ・メモリ・接続へ進む。内部構造を先回りして網羅しない。
 - 第4・5章は別スキーマの通常テーブルをトランザクション内で作り、章末にROLLBACKする。公開用の100万冊と題名索引を残す。
-- 新しい検証ログは `_drafts/postgresql-query-journey/verification/`。コピー元の実測例と区別する。
+- 新しい検証ログは `_drafts/postgresql-query-journey/verification/`。コピー元の実測例（同じフォルダの `first-draft-20260922/`）と区別する。
 
 - 2026-09-23のユーザー指定：初期データを本100万冊とする。この変更に合わせ、読了記録も200万件を初期化し、第2章で本を増やす手順と第7章で記録を作り直す手順は置かない。第2章は同じ100万冊でLIMITの有無・検索対象を比較する。小さな説明模型、第4・5章の観察専用表、序章の過去実測は別条件として明示する。
