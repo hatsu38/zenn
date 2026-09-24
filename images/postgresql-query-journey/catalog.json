@@ -231,7 +231,7 @@
     "name": "11-snapshots",
     "chapter": 11,
     "title": "読む時点によって、見える版が変わる",
-    "description": "本文の実験順序 ／ Repeatable Readを明示して実行"
+    "description": "比較：Repeatable Readで見える版（3コマの模型）"
   },
   {
     "name": "11-visibility-map",

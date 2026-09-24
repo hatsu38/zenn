@@ -46,10 +46,10 @@ SELECT title FROM books WHERE id = 42;
 
 Aのトランザクション中の検索と、その後の検索で違いが見えるでしょうか。この結果は本書に載せていません。予想してから実行し、次の図と見比べてください。
 
-![読む時点によって、見える版が変わる](/images/postgresql-query-journey/11-snapshots.png)
-*本文の実験順序。Repeatable Readを明示して実行しています。*
-
 `Repeatable Read`の定義どおりなら、Aは途中の検索で元の題名を見て、COMMIT後の新しい検索で改訂版を見ます。もしPostgreSQLが更新のたびに行を上書きし、最新の版だけを残していたら、接続Aは古い題名を読み続けられません。ここで行のバージョンという考え方が必要になります。
+
+![本42の行はBのUPDATEで版1と版2の二つになり、Aは②でも版1を読み、COMMIT後の③で版2を読む](/images/postgresql-query-journey/11-snapshots.png)
+*②でも、Aの矢印は版1を指したままです。AがCOMMITした後の③で、初めて版2を見ます（模型）。*
 
 既定の`Read Committed`では、SQL文を実行するたびに、その開始時点の状態を見直します。そのままなら、接続Aの2回目の検索でも、Bが確定した改訂版が見えるはずです。今回はその違いを避けるために`Repeatable Read`を指定しました。[分離レベルの公式説明](https://www.postgresql.org/docs/18/transaction-iso.html)も参照できます。
 
