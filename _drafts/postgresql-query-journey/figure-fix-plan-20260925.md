@@ -698,7 +698,7 @@ pairs = [
     ('![本の番号だけでは、題名が分からない](/images/postgresql-query-journey/09-title-lookup.png)',
      '![最新の読了記録には本番号2・1・2しかなく、題名は画面の外の本の表で番号の行を探して付ける](/images/postgresql-query-journey/09-title-lookup.png)'),
     ('*学ぶきっかけを描く、説明用の場面。*',
-     '*記録の「題名 ？」から、本の表へ伸びる1本の線を見てください。*'),
+     '*記録の「題名 ？」と、本番号から本の表へ伸びる1本の線を見てください。*'),
 ]
 for old, new in pairs:
     assert text.count(old) == 1, old
