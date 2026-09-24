@@ -33,9 +33,9 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </g>
   <g id="arrows">
     <path d="M200 266 V324" class="req"/>
-    <text x="214" y="302" class="s brown">題名で探す</text>
+    <text x="228" y="302" class="s brown">題名で探す</text>
     <path d="M440 326 V268" class="flow"/>
-    <text x="454" y="302" class="s teal">1冊を返す</text>
+    <text x="468" y="302" class="s teal">1冊を返す</text>
   </g>
   <g id="database">
     <rect x="24" y="334" width="592" height="180" rx="12" fill="none" stroke="#243b50" stroke-width="2" stroke-dasharray="8 6"/>
