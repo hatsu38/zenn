@@ -81,7 +81,19 @@ ON reading_records (finished_at DESC, book_id ASC);
 ANALYZE reading_records;
 ```
 
-先ほどのSQLをもう一度測ってください。Sortが残っているか、どのIndexを使ったか、何行読んだかを比べます。この結果は本書に載せていないので、自分の出力で確かめる課題です。
+Indexを作る前と同じSQLを、もう一度測ってください。
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT book_id, finished_at
+FROM reading_records
+WHERE finished_at >= timestamp '2026-09-14'
+  AND finished_at < timestamp '2026-09-21'
+ORDER BY finished_at DESC, book_id ASC
+LIMIT 20;
+```
+
+Sortが残っているか、どのIndexを使ったか、何行読んだかを比べます。この結果は本書に載せていないので、自分の出力で確かめる課題です。
 
 上位3件を選ぶ模型で、入力の順序が分からない場合と、大きい順に取り出せる場合を並べてみます。保持する候補の数だけでなく、何件を確認するかに注目してください。
 
@@ -94,7 +106,20 @@ ANALYZE reading_records;
 
 ## たくさん欲しくなったら、もう一度比べる
 
-`LIMIT 20`を外すと、対象週のすべての行が必要になり、Indexを途中で読み終えられません。Indexを順に読む処理や、必要なら表の行を取り出す処理が増えるので、選ばれる方法も変わりえます。`LIMIT 20`を付けたときと、計画、行数、BUFFERSを比べましょう。
+`LIMIT 20`を外すと、対象週のすべての行が必要になり、Indexを途中で読み終えられません。Indexを順に読む処理や、必要なら表の行を取り出す処理が増えるので、選ばれる方法も変わりえます。
+
+`LIMIT 20`だけを外して測ります。
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT book_id, finished_at
+FROM reading_records
+WHERE finished_at >= timestamp '2026-09-14'
+  AND finished_at < timestamp '2026-09-21'
+ORDER BY finished_at DESC, book_id ASC;
+```
+
+`LIMIT 20`を付けたときと、計画、行数、BUFFERSを比べましょう。
 
 課題です。「最近の20件」に効いた日時のIndexで、「今週よく読まれた20冊」もすぐ決まるでしょうか。
 
