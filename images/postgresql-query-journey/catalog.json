@@ -105,7 +105,7 @@
     "name": "03-row-width",
     "chapter": 4,
     "title": "同じ1,000行でも、8ページと32ページ",
-    "description": "固定サイズのページに、長さの違う行を入れる"
+    "description": "比較：行の長さとページ数（実測）"
   },
   {
     "name": "03-storage-question",
