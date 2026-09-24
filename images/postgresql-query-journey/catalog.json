@@ -189,7 +189,7 @@
     "name": "09-hash-join",
     "chapter": 9,
     "title": "先に分類し、同じ箱の中で照合する",
-    "description": "Hash Joinの模型 ／ 実際のハッシュ関数とは異なる"
+    "description": "仕組み：Hash Joinの模型（本8は箱2だけを見る）"
   },
   {
     "name": "09-merge-join",
