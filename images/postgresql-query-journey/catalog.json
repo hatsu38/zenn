@@ -32,8 +32,8 @@
   {
     "name": "01-scan-and-filter",
     "chapter": 1,
-    "title": "結果が1行でも、調べたのは100万行",
-    "description": "初期データの単純な逐次走査 ／ loops = 1"
+    "title": "1行のために、100万行を比べた",
+    "description": "観察：Seq Scanの実測を帯で見る"
   },
   {
     "name": "01-index-to-row",
