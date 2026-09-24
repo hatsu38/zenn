@@ -50,8 +50,8 @@
   {
     "name": "05-linear-scan",
     "chapter": 2,
-    "title": "見つけても、そこで終わりとは限らない",
-    "description": "5冊へ縮めた模型 ／ 題名に一意性の指定なし"
+    "title": "一致した後も、最後まで比べる",
+    "description": "仕組み：5冊の模型（LIMITなし）"
   },
   {
     "name": "05-limit-search",
