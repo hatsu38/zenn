@@ -27,7 +27,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="24" y="76" width="592" height="92" rx="12" class="node"/>
     <text x="44" y="112" class="mono b">Seq Scan on books</text>
     <text x="596" y="112" text-anchor="end" class="mono m">loops=1</text>
-    <text x="44" y="148" class="mono">Filter: (title = '実験用の本 42')</text>
+    <text x="44" y="148" class="mono">Filter: (title = '実験用の本 42'::text)</text>
   </g>
   <g id="scan">
     <path d="M24 190 H576 V180 L616 206 L576 232 V222 H24 Z" class="step"/>
@@ -48,7 +48,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="320" y="426" text-anchor="middle" class="b">○ 一致 1行</text>
     <text x="320" y="454" text-anchor="middle" class="mono">rows=1.00</text>
     <path d="M434 431 H494" class="flow"/>
-    <text x="464" y="418" text-anchor="middle" class="s teal">返す</text>
+    <text x="464" y="404" text-anchor="middle" class="s teal">返す</text>
     <rect x="500" y="403" width="116" height="56" rx="10" class="panel"/>
     <text x="558" y="439" text-anchor="middle" class="b">結果</text>
   </g>

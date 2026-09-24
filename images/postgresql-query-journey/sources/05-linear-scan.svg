@@ -25,7 +25,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <text x="578" y="47" text-anchor="middle" class="tag">模型</text>
   <rect x="24" y="74" width="196" height="42" rx="21" fill="#fff" stroke="#243b50" stroke-width="2"/>
   <text x="122" y="102" text-anchor="middle" class="s">探す題名：星</text>
-  <text x="266" y="146" class="s b brown">一致した後も比べる</text>
+  <text x="266" y="146" class="s b">一致した後も比べる</text>
   <rect x="258" y="156" width="366" height="160" rx="12" fill="none" stroke="#b88020" stroke-width="4"/>
   <g id="cards">
     <rect x="24" y="166" width="108" height="76" rx="8" class="row"/>
