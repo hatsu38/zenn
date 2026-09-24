@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="788" viewBox="0 0 640 788" role="img" aria-labelledby="title">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="802" viewBox="0 0 640 802" role="img" aria-labelledby="title">
   <title id="title">本5の1行も、ページ0ごと読む</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
@@ -19,70 +19,70 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .ref{fill:none;stroke:#7d93a3;stroke-width:2;marker-end:url(#ref)}.step{fill:#fff;stroke:#243b50;stroke-width:2.5}
 .spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
   </style>
-  <rect width="640" height="788" fill="#f5f7f9"/>
+  <rect width="640" height="802" fill="#f5f7f9"/>
   <text x="24" y="48" class="h">本5の1行も、ページ0ごと読む</text>
   <rect x="486" y="22" width="130" height="36" rx="18" class="real"/>
   <text x="551" y="47" text-anchor="middle" class="tag">行数は実測</text>
   <g id="table">
-    <rect x="24" y="76" width="592" height="366" rx="12" class="panel"/>
+    <rect x="24" y="76" width="592" height="380" rx="12" class="panel"/>
     <text x="56" y="108" class="s b">観察用の表 books（1,000行）</text>
-    <text x="56" y="146" class="s b brown">読み込む単位</text>
-    <rect x="56" y="156" width="126" height="128" rx="10" class="hot"/>
-    <text x="70" y="186" class="s b">ページ0</text>
-    <text x="70" y="214" class="s b">136行</text>
-    <text x="70" y="246" class="s">本1</text>
-    <text x="70" y="272" class="s">〜136</text>
-    <rect x="194" y="156" width="126" height="128" rx="10" class="page"/>
-    <text x="208" y="186" class="s b">ページ1</text>
-    <text x="208" y="214" class="s b">136行</text>
-    <text x="208" y="246" class="s">本137</text>
-    <text x="208" y="272" class="s">〜272</text>
-    <rect x="332" y="156" width="126" height="128" rx="10" class="page"/>
-    <text x="346" y="186" class="s b">ページ2</text>
-    <text x="346" y="214" class="s b">136行</text>
-    <text x="346" y="246" class="s">本273</text>
-    <text x="346" y="272" class="s">〜408</text>
-    <rect x="470" y="156" width="126" height="128" rx="10" class="page"/>
-    <text x="484" y="186" class="s b">ページ3</text>
-    <text x="484" y="214" class="s b">136行</text>
-    <text x="484" y="246" class="s">本409</text>
-    <text x="484" y="272" class="s">〜544</text>
-    <rect x="56" y="298" width="126" height="128" rx="10" class="page"/>
-    <text x="70" y="328" class="s b">ページ4</text>
-    <text x="70" y="356" class="s b">136行</text>
-    <text x="70" y="388" class="s">本545</text>
-    <text x="70" y="414" class="s">〜680</text>
-    <rect x="194" y="298" width="126" height="128" rx="10" class="page"/>
-    <text x="208" y="328" class="s b">ページ5</text>
-    <text x="208" y="356" class="s b">136行</text>
-    <text x="208" y="388" class="s">本681</text>
-    <text x="208" y="414" class="s">〜816</text>
-    <rect x="332" y="298" width="126" height="128" rx="10" class="page"/>
-    <text x="346" y="328" class="s b">ページ6</text>
-    <text x="346" y="356" class="s b">136行</text>
-    <text x="346" y="388" class="s">本817</text>
-    <text x="346" y="414" class="s">〜952</text>
-    <rect x="470" y="298" width="126" height="128" rx="10" class="page"/>
-    <text x="484" y="328" class="s b">ページ7</text>
-    <text x="484" y="356" class="s b">48行</text>
-    <text x="484" y="388" class="s">本953</text>
-    <text x="484" y="414" class="s">〜1000</text>
+    <text x="56" y="160" class="s b">読み込む単位</text>
+    <rect x="56" y="170" width="126" height="128" rx="10" class="hot"/>
+    <text x="70" y="200" class="s b">ページ0</text>
+    <text x="70" y="228" class="s b">136行</text>
+    <text x="70" y="260" class="s">本1</text>
+    <text x="70" y="286" class="s">〜136</text>
+    <rect x="194" y="170" width="126" height="128" rx="10" class="page"/>
+    <text x="208" y="200" class="s b">ページ1</text>
+    <text x="208" y="228" class="s b">136行</text>
+    <text x="208" y="260" class="s">本137</text>
+    <text x="208" y="286" class="s">〜272</text>
+    <rect x="332" y="170" width="126" height="128" rx="10" class="page"/>
+    <text x="346" y="200" class="s b">ページ2</text>
+    <text x="346" y="228" class="s b">136行</text>
+    <text x="346" y="260" class="s">本273</text>
+    <text x="346" y="286" class="s">〜408</text>
+    <rect x="470" y="170" width="126" height="128" rx="10" class="page"/>
+    <text x="484" y="200" class="s b">ページ3</text>
+    <text x="484" y="228" class="s b">136行</text>
+    <text x="484" y="260" class="s">本409</text>
+    <text x="484" y="286" class="s">〜544</text>
+    <rect x="56" y="312" width="126" height="128" rx="10" class="page"/>
+    <text x="70" y="342" class="s b">ページ4</text>
+    <text x="70" y="370" class="s b">136行</text>
+    <text x="70" y="402" class="s">本545</text>
+    <text x="70" y="428" class="s">〜680</text>
+    <rect x="194" y="312" width="126" height="128" rx="10" class="page"/>
+    <text x="208" y="342" class="s b">ページ5</text>
+    <text x="208" y="370" class="s b">136行</text>
+    <text x="208" y="402" class="s">本681</text>
+    <text x="208" y="428" class="s">〜816</text>
+    <rect x="332" y="312" width="126" height="128" rx="10" class="page"/>
+    <text x="346" y="342" class="s b">ページ6</text>
+    <text x="346" y="370" class="s b">136行</text>
+    <text x="346" y="402" class="s">本817</text>
+    <text x="346" y="428" class="s">〜952</text>
+    <rect x="470" y="312" width="126" height="128" rx="10" class="page"/>
+    <text x="484" y="342" class="s b">ページ7</text>
+    <text x="484" y="370" class="s b">48行</text>
+    <text x="484" y="402" class="s">本953</text>
+    <text x="484" y="428" class="s">〜1000</text>
   </g>
   <g id="zoom">
-    <rect x="24" y="516" width="592" height="248" rx="12" class="page"/>
-    <text x="56" y="552" class="s b">ページ0の136行を丸ごと読み込む</text>
-    <rect x="56" y="568" width="260" height="36" rx="4" class="row"/>
-    <text x="70" y="593" class="s">1　実験用の本 1</text>
-    <text x="186" y="630" text-anchor="middle" class="s b">⋮</text>
-    <rect x="56" y="640" width="260" height="36" rx="4" class="match"/>
-    <text x="70" y="665" class="s">5　実験用の本 5</text>
-    <text x="332" y="665" class="s b teal">欲しいのは1行</text>
-    <text x="186" y="702" text-anchor="middle" class="s b">⋮</text>
-    <rect x="56" y="712" width="260" height="36" rx="4" class="row"/>
-    <text x="70" y="737" class="s">136　実験用の本 136</text>
+    <rect x="24" y="530" width="592" height="248" rx="12" class="page"/>
+    <text x="56" y="566" class="s b">ページ0の136行を丸ごと読み込む</text>
+    <rect x="56" y="582" width="260" height="36" rx="4" class="row"/>
+    <text x="70" y="607" class="s">1　実験用の本 1</text>
+    <text x="186" y="644" text-anchor="middle" class="s b">⋮</text>
+    <rect x="56" y="654" width="260" height="36" rx="4" class="match"/>
+    <text x="70" y="679" class="s">5　実験用の本 5</text>
+    <text x="332" y="679" class="s b teal">欲しいのは1行</text>
+    <text x="186" y="716" text-anchor="middle" class="s b">⋮</text>
+    <rect x="56" y="726" width="260" height="36" rx="4" class="row"/>
+    <text x="70" y="751" class="s">136　実験用の本 136</text>
   </g>
   <g id="zoom-link">
-    <path d="M54 220 H40 V510" class="ref"/>
-    <text x="52" y="469" class="s">拡大</text>
+    <path d="M54 234 H40 V524" class="ref"/>
+    <text x="52" y="483" class="s">拡大</text>
   </g>
 </svg>
