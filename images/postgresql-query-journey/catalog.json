@@ -60,6 +60,12 @@
     "description": "読み順を固定した模型 ／ SQLの行順を保証しない"
   },
   {
+    "name": "05-limit-bands",
+    "chapter": 2,
+    "title": "位置で変わる、比べる行数",
+    "description": "観察：4つの実測を帯で比べる"
+  },
+  {
     "name": "06-btree-path",
     "chapter": 3,
     "title": "8を探す：範囲を選んでから、値を探す",
