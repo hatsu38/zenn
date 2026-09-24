@@ -32,7 +32,7 @@
 ## 今回の草稿の位置付け
 
 - このフォルダは序章から第12章までの本文初稿。中高生でも追えるよう、身近な模型→具体的な操作→技術用語の順に説明する。Summaryと執筆順序はCHAPTER-SUMMARIES.md、元の箇条書きは_drafts/postgresql-structures-explain/twelve-chapter-outlineに保存している。
-- 現行の知識マッピングは同じフォルダの `KNOWLEDGE-MAP.md`。旧7章構成の出典は `_drafts/sql-data-structures/learning-outline.md`。既存の `books/sql-data-structures` の本文とは別に検討する。
+- 現行の知識マッピングは同じフォルダの `KNOWLEDGE-MAP.md`。旧7章構成の出典 `_drafts/sql-data-structures/learning-outline.md` と初期版の `books/sql-data-structures` は2026-09-24に削除した（コミット 045d5ba に残る）。序章の過去実測のSQLとログは `_drafts/postgresql-query-journey/verification/prologue-ranking-20260921/` に移した。
 - 各章で予想・実験・図解・条件を変える課題・ランキングへの接続を具体化する。答えを予想より先に見せない。
 - ネットやAIの提案は、前提・減る仕事・確認する出力を言語化して検証する題材として扱う。
 - 既存の数値は対応する実験条件とログを確認して使う。追加提案を実測済みの結果に変えない。
