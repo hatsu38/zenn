@@ -207,7 +207,7 @@
     "name": "09-title-lookup",
     "chapter": 9,
     "title": "本の番号だけでは、題名が分からない",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "description": "問い：記録の本番号から題名を探す"
   },
   {
     "name": "10-estimate-propagation",
