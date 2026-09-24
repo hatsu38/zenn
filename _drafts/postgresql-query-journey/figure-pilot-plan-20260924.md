@@ -299,7 +299,7 @@ function findSmallFonts(svgText, minSize) {
 - [ ] **Step 9: テストが通ることを確かめる**
 
 Run: `node --test scripts/book-figures/check-figures.test.cjs`
-Expected: `# pass 5`、`# fail 0`。
+Expected: `ℹ pass 5`、`ℹ fail 0`（Node 24 の既定の表示。✔/✖ で1件ずつ見たいときは`--test-reporter=spec`を付ける）。
 
 - [ ] **Step 10: 試作前の6枚で、確認スクリプトが問題を見つけることを確かめる**
 
@@ -370,7 +370,7 @@ Expected: `index.html を更新しました（46枚）`と`一致`。差分が�
 ```
 
 Run: `cd scripts/book-figures && npm test && cd ../..`
-Expected: `# pass 5`。
+Expected: `ℹ pass 5`。
 
 - [ ] **Step 14: 第1〜2章の項目を、本文で出てくる順に並べ替える**
 
@@ -442,7 +442,7 @@ Expected: エラーなし、`index.html を更新しました（46枚）`。`git
     }
 ```
 
-`preview_start`で`zenn-preview`を起動し、`http://localhost:8000/books/postgresql-query-journey/01-explain-basics`を開く。
+`preview_start`で`zenn-preview`を起動し、`http://localhost:8000/books/postgresql-query-journey/01-explain-basics%252Emd`を開く（章のURLは`.md`を二重にエンコードした`%252Emd`で終わる）。ポート8000で、このリポジトリの`zenn preview`がすでに動いている場合（`ps`で`zenn preview`、作業ディレクトリがリポジトリ直下）は、起動せずに`navigate`でそのURLを開く。
 Expected: 第1章が表示され、`read_console_messages`にエラーがない。確かめたら`preview_stop`で止める。`.claude/launch.json`はgitの管理外なので、`git status`に出ないことも確かめる。
 
 - [ ] **Step 16: コミットする**
@@ -2028,7 +2028,7 @@ git commit -m "docs(query-journey): 第2章の場面の絵を、同じ100万冊�
 - [ ] **Step 1: 試作の8枚が約束を満たしていることを確かめる**
 
 Run: `node scripts/book-figures/check-figures.cjs 01-search-window 01-explain-stages 01-scan-and-filter 01-index-to-row 05-growing-library 05-linear-scan 05-limit-search 05-limit-bands && node --test scripts/book-figures/check-figures.test.cjs`
-Expected: 8枚とも✓、`8枚中 8枚が約束を満たしています`、`# pass 5`。
+Expected: 8枚とも✓、`8枚中 8枚が約束を満たしています`、`ℹ pass 5`。
 
 - [ ] **Step 2: 本文の参照がすべて実在する画像を指していることを確かめる**
 
@@ -2037,12 +2037,12 @@ Expected: `確認終わり`だけが表示される（「ない:」の行がな�
 
 - [ ] **Step 3: Zennのプレビューで、スマホ幅とPC幅の表示を確かめる**
 
-`preview_start`で`zenn-preview`を起動する。次の2ページで、それぞれ`resize_window`の`mobile`（幅375）と`desktop`に切り替えて`computer`の`screenshot`を撮り、試作の図のところまでスクロールして確かめる。
+`preview_start`で`zenn-preview`を起動する（ポート8000で、このリポジトリの`zenn preview`がすでに動いていれば、起動せずにそれを使う）。次の2ページで、それぞれ`resize_window`の`mobile`（幅375）と`desktop`に切り替えて`computer`の`screenshot`を撮り、試作の図のところまでスクロールして確かめる。
 
-- `http://localhost:8000/books/postgresql-query-journey/01-explain-basics`
-- `http://localhost:8000/books/postgresql-query-journey/02-linear-search`
+- `http://localhost:8000/books/postgresql-query-journey/01-explain-basics%252Emd`
+- `http://localhost:8000/books/postgresql-query-journey/02-linear-search%252Emd`
 
-確かめること：画像がすべて表示される（`javascript_tool`で`[...document.images].filter(i => i.src.includes('postgresql-query-journey') && !(i.complete && i.naturalWidth > 0)).length`が`0`）。スマホ幅で図の文字が読める。キャプションが画像の直下に斜体で出る。`read_console_messages`の`onlyErrors`にエラーがない。終わったら`resize_window`を`desktop`に戻し、`preview_stop`で止める。
+確かめること：画像がすべて配信される（Zennは画像を遅延読み込みするので、`complete`ではなく取得で確かめる。`javascript_tool`で`await Promise.all([...document.images].filter(i => i.src.includes('postgresql-query-journey')).map(async i => (await fetch(i.src)).status))`がすべて`200`）。スマホ幅で図の文字が読める。キャプションが画像の直下に斜体で出る。`read_console_messages`の`onlyErrors`にエラーがない。終わったら`resize_window`を`desktop`に戻す。自分で起動した場合だけ`preview_stop`で止める。
 
 - [ ] **Step 4: 図の枚数を更新する**
 
