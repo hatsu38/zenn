@@ -1488,7 +1488,7 @@ Expected: `✗ 01-explain-stages`、`SVG がない: images/postgresql-query-jour
 
 ```xml
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="410" viewBox="0 0 640 410" role="img" aria-labelledby="title">
-  <title id="title">計画・実行・表示のどこまで進むか</title>
+  <title id="title">どの段階まで進むか</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
     <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
@@ -2115,3 +2115,4 @@ PRのURLと、確認してほしい点（上の「試作で決めたいこと」
 - 焦点の橙の枠は、見せたい位置（止まった位置など）だけに付ける。量を見せる帯の上に大きな枠を重ねない。
 - 図の中の言葉（段の名前や焦点のラベル）が、各行の説明文と食い違わないかを読み比べる。
 - 約束の「画像の中に置くのは短い見出しと札だけ」は、図の中のラベルと字面上ぶつかる。「画像の中の文字は、見出し・札・部品の名前・矢印の動詞・出力の項目名と値に限り、副題・断り書き・他の章への参照はキャプションへ回す」に言い換える。
+- 断り書きの検査は語で拾うので、注意の語を含まない副題（例：「サンプルの2冊・3件で考える」）は通ってしまう。見出しのすぐ下の文や「。」で終わる文を形で拾う検査を足し、「ではない」が正当なラベルに当たったときの扱い（言い換えるか、除外の仕組みを作るか）も決めておく。
