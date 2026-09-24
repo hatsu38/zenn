@@ -1,0 +1,161 @@
+-- 第5章：共有バッファから表のページを追い出してから、同じ検索を3回実行する。
+\set ON_ERROR_STOP on
+SELECT version();
+                                                         version                                                          
+--------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+SELECT now() AT TIME ZONE 'Asia/Tokyo' AS jst_now;
+          jst_now          
+---------------------------
+ 2026-09-25 01:39:51.62756
+(1 row)
+
+SHOW shared_buffers;
+ shared_buffers 
+----------------
+ 128MB
+(1 row)
+
+SHOW work_mem;
+ work_mem 
+----------
+ 4MB
+(1 row)
+
+SET max_parallel_workers_per_gather = 0;
+SET
+SET jit = off;
+SET
+SET work_mem = '4MB';
+SET
+SELECT count(*) FROM public.books;
+  count  
+---------
+ 1000000
+(1 row)
+
+SELECT indexname FROM pg_indexes WHERE schemaname = 'public' AND tablename = 'books' ORDER BY 1;
+    indexname    
+-----------------
+ books_pkey
+ books_title_idx
+(2 rows)
+
+BEGIN;
+BEGIN
+CREATE SCHEMA book_observation;
+CREATE SCHEMA
+CREATE TABLE book_observation.books
+  (LIKE public.books INCLUDING DEFAULTS INCLUDING CONSTRAINTS);
+CREATE TABLE
+ALTER TABLE book_observation.books ADD PRIMARY KEY (id);
+ALTER TABLE
+INSERT INTO book_observation.books
+SELECT id, title FROM public.books WHERE id BETWEEN 1 AND 1000;
+INSERT 0 1000
+SET LOCAL search_path = book_observation, public;
+SET
+ANALYZE books;
+ANALYZE
+SELECT count(*) FROM books;
+ count 
+-------
+  1000
+(1 row)
+
+-- 観察用の表のページが、いま共有バッファに何ページあるか
+CREATE EXTENSION IF NOT EXISTS pg_buffercache;
+CREATE EXTENSION
+SELECT count(*) AS buffers_of_books
+FROM pg_buffercache
+WHERE relfilenode = pg_relation_filenode('books');
+ buffers_of_books 
+------------------
+               11
+(1 row)
+
+-- 共有バッファから追い出す
+SELECT * FROM pg_buffercache_evict_relation('books');
+ buffers_evicted | buffers_flushed | buffers_skipped 
+-----------------+-----------------+-----------------
+              11 |               8 |               0
+(1 row)
+
+SELECT count(*) AS buffers_of_books
+FROM pg_buffercache
+WHERE relfilenode = pg_relation_filenode('books');
+ buffers_of_books 
+------------------
+                0
+(1 row)
+
+-- 1回目
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title = '実験用の本 42';
+                                             QUERY PLAN                                             
+----------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.204..1.061 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999
+   Buffers: shared read=8
+ Planning:
+   Buffers: shared hit=11
+ Planning Time: 0.102 ms
+ Execution Time: 1.079 ms
+(8 rows)
+
+-- 2回目
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title = '実験用の本 42';
+                                             QUERY PLAN                                             
+----------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.005..0.036 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999
+   Buffers: shared hit=8
+ Planning Time: 0.016 ms
+ Execution Time: 0.040 ms
+(6 rows)
+
+-- 3回目
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title = '実験用の本 42';
+                                             QUERY PLAN                                             
+----------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.004..0.071 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999
+   Buffers: shared hit=8
+ Planning Time: 0.007 ms
+ Execution Time: 0.073 ms
+(6 rows)
+
+SELECT count(*) AS buffers_of_books
+FROM pg_buffercache
+WHERE relfilenode = pg_relation_filenode('books');
+ buffers_of_books 
+------------------
+                8
+(1 row)
+
+ROLLBACK;
+ROLLBACK
+-- 片付けの確認
+SELECT nspname FROM pg_namespace WHERE nspname = 'book_observation';
+ nspname 
+---------
+(0 rows)
+
+SELECT extname FROM pg_extension WHERE extname = 'pg_buffercache';
+ extname 
+---------
+(0 rows)
+
+SELECT count(*) FROM public.books;
+  count  
+---------
+ 1000000
+(1 row)
+

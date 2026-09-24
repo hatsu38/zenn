@@ -2,7 +2,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="955" viewBox="0 0 640 955" role="img" aria-labelledby="title description">
   
 
-  <title id="title">索引だけで返せるかは、可視性にもよる</title>
+  <title id="title">Indexだけで返せるかは、可視性にもよる</title>
   <desc id="description">Index Only Scanの模型 ／ ページごとに判断</desc>
   
 
@@ -20,13 +20,13 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <rect width="640" height="955" fill="#f5f7f9"/>
   
 
-  <text x="28" y="45" class="title" text-anchor="start">索引だけで返せるかは、可視性にもよる</text>
+  <text x="28" y="45" class="title" text-anchor="start">Indexだけで返せるかは、可視性にもよる</text>
   <text x="28" y="82" class="muted" text-anchor="start">Index Only Scanの模型 ／ ページごとに判断</text>
   
 
   <g id="diagram">
     <rect x="20" y="110" width="600" height="230" rx="18" class="panel"/>
-    <text x="40" y="150" class="bold" text-anchor="start">前提：必要な列が索引にある</text>
+    <text x="40" y="150" class="bold" text-anchor="start">前提：必要な列がIndexにある</text>
     <rect x="150" y="185" width="155" height="60" rx="9" class="card"/>
     <text x="227.5" y="225.0" class="value" text-anchor="middle">id</text>
     <rect x="330" y="185" width="155" height="60" rx="9" class="card"/>
@@ -35,7 +35,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="20" y="370" width="600" height="250" rx="18" class="panel"/>
     <text x="40" y="410" class="bold" text-anchor="start">可視性マップで確認できるページ</text>
     <rect x="46" y="450" width="245" height="54" rx="12" class="card"/>
-    <text x="168.5" y="485" class="" text-anchor="middle">索引から値を得る</text>
+    <text x="168.5" y="485" class="" text-anchor="middle">Indexから値を得る</text>
     <rect x="355" y="450" width="240" height="54" rx="12" class="card"/>
     <text x="475.0" y="485" class="" text-anchor="middle">表を見ずに返せる</text>
     <path d="M298 477 L343 477" class="arrow"/>
@@ -43,7 +43,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="20" y="650" width="600" height="265" rx="18" class="panel"/>
     <text x="40" y="690" class="bold" text-anchor="start">確認できないページ</text>
     <rect x="46" y="730" width="245" height="54" rx="12" class="box"/>
-    <text x="168.5" y="765" class="" text-anchor="middle">索引から値を得る</text>
+    <text x="168.5" y="765" class="" text-anchor="middle">Indexから値を得る</text>
     <rect x="355" y="730" width="240" height="54" rx="12" class="hot"/>
     <text x="475.0" y="765" class="" text-anchor="middle">表の行を確認する</text>
     <path d="M298 757 L343 757" class="arrow"/>
