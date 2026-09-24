@@ -10,12 +10,12 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 序章 | こんな読書記録サービスを作ります | [SVG](sources/00-reading-service.svg) | [PNG](00-reading-service.png) |
 | 序章 | 本の冊数と、読了記録の件数 | [SVG](sources/00-books-and-records.svg) | [PNG](00-books-and-records.png) |
 | 序章 | 20冊を返すまでに、何をしている？ | [SVG](sources/00-ranking-question.svg) | [PNG](00-ranking-question.png) |
-| 第1章 | 番号で場所を探し、表から行を取り出す | [SVG](sources/01-index-to-row.svg) | [PNG](01-index-to-row.png) |
-| 第1章 | 結果が1行でも、調べたのは100万行 | [SVG](sources/01-scan-and-filter.svg) | [PNG](01-scan-and-filter.png) |
 | 第1章 | まずは、1冊だけ探してみる | [SVG](sources/01-search-window.svg) | [PNG](01-search-window.png) |
-| 第2章 | LIMIT 1でも、探す量は変わる | [SVG](sources/05-limit-search.svg) | [PNG](05-limit-search.png) |
-| 第2章 | 見つけても、そこで終わりとは限らない | [SVG](sources/05-linear-scan.svg) | [PNG](05-linear-scan.png) |
+| 第1章 | 結果が1行でも、調べたのは100万行 | [SVG](sources/01-scan-and-filter.svg) | [PNG](01-scan-and-filter.png) |
+| 第1章 | 番号で場所を探し、表から行を取り出す | [SVG](sources/01-index-to-row.svg) | [PNG](01-index-to-row.png) |
 | 第2章 | 100万冊から、1冊見つけたら止める？ | [SVG](sources/05-growing-library.svg) | [PNG](05-growing-library.png) |
+| 第2章 | 見つけても、そこで終わりとは限らない | [SVG](sources/05-linear-scan.svg) | [PNG](05-linear-scan.png) |
+| 第2章 | LIMIT 1でも、探す量は変わる | [SVG](sources/05-limit-search.svg) | [PNG](05-limit-search.png) |
 | 第3章 | 8を探す：範囲を選んでから、値を探す | [SVG](sources/06-btree-path.svg) | [PNG](06-btree-path.png) |
 | 第3章 | 4以上8以下なら、隣の葉も読む | [SVG](sources/06-range-scan.svg) | [PNG](06-range-scan.png) |
 | 第3章 | 目録も大きい。それでも速い？ | [SVG](sources/06-catalog-question.svg) | [PNG](06-catalog-question.png) |

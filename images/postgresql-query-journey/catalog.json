@@ -24,10 +24,10 @@
     "description": "処理量を調べる前の見取り図 ／ 行数の縮尺ではない"
   },
   {
-    "name": "01-index-to-row",
+    "name": "01-search-window",
     "chapter": 1,
-    "title": "番号で場所を探し、表から行を取り出す",
-    "description": "Index Scanの模型 ／ 索引の内部は第3章で扱う"
+    "title": "まずは、1冊だけ探してみる",
+    "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
     "name": "01-scan-and-filter",
@@ -36,16 +36,16 @@
     "description": "初期データの単純な逐次走査 ／ loops = 1"
   },
   {
-    "name": "01-search-window",
+    "name": "01-index-to-row",
     "chapter": 1,
-    "title": "まずは、1冊だけ探してみる",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "title": "番号で場所を探し、表から行を取り出す",
+    "description": "Index Scanの模型 ／ 索引の内部は第3章で扱う"
   },
   {
-    "name": "05-limit-search",
+    "name": "05-growing-library",
     "chapter": 2,
-    "title": "LIMIT 1でも、探す量は変わる",
-    "description": "読み順を固定した模型 ／ SQLの行順を保証しない"
+    "title": "100万冊から、1冊見つけたら止める？",
+    "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
     "name": "05-linear-scan",
@@ -54,10 +54,10 @@
     "description": "5冊へ縮めた模型 ／ 題名に一意性の指定なし"
   },
   {
-    "name": "05-growing-library",
+    "name": "05-limit-search",
     "chapter": 2,
-    "title": "100万冊から、1冊見つけたら止める？",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "title": "LIMIT 1でも、探す量は変わる",
+    "description": "読み順を固定した模型 ／ SQLの行順を保証しない"
   },
   {
     "name": "06-btree-path",
