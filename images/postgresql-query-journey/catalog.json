@@ -98,8 +98,8 @@
   {
     "name": "03-pages-and-rows",
     "chapter": 4,
-    "title": "表の中にページ、ページの中に行",
-    "description": "説明用の模型 ／ 1ページ3行は実際の容量ではない"
+    "title": "本5の1行も、ページ0ごと読む",
+    "description": "仕組み：観察用の表の8ページと行（行数は実測）"
   },
   {
     "name": "03-row-width",
