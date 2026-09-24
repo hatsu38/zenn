@@ -494,7 +494,6 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </style>
   <rect width="640" height="950" fill="#f5f7f9"/>
   <text x="24" y="48" class="h">図の部品見本</text>
-  <text x="24" y="80" class="m">新しい図は、このSVGの defs と style を写して使う</text>
   <g id="row-card">
     <text x="24" y="124" class="s b">行カード</text>
     <rect x="220" y="100" width="240" height="36" rx="4" class="row"/>
@@ -536,7 +535,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="24" y="572" class="s b">焦点</text>
     <rect x="220" y="548" width="160" height="36" rx="6" class="hot"/>
     <text x="300" y="573" text-anchor="middle" class="s b">注目する所</text>
-    <text x="400" y="572" class="s b">読まない</text>
+    <text x="400" y="572" class="s b">比べない</text>
     <rect x="496" y="548" width="120" height="36" rx="6" class="ghost"/>
     <text x="556" y="573" text-anchor="middle" class="m">本3</text>
   </g>
@@ -688,7 +687,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="24" y="76" width="592" height="92" rx="12" class="node"/>
     <text x="44" y="112" class="mono b">Seq Scan on books</text>
     <text x="596" y="112" text-anchor="end" class="mono m">loops=1</text>
-    <text x="44" y="148" class="mono">Filter: (title = '実験用の本 42')</text>
+    <text x="44" y="148" class="mono">Filter: (title = '実験用の本 42'::text)</text>
   </g>
   <g id="scan">
     <path d="M24 190 H576 V180 L616 206 L576 232 V222 H24 Z" class="step"/>
@@ -709,7 +708,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="320" y="426" text-anchor="middle" class="b">○ 一致 1行</text>
     <text x="320" y="454" text-anchor="middle" class="mono">rows=1.00</text>
     <path d="M434 431 H494" class="flow"/>
-    <text x="464" y="418" text-anchor="middle" class="s teal">返す</text>
+    <text x="464" y="404" text-anchor="middle" class="s teal">返す</text>
     <rect x="500" y="403" width="116" height="56" rx="10" class="panel"/>
     <text x="558" y="439" text-anchor="middle" class="b">結果</text>
   </g>
@@ -855,12 +854,12 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="24" y="224" class="s b">本42</text>
     <text x="24" y="252" class="mono">LIMIT 1</text>
     <rect x="200" y="202" width="416" height="36" rx="4" class="skip"/>
+    <rect x="192" y="192" width="36" height="56" rx="10" class="hot"/>
     <rect x="200" y="202" width="4" height="36" class="band"/>
     <circle cx="208" cy="220" r="7" fill="#fff" stroke="#176e65" stroke-width="3"/>
     <path d="M218 194 V246" stroke="#243b50" stroke-width="3"/>
-    <rect x="232" y="204" width="340" height="32" rx="6" class="hot"/>
-    <text x="402" y="228" text-anchor="middle" class="s b">ここで止まった（帯のほぼ0%）</text>
-    <text x="616" y="268" text-anchor="end" class="s b brown">42行</text>
+    <text x="240" y="228" class="s b">ここで止まった（帯のほぼ0%）</text>
+    <text x="616" y="268" text-anchor="end" class="s b">42行</text>
   </g>
   <g id="row-3">
     <text x="24" y="314" class="s b">本999999</text>
@@ -1194,7 +1193,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <text x="578" y="47" text-anchor="middle" class="tag">模型</text>
   <rect x="24" y="74" width="196" height="42" rx="21" fill="#fff" stroke="#243b50" stroke-width="2"/>
   <text x="122" y="102" text-anchor="middle" class="s">探す題名：星</text>
-  <text x="266" y="146" class="s b brown">一致した後も比べる</text>
+  <text x="266" y="146" class="s b">一致した後も比べる</text>
   <rect x="258" y="156" width="366" height="160" rx="12" fill="none" stroke="#b88020" stroke-width="4"/>
   <g id="cards">
     <rect x="24" y="166" width="108" height="76" rx="8" class="row"/>
@@ -1374,7 +1373,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="70" y="228" text-anchor="middle" class="s">43</text>
     <text x="108" y="228" class="s m">▸ 場所</text>
     <text x="24" y="298" class="mono">Index Cond: (id = 42)</text>
-    <text x="24" y="328" class="m">索引も何ページかある（中身は第3章）</text>
+    <text x="24" y="328" class="m">索引も何ページかある</text>
   </g>
   <text x="350" y="300" class="s">場所をたどる</text>
   <g id="table">
@@ -1389,7 +1388,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </g>
   <path d="M186 181 C 568 181, 568 445, 380 445" class="ref"/>
   <text x="24" y="548" class="s"><tspan class="mono">Rows Removed by Filter</tspan> なし＝捨てた行がない</text>
-  <text x="24" y="582" class="s"><tspan class="mono">shared hit=7</tspan>＝索引と表のページを使った回数</text>
+  <text x="24" y="582" class="s"><tspan class="mono">shared hit=7</tspan>＝ページを使った回数（索引も含む）</text>
 </svg>
 ```
 
@@ -1510,14 +1509,14 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
   </style>
   <rect width="640" height="410" fill="#f5f7f9"/>
-  <text x="24" y="48" class="h">計画・実行・表示のどこまで進むか</text>
+  <text x="24" y="48" class="h">どの段階まで進むか</text>
   <g id="stages">
     <path d="M176 74 H314 L332 96 L314 118 H176 Z" class="step"/>
     <text x="250" y="104" text-anchor="middle" class="s b">計画する</text>
     <path d="M322 74 H460 L478 96 L460 118 H322 L340 96 Z" class="step"/>
     <text x="400" y="104" text-anchor="middle" class="s b">実行する</text>
     <path d="M468 74 H616 V118 H468 L486 96 Z" class="step"/>
-    <text x="548" y="104" text-anchor="middle" class="s b">結果を表示</text>
+    <text x="548" y="104" text-anchor="middle" class="s b">行を画面へ</text>
   </g>
   <g id="select">
     <text x="24" y="176" class="mono b">SELECT</text>
@@ -1539,8 +1538,8 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <g id="analyze">
     <text x="24" y="344" class="mono b">EXPLAIN</text>
     <text x="24" y="372" class="mono b">ANALYZE</text>
-    <rect x="476" y="306" width="140" height="34" rx="6" class="hot"/>
-    <text x="546" y="330" text-anchor="middle" class="s b">表示しない</text>
+    <rect x="466" y="306" width="150" height="34" rx="6" class="hot"/>
+    <text x="541" y="330" text-anchor="middle" class="s b">行は出さない</text>
     <path d="M200 356 H400" fill="none" stroke="#277b74" stroke-width="4"/>
     <path d="M400 356 H548" fill="none" stroke="#b5c2cc" stroke-width="3" stroke-dasharray="8 6"/>
     <circle cx="250" cy="356" r="9" fill="#277b74"/>
@@ -2090,17 +2089,29 @@ PRのURLと、確認してほしい点（上の「試作で決めたいこと」
 
 ## 実装で直した点（2026-09-25）
 
-計画の SVG のまま描くと問題が出た4枚は、実装で直した。上の Task 3・4・7・9 の SVG は、直した後の内容に同期してある。
+計画の SVG のまま描くと問題が出た図は、タスクごとのレビューと、ブランチ全体の最終レビューのあとで直した。上の Task 2〜10 の SVG は、直した後の内容に同期してある。
 
-| Task | 図 | 計画のままで出た問題 | 直し方 |
-| --- | --- | --- | --- |
-| 3 | `01-scan-and-filter` | 結果へ向かう矢印に動詞のラベルがない | 矢印の上に「返す」を足した |
-| 4 | `05-limit-bands` | 「実測 2026-09-23」の札と「ここで止まった」の橙の枠が文字より狭く、文字が線に重なった | 札を幅220、枠を幅340に広げ、文字を中央に置き直した |
-| 7 | `01-index-to-row` | 参照の矢印を表のページより前に描いたため、表の塗りに矢印の後半と矢じりが隠れた | 矢印を表のページの後ろに描く順へ移した |
-| 9 | `01-search-window` | 矢じり（線の太さに合わせて30単位の大きさになる）がラベルの先頭の文字に触れた | 2つのラベルを右へ14ずらした |
+| Task | 図 | 計画のままで出た問題 | 直し方 | 見つけた場面 |
+| --- | --- | --- | --- | --- |
+| 2 | 部品見本 | 見出しの下に副題があった | 副題を外した | タスクのレビュー |
+| 2 | 部品見本 | 破線の例のラベルが「読まない」で、試作の「比べない」と食い違った | 「比べない」にした | 最終レビュー |
+| 3 | `01-scan-and-filter` | 結果へ向かう矢印に動詞のラベルがない | 矢印の上に「返す」を足した | タスクのレビュー |
+| 3 | `01-scan-and-filter` | 「返す」が矢じりに触れた。Filter の行に出力の`::text`がなかった | 「返す」を上へ離し、Filter の行を出力と同じ字面にした | 最終レビュー |
+| 4 | `05-limit-bands` | 「実測 2026-09-23」の札と「ここで止まった」の橙の枠が文字より狭く、文字が線に重なった | 札を幅220にし、文字を中央に置き直した | コントローラーの確認 |
+| 4 | `05-limit-bands` | 橙の枠が比べなかった区間の大半を覆い、スマホ幅では橙で埋まった帯に見えた。「42行」に要求の茶色を使った | 橙は帯の先頭の小さな枠だけにし、ラベルを枠なしで帯の中に置いた。「42行」を紺にした | 最終レビュー |
+| 6 | `05-linear-scan` | 「一致した後も比べる」に要求の茶色を使った | 紺にした | 最終レビュー |
+| 7 | `01-index-to-row` | 参照の矢印を表のページより前に描いたため、表の塗りに矢印の後半と矢じりが隠れた | 矢印を表のページの後ろに描く順へ移した | 実装担当 |
+| 7 | `01-index-to-row` | 「shared hit=7＝索引と表のページを使った回数」が実測と違った。7のうち3回は、接続して最初の検索だけに入るシステムカタログの読み取り（同じ接続の2回目は hit=4） | 「ページを使った回数（索引も含む）」にした。画像の中の「（中身は第3章）」を外し、キャプションに残した | 最終レビュー |
+| 8 | `01-explain-stages` | 3段目の「結果を表示」と焦点の「表示しない」の真下に、各行の「…を表示」が並び、矛盾して読めた | 3段目を「行を画面へ」、焦点を「行は出さない」、見出しを「どの段階まで進むか」にした | 最終レビュー |
+| 9 | `01-search-window` | 矢じり（線の太さに合わせて30単位の大きさになる）がラベルの先頭の文字に触れた | 2つのラベルを右へ14ずらした | タスクのレビュー |
+
+道具も最終レビューのあとで直した。書き出しの処理は`scripts/book-figures/export.cjs`にまとめ、Task 1 で置き換えた`images/postgresql-query-journey/export.cjs`は、それを読み込む1行にした（`npm run export`が図の名前を受け取れない古い複製を動かしていたため）。断り書きの検査にはパターン（※、説明用、省略、模式、架空など）を足し、`build-index.cjs`は直接実行したときだけ動くようにした。
 
 横展開の計画に活かすこと：
 
-- 文字のはみ出しは目で見るだけでは見落とした（実装担当とレビュー担当の両方が見落とした）。ブラウザで文字の実寸（getBBox）を測り、すぐ下に描いた図形と比べる。この試作では SDD の作業用スクリプト（コミットしていない）で測った。横展開では `check-figures.cjs` に取り込むとよい。
+- 文字のはみ出しは、目で見るだけでは見落とした（実装担当とレビュー担当の両方が見落とした）。ブラウザで文字の実寸（getBBox）を測り、すぐ下に描いた図形と比べる。この試作では SDD の作業用スクリプト（コミットしていない）で測った。横展開では`check-figures.cjs`に取り込み、文字と矢じりの重なりも測る。
+- 図に書き込む出力の数値は、同じ接続で2回実行して、1回目だけの読み取り（システムカタログなど）が混ざっていないかを確かめる。内訳を描くときは、その内訳を実測で確かめてからにする。
 - 線や矢印は、重なる図形より後に描く。矢じりの近くのラベルは、矢じりの大きさ（線の太さ×10単位）の分だけ離す。
-- 約束の「画像の中に置くのは短い見出しと札だけ」は、図の中のラベルと字面上ぶつかる。「副題と断り書きは置かない」に言い換える。
+- 焦点の橙の枠は、見せたい位置（止まった位置など）だけに付ける。量を見せる帯の上に大きな枠を重ねない。
+- 図の中の言葉（段の名前や焦点のラベル）が、各行の説明文と食い違わないかを読み比べる。
+- 約束の「画像の中に置くのは短い見出しと札だけ」は、図の中のラベルと字面上ぶつかる。「画像の中の文字は、見出し・札・部品の名前・矢印の動詞・出力の項目名と値に限り、副題・断り書き・他の章への参照はキャプションへ回す」に言い換える。
