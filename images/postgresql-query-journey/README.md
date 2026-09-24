@@ -81,7 +81,7 @@ NODE_PATH=./scripts/book-figures/node_modules node images/postgresql-query-journ
 NODE_PATH=./scripts/book-figures/node_modules node images/postgresql-query-journey/export.cjs 01-scan-and-filter 05-limit-bands
 ```
 
-`.svg`で終わるパスを渡すと、そのSVGを同じ場所のPNGへ書き出します（例：`parts/figure-parts.svg`）。Playwrightは`scripts/book-figures`で`npm install`して入れます。
+`.svg`で終わるパスを渡すと、そのSVGを同じ場所のPNGへ書き出します（例：`parts/figure-parts.svg`）。Playwrightは`scripts/book-figures`で`npm install`して入れます。書き出しの処理は`scripts/book-figures/export.cjs`にあり、`scripts/book-figures`で`npm run export -- 01-scan-and-filter`としても同じです。
 
 PNGは横1280ピクセルで、高さは図ごとに異なります。共有バッファの配置図は1280×1818、ヒープの4コマは1280×3580ピクセルです。本文では横幅に合わせて縮小されます。文字やコマの配置を変えたら、幅360pxの表示も確認してください。
 
@@ -106,8 +106,8 @@ node scripts/book-figures/build-index.cjs
 ## 本文に掲載する
 
 ```md
-![絵を見なくても変化が伝わる代替テキスト](/images/postgresql-query-journey/shared-buffer-reuse.png)
-*説明用の模型。どの条件の例なのかを補足する。*
+![100万行の帯を先頭から最後まで比べ、999,999行を除外して1行だけを返す](/images/postgresql-query-journey/01-scan-and-filter.png)
+*帯の長さで、除外した行と返した1行の差を見てください（件数は実測）。*
 ```
 
 本文で見る目的を示し、図の後で変化と理由を説明します。実測値ではない図には模型と明記し、数値や構造の正確さを確認してから掲載します。

@@ -9,7 +9,7 @@ const IMAGE_DIR = path.join(ROOT, 'images/postgresql-query-journey');
 const BOOK_DIR = path.join(ROOT, 'books/postgresql-query-journey');
 const MIN_FONT_SIZE = 22;
 const MAX_ASPECT_RATIO = 1.3;
-const DISCLAIMER_PATTERNS = [/ではありません/, /学ぶきっかけ/, / ／ /];
+const DISCLAIMER_PATTERNS = [/ではありません/, /ではない/, /学ぶきっかけ/, / ／ /, /※/, /説明用/, /省略/, /模式/, /架空/, /再現していません/];
 
 // SVGの中の font-size（属性とスタイルの両方）のうち、minSize より小さい値を、出てきた順に返す。
 // <style> で定義しただけで使っていないクラスも数える（厳しめ）。px 以外の単位は数字だけを見るので、

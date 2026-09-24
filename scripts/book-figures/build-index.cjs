@@ -30,4 +30,4 @@ function main() {
   console.log(`index.html を更新しました（${catalog.length}枚）`);
 }
 
-main();
+if (require.main === module) main();
