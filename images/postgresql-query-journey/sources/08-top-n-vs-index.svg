@@ -45,7 +45,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="368" y="319" width="66" height="60" rx="9" class="hot"/>
     <text x="401.0" y="359.0" class="value" text-anchor="middle">5</text>
     <rect x="20" y="445" width="600" height="320" rx="18" class="panel"/>
-    <text x="40" y="485" class="bold" text-anchor="start">大きい順の索引 → 上位3件</text>
+    <text x="40" y="485" class="bold" text-anchor="start">大きい順のIndex → 上位3件</text>
     <rect x="49" y="526" width="94" height="60" rx="9" class="hot"/>
     <text x="96.0" y="566.0" class="value" text-anchor="middle">9</text>
     <rect x="161" y="526" width="94" height="60" rx="9" class="hot"/>

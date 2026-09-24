@@ -38,8 +38,8 @@
   <path d="M320 560 L320 591" class="arrow"/>
   <rect x="25" y="600" width="590" height="133" rx="12" class="panel"/>
   <text x="45" y="637" class="bold">③ 計画を作る（プランナ）</text>
-  <text x="45" y="678" class="small">表を順に読むか、索引を使うかを選ぶ</text>
-  <text x="45" y="713" class="small">第3章の索引追加後：Index Scan</text>
+  <text x="45" y="678" class="small">表を順に読むか、Indexを使うかを選ぶ</text>
+  <text x="45" y="713" class="small">第3章のIndex追加後：Index Scan</text>
   <path d="M320 733 L320 764" class="arrow"/>
   <rect x="25" y="773" width="590" height="133" rx="12" class="panel"/>
   <text x="45" y="810" class="bold">④ 実行する（エグゼキュータ）</text>

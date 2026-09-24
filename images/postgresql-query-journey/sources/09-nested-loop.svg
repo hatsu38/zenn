@@ -30,7 +30,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="44" y="193" width="225" height="54" rx="12" class="card"/>
     <text x="156.5" y="228" class="" text-anchor="middle">記録：本1</text>
     <rect x="372" y="193" width="225" height="54" rx="12" class="box"/>
-    <text x="484.5" y="228" class="" text-anchor="middle">本1の索引検索</text>
+    <text x="484.5" y="228" class="" text-anchor="middle">本1のIndex検索</text>
     <path d="M277 220 L362 220" class="arrow"/>
     <text x="45" y="311" class="teal" text-anchor="start">返す行：本1・星の図鑑</text>
     <rect x="20" y="385" width="600" height="245" rx="18" class="panel"/>
@@ -38,7 +38,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="44" y="468" width="225" height="54" rx="12" class="card"/>
     <text x="156.5" y="503" class="" text-anchor="middle">記録：本1</text>
     <rect x="372" y="468" width="225" height="54" rx="12" class="box"/>
-    <text x="484.5" y="503" class="" text-anchor="middle">本1の索引検索</text>
+    <text x="484.5" y="503" class="" text-anchor="middle">本1のIndex検索</text>
     <path d="M277 495 L362 495" class="arrow"/>
     <text x="45" y="586" class="teal" text-anchor="start">返す行：本1・星の図鑑</text>
     <rect x="20" y="660" width="600" height="245" rx="18" class="panel"/>
@@ -46,7 +46,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="44" y="743" width="225" height="54" rx="12" class="card"/>
     <text x="156.5" y="778" class="" text-anchor="middle">記録：本2</text>
     <rect x="372" y="743" width="225" height="54" rx="12" class="box"/>
-    <text x="484.5" y="778" class="" text-anchor="middle">本2の索引検索</text>
+    <text x="484.5" y="778" class="" text-anchor="middle">本2のIndex検索</text>
     <path d="M277 770 L362 770" class="arrow"/>
     <text x="45" y="861" class="teal" text-anchor="start">返す行：本2・海の図鑑</text>
   </g>

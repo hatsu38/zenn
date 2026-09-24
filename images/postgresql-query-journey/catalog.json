@@ -27,7 +27,7 @@
     "name": "01-index-to-row",
     "chapter": 1,
     "title": "番号で場所を探し、表から行を取り出す",
-    "description": "Index Scanの模型 ／ 索引の内部は第3章で扱う"
+    "description": "Index Scanの模型 ／ Indexの内部は第3章で扱う"
   },
   {
     "name": "01-scan-and-filter",
@@ -63,13 +63,13 @@
     "name": "06-btree-path",
     "chapter": 3,
     "title": "8を探す：範囲を選んでから、値を探す",
-    "description": "番号1〜9の模型 ／ 矢印は探索で進む向き"
+    "description": "番号1〜9で説明する図 ／ 矢印は探索で進む向き"
   },
   {
     "name": "06-range-scan",
     "chapter": 3,
     "title": "4以上8以下なら、隣の葉も読む",
-    "description": "索引の葉をたどる模型 ／ 表への参照は省略"
+    "description": "Indexの葉をたどる図 ／ 表への参照は省略"
   },
   {
     "name": "06-catalog-question",
@@ -80,8 +80,8 @@
   {
     "name": "03-index-reference",
     "chapter": 4,
-    "title": "索引をたどって、表の行へ届く",
-    "description": "索引3段の模型 ／ 矢印は参照する順番"
+    "title": "Indexをたどって、表の行へ届く",
+    "description": "3段のIndexの模型 ／ 矢印は参照する順番"
   },
   {
     "name": "03-pages-and-rows",
@@ -212,7 +212,7 @@
   {
     "name": "10-planner-choice",
     "chapter": 10,
-    "title": "索引があるのに、なぜ使わない？",
+    "title": "Indexがあるのに、なぜ使わない？",
     "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
@@ -224,7 +224,7 @@
   {
     "name": "11-visibility-map",
     "chapter": 11,
-    "title": "索引だけで返せるかは、可視性にもよる",
+    "title": "Indexだけで返せるかは、可視性にもよる",
     "description": "Index Only Scanの模型 ／ ページごとに判断"
   },
   {
