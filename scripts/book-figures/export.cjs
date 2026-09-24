@@ -23,8 +23,8 @@ async function listTargets(args) {
   return args.map(arg => targetFor(arg.endsWith('.svg') ? path.join(ROOT, arg) : path.join(SOURCES, `${arg}.svg`)));
 }
 
-async function main() {
-  const targets = await listTargets(process.argv.slice(2));
+async function exportFigures(args) {
+  const targets = await listTargets(args);
   const missing = [];
   for (const { svg } of targets) {
     await fs.access(svg).catch(() => missing.push(path.relative(process.cwd(), svg)));
@@ -43,4 +43,10 @@ async function main() {
     await browser.close();
   }
 }
-main().catch(error => { console.error(error.message || error); process.exitCode = 1; });
+// コマンドとして動かす入口。読み込んだだけでは書き出さないよう、直接実行したときと images 側のラッパーからだけ呼ぶ。
+function cli() {
+  return exportFigures(process.argv.slice(2)).catch(error => { console.error(error.message || error); process.exitCode = 1; });
+}
+
+if (require.main === module) cli();
+module.exports = { exportFigures, cli };
