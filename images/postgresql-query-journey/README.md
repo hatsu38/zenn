@@ -87,13 +87,13 @@ PNGは横1280ピクセルで、高さは図ごとに異なります。共有バ�
 
 ## 約束を確かめる
 
-図が[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)4章の約束を満たしているかを確かめます。見るのは、文字の大きさ、縦横比、画像内の断り書き、PNGの書き出し、catalog.jsonへの登録、本文からの参照とキャプション・代替テキストです。
+図が[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)4章の約束を満たしているかを確かめます。SVGと本文からは、文字の大きさ、縦横比、画像内の断り書きと文（「。」で終わる文字）、PNGの書き出し、catalog.jsonへの登録、本文からの参照とキャプション・代替テキストを調べます。さらにChromiumで描画して、文字のはみ出し（すぐ下に描いた図形から）、文字どうしの重なり、矢じりと文字の接触、見出しのすぐ下の副題を測ります。
 
 ```sh
 node scripts/book-figures/check-figures.cjs 01-scan-and-filter
 ```
 
-`--all`を付けると全部の図を確かめます。描き直す前の図は約束を満たしていないので、`--all`では多くの図が✗になります。
+`--all`を付けると全部の図を確かめます。描き直す前の図は約束を満たしていないので、`--all`では多くの図が✗になります。git worktreeの中で実行するときは、Playwrightを入れた本体の`scripts/book-figures/node_modules`を`NODE_PATH`で指定します。
 
 ## 図の一覧を作り直す
 

@@ -134,4 +134,4 @@ B-treeは番号1〜9を分ける操作から説明し、Indexから表へ届く�
 
 ## 2026年9月24日：見るところが分かる図へ
 
-図の型（問い・仕組み・観察・比較）と、部品・矢印・強調・文字・大きさの約束は、[FIGURE-PLAN.md](FIGURE-PLAN.md)の3〜4章に従う。部品の見本は[figure-parts.svg](../../images/postgresql-query-journey/parts/figure-parts.svg)。新しく描く図と描き直す図は、見本の`<defs>`と`<style>`をそのまま写して使う。約束を満たしているかは`node scripts/book-figures/check-figures.cjs 図の名前`で確かめる。第1〜2章の8枚を、この型で試作した。
+図の型（問い・仕組み・観察・比較）と、部品・矢印・強調・文字・大きさの約束は、[FIGURE-PLAN.md](FIGURE-PLAN.md)の3〜4章に従う。部品の見本は[figure-parts.svg](../../images/postgresql-query-journey/parts/figure-parts.svg)。新しく描く図と描き直す図は、見本の`<defs>`と`<style>`をそのまま写して使う。約束を満たしているかは`node scripts/book-figures/check-figures.cjs 図の名前`で確かめる。この検査は図を描画して、文字のはみ出し・重なり・矢じりとの接触・見出しのすぐ下の副題も測る。第1〜2章の8枚を、この型で試作した。
