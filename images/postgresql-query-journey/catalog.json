@@ -38,8 +38,8 @@
   {
     "name": "01-index-to-row",
     "chapter": 1,
-    "title": "番号で場所を探し、表から行を取り出す",
-    "description": "Index Scanの模型 ／ 索引の内部は第3章で扱う"
+    "title": "索引で場所を探し、その行だけ読む",
+    "description": "仕組み：Index Scanの模型"
   },
   {
     "name": "05-growing-library",

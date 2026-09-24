@@ -12,7 +12,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 序章 | 20冊を返すまでに、何をしている？ | [SVG](sources/00-ranking-question.svg) | [PNG](00-ranking-question.png) |
 | 第1章 | まずは、1冊だけ探してみる | [SVG](sources/01-search-window.svg) | [PNG](01-search-window.png) |
 | 第1章 | 1行のために、100万行を比べた | [SVG](sources/01-scan-and-filter.svg) | [PNG](01-scan-and-filter.png) |
-| 第1章 | 番号で場所を探し、表から行を取り出す | [SVG](sources/01-index-to-row.svg) | [PNG](01-index-to-row.png) |
+| 第1章 | 索引で場所を探し、その行だけ読む | [SVG](sources/01-index-to-row.svg) | [PNG](01-index-to-row.png) |
 | 第2章 | 100万冊から、1冊見つけたら止める？ | [SVG](sources/05-growing-library.svg) | [PNG](05-growing-library.png) |
 | 第2章 | 一致した後も、最後まで比べる | [SVG](sources/05-linear-scan.svg) | [PNG](05-linear-scan.png) |
 | 第2章 | Limitが次の行を求めなくなる | [SVG](sources/05-limit-search.svg) | [PNG](05-limit-search.png) |
