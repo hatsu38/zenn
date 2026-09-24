@@ -61,6 +61,8 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 
 図の設計意図・用語と模型の対応は [制作方針](../../books/postgresql-query-journey/ILLUSTRATION-GUIDE.md) にあります。
 
+新しく描く図と描き直す図は、[部品見本](parts/figure-parts.svg)の`<defs>`と`<style>`を写して使います。行カード・ページ枠・索引の項目・計画のノード・量の帯・矢印・札の見た目がそろいます。見本の見た目は[PNG](parts/figure-parts.png)で確認できます。
+
 ## PNGを再出力する
 
 PNGを書き出すには、Playwrightをインストールした環境で次を実行します。
@@ -71,7 +73,33 @@ NODE_PATH=./scripts/book-figures/node_modules node images/postgresql-query-journ
 
 `sources/`内のSVGをすべてChromiumで描画し、フォントの読み込み後に2倍解像度でPNGを書き出します。出力先はこのREADMEと同じディレクトリです。同名のPNGは更新されます。元のSVGは変更しません。
 
+図の名前を渡すと、その図だけを書き出します。変更していない図のPNGに差分を出さないため、ふだんはこちらを使います。
+
+```sh
+NODE_PATH=./scripts/book-figures/node_modules node images/postgresql-query-journey/export.cjs 01-scan-and-filter 05-limit-bands
+```
+
+`.svg`で終わるパスを渡すと、そのSVGを同じ場所のPNGへ書き出します（例：`parts/figure-parts.svg`）。Playwrightは`scripts/book-figures`で`npm install`して入れます。
+
 PNGは横1280ピクセルで、高さは図ごとに異なります。共有バッファの配置図は1280×1818、ヒープの4コマは1280×3580ピクセルです。本文では横幅に合わせて縮小されます。文字やコマの配置を変えたら、幅360pxの表示も確認してください。
+
+## 約束を確かめる
+
+図が[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)4章の約束を満たしているかを確かめます。見るのは、文字の大きさ、縦横比、画像内の断り書き、PNGの書き出し、catalog.jsonへの登録、本文からの参照とキャプション・代替テキストです。
+
+```sh
+node scripts/book-figures/check-figures.cjs 01-scan-and-filter
+```
+
+`--all`を付けると全部の図を確かめます。描き直す前の図は約束を満たしていないので、`--all`では多くの図が✗になります。
+
+## 図の一覧を作り直す
+
+[図の一覧](index.html)は`catalog.json`から作ります。図を足したり見出しを変えたりしたら、次を実行します。
+
+```sh
+node scripts/book-figures/build-index.cjs
+```
 
 ## 本文に掲載する
 
