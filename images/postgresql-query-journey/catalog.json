@@ -117,7 +117,7 @@
     "name": "04-memory-regions",
     "chapter": 5,
     "title": "ページの保存場所と、計算の作業場所",
-    "description": "基本の配置の模型 ／ 並列処理などは省略"
+    "description": "仕組み：共有バッファと処理ごとの作業領域の模型"
   },
   {
     "name": "shared-buffer-reuse",
