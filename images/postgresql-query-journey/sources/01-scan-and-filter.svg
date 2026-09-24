@@ -48,6 +48,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="320" y="426" text-anchor="middle" class="b">○ 一致 1行</text>
     <text x="320" y="454" text-anchor="middle" class="mono">rows=1.00</text>
     <path d="M434 431 H494" class="flow"/>
+    <text x="464" y="418" text-anchor="middle" class="s teal">返す</text>
     <rect x="500" y="403" width="116" height="56" rx="10" class="panel"/>
     <text x="558" y="439" text-anchor="middle" class="b">結果</text>
   </g>
