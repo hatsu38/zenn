@@ -139,8 +139,8 @@ Execution Time: 0.019 ms
 
 目的の行が見つかると、`Limit`は下の`Seq Scan`にそれ以上の行を求めずに済みます。そこで走査が終わります。
 
-![LIMIT 1でも、探す量は変わる](/images/postgresql-query-journey/05-limit-search.png)
-*読み順を固定した模型。SQLの行順は保証されません。*
+![Seq Scanが2冊目で一致した行をLimitへ渡すと、Limitは次の行を求めなくなり、3冊目から後は比べない](/images/postgresql-query-journey/05-limit-search.png)
+*Limitが次の行を求めなくなった時点で、Seq Scanも止まります（模型）。*
 
 これは早く見つかった場合の模型です。遅く見つかる場合と見つからない場合は、次で実際に確かめます。
 

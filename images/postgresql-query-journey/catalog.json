@@ -56,8 +56,8 @@
   {
     "name": "05-limit-search",
     "chapter": 2,
-    "title": "LIMIT 1でも、探す量は変わる",
-    "description": "読み順を固定した模型 ／ SQLの行順を保証しない"
+    "title": "Limitが次の行を求めなくなる",
+    "description": "仕組み：LIMIT 1の模型"
   },
   {
     "name": "05-limit-bands",
