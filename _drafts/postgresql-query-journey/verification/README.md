@@ -42,3 +42,7 @@
 ## 序章の過去実測の移設（2026-09-24）
 
 序章「この数値を測った条件」の出典（2026-09-21、Homebrew PostgreSQL 18.3、一時テーブル、本100万冊・読了記録2,000万件）を、削除した初期版の `_drafts/sql-data-structures/experiments/` から [prologue-ranking-20260921](prologue-ranking-20260921/README.md) へ移した。値は再実測していない。
+
+## 本文初稿の検証記録の移設（2026-09-24）
+
+コピー元の12章版で2026-09-22にまとめた本文初稿の検証記録（第7章の`Memory: 27913kB`、第11章の2接続と可視性、第12章の`EXCEPT ALL`差分など）を、削除した `_drafts/postgresql-structures-explain/reader-verification/` から [first-draft-20260922](first-draft-20260922/README.md) へ移した。章番号は元の12章版のもの。値は再実測していない。

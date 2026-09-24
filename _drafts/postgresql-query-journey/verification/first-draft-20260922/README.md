@@ -2,6 +2,8 @@
 
 検証日：2026-09-22（JST）
 
+2026-09-24、削除した12章版の `_drafts/postgresql-structures-explain/reader-verification/` から移した。章番号と「本フォルダ」は元の12章版（コミット 20b1122 の `books/postgresql-structures-explain/`）を指す。この本の章番号との対応は `books/postgresql-query-journey/README.md` の「新しい順序」を参照。`check-two-sessions.py` は元の本の第11章からSQLを取り出して検証用DB `reading_map_reader_verify_20260922` で実行し、このフォルダのログを上書きする。当時の手順の記録として残しており、そのままでは再実行できない。
+
 ## 環境と対象
 
 - Docker `reading-log-lab` 内のPostgreSQL 18.6、aarch64 Linux。
@@ -34,7 +36,7 @@
 ## 原稿の位置付け
 
 - 序章〜第12章の読者向け本文初稿。公開設定はfalse。
-- 執筆前の詳細構成は `../twelve-chapter-outline/` に保管。
+- 執筆前の詳細構成は `../../twelve-chapter-outline/` に保管。
 - 全章Summaryと説明順序は本フォルダの `CHAPTER-SUMMARIES.md`、インタラクティブ地図は `knowledge-map.html` に保持。
 
 ## 2026-09-22：第1章の掲載出力を実験リポジトリで再採取

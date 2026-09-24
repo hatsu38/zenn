@@ -63,13 +63,11 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 
 ## PNGを再出力する
 
-このコピーのPNGだけを書き出すには、Playwrightをインストールした環境で次を実行します。
+PNGを書き出すには、Playwrightをインストールした環境で次を実行します。
 
 ```sh
 NODE_PATH=./scripts/book-figures/node_modules node images/postgresql-query-journey/export.cjs
 ```
-
-コピー元の図には変更を加えません。
 
 `sources/`内のSVGをすべてChromiumで描画し、フォントの読み込み後に2倍解像度でPNGを書き出します。出力先はこのREADMEと同じディレクトリです。同名のPNGは更新されます。元のSVGは変更しません。
 
