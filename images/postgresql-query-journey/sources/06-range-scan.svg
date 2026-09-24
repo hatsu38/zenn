@@ -3,7 +3,7 @@
   
 
   <title id="title">4以上8以下なら、隣の葉も読む</title>
-  <desc id="description">索引の葉をたどる模型 ／ 表への参照は省略</desc>
+  <desc id="description">Indexの葉をたどる図 ／ 表への参照は省略</desc>
   
 
   <defs>
@@ -21,7 +21,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   
 
   <text x="28" y="45" class="title" text-anchor="start">4以上8以下なら、隣の葉も読む</text>
-  <text x="28" y="82" class="muted" text-anchor="start">索引の葉をたどる模型 ／ 表への参照は省略</text>
+  <text x="28" y="82" class="muted" text-anchor="start">Indexの葉をたどる図 ／ 表への参照は省略</text>
   
 
   <g id="diagram">

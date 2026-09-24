@@ -3,7 +3,7 @@
   
 
   <title id="title">番号で場所を探し、表から行を取り出す</title>
-  <desc id="description">Index Scanの模型 ／ 索引の内部は第3章で扱う</desc>
+  <desc id="description">Index Scanの模型 ／ Indexの内部は第3章で扱う</desc>
   
 
   <defs>
@@ -21,12 +21,12 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   
 
   <text x="28" y="45" class="title" text-anchor="start">番号で場所を探し、表から行を取り出す</text>
-  <text x="28" y="82" class="muted" text-anchor="start">Index Scanの模型 ／ 索引の内部は第3章で扱う</text>
+  <text x="28" y="82" class="muted" text-anchor="start">Index Scanの模型 ／ Indexの内部は第3章で扱う</text>
   
 
   <g id="diagram">
     <rect x="20" y="110" width="600" height="255" rx="18" class="panel"/>
-    <text x="40" y="150" class="bold" text-anchor="start">① 索引で、番号42の参照先を見つける</text>
+    <text x="40" y="150" class="bold" text-anchor="start">① Indexで、番号42の参照先を見つける</text>
     <rect x="70" y="187" width="110" height="60" rx="9" class="card"/>
     <text x="125.0" y="227.0" class="value" text-anchor="middle">41</text>
     <rect x="196" y="187" width="110" height="60" rx="9" class="hot"/>
@@ -46,6 +46,6 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="99" y="632" class="small" text-anchor="start">本42：実験用の本 42</text>
     <rect x="86" y="650" width="468" height="34" rx="6" class="paper"/>
     <text x="99" y="675" class="small" text-anchor="start">本43</text>
-    <text x="30" y="773" class="bold" text-anchor="start">索引にも表にも、読むページがある。</text>
+    <text x="30" y="773" class="bold" text-anchor="start">Indexにも表にも、読むページがある。</text>
   </g>
 </svg>

@@ -38,7 +38,7 @@
   <text x="476" y="482" class="small">要求</text>
   <rect x="120" y="530" width="400" height="148" rx="12" class="memory"/>
   <text x="145" y="570" class="value">Index Scan</text>
-  <text x="145" y="611" class="small">題名の索引順にたどり、</text>
+  <text x="145" y="611" class="small">題名のIndex順にたどり、</text>
   <text x="145" y="642" class="small">表から id と title を取り出す</text>
   <rect x="25" y="720" width="590" height="109" rx="12" class="panel"/>
   <text x="45" y="761" class="small">実線：行を返す向き ↑</text>

@@ -2,8 +2,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="830" viewBox="0 0 640 830" role="img" aria-labelledby="title desc">
   
 
-  <title id="title">索引をたどって、表の行へ届く</title>
-  <desc id="desc">索引3段の模型 ／ 矢印は参照する順番</desc>
+  <title id="title">Indexをたどって、表の行へ届く</title>
+  <desc id="desc">3段のIndexの模型 ／ 矢印は参照する順番</desc>
   
 
   <defs>
@@ -20,16 +20,16 @@
   
 
   <rect width="640" height="830" fill="#f5f7f9"/>
-  <text x="28" y="46" class="title">索引をたどって、表の行へ届く</text>
-  <text x="28" y="83" class="muted">索引3段の模型 ／ 矢印は参照する順番</text>
+  <text x="28" y="46" class="title">Indexをたどって、表の行へ届く</text>
+  <text x="28" y="83" class="muted">3段のIndexの模型 ／ 矢印は参照する順番</text>
   <rect x="30" y="110" width="580" height="450" rx="12" class="memory"/>
-  <text x="50" y="148" class="bold">題名の索引：3段の経路</text>
+  <text x="50" y="148" class="bold">題名のIndex：3段の経路</text>
   <rect x="60" y="171" width="520" height="105" rx="12" class="box"/>
   <text x="82" y="209" class="bold">① 根のページ</text>
   <text x="82" y="248" class="small">題名の範囲から進む先を選ぶ</text>
   <path d="M320 277 L320 299" class="arrow"/>
   <rect x="60" y="300" width="520" height="105" rx="12" class="box"/>
-  <text x="82" y="338" class="bold">② 途中の案内のページ</text>
+  <text x="82" y="338" class="bold">② 途中の案内板のページ</text>
   <text x="82" y="377" class="small">さらに狭い範囲を選ぶ</text>
   <path d="M320 406 L320 428" class="arrow"/>
   <rect x="60" y="429" width="520" height="105" rx="12" class="box"/>
@@ -39,6 +39,6 @@
   <rect x="30" y="609" width="580" height="110" rx="12" class="hot"/>
   <text x="52" y="648" class="">④ 表のページ</text>
   <text x="52" y="688" class="small">見つけた場所から id と title を取り出す</text>
-  <text x="30" y="763" class="small">索引3ページ ＋ 表1ページという経路の例。</text>
+  <text x="30" y="763" class="small">Indexの3ページ ＋ 表1ページという経路の例。</text>
   <text x="30" y="797" class="small">hit / read の内訳を特定した図ではない。</text>
 </svg>

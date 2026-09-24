@@ -3,7 +3,7 @@
   
 
   <title id="title">8を探す：範囲を選んでから、値を探す</title>
-  <desc id="desc">番号1〜9の模型 ／ 矢印は探索で進む向き</desc>
+  <desc id="desc">番号1〜9で説明する図 ／ 矢印は探索で進む向き</desc>
   
 
   <defs>
@@ -21,11 +21,11 @@
 
   <rect width="640" height="722" fill="#f5f7f9"/>
   <text x="28" y="46" class="title">8を探す：範囲を選んでから、値を探す</text>
-  <text x="28" y="83" class="muted">番号1〜9の模型 ／ 矢印は探索で進む向き</text>
+  <text x="28" y="83" class="muted">番号1〜9で説明する図 ／ 矢印は探索で進む向き</text>
   <rect x="20" y="112" width="600" height="210" rx="12" class="panel"/>
   <text x="40" y="150" class="bold">① 8が入る箱を選ぶ</text>
   <rect x="75" y="174" width="490" height="115" rx="12" class="box"/>
-  <text x="100" y="213" class="bold">案内の境界：4 と 7</text>
+  <text x="100" y="213" class="bold">案内板：境目は 4 と 7</text>
   <text x="100" y="253" class="">8は「7以上」 → 右の箱へ</text>
   <path d="M320 290 L115 390" class="edge"/>
   <rect x="30" y="396" width="170" height="110" rx="12" class="box"/>
