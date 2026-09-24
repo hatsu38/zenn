@@ -285,6 +285,6 @@
     "name": "02-query-stages",
     "chapter": 6,
     "title": "SQLの文字列から、検索結果が返るまで",
-    "description": "題名検索の例 ／ 矢印は処理が進む順番"
+    "description": "仕組み：バックエンドの中の4つの段"
   }
 ]

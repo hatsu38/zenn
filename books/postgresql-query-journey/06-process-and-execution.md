@@ -111,8 +111,8 @@ SQLは、最初は文字の列です。バックエンドは、その文字を�
 
 第3章で試した題名検索を例に、SQLを受け取ってから結果を返すまでを並べます。図の矢印は、処理が進む順番です。
 
-![題名検索のSQLが解析、書き換え、計画、実行を経て1行の結果になる](/images/postgresql-query-journey/02-query-stages.png)
-*通常のSELECTが通る処理の概略。実行計画内の行の流れとは別の図です。*
+![SQLの文字列が解析・書き換え・計画・実行の4段を通って結果の行になり、EXPLAINは計画まで、EXPLAIN ANALYZEは実行まで進んで行は出さない](/images/postgresql-query-journey/02-query-stages.png)
+*右の括弧で、EXPLAINとEXPLAIN ANALYZEがどの段まで進むかを見てください（処理の順番の概略）。*
 
 まず、SQLの文法と、指定された表や列が存在するかを確認します。続いて、問い合わせ（SQL）をDBに登録された規則に沿って書き換える段階を通ります[^view]。今回のSQLは通常の表`books`を直接指定しているので、書き換えは起きません。
 
