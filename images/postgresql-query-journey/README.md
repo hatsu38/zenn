@@ -13,7 +13,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第1章 | まずは、1冊だけ探してみる | [SVG](sources/01-search-window.svg) | [PNG](01-search-window.png) |
 | 第1章 | どの段階まで進むか | [SVG](sources/01-explain-stages.svg) | [PNG](01-explain-stages.png) |
 | 第1章 | 1行のために、100万行を比べた | [SVG](sources/01-scan-and-filter.svg) | [PNG](01-scan-and-filter.png) |
-| 第1章 | 索引で場所を探し、その行だけ読む | [SVG](sources/01-index-to-row.svg) | [PNG](01-index-to-row.png) |
+| 第1章 | Indexで場所を探し、その行だけ読む | [SVG](sources/01-index-to-row.svg) | [PNG](01-index-to-row.png) |
 | 第2章 | 見つかったら、止めていい？ | [SVG](sources/05-growing-library.svg) | [PNG](05-growing-library.png) |
 | 第2章 | 一致した後も、最後まで比べる | [SVG](sources/05-linear-scan.svg) | [PNG](05-linear-scan.png) |
 | 第2章 | Limitが次の行を求めなくなる | [SVG](sources/05-limit-search.svg) | [PNG](05-limit-search.png) |
@@ -63,7 +63,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 
 図の設計意図・用語と模型の対応は [制作方針](../../books/postgresql-query-journey/ILLUSTRATION-GUIDE.md) にあります。
 
-新しく描く図と描き直す図は、[部品見本](parts/figure-parts.svg)の`<defs>`と`<style>`を写して使います。行カード・ページ枠・索引の項目・計画のノード・量の帯・矢印・札の見た目がそろいます。見本の見た目は[PNG](parts/figure-parts.png)で確認できます。
+新しく描く図と描き直す図は、[部品見本](parts/figure-parts.svg)の`<defs>`と`<style>`を写して使います。行カード・ページ枠・Indexの項目・計画のノード・量の帯・矢印・札の見た目がそろいます。見本の見た目は[PNG](parts/figure-parts.png)で確認できます。
 
 ## PNGを再出力する
 

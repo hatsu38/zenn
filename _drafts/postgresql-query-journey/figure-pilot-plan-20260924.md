@@ -514,7 +514,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="430" y="268" class="s">2　本2</text>
   </g>
   <g id="index-entry">
-    <text x="24" y="350" class="s b">索引の項目</text>
+    <text x="24" y="350" class="s b">Indexの項目</text>
     <rect x="220" y="314" width="396" height="60" rx="10" class="ipage"/>
     <rect x="236" y="326" width="52" height="36" rx="4" class="row"/>
     <text x="262" y="351" text-anchor="middle" class="s">42</text>
@@ -1334,7 +1334,7 @@ Expected: `✗ 01-index-to-row`。「画像内に断り書き」と「代替テ�
 
 ```xml
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="610" viewBox="0 0 640 610" role="img" aria-labelledby="title">
-  <title id="title">索引で場所を探し、その行だけ読む</title>
+  <title id="title">Indexで場所を探し、その行だけ読む</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
     <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
@@ -1355,14 +1355,14 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
   </style>
   <rect width="640" height="610" fill="#f5f7f9"/>
-  <text x="24" y="48" class="h">索引で場所を探し、その行だけ読む</text>
-  <rect x="540" y="22" width="76" height="36" rx="18" class="model"/>
-  <text x="578" y="47" text-anchor="middle" class="tag">模型</text>
+  <text x="24" y="48" class="h">Indexで場所を探し、その行だけ読む</text>
+  <rect x="548" y="22" width="68" height="36" rx="18" class="model"/>
+  <text x="582" y="47" text-anchor="middle" class="tag">模型</text>
   <g id="index">
     <rect x="56" y="100" width="420" height="170" rx="10" class="ghost"/>
     <rect x="40" y="88" width="420" height="170" rx="10" class="ghost"/>
     <rect x="24" y="76" width="420" height="170" rx="10" class="ipage"/>
-    <text x="44" y="108" class="s b">索引 books_pkey（番号順）</text>
+    <text x="44" y="108" class="s b">Index books_pkey（番号順）</text>
     <rect x="44" y="124" width="52" height="34" rx="4" class="row"/>
     <text x="70" y="148" text-anchor="middle" class="s">41</text>
     <text x="108" y="148" class="s m">▸ 場所</text>
@@ -1373,7 +1373,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="70" y="228" text-anchor="middle" class="s">43</text>
     <text x="108" y="228" class="s m">▸ 場所</text>
     <text x="24" y="298" class="mono">Index Cond: (id = 42)</text>
-    <text x="24" y="328" class="m">索引も何ページかある</text>
+    <text x="24" y="328" class="m">Indexも何ページかある</text>
   </g>
   <text x="350" y="300" class="s">場所をたどる</text>
   <g id="table">
@@ -1388,7 +1388,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </g>
   <path d="M186 181 C 568 181, 568 445, 380 445" class="ref"/>
   <text x="24" y="548" class="s"><tspan class="mono">Rows Removed by Filter</tspan> なし＝捨てた行がない</text>
-  <text x="24" y="582" class="s"><tspan class="mono">shared hit=7</tspan>＝ページを使った回数（索引も含む）</text>
+  <text x="24" y="582" class="s"><tspan class="mono">shared hit=7</tspan>＝ページを使った回数（Indexも含む）</text>
 </svg>
 ```
 
@@ -2104,6 +2104,7 @@ PRのURLと、確認してほしい点（上の「試作で決めたいこと」
 | 7 | `01-index-to-row` | 「shared hit=7＝索引と表のページを使った回数」が実測と違った。7のうち3回は、接続して最初の検索だけに入るシステムカタログの読み取り（同じ接続の2回目は hit=4） | 「ページを使った回数（索引も含む）」にした。画像の中の「（中身は第3章）」を外し、キャプションに残した | 最終レビュー |
 | 8 | `01-explain-stages` | 3段目の「結果を表示」と焦点の「表示しない」の真下に、各行の「…を表示」が並び、矛盾して読めた | 3段目を「行を画面へ」、焦点を「行は出さない」、見出しを「どの段階まで進むか」にした | 最終レビュー |
 | 9 | `01-search-window` | 矢じり（線の太さに合わせて30単位の大きさになる）がラベルの先頭の文字に触れた | 2つのラベルを右へ14ずらした | タスクのレビュー |
+| 2・7 | 部品見本、`01-index-to-row` | 試作の後で、本全体の表記が「索引」から「Index」に変わった（#13、AGENTS.md の約束） | 見出し・ラベル・代替テキスト・キャプション・一覧の「索引」を「Index」にした。見出しが伸びて「模型」の札との間が8に詰まったので、札を幅68にして間を16にした | #13 の取り込み |
 
 道具も最終レビューのあとで直した。書き出しの処理は`scripts/book-figures/export.cjs`にまとめ、Task 1 で置き換えた`images/postgresql-query-journey/export.cjs`は、それを読み込む1行にした（`npm run export`が図の名前を受け取れない古い複製を動かしていたため）。断り書きの検査にはパターン（※、説明用、省略、模式、架空など）を足し、`build-index.cjs`は直接実行したときだけ動くようにした。
 
@@ -2116,3 +2117,4 @@ PRのURLと、確認してほしい点（上の「試作で決めたいこと」
 - 図の中の言葉（段の名前や焦点のラベル）が、各行の説明文と食い違わないかを読み比べる。
 - 約束の「画像の中に置くのは短い見出しと札だけ」は、図の中のラベルと字面上ぶつかる。「画像の中の文字は、見出し・札・部品の名前・矢印の動詞・出力の項目名と値に限り、副題・断り書き・他の章への参照はキャプションへ回す」に言い換える。
 - 断り書きの検査は語で拾うので、注意の語を含まない副題（例：「サンプルの2冊・3件で考える」）は通ってしまう。見出しのすぐ下の文や「。」で終わる文を形で拾う検査を足し、「ではない」が正当なラベルに当たったときの扱い（言い換えるか、除外の仕組みを作るか）も決めておく。
+- 「索引」は使わず「Index」と書く（AGENTS.md、2026-09-25のユーザー指定）。太字30の「Index」は漢字およそ3文字分の幅を取るので、見出しの言葉を変えたら、札との間隔を測り直す。

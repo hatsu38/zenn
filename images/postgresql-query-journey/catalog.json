@@ -44,7 +44,7 @@
   {
     "name": "01-index-to-row",
     "chapter": 1,
-    "title": "索引で場所を探し、その行だけ読む",
+    "title": "Indexで場所を探し、その行だけ読む",
     "description": "仕組み：Index Scanの模型"
   },
   {
