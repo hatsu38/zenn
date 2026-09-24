@@ -214,9 +214,9 @@ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30)
 | `EXPLAIN SELECT ...` | しない | 処理方法と実行前の見積もり |
 | `EXPLAIN ANALYZE SELECT ...` | する | 実行計画に、実際の行数や時間を加えたもの |
 
-三つの入力が、計画・実行・表示のどこまで進むかを線で比べてください。
+三つの入力が、どの段階まで進むかを線で比べてください。
 
-![SELECTは計画・実行・表示まで進む。EXPLAINは計画を立てたところで止まり、EXPLAIN ANALYZEは実行まで進んで、結果の行は表示しない](/images/postgresql-query-journey/01-explain-stages.png)
+![SELECTは計画から、行を画面へ出すところまで進む。EXPLAINは計画を立てたところで止まり、EXPLAIN ANALYZEは実行まで進んで、結果の行は画面へ出さない](/images/postgresql-query-journey/01-explain-stages.png)
 *実線の段階まで進み、破線の段階は行いません。*
 
 `EXPLAIN ANALYZE`では、先ほどの「42、実験用の本 42」という検索結果の表は表示されません。検索は実行しますが、表示するのはその処理を観察するための情報です。
