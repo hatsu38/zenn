@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="664" viewBox="0 0 640 664" role="img" aria-labelledby="title">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="628" viewBox="0 0 640 628" role="img" aria-labelledby="title">
   <title id="title">本の番号だけでは、題名が分からない</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
@@ -19,12 +19,12 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .ref{fill:none;stroke:#7d93a3;stroke-width:2;marker-end:url(#ref)}.step{fill:#fff;stroke:#243b50;stroke-width:2.5}
 .spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
   </style>
-  <rect width="640" height="664" fill="#f5f7f9"/>
+  <rect width="640" height="628" fill="#fffdf7"/>
   <text x="24" y="48" class="h">本の番号だけでは、題名が分からない</text>
   <g id="screen">
-    <rect x="24" y="72" width="592" height="240" rx="10" fill="#fff" stroke="#243b50" stroke-width="2.5"/>
+    <rect x="24" y="72" width="592" height="204" rx="10" fill="#fff" stroke="#243b50" stroke-width="2.5"/>
     <path d="M24 110 H616" fill="none" stroke="#243b50" stroke-width="2.5"/>
-    <text x="40" y="99" class="s">最新の読了記録</text>
+    <text x="40" y="99" class="s">読了記録</text>
     <g id="record-1">
       <rect x="80" y="124" width="360" height="40" rx="4" class="panel"/>
       <text x="102" y="152" class="s">本番号 2</text>
@@ -43,22 +43,21 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
       <text x="102" y="248" class="s">本番号 2</text>
       <text x="254" y="248" class="s">題名 ？</text>
     </g>
-    <text x="102" y="292" class="m">…20件</text>
-    <path d="M320 312 V328 M280 328 H360" fill="none" stroke="#243b50" stroke-width="3" stroke-linecap="round"/>
+    <path d="M320 276 V292 M280 292 H360" fill="none" stroke="#243b50" stroke-width="3" stroke-linecap="round"/>
   </g>
   <g id="books">
-    <rect x="24" y="376" width="592" height="188" rx="10" class="page"/>
-    <text x="80" y="408" class="s b">本の表 books（100万冊）</text>
-    <rect x="80" y="424" width="360" height="40" rx="4" class="row"/>
-    <text x="102" y="452" class="s">1　星の図鑑</text>
-    <rect x="80" y="472" width="360" height="40" rx="4" class="row"/>
-    <text x="102" y="500" class="s">2　海の図鑑</text>
-    <text x="108" y="544" text-anchor="middle" class="b">⋮</text>
+    <rect x="24" y="340" width="592" height="188" rx="10" class="panel"/>
+    <text x="80" y="372" class="s b">本の表 books（100万冊）</text>
+    <rect x="80" y="388" width="360" height="40" rx="4" class="row"/>
+    <text x="102" y="416" class="s">1　星の図鑑</text>
+    <rect x="80" y="436" width="360" height="40" rx="4" class="row"/>
+    <text x="102" y="464" class="s">2　海の図鑑</text>
+    <text x="108" y="508" text-anchor="middle" class="b">⋮</text>
   </g>
   <g id="lookup">
-    <path d="M80 144 H60 Q48 144 48 156 V480 Q48 492 60 492 H80" class="ref"/>
-    <text x="64" y="356" class="s">番号で探す</text>
+    <path d="M80 144 H60 Q48 144 48 156 V444 Q48 456 60 456 H80" class="ref"/>
+    <text x="64" y="320" class="s">番号で探す</text>
   </g>
-  <rect x="24" y="584" width="592" height="60" rx="10" fill="#fff0d3" stroke="#243b50" stroke-width="2.5"/>
-  <text x="44" y="623" class="b">番号から、どうやって題名を付ける？</text>
+  <rect x="24" y="548" width="592" height="60" rx="10" fill="#fff0d3" stroke="#243b50" stroke-width="2.5"/>
+  <text x="44" y="587" class="b">番号から、どうやって題名を付ける？</text>
 </svg>
