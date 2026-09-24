@@ -1,0 +1,54 @@
+\set ON_ERROR_STOP on
+\pset pager off
+Pager usage is off.
+SET max_parallel_workers_per_gather = 0;
+SET
+SET jit = off;
+SET
+SET work_mem = '4MB';
+SET
+SELECT book_id, finished_at
+FROM reading_records
+ORDER BY finished_at DESC, book_id ASC;
+ book_id |     finished_at     
+---------+---------------------
+(2000000 rows)
+
+SELECT count(*) FROM reading_records;
+  count  
+---------
+ 2000000
+(1 row)
+
+SET max_parallel_workers_per_gather = 0;
+SET
+SET jit = off;
+SET
+SET work_mem = '64MB';
+SET
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT book_id, finished_at
+FROM reading_records
+WHERE finished_at >= timestamp '2026-09-14'
+  AND finished_at < timestamp '2026-09-21'
+ORDER BY finished_at DESC, book_id ASC;
+                                                                          QUERY PLAN                                                                          
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=88217.14..89469.04 rows=500758 width=16) (actual time=144.310..179.054 rows=499998.00 loops=1)
+   Sort Key: finished_at DESC, book_id
+   Sort Method: quicksort  Memory: 27913kB
+   Buffers: shared hit=10548 read=263
+   ->  Seq Scan on reading_records  (cost=0.00..40811.00 rows=500758 width=16) (actual time=0.085..69.894 rows=499998.00 loops=1)
+         Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+         Rows Removed by Filter: 1500002
+         Buffers: shared hit=10548 read=263
+ Planning:
+   Buffers: shared hit=7
+ Planning Time: 0.072 ms
+ Execution Time: 193.858 ms
+(12 rows)
+
+SET work_mem = '64kB';
+SET
+SET work_mem = '4MB';
+SET
