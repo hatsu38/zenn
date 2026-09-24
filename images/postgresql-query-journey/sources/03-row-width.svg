@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="836" viewBox="0 0 640 836" role="img" aria-labelledby="title desc">
+  
+
+  <title id="title">同じ1,000行でも、8ページと32ページ</title>
+  <desc id="desc">固定サイズのページに、長さの違う行を入れる</desc>
+  
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+    <marker id="b" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#99631b"/>
+    </marker>
+  </defs>
+  
+
+  <style>text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:28px;font-weight:700} .bold{font-weight:700} .small{font-size:21px} .value{font-size:30px;font-weight:700} .muted{font-size:21px;fill:#566c7b} .teal{fill:#176e65;font-weight:700} .panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .row{fill:#dcefe8;stroke:#448b7c;stroke-width:1.5} .edge{fill:none;stroke:#9cabb5;stroke-width:2} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)} .request{fill:none;stroke:#99631b;stroke-width:3;stroke-dasharray:7 5;marker-end:url(#b)}</style>
+  
+
+  <rect width="640" height="836" fill="#f5f7f9"/>
+  <text x="28" y="46" class="title">同じ1,000行でも、8ページと32ページ</text>
+  <text x="28" y="83" class="muted">固定サイズのページに、長さの違う行を入れる</text>
+  <rect x="20" y="116" width="600" height="308" rx="12" class="panel"/>
+  <text x="40" y="155" class="bold">短い行：10文字</text>
+  <rect x="40" y="179" width="225" height="190" rx="12" class="box"/>
+  <text x="57" y="210" class="small">1ページ：8,192 B</text>
+  <rect x="57" y="221" width="191" height="17" rx="3" class="row"/>
+  <rect x="57" y="242" width="191" height="17" rx="3" class="row"/>
+  <rect x="57" y="263" width="191" height="17" rx="3" class="row"/>
+  <rect x="57" y="284" width="191" height="17" rx="3" class="row"/>
+  <rect x="57" y="305" width="191" height="17" rx="3" class="row"/>
+  <rect x="57" y="326" width="191" height="17" rx="3" class="row"/>
+  <path d="M280 273 L326 273" class="arrow"/>
+  <text x="349" y="221" class="small">1,000行で</text>
+  <text x="349" y="273" class="value">8ページ</text>
+  <text x="349" y="318" class="small">65,536 B</text>
+  <text x="40" y="401" class="small">ページ内の行数は説明用。総ページ数は実測。</text>
+  <rect x="20" y="450" width="600" height="308" rx="12" class="panel"/>
+  <text x="40" y="489" class="bold">長い行：200文字</text>
+  <rect x="40" y="513" width="225" height="190" rx="12" class="box"/>
+  <text x="57" y="544" class="small">1ページ：8,192 B</text>
+  <rect x="57" y="555" width="191" height="59" rx="3" class="row"/>
+  <rect x="57" y="618" width="191" height="59" rx="3" class="row"/>
+  <path d="M280 607 L326 607" class="arrow"/>
+  <text x="349" y="555" class="small">1,000行で</text>
+  <text x="349" y="607" class="value">32ページ</text>
+  <text x="349" y="652" class="small">262,144 B</text>
+  <text x="40" y="735" class="small">ページ内の行数は説明用。総ページ数は実測。</text>
+  <text x="30" y="807" class="small">長い行は、同じ大きさのページに入る数が少ない。</text>
+</svg>

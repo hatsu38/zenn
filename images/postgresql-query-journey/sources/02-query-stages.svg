@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1055" viewBox="0 0 640 1055" role="img" aria-labelledby="title desc">
+
+
+  <title id="title">SQLの文字列から、検索結果が返るまで</title>
+  <desc id="desc">題名検索の例 ／ 矢印は処理が進む順番</desc>
+
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+    <marker id="b" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#99631b"/>
+    </marker>
+  </defs>
+
+
+  <style>text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:28px;font-weight:700} .bold{font-weight:700} .small{font-size:21px} .value{font-size:30px;font-weight:700} .muted{font-size:21px;fill:#566c7b} .teal{fill:#176e65;font-weight:700} .panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .row{fill:#dcefe8;stroke:#448b7c;stroke-width:1.5} .edge{fill:none;stroke:#9cabb5;stroke-width:2} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)} .request{fill:none;stroke:#99631b;stroke-width:3;stroke-dasharray:7 5;marker-end:url(#b)}</style>
+
+
+  <rect width="640" height="1055" fill="#f5f7f9"/>
+  <text x="28" y="46" class="title">SQLの文字列から、検索結果が返るまで</text>
+  <text x="28" y="83" class="muted">題名検索の例 ／ 矢印は処理が進む順番</text>
+  <rect x="25" y="115" width="590" height="96" rx="12" class="hot"/>
+  <text x="43" y="153" class="small">SELECT id, title FROM books</text>
+  <text x="43" y="185" class="small">WHERE title = '実験用の本 42';</text>
+  <path d="M320 214 L320 245" class="arrow"/>
+  <rect x="25" y="254" width="590" height="133" rx="12" class="panel"/>
+  <text x="45" y="291" class="bold">① 解析する</text>
+  <text x="45" y="332" class="small">SQLの文法、表名・列名を確認する</text>
+  <text x="45" y="367" class="small">books と title が使えるか確認</text>
+  <path d="M320 387 L320 418" class="arrow"/>
+  <rect x="25" y="427" width="590" height="133" rx="12" class="panel"/>
+  <text x="45" y="464" class="bold">② 規則に沿って書き換える</text>
+  <text x="45" y="505" class="small">ビューなどの定義を反映する</text>
+  <text x="45" y="540" class="small">今回は通常の表を直接指定</text>
+  <path d="M320 560 L320 591" class="arrow"/>
+  <rect x="25" y="600" width="590" height="133" rx="12" class="panel"/>
+  <text x="45" y="637" class="bold">③ 計画を作る（プランナ）</text>
+  <text x="45" y="678" class="small">表を順に読むか、索引を使うかを選ぶ</text>
+  <text x="45" y="713" class="small">第3章の索引追加後：Index Scan</text>
+  <path d="M320 733 L320 764" class="arrow"/>
+  <rect x="25" y="773" width="590" height="133" rx="12" class="panel"/>
+  <text x="45" y="810" class="bold">④ 実行する（エグゼキュータ）</text>
+  <text x="45" y="851" class="small">計画に従ってページを使い、行を返す</text>
+  <text x="45" y="886" class="small">EXPLAIN ANALYZE は、ここまで実行</text>
+  <path d="M320 907 L320 945" class="arrow"/>
+  <rect x="25" y="955" width="590" height="70" rx="12" class="hot"/>
+  <text x="45" y="998" class="small">結果：id = 42、title = 実験用の本 42</text>
+</svg>

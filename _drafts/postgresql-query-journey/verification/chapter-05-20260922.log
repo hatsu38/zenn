@@ -1,0 +1,63 @@
+\set ON_ERROR_STOP on
+BEGIN;
+BEGIN
+CREATE SCHEMA book_observation;
+CREATE SCHEMA
+CREATE TABLE book_observation.books
+  (LIKE public.books INCLUDING DEFAULTS INCLUDING CONSTRAINTS);
+CREATE TABLE
+ALTER TABLE book_observation.books ADD PRIMARY KEY (id);
+ALTER TABLE
+INSERT INTO book_observation.books
+SELECT id, title FROM public.books WHERE id BETWEEN 1 AND 1000;
+INSERT 0 1000
+SET LOCAL search_path = book_observation, public;
+SET
+ANALYZE books;
+ANALYZE
+SELECT count(*) FROM books;
+ count 
+-------
+  1000
+(1 row)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title = '実験用の本 42';
+                                             QUERY PLAN                                             
+----------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.008..0.041 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999
+   Buffers: shared hit=8
+ Planning:
+   Buffers: shared hit=10 read=1
+ Planning Time: 0.885 ms
+ Execution Time: 0.050 ms
+(8 rows)
+
+SHOW shared_buffers;
+ shared_buffers 
+----------------
+ 128MB
+(1 row)
+
+SHOW work_mem;
+ work_mem 
+----------
+ 4MB
+(1 row)
+
+SHOW temp_buffers;
+ temp_buffers 
+--------------
+ 8MB
+(1 row)
+
+SHOW maintenance_work_mem;
+ maintenance_work_mem 
+----------------------
+ 64MB
+(1 row)
+
+ROLLBACK;
+ROLLBACK

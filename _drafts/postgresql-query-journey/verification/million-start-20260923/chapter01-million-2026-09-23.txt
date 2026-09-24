@@ -1,0 +1,122 @@
+\set ON_ERROR_STOP on
+\pset pager off
+Pager usage is off.
+-- 観察する計画を単純にするため、接続ごとに設定します。
+SET max_parallel_workers_per_gather = 0;
+SET
+SET jit = off;
+SET
+SET work_mem = '4MB';
+SET
+\echo === environment ===
+=== environment ===
+SELECT version();
+                                                         version                                                          
+--------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+SHOW shared_buffers;
+ shared_buffers 
+----------------
+ 128MB
+(1 row)
+
+SHOW work_mem;
+ work_mem 
+----------
+ 4MB
+(1 row)
+
+SHOW max_parallel_workers_per_gather;
+ max_parallel_workers_per_gather 
+---------------------------------
+ 0
+(1 row)
+
+SHOW jit;
+ jit 
+-----
+ off
+(1 row)
+
+\echo === counts ===
+=== counts ===
+SELECT count(*) AS books FROM books;
+  books  
+---------
+ 1000000
+(1 row)
+
+SELECT count(*) AS reading_records FROM reading_records;
+ reading_records 
+-----------------
+         2000000
+(1 row)
+
+\echo === indexes ===
+=== indexes ===
+SELECT indexname, indexdef FROM pg_indexes WHERE tablename = 'books' ORDER BY indexname;
+ indexname  |                            indexdef                             
+------------+-----------------------------------------------------------------
+ books_pkey | CREATE UNIQUE INDEX books_pkey ON public.books USING btree (id)
+(1 row)
+
+\echo === result ===
+=== result ===
+SELECT id, title FROM books WHERE title = '実験用の本 42';
+ id |     title     
+----+---------------
+ 42 | 実験用の本 42
+(1 row)
+
+\echo === explain-title ===
+=== explain-title ===
+EXPLAIN SELECT id, title FROM books WHERE title = '実験用の本 42';
+                        QUERY PLAN                        
+----------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30)
+   Filter: (title = '実験用の本 42'::text)
+(2 rows)
+
+\echo === analyze-title ===
+=== analyze-title ===
+EXPLAIN (ANALYZE, BUFFERS) SELECT id, title FROM books WHERE title = '実験用の本 42';
+                                               QUERY PLAN                                               
+--------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.036..35.994 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999999
+   Buffers: shared hit=5112 read=2241
+ Planning Time: 0.008 ms
+ Execution Time: 36.037 ms
+(6 rows)
+
+\echo === analyze-id ===
+=== analyze-id ===
+EXPLAIN (ANALYZE, BUFFERS) SELECT id, title FROM books WHERE id = 42;
+                                                      QUERY PLAN                                                      
+----------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_pkey on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.017..0.017 rows=1.00 loops=1)
+   Index Cond: (id = 42)
+   Index Searches: 1
+   Buffers: shared hit=7
+ Planning:
+   Buffers: shared hit=5
+ Planning Time: 0.068 ms
+ Execution Time: 0.026 ms
+(8 rows)
+
+\echo === analyze-missing ===
+=== analyze-missing ===
+EXPLAIN (ANALYZE, BUFFERS) SELECT id, title FROM books WHERE title = '存在しない本';
+                                               QUERY PLAN                                                
+---------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=40.821..40.821 rows=0.00 loops=1)
+   Filter: (title = '存在しない本'::text)
+   Rows Removed by Filter: 1000000
+   Buffers: shared hit=5206 read=2147 written=78
+ Planning Time: 0.013 ms
+ Execution Time: 40.832 ms
+(6 rows)
+

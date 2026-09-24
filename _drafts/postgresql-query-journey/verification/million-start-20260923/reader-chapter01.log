@@ -1,0 +1,111 @@
+\set ON_ERROR_STOP on
+\pset pager off
+Pager usage is off.
+SET max_parallel_workers_per_gather = 0;
+SET
+SET jit = off;
+SET
+SET work_mem = '4MB';
+SET
+\set ON_ERROR_STOP on
+\pset pager off
+Pager usage is off.
+SELECT version();
+                                                         version                                                          
+--------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+CREATE TABLE books (
+  id bigint PRIMARY KEY,
+  title text NOT NULL
+);
+CREATE TABLE
+CREATE TABLE reading_records (
+  book_id bigint NOT NULL,
+  finished_at timestamp NOT NULL
+);
+CREATE TABLE
+INSERT INTO books
+SELECT n, '実験用の本 ' || n FROM generate_series(1, 1000000) AS n;
+INSERT 0 1000000
+INSERT INTO reading_records
+SELECT ((n::bigint * 7919) % 1000000) + 1,
+       timestamp '2026-08-24'
+         + ((n::bigint * 104729) % 2419200) * interval '1 second'
+FROM generate_series(1, 2000000) AS n;
+INSERT 0 2000000
+ANALYZE books;
+ANALYZE
+ANALYZE reading_records;
+ANALYZE
+SELECT count(*) FROM books;
+  count  
+---------
+ 1000000
+(1 row)
+
+SELECT count(*) FROM reading_records;
+  count  
+---------
+ 2000000
+(1 row)
+
+SET max_parallel_workers_per_gather = 0;
+SET
+SET jit = off;
+SET
+SET work_mem = '4MB';
+SET
+SELECT id, title FROM books WHERE title = '実験用の本 42';
+ id |     title     
+----+---------------
+ 42 | 実験用の本 42
+(1 row)
+
+EXPLAIN
+SELECT id, title FROM books WHERE title = '実験用の本 42';
+                        QUERY PLAN                        
+----------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30)
+   Filter: (title = '実験用の本 42'::text)
+(2 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title = '実験用の本 42';
+                                               QUERY PLAN                                               
+--------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.124..35.786 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999999
+   Buffers: shared hit=4287 read=3066
+ Planning Time: 0.012 ms
+ Execution Time: 35.797 ms
+(6 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE id = 42;
+                                                      QUERY PLAN                                                      
+----------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_pkey on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.131..0.133 rows=1.00 loops=1)
+   Index Cond: (id = 42)
+   Index Searches: 1
+   Buffers: shared hit=3 read=4
+ Planning:
+   Buffers: shared hit=5
+ Planning Time: 0.096 ms
+ Execution Time: 0.158 ms
+(8 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title = '存在しない本';
+                                               QUERY PLAN                                                
+---------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=36.302..36.303 rows=0.00 loops=1)
+   Filter: (title = '存在しない本'::text)
+   Rows Removed by Filter: 1000000
+   Buffers: shared hit=4382 read=2971 written=24
+ Planning Time: 0.011 ms
+ Execution Time: 36.312 ms
+(6 rows)
+

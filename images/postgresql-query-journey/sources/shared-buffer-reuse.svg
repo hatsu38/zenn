@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="909" viewBox="0 0 640 909" role="img" aria-labelledby="title desc">
+
+
+  <title id="title">ファイルのページを、メモリで再利用する</title>
+  <desc id="desc">読み込み経路の模型 ／ ページ7は説明用</desc>
+
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+    <marker id="b" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#99631b"/>
+    </marker>
+  </defs>
+
+
+  <style>text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:28px;font-weight:700} .bold{font-weight:700} .small{font-size:21px} .value{font-size:30px;font-weight:700} .muted{font-size:21px;fill:#566c7b} .teal{fill:#176e65;font-weight:700} .panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .row{fill:#dcefe8;stroke:#448b7c;stroke-width:1.5} .edge{fill:none;stroke:#9cabb5;stroke-width:2} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)} .request{fill:none;stroke:#99631b;stroke-width:3;stroke-dasharray:7 5;marker-end:url(#b)}</style>
+
+
+  <rect width="640" height="909" fill="#f5f7f9"/>
+  <text x="28" y="46" class="title">ファイルのページを、メモリで再利用する</text>
+  <text x="28" y="83" class="muted">読み込み経路の模型 ／ ページ7は説明用</text>
+  <rect x="20" y="111" width="600" height="505" rx="12" class="memory"/>
+  <text x="40" y="153" class="title">メモリ（RAM）</text>
+  <text x="40" y="189" class="small">実行中にデータを置いて使う場所</text>
+  <rect x="45" y="215" width="550" height="185" rx="12" class="panel"/>
+  <text x="64" y="251" class="bold">PostgreSQLの共有バッファ</text>
+  <rect x="70" y="275" width="151" height="60" rx="12" class="row"/>
+  <text x="85" y="315" class="">ページ7</text>
+  <path d="M231 304 L295 304" class="arrow"/>
+  <text x="312" y="295" class="small">検索で使う</text>
+  <text x="312" y="329" class="teal">あれば hit</text>
+  <text x="64" y="376" class="small">残っていれば、次の検索も同じページを使う</text>
+  <path d="M145 457 L145 408" class="arrow"/>
+  <text x="175" y="438" class="small">なければ読み込む → read</text>
+  <rect x="45" y="463" width="550" height="121" rx="12" class="box"/>
+  <text x="64" y="501" class="bold">OSキャッシュ</text>
+  <text x="64" y="539" class="small">OSがメモリに残したファイルの内容</text>
+  <text x="64" y="569" class="small">ここにあれば、SSDまで読みに行かずに済む</text>
+  <path d="M145 707 L145 622" class="arrow"/>
+  <text x="178" y="662" class="small">OSキャッシュにもなければ</text>
+  <text x="178" y="694" class="small">ストレージから読み込む</text>
+  <rect x="20" y="714" width="600" height="125" rx="12" class="box"/>
+  <text x="40" y="754" class="bold">ストレージ（SSDなど）</text>
+  <rect x="40" y="774" width="290" height="44" rx="12" class="panel"/>
+  <text x="55" y="804" class="small">表のファイル：ページ7</text>
+  <text x="30" y="879" class="small">矢印はデータが読み込まれ、使われる向き。</text>
+</svg>

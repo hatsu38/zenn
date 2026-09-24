@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="794" viewBox="0 0 640 794" role="img" aria-labelledby="title desc">
+
+
+  <title id="title">ctid = (0,1) が指す場所</title>
+  <desc id="desc">ページ番号は0から、項目番号は1から数える</desc>
+
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+    <marker id="b" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#99631b"/>
+    </marker>
+  </defs>
+
+
+  <style>text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:28px;font-weight:700} .bold{font-weight:700} .small{font-size:21px} .value{font-size:30px;font-weight:700} .muted{font-size:21px;fill:#566c7b} .teal{fill:#176e65;font-weight:700} .panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .row{fill:#dcefe8;stroke:#448b7c;stroke-width:1.5} .edge{fill:none;stroke:#9cabb5;stroke-width:2} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)} .request{fill:none;stroke:#99631b;stroke-width:3;stroke-dasharray:7 5;marker-end:url(#b)}</style>
+
+
+  <rect width="640" height="794" fill="#f5f7f9"/>
+  <text x="28" y="46" class="title">ctid = (0,1) が指す場所</text>
+  <text x="28" y="83" class="muted">ページ番号は0から、項目番号は1から数える</text>
+  <rect x="30" y="115" width="580" height="100" rx="12" class="hot"/>
+  <text x="52" y="157" class="value">id = 1    ctid = (0, 1)</text>
+  <text x="52" y="193" class="small">本の番号</text>
+  <text x="237" y="193" class="small">左：ページ　右：項目</text>
+  <path d="M320 216 L320 266" class="arrow"/>
+  <rect x="30" y="273" width="580" height="375" rx="12" class="panel"/>
+  <text x="52" y="315" class="bold">ページ0（表の最初のページ）</text>
+  <text x="52" y="351" class="small">項目番号</text>
+  <text x="261" y="351" class="small">保存されている行</text>
+  <rect x="52" y="369" width="125" height="43" rx="12" class="hot"/>
+  <text x="85" y="398" class="">1</text>
+  <path d="M182 391 L230 391" class="arrow"/>
+  <rect x="242" y="369" width="337" height="43" rx="12" class="hot"/>
+  <text x="261" y="398" class="small">id = 1   実験用の本 1</text>
+  <rect x="52" y="426" width="125" height="43" rx="12" class="box"/>
+  <text x="85" y="455" class="">2</text>
+  <path d="M182 448 L230 448" class="arrow"/>
+  <rect x="242" y="426" width="337" height="43" rx="12" class="row"/>
+  <text x="261" y="455" class="small">id = 2   実験用の本 2</text>
+  <rect x="52" y="483" width="125" height="43" rx="12" class="box"/>
+  <text x="85" y="512" class="">3</text>
+  <path d="M182 505 L230 505" class="arrow"/>
+  <rect x="242" y="483" width="337" height="43" rx="12" class="row"/>
+  <text x="261" y="512" class="small">id = 3   実験用の本 3</text>
+  <rect x="52" y="540" width="125" height="43" rx="12" class="box"/>
+  <text x="85" y="569" class="">4</text>
+  <path d="M182 562 L230 562" class="arrow"/>
+  <rect x="242" y="540" width="337" height="43" rx="12" class="row"/>
+  <text x="261" y="569" class="small">id = 4   実験用の本 4</text>
+  <text x="52" y="624" class="small">… 項目5〜8も、このページ内の行を指す</text>
+  <text x="30" y="697" class="small">左の0：どのページを開くか。</text>
+  <text x="30" y="731" class="small">右の1：そのページのどの項目をたどるか。</text>
+  <text x="30" y="765" class="small">行の配置・空き領域は省略した模型。</text>
+</svg>

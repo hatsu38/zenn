@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="750" viewBox="0 0 640 750" role="img" aria-labelledby="title description">
+  
+
+  <title id="title">結果が1行でも、調べたのは100万行</title>
+  <desc id="description">初期データの単純な逐次走査 ／ loops = 1</desc>
+  
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+  </defs>
+  
+
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:30px;font-weight:700} .bold{font-weight:700} .small{font-size:22px} .muted{fill:#566c7b;font-size:22px} .value{font-size:28px;font-weight:700} .teal{fill:#176e65;font-weight:700} .orange{fill:#945e11;font-weight:700}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .card{fill:#dcefe8;stroke:#448b7c;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .paper{fill:#fff;stroke:#b2c5cc;stroke-width:1.5} .ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5} .edge{fill:none;stroke:#92a7b5;stroke-width:2.5} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)}
+</style>
+  <rect width="640" height="750" fill="#f5f7f9"/>
+  
+
+  <text x="28" y="45" class="title" text-anchor="start">結果が1行でも、調べたのは100万行</text>
+  <text x="28" y="82" class="muted" text-anchor="start">初期データの単純な逐次走査 ／ loops = 1</text>
+  
+
+  <g id="diagram">
+    <rect x="20" y="110" width="600" height="230" rx="18" class="panel"/>
+    <text x="40" y="150" class="bold" text-anchor="start">調べた本：100万行</text>
+    <rect x="52" y="178" width="240" height="11" rx="3" class="card"/>
+    <rect x="52" y="195" width="240" height="11" rx="3" class="card"/>
+    <rect x="52" y="212" width="240" height="11" rx="3" class="card"/>
+    <rect x="52" y="229" width="240" height="11" rx="3" class="card"/>
+    <rect x="52" y="246" width="240" height="11" rx="3" class="card"/>
+    <rect x="52" y="263" width="240" height="11" rx="3" class="card"/>
+    <rect x="52" y="280" width="240" height="11" rx="3" class="card"/>
+    <rect x="350" y="178" width="240" height="11" rx="3" class="card"/>
+    <rect x="350" y="195" width="240" height="11" rx="3" class="card"/>
+    <rect x="350" y="212" width="240" height="11" rx="3" class="card"/>
+    <rect x="350" y="229" width="240" height="11" rx="3" class="card"/>
+    <rect x="350" y="246" width="240" height="11" rx="3" class="card"/>
+    <rect x="350" y="263" width="240" height="11" rx="3" class="card"/>
+    <rect x="350" y="280" width="240" height="11" rx="3" class="card"/>
+    <text x="50" y="316" class="bold" text-anchor="start">一つずつ題名を比べる</text>
+    <path d="M210 347 L166 419" class="arrow"/>
+    <path d="M420 347 L474 419" class="arrow"/>
+    <rect x="20" y="435" width="600" height="230" rx="18" class="panel"/>
+    <text x="40" y="475" class="bold" text-anchor="start">比較した後、二つに分かれる</text>
+    <rect x="48" y="510" width="230" height="54" rx="12" class="hot"/>
+    <text x="163.0" y="545" class="" text-anchor="middle">一致：1行</text>
+    <rect x="342" y="510" width="270" height="54" rx="12" class="box"/>
+    <text x="477.0" y="545" class="" text-anchor="middle">不一致：999,999行</text>
+    <text x="164" y="610" class="teal" text-anchor="middle">結果へ返す</text>
+    <text x="476" y="610" class="small" text-anchor="middle">結果には出ない</text>
+    <text x="30" y="716" class="bold" text-anchor="start">返した行 ＋ 除外した行 ＝ 100万行</text>
+  </g>
+</svg>

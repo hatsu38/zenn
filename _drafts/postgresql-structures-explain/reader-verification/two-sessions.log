@@ -1,0 +1,20 @@
+[A] BEGIN ISOLATION LEVEL REPEATABLE READ;
+
+
+[A] SELECT title FROM books WHERE id=42;
+実験用の本 42
+
+[B] BEGIN; UPDATE books SET title='改訂版の本 42' WHERE id=42; COMMIT;
+
+
+[A] SELECT title FROM books WHERE id=42;
+実験用の本 42
+
+[A] COMMIT;
+
+
+[A] SELECT title FROM books WHERE id=42;
+改訂版の本 42
+
+[A] UPDATE books SET title='実験用の本 42' WHERE id=42;
+

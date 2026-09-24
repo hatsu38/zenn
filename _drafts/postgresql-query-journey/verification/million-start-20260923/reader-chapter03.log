@@ -1,0 +1,75 @@
+\set ON_ERROR_STOP on
+\pset pager off
+Pager usage is off.
+SET max_parallel_workers_per_gather = 0;
+SET
+SET jit = off;
+SET
+SET work_mem = '4MB';
+SET
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title = '実験用の本 42';
+                                               QUERY PLAN                                               
+--------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.014..36.399 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999999
+   Buffers: shared hit=4853 read=2500 written=54
+ Planning:
+   Buffers: shared hit=63
+ Planning Time: 0.163 ms
+ Execution Time: 36.430 ms
+(8 rows)
+
+CREATE INDEX books_title_idx ON books (title);
+CREATE INDEX
+ANALYZE books;
+ANALYZE
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title = '実験用の本 42';
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_title_idx on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.057..0.057 rows=1.00 loops=1)
+   Index Cond: (title = '実験用の本 42'::text)
+   Index Searches: 1
+   Buffers: shared hit=1 read=3
+ Planning:
+   Buffers: shared hit=8 read=1
+ Planning Time: 0.141 ms
+ Execution Time: 0.101 ms
+(8 rows)
+
+SELECT pg_size_pretty(pg_relation_size('books_title_idx'));
+ pg_size_pretty 
+----------------
+ 39 MB
+(1 row)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE id BETWEEN 400000 AND 400010;
+                                                       QUERY PLAN                                                       
+------------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_pkey on books  (cost=0.42..8.62 rows=10 width=30) (actual time=0.034..0.035 rows=11.00 loops=1)
+   Index Cond: ((id >= 400000) AND (id <= 400010))
+   Index Searches: 1
+   Buffers: shared hit=5 read=2
+ Planning:
+   Buffers: shared hit=6
+ Planning Time: 0.098 ms
+ Execution Time: 0.043 ms
+(8 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE id BETWEEN 1 AND 900000;
+                                                    QUERY PLAN                                                    
+------------------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..22353.00 rows=897912 width=30) (actual time=0.009..64.580 rows=900000.00 loops=1)
+   Filter: ((id >= 1) AND (id <= 900000))
+   Rows Removed by Filter: 100000
+   Buffers: shared hit=5369 read=1984
+ Planning:
+   Buffers: shared hit=4
+ Planning Time: 0.052 ms
+ Execution Time: 90.716 ms
+(8 rows)
+

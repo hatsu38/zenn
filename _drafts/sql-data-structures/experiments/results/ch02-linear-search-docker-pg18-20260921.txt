@@ -1,0 +1,255 @@
+# 実行日時: 2026-09-21 20:09:41 JST
+# ホスト: arm64 macOS 26.6.2、Docker postgres:18、コンテナ reading-log-lab
+# 前提: 第1章の ch01-setup.sql を実行した直後の状態（本 1,000 冊、読了記録 2 万件）から続けて実行
+$ docker exec -i reading-log-lab psql -X -U postgres -d reading_log -f - < ch02-settings.sql
+ALTER DATABASE
+ALTER DATABASE
+ALTER DATABASE
+$ （再接続）docker exec -i reading-log-lab psql -X -U postgres -d reading_log -f - < ch02-linear-search.sql
+Pager usage is off.
+                                                         version                                                          
+--------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+ max_parallel_workers_per_gather 
+---------------------------------
+ 0
+(1 row)
+
+ jit 
+-----
+ off
+(1 row)
+
+ work_mem 
+----------
+ 64MB
+(1 row)
+
+--- 0. いまの本の冊数と、題名検索（1,000冊）
+ book_count 
+------------
+       1000
+(1 row)
+
+ relpages | reltuples | size  
+----------+-----------+-------
+        8 |      1000 | 64 kB
+(1 row)
+
+                                             QUERY PLAN                                             
+----------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.005..0.036 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999
+   Buffers: shared hit=8
+ Planning:
+   Buffers: shared hit=11
+ Planning Time: 0.035 ms
+ Execution Time: 0.041 ms
+(8 rows)
+
+--- 1. 本を10万冊に増やす
+INSERT 0 99000
+ANALYZE
+ book_count 
+------------
+     100000
+(1 row)
+
+ relpages | reltuples |  size   
+----------+-----------+---------
+      736 |    100000 | 5888 kB
+(1 row)
+
+--- 1. 題名検索（10万冊、1回目）
+                                              QUERY PLAN                                              
+------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..1986.00 rows=1 width=29) (actual time=0.016..3.222 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 99999
+   Buffers: shared hit=736
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.028 ms
+ Execution Time: 3.230 ms
+(8 rows)
+
+--- 1. 題名検索（10万冊、2回目）
+                                              QUERY PLAN                                              
+------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..1986.00 rows=1 width=29) (actual time=0.009..5.587 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 99999
+   Buffers: shared hit=736
+ Planning Time: 0.036 ms
+ Execution Time: 5.601 ms
+(6 rows)
+
+--- 1. 題名検索（10万冊、3回目）
+                                              QUERY PLAN                                              
+------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..1986.00 rows=1 width=29) (actual time=0.008..3.367 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 99999
+   Buffers: shared hit=736
+ Planning Time: 0.057 ms
+ Execution Time: 3.380 ms
+(6 rows)
+
+--- 2. 見つかったところで止まれるか（10万冊、LIMIT 1、先頭近く）
+                                                 QUERY PLAN                                                 
+------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.00..1986.00 rows=1 width=29) (actual time=0.012..0.013 rows=1.00 loops=1)
+   Buffers: shared hit=2
+   ->  Seq Scan on books  (cost=0.00..1986.00 rows=1 width=29) (actual time=0.011..0.011 rows=1.00 loops=1)
+         Filter: (title = '実験用の本 42'::text)
+         Rows Removed by Filter: 41
+         Buffers: shared hit=2
+ Planning Time: 0.050 ms
+ Execution Time: 0.020 ms
+(8 rows)
+
+--- 2. LIMIT 1、真ん中
+                                                 QUERY PLAN                                                 
+------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.00..1986.00 rows=1 width=29) (actual time=2.043..2.044 rows=1.00 loops=1)
+   Buffers: shared hit=369
+   ->  Seq Scan on books  (cost=0.00..1986.00 rows=1 width=29) (actual time=2.042..2.042 rows=1.00 loops=1)
+         Filter: (title = '実験用の本 50000'::text)
+         Rows Removed by Filter: 49999
+         Buffers: shared hit=369
+ Planning Time: 0.016 ms
+ Execution Time: 2.053 ms
+(8 rows)
+
+--- 2. LIMIT 1、末尾近く
+                                                 QUERY PLAN                                                 
+------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.00..1986.00 rows=1 width=29) (actual time=3.747..3.748 rows=1.00 loops=1)
+   Buffers: shared hit=736
+   ->  Seq Scan on books  (cost=0.00..1986.00 rows=1 width=29) (actual time=3.746..3.747 rows=1.00 loops=1)
+         Filter: (title = '実験用の本 99958'::text)
+         Rows Removed by Filter: 99957
+         Buffers: shared hit=736
+ Planning Time: 0.049 ms
+ Execution Time: 3.760 ms
+(8 rows)
+
+--- 2. LIMIT なし、末尾近く（比較用）
+                                              QUERY PLAN                                              
+------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..1986.00 rows=1 width=29) (actual time=3.977..3.981 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 99958'::text)
+   Rows Removed by Filter: 99999
+   Buffers: shared hit=736
+ Planning Time: 0.049 ms
+ Execution Time: 3.997 ms
+(6 rows)
+
+--- 3. 本を100万冊に増やす
+INSERT 0 900000
+ANALYZE
+ book_count 
+------------
+    1000000
+(1 row)
+
+ relpages | reltuples | size  
+----------+-----------+-------
+     7353 |   1000000 | 57 MB
+(1 row)
+
+--- 3. 題名検索の予定（100万冊、EXPLAIN のみ）
+                        QUERY PLAN                        
+----------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30)
+   Filter: (title = '実験用の本 42'::text)
+(2 rows)
+
+--- 3. 題名検索（100万冊、1回目）
+                                               QUERY PLAN                                               
+--------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.010..33.250 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999999
+   Buffers: shared hit=7353
+ Planning Time: 0.014 ms
+ Execution Time: 33.259 ms
+(6 rows)
+
+--- 3. 題名検索（100万冊、2回目）
+                                               QUERY PLAN                                               
+--------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.014..32.145 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999999
+   Buffers: shared hit=7353
+ Planning Time: 0.089 ms
+ Execution Time: 32.160 ms
+(6 rows)
+
+--- 3. 題名検索（100万冊、3回目）
+                                               QUERY PLAN                                               
+--------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.009..32.619 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999999
+   Buffers: shared hit=7353
+ Planning Time: 0.042 ms
+ Execution Time: 32.632 ms
+(6 rows)
+
+--- 4. 1ページに入っている冊数（先頭ページ）
+ rows_in_first_page 
+--------------------
+                136
+(1 row)
+
+--- 5. 番号検索（100万冊）
+                                                      QUERY PLAN                                                      
+----------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_pkey on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.014..0.015 rows=1.00 loops=1)
+   Index Cond: (id = 42)
+   Index Searches: 1
+   Buffers: shared hit=7
+ Planning:
+   Buffers: shared hit=5
+ Planning Time: 0.078 ms
+ Execution Time: 0.024 ms
+(8 rows)
+
+                                                      QUERY PLAN                                                      
+----------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_pkey on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.006..0.007 rows=1.00 loops=1)
+   Index Cond: (id = 999958)
+   Index Searches: 1
+   Buffers: shared hit=4
+ Planning Time: 0.022 ms
+ Execution Time: 0.013 ms
+(6 rows)
+
+--- 6. 発展の注記用: 100万冊で LIMIT 1 を付けると、読み始めの位置が先頭とは限らない
+                                                 QUERY PLAN                                                  
+-------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.009..0.010 rows=1.00 loops=1)
+   Buffers: shared hit=2
+   ->  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.009..0.009 rows=1.00 loops=1)
+         Filter: (title = '実験用の本 42'::text)
+         Rows Removed by Filter: 41
+         Buffers: shared hit=2
+ Planning Time: 0.045 ms
+ Execution Time: 0.013 ms
+(8 rows)
+
+ synchronize_seqscans 
+----------------------
+ on
+(1 row)
+
+ shared_buffers 
+----------------
+ 128MB
+(1 row)
+

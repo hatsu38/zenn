@@ -1,0 +1,278 @@
+[
+  {
+    "name": "00-book-sketch",
+    "chapter": 0,
+    "title": "この本で、一緒に調べること",
+    "description": "本全体を見渡すグラレコ風の導入"
+  },
+  {
+    "name": "00-reading-service",
+    "chapter": 0,
+    "title": "こんな読書記録サービスを作ります",
+    "description": "架空の画面イメージ ／ 件数は説明用"
+  },
+  {
+    "name": "00-books-and-records",
+    "chapter": 0,
+    "title": "本の冊数と、読了記録の件数",
+    "description": "サンプルの2冊・3件で考える"
+  },
+  {
+    "name": "00-ranking-question",
+    "chapter": 0,
+    "title": "20冊を返すまでに、何をしている？",
+    "description": "処理量を調べる前の見取り図 ／ 行数の縮尺ではない"
+  },
+  {
+    "name": "01-index-to-row",
+    "chapter": 1,
+    "title": "番号で場所を探し、表から行を取り出す",
+    "description": "Index Scanの模型 ／ 索引の内部は第3章で扱う"
+  },
+  {
+    "name": "01-scan-and-filter",
+    "chapter": 1,
+    "title": "結果が1行でも、調べたのは100万行",
+    "description": "初期データの単純な逐次走査 ／ loops = 1"
+  },
+  {
+    "name": "01-search-window",
+    "chapter": 1,
+    "title": "まずは、1冊だけ探してみる",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
+    "name": "05-limit-search",
+    "chapter": 2,
+    "title": "LIMIT 1でも、探す量は変わる",
+    "description": "読み順を固定した模型 ／ SQLの行順を保証しない"
+  },
+  {
+    "name": "05-linear-scan",
+    "chapter": 2,
+    "title": "見つけても、そこで終わりとは限らない",
+    "description": "5冊へ縮めた模型 ／ 題名に一意性の指定なし"
+  },
+  {
+    "name": "05-growing-library",
+    "chapter": 2,
+    "title": "100万冊から、1冊見つけたら止める？",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
+    "name": "06-btree-path",
+    "chapter": 3,
+    "title": "8を探す：範囲を選んでから、値を探す",
+    "description": "番号1〜9の模型 ／ 矢印は探索で進む向き"
+  },
+  {
+    "name": "06-range-scan",
+    "chapter": 3,
+    "title": "4以上8以下なら、隣の葉も読む",
+    "description": "索引の葉をたどる模型 ／ 表への参照は省略"
+  },
+  {
+    "name": "06-catalog-question",
+    "chapter": 3,
+    "title": "目録も大きい。それでも速い？",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
+    "name": "03-index-reference",
+    "chapter": 4,
+    "title": "索引をたどって、表の行へ届く",
+    "description": "索引3段の模型 ／ 矢印は参照する順番"
+  },
+  {
+    "name": "03-pages-and-rows",
+    "chapter": 4,
+    "title": "表の中にページ、ページの中に行",
+    "description": "説明用の模型 ／ 1ページ3行は実際の容量ではない"
+  },
+  {
+    "name": "03-row-width",
+    "chapter": 4,
+    "title": "同じ1,000行でも、8ページと32ページ",
+    "description": "固定サイズのページに、長さの違う行を入れる"
+  },
+  {
+    "name": "03-storage-question",
+    "chapter": 4,
+    "title": "本の一覧は、どこに保存される？",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
+    "name": "04-memory-regions",
+    "chapter": 5,
+    "title": "ページの保存場所と、計算の作業場所",
+    "description": "基本の配置の模型 ／ 並列処理などは省略"
+  },
+  {
+    "name": "shared-buffer-reuse",
+    "chapter": 5,
+    "title": "ファイルのページを、メモリで再利用する",
+    "description": "読み込み経路の模型 ／ ページ7は説明用"
+  },
+  {
+    "name": "04-repeat-observation",
+    "chapter": 5,
+    "title": "同じ検索を、もう一度",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
+    "name": "02-connections",
+    "chapter": 6,
+    "title": "接続ごとにプロセスが動く",
+    "description": "PIDは今回の例 ／ 配置は共有範囲を示す模型"
+  },
+  {
+    "name": "02-execution-tree",
+    "chapter": 6,
+    "title": "Index Scanから、Limitへ行が渡る",
+    "description": "ORDER BY title LIMIT 3 の計画の模型"
+  },
+  {
+    "name": "02-client-scene",
+    "chapter": 6,
+    "title": "画面の向こうで、SQLが動く",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
+    "name": "07-external-sort",
+    "chapter": 7,
+    "title": "メモリに収まらないときの並べ替え",
+    "description": "外部ソートの模型 ／ まとまりの個数・容量は模式的"
+  },
+  {
+    "name": "07-merge-cards",
+    "chapter": 7,
+    "title": "二つの並びを、比べながら合流する",
+    "description": "比較の模型 ／ PostgreSQLの実装そのものではない"
+  },
+  {
+    "name": "07-recent-records",
+    "chapter": 7,
+    "title": "読み終えた順に、並べたい",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
+    "name": "08-top-n-vs-index",
+    "chapter": 8,
+    "title": "候補を絞る方法と、途中で止まる方法",
+    "description": "大きい順に3件を求める模型 ／ 本文は日時順20件"
+  },
+  {
+    "name": "top-three-heap",
+    "chapter": 8,
+    "title": "上位3枚を保つ：入れ替えるのはどれ？",
+    "description": "候補の比較・交換・除外を追う4コマ"
+  },
+  {
+    "name": "08-twenty-window",
+    "chapter": 8,
+    "title": "画面に欲しいのは、最新20件",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
+    "name": "09-hash-join",
+    "chapter": 9,
+    "title": "先に分類し、同じ箱の中で照合する",
+    "description": "Hash Joinの模型 ／ 実際のハッシュ関数とは異なる"
+  },
+  {
+    "name": "09-merge-join",
+    "chapter": 9,
+    "title": "並んだ二つの入力を、先頭から合わせる",
+    "description": "Merge Joinの模型 ／ 本の番号は一意、記録は重複あり"
+  },
+  {
+    "name": "09-nested-loop",
+    "chapter": 9,
+    "title": "記録を1件取り出すたびに、本を探す",
+    "description": "Nested Loopの模型 ／ キャッシュによる省略は示さない"
+  },
+  {
+    "name": "09-title-lookup",
+    "chapter": 9,
+    "title": "本の番号だけでは、題名が分からない",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
+    "name": "10-estimate-propagation",
+    "chapter": 10,
+    "title": "入口の見積もりが、後ろの判断に響く",
+    "description": "推定と実測のずれの説明例 ／ 実測ログではない"
+  },
+  {
+    "name": "10-selectivity",
+    "chapter": 10,
+    "title": "同じ「1種類」でも、9,000行と1,000行",
+    "description": "本文の生成データの分布 ／ 四角一つは1,000行"
+  },
+  {
+    "name": "10-planner-choice",
+    "chapter": 10,
+    "title": "索引があるのに、なぜ使わない？",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
+    "name": "11-snapshots",
+    "chapter": 11,
+    "title": "読む時点によって、見える版が変わる",
+    "description": "本文の実験順序 ／ Repeatable Readを明示して実行"
+  },
+  {
+    "name": "11-visibility-map",
+    "chapter": 11,
+    "title": "索引だけで返せるかは、可視性にもよる",
+    "description": "Index Only Scanの模型 ／ ページごとに判断"
+  },
+  {
+    "name": "11-wal-and-pages",
+    "chapter": 11,
+    "title": "ログの保存と、ページの書き出し",
+    "description": "役割と順序の制約を示す模型 ／ 実際の処理は並行する"
+  },
+  {
+    "name": "11-editing-scene",
+    "chapter": 11,
+    "title": "題名を直している間に、読まれたら？",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
+    "name": "12-preaggregation",
+    "chapter": 12,
+    "title": "表示は軽くなる。集計の更新は必要。",
+    "description": "事前集計の模型 ／ 訂正・削除への対応も必要"
+  },
+  {
+    "name": "12-ranking-after",
+    "chapter": 12,
+    "title": "上位を選んでから題名を付ける",
+    "description": "6記録・3冊から上位2冊の模型 ／ 本文では上位20冊"
+  },
+  {
+    "name": "12-ranking-before",
+    "chapter": 12,
+    "title": "題名を付けてから、上位を選ぶ",
+    "description": "6記録・3冊から上位2冊の模型 ／ 本文では上位20冊"
+  },
+  {
+    "name": "12-decision-notebook",
+    "chapter": 12,
+    "title": "今度は、根拠を持って選べる",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
+    "name": "03-ctid-location",
+    "chapter": 4,
+    "title": "ctid = (0,1) が指す場所",
+    "description": "ページ番号は0から、項目番号は1から数える"
+  },
+  {
+    "name": "02-query-stages",
+    "chapter": 6,
+    "title": "SQLの文字列から、検索結果が返るまで",
+    "description": "題名検索の例 ／ 矢印は処理が進む順番"
+  }
+]

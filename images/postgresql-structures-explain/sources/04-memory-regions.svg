@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="830" viewBox="0 0 640 830" role="img" aria-labelledby="title description">
+  
+
+  <title id="title">ページの保存場所と、計算の作業場所</title>
+  <desc id="description">基本の配置の模型 ／ 並列処理などは省略</desc>
+  
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+  </defs>
+  
+
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:30px;font-weight:700} .bold{font-weight:700} .small{font-size:22px} .muted{fill:#566c7b;font-size:22px} .value{font-size:28px;font-weight:700} .teal{fill:#176e65;font-weight:700} .orange{fill:#945e11;font-weight:700}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .card{fill:#dcefe8;stroke:#448b7c;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .paper{fill:#fff;stroke:#b2c5cc;stroke-width:1.5} .ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5} .edge{fill:none;stroke:#92a7b5;stroke-width:2.5} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)}
+</style>
+  <rect width="640" height="830" fill="#f5f7f9"/>
+  
+
+  <text x="28" y="45" class="title" text-anchor="start">ページの保存場所と、計算の作業場所</text>
+  <text x="28" y="82" class="muted" text-anchor="start">基本の配置の模型 ／ 並列処理などは省略</text>
+  
+
+  <g id="diagram">
+    <rect x="20" y="110" width="600" height="635" rx="18" class="panel"/>
+    <text x="40" y="150" class="bold" text-anchor="start">共有する領域と、処理ごとの領域</text>
+    <rect x="44" y="186" width="256" height="295" rx="12" class="box"/>
+    <text x="172" y="224" class="bold" text-anchor="middle">バックエンドA</text>
+    <rect x="59" y="250" width="226" height="198" rx="12" class="paper"/>
+    <text x="74" y="289" class="small" text-anchor="start">ソートなどの作業</text>
+    <rect x="74" y="314" width="53" height="60" rx="9" class="card"/>
+    <text x="100.5" y="354.0" class="value" text-anchor="middle">8</text>
+    <rect x="139" y="314" width="53" height="60" rx="9" class="card"/>
+    <text x="165.5" y="354.0" class="value" text-anchor="middle">3</text>
+    <rect x="204" y="314" width="53" height="60" rx="9" class="card"/>
+    <text x="230.5" y="354.0" class="value" text-anchor="middle">5</text>
+    <text x="74" y="417" class="small" text-anchor="start">work_mem が関係</text>
+    <path d="M172 489 L172 548" class="arrow"/>
+    <rect x="340" y="186" width="256" height="295" rx="12" class="box"/>
+    <text x="468" y="224" class="bold" text-anchor="middle">バックエンドB</text>
+    <rect x="355" y="250" width="226" height="198" rx="12" class="paper"/>
+    <text x="370" y="289" class="small" text-anchor="start">ソートなどの作業</text>
+    <rect x="370" y="314" width="53" height="60" rx="9" class="card"/>
+    <text x="396.5" y="354.0" class="value" text-anchor="middle">8</text>
+    <rect x="435" y="314" width="53" height="60" rx="9" class="card"/>
+    <text x="461.5" y="354.0" class="value" text-anchor="middle">3</text>
+    <rect x="500" y="314" width="53" height="60" rx="9" class="card"/>
+    <text x="526.5" y="354.0" class="value" text-anchor="middle">5</text>
+    <text x="370" y="417" class="small" text-anchor="start">work_mem が関係</text>
+    <path d="M468 489 L468 548" class="arrow"/>
+    <rect x="44" y="568" width="552" height="143" rx="12" class="memory"/>
+    <text x="65" y="604" class="bold" text-anchor="start">共有バッファ：shared_buffers</text>
+    <rect x="67" y="624" width="102" height="60" rx="9" class="card"/>
+    <text x="118.0" y="664.0" class="value" text-anchor="middle">P0</text>
+    <rect x="195" y="624" width="102" height="60" rx="9" class="card"/>
+    <text x="246.0" y="664.0" class="value" text-anchor="middle">P1</text>
+    <rect x="323" y="624" width="102" height="60" rx="9" class="card"/>
+    <text x="374.0" y="664.0" class="value" text-anchor="middle">P2</text>
+    <rect x="451" y="624" width="102" height="60" rx="9" class="card"/>
+    <text x="502.0" y="664.0" class="value" text-anchor="middle">P3</text>
+    <text x="30" y="791" class="small" text-anchor="start">work_memは、接続全体のメモリ上限ではない。</text>
+  </g>
+</svg>

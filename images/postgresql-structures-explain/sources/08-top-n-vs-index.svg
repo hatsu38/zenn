@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="850" viewBox="0 0 640 850" role="img" aria-labelledby="title description">
+  
+
+  <title id="title">候補を絞る方法と、途中で止まる方法</title>
+  <desc id="description">大きい順に3件を求める模型 ／ 本文は日時順20件</desc>
+  
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+  </defs>
+  
+
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:30px;font-weight:700} .bold{font-weight:700} .small{font-size:22px} .muted{fill:#566c7b;font-size:22px} .value{font-size:28px;font-weight:700} .teal{fill:#176e65;font-weight:700} .orange{fill:#945e11;font-weight:700}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .card{fill:#dcefe8;stroke:#448b7c;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .paper{fill:#fff;stroke:#b2c5cc;stroke-width:1.5} .ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5} .edge{fill:none;stroke:#92a7b5;stroke-width:2.5} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)}
+</style>
+  <rect width="640" height="850" fill="#f5f7f9"/>
+  
+
+  <text x="28" y="45" class="title" text-anchor="start">候補を絞る方法と、途中で止まる方法</text>
+  <text x="28" y="82" class="muted" text-anchor="start">大きい順に3件を求める模型 ／ 本文は日時順20件</text>
+  
+
+  <g id="diagram">
+    <rect x="20" y="110" width="600" height="305" rx="18" class="panel"/>
+    <text x="40" y="150" class="bold" text-anchor="start">順序が分からない入力 → 上位3件</text>
+    <rect x="49" y="185" width="94" height="60" rx="9" class="card"/>
+    <text x="96.0" y="225.0" class="value" text-anchor="middle">8</text>
+    <rect x="161" y="185" width="94" height="60" rx="9" class="card"/>
+    <text x="208.0" y="225.0" class="value" text-anchor="middle">3</text>
+    <rect x="273" y="185" width="94" height="60" rx="9" class="card"/>
+    <text x="320.0" y="225.0" class="value" text-anchor="middle">5</text>
+    <rect x="385" y="185" width="94" height="60" rx="9" class="card"/>
+    <text x="432.0" y="225.0" class="value" text-anchor="middle">9</text>
+    <rect x="497" y="185" width="94" height="60" rx="9" class="card"/>
+    <text x="544.0" y="225.0" class="value" text-anchor="middle">2</text>
+    <text x="46" y="283" class="small" text-anchor="start">5件すべて確認し、候補は3件に保つ</text>
+    <rect x="200" y="319" width="66" height="60" rx="9" class="hot"/>
+    <text x="233.0" y="359.0" class="value" text-anchor="middle">9</text>
+    <rect x="284" y="319" width="66" height="60" rx="9" class="hot"/>
+    <text x="317.0" y="359.0" class="value" text-anchor="middle">8</text>
+    <rect x="368" y="319" width="66" height="60" rx="9" class="hot"/>
+    <text x="401.0" y="359.0" class="value" text-anchor="middle">5</text>
+    <rect x="20" y="445" width="600" height="320" rx="18" class="panel"/>
+    <text x="40" y="485" class="bold" text-anchor="start">大きい順の索引 → 上位3件</text>
+    <rect x="49" y="526" width="94" height="60" rx="9" class="hot"/>
+    <text x="96.0" y="566.0" class="value" text-anchor="middle">9</text>
+    <rect x="161" y="526" width="94" height="60" rx="9" class="hot"/>
+    <text x="208.0" y="566.0" class="value" text-anchor="middle">8</text>
+    <rect x="273" y="526" width="94" height="60" rx="9" class="hot"/>
+    <text x="320.0" y="566.0" class="value" text-anchor="middle">5</text>
+    <rect x="385" y="526" width="94" height="60" rx="9" class="card"/>
+    <text x="432.0" y="566.0" class="value" text-anchor="middle">3</text>
+    <rect x="497" y="526" width="94" height="60" rx="9" class="card"/>
+    <text x="544.0" y="566.0" class="value" text-anchor="middle">2</text>
+    <path d="M373 512 L373 607" class="edge"/>
+    <text x="47" y="660" class="small" text-anchor="start">先頭の3件がそろえば、そこで止まれる</text>
+    <text x="47" y="706" class="muted" text-anchor="start">条件を満たす順に取り出せる場合</text>
+    <text x="30" y="813" class="bold" text-anchor="start">同じ3件でも、入力を読む量が違う。</text>
+  </g>
+</svg>

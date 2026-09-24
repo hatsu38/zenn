@@ -1,0 +1,87 @@
+\set ON_ERROR_STOP on
+\pset pager off
+Pager usage is off.
+SET max_parallel_workers_per_gather = 0;
+SET
+SET jit = off;
+SET
+SET work_mem = '4MB';
+SET
+SET max_parallel_workers_per_gather = 0;
+SET
+SET jit = off;
+SET
+SET work_mem = '4MB';
+SET
+SET synchronize_seqscans = off;
+SET
+SELECT count(*) FROM books;
+  count  
+---------
+ 1000000
+(1 row)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title = '実験用の本 42';
+                                               QUERY PLAN                                               
+--------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.023..35.095 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999999
+   Buffers: shared hit=4570 read=2783
+ Planning:
+   Buffers: shared hit=12
+ Planning Time: 0.066 ms
+ Execution Time: 35.109 ms
+(8 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books
+WHERE title = '実験用の本 42'
+LIMIT 1;
+                                                 QUERY PLAN                                                  
+-------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.020..0.021 rows=1.00 loops=1)
+   Buffers: shared hit=1 read=1
+   ->  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.019..0.020 rows=1.00 loops=1)
+         Filter: (title = '実験用の本 42'::text)
+         Rows Removed by Filter: 41
+         Buffers: shared hit=1 read=1
+ Planning Time: 0.050 ms
+ Execution Time: 0.100 ms
+(8 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books
+WHERE title = '実験用の本 999999'
+LIMIT 1;
+                                                  QUERY PLAN                                                   
+---------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=38.688..38.689 rows=1.00 loops=1)
+   Buffers: shared hit=4665 read=2688 written=92
+   ->  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=38.687..38.687 rows=1.00 loops=1)
+         Filter: (title = '実験用の本 999999'::text)
+         Rows Removed by Filter: 999998
+         Buffers: shared hit=4665 read=2688 written=92
+ Planning Time: 0.016 ms
+ Execution Time: 38.699 ms
+(8 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books
+WHERE title = '存在しない本'
+LIMIT 1;
+                                                  QUERY PLAN                                                   
+---------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=35.337..35.338 rows=0.00 loops=1)
+   Buffers: shared hit=4759 read=2594 written=94
+   ->  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=35.336..35.336 rows=0.00 loops=1)
+         Filter: (title = '存在しない本'::text)
+         Rows Removed by Filter: 1000000
+         Buffers: shared hit=4759 read=2594 written=94
+ Planning Time: 0.059 ms
+ Execution Time: 35.355 ms
+(8 rows)
+
+RESET synchronize_seqscans;
+RESET

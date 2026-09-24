@@ -1,0 +1,94 @@
+\set ON_ERROR_STOP on
+\pset pager off
+Pager usage is off.
+SET max_parallel_workers_per_gather = 0;
+SET
+SET jit = off;
+SET
+SET work_mem = '4MB';
+SET
+BEGIN;
+BEGIN
+CREATE SCHEMA book_observation;
+CREATE SCHEMA
+CREATE TABLE book_observation.books
+  (LIKE public.books INCLUDING DEFAULTS INCLUDING CONSTRAINTS);
+CREATE TABLE
+ALTER TABLE book_observation.books ADD PRIMARY KEY (id);
+ALTER TABLE
+INSERT INTO book_observation.books
+SELECT id, title FROM public.books WHERE id BETWEEN 1 AND 1000;
+INSERT 0 1000
+SET LOCAL search_path = book_observation, public;
+SET
+ANALYZE books;
+ANALYZE
+SELECT count(*) FROM books;
+ count 
+-------
+  1000
+(1 row)
+
+SELECT pg_relation_filepath('books');
+ pg_relation_filepath 
+----------------------
+ base/16564/16581
+(1 row)
+
+SELECT pg_size_pretty(pg_relation_size('books')) AS table_size,
+       pg_size_pretty(pg_total_relation_size('books')) AS total_size;
+ table_size | total_size 
+------------+------------
+ 64 kB      | 136 kB
+(1 row)
+
+SELECT pg_size_pretty(pg_relation_size('public.books')) AS table_size,
+       pg_relation_size('public.books') / current_setting('block_size')::int AS pages;
+ table_size | pages 
+------------+-------
+ 57 MB      |  7353
+(1 row)
+
+CREATE EXTENSION IF NOT EXISTS pageinspect;
+CREATE EXTENSION
+SELECT level FROM bt_metap('public.books_title_idx');
+ level 
+-------
+     2
+(1 row)
+
+SELECT id, ctid, title
+FROM books ORDER BY id LIMIT 8;
+ id | ctid  |    title     
+----+-------+--------------
+  1 | (0,1) | 実験用の本 1
+  2 | (0,2) | 実験用の本 2
+  3 | (0,3) | 実験用の本 3
+  4 | (0,4) | 実験用の本 4
+  5 | (0,5) | 実験用の本 5
+  6 | (0,6) | 実験用の本 6
+  7 | (0,7) | 実験用の本 7
+  8 | (0,8) | 実験用の本 8
+(8 rows)
+
+SAVEPOINT row_width;
+SAVEPOINT
+CREATE TABLE size_short AS
+SELECT n AS id, repeat('a', 10) AS note
+FROM generate_series(1, 1000) AS n;
+SELECT 1000
+CREATE TABLE size_long AS
+SELECT n AS id, repeat('a', 200) AS note
+FROM generate_series(1, 1000) AS n;
+SELECT 1000
+SELECT pg_relation_size('size_short') AS short_bytes,
+       pg_relation_size('size_long') AS long_bytes;
+ short_bytes | long_bytes 
+-------------+------------
+       65536 |     262144
+(1 row)
+
+ROLLBACK TO SAVEPOINT row_width;
+ROLLBACK
+ROLLBACK;
+ROLLBACK

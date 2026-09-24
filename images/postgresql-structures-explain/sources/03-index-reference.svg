@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="780" viewBox="0 0 640 780" role="img" aria-labelledby="title description">
+  
+
+  <title id="title">索引から、表の行へたどる</title>
+  <desc id="description">参照関係の模型 ／ ページ番号は省略</desc>
+  
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8" fill="#277b74"/>
+    </marker>
+  </defs>
+  
+
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:30px;font-weight:700} .bold{font-weight:700} .small{font-size:22px} .muted{fill:#566c7b;font-size:22px} .value{font-size:28px;font-weight:700} .teal{fill:#176e65;font-weight:700} .orange{fill:#945e11;font-weight:700}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .card{fill:#dcefe8;stroke:#448b7c;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .paper{fill:#fff;stroke:#b2c5cc;stroke-width:1.5} .ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5} .edge{fill:none;stroke:#92a7b5;stroke-width:2.5} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)}
+</style>
+  <rect width="640" height="780" fill="#f5f7f9"/>
+  
+
+  <text x="28" y="45" class="title" text-anchor="start">索引から、表の行へたどる</text>
+  <text x="28" y="82" class="muted" text-anchor="start">参照関係の模型 ／ ページ番号は省略</text>
+  
+
+  <g id="diagram">
+    <rect x="20" y="110" width="600" height="260" rx="18" class="panel"/>
+    <text x="40" y="150" class="bold" text-anchor="start">索引：キーと参照先を保持</text>
+    <rect x="55" y="184" width="175" height="54" rx="12" class="hot"/>
+    <text x="142.5" y="219" class="" text-anchor="middle">キー：42</text>
+    <rect x="342" y="184" width="245" height="54" rx="12" class="box"/>
+    <text x="464.5" y="219" class="" text-anchor="middle">表の行への参照</text>
+    <path d="M236 211 L332 211" class="arrow"/>
+    <text x="55" y="316" class="small" text-anchor="start">索引と表は、別の保存領域</text>
+    <path d="M465 377 L465 428" class="arrow"/>
+    <rect x="20" y="445" width="600" height="300" rx="18" class="panel"/>
+    <text x="40" y="485" class="bold" text-anchor="start">表：参照先のページを確認</text>
+    <rect x="54" y="510" width="530" height="208" rx="14" class="memory"/>
+    <text x="72" y="545" class="bold" text-anchor="start">ページの中の行</text>
+    <rect x="68" y="564" width="502" height="34" rx="6" class="paper"/>
+    <text x="81" y="589" class="small" text-anchor="start">本41</text>
+    <rect x="68" y="607" width="502" height="34" rx="6" class="hot"/>
+    <text x="81" y="632" class="small" text-anchor="start">本42：実験用の本 42</text>
+    <rect x="68" y="650" width="502" height="34" rx="6" class="paper"/>
+    <text x="81" y="675" class="small" text-anchor="start">本43</text>
+  </g>
+</svg>
