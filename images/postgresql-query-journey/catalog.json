@@ -32,7 +32,7 @@
   {
     "name": "01-explain-stages",
     "chapter": 1,
-    "title": "計画・実行・表示のどこまで進むか",
+    "title": "どの段階まで進むか",
     "description": "仕組み：SELECT・EXPLAIN・EXPLAIN ANALYZEの比較"
   },
   {

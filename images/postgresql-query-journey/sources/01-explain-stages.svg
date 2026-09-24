@@ -20,14 +20,14 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
   </style>
   <rect width="640" height="410" fill="#f5f7f9"/>
-  <text x="24" y="48" class="h">計画・実行・表示のどこまで進むか</text>
+  <text x="24" y="48" class="h">どの段階まで進むか</text>
   <g id="stages">
     <path d="M176 74 H314 L332 96 L314 118 H176 Z" class="step"/>
     <text x="250" y="104" text-anchor="middle" class="s b">計画する</text>
     <path d="M322 74 H460 L478 96 L460 118 H322 L340 96 Z" class="step"/>
     <text x="400" y="104" text-anchor="middle" class="s b">実行する</text>
     <path d="M468 74 H616 V118 H468 L486 96 Z" class="step"/>
-    <text x="548" y="104" text-anchor="middle" class="s b">結果を表示</text>
+    <text x="548" y="104" text-anchor="middle" class="s b">行を画面へ</text>
   </g>
   <g id="select">
     <text x="24" y="176" class="mono b">SELECT</text>
@@ -49,8 +49,8 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <g id="analyze">
     <text x="24" y="344" class="mono b">EXPLAIN</text>
     <text x="24" y="372" class="mono b">ANALYZE</text>
-    <rect x="476" y="306" width="140" height="34" rx="6" class="hot"/>
-    <text x="546" y="330" text-anchor="middle" class="s b">表示しない</text>
+    <rect x="466" y="306" width="150" height="34" rx="6" class="hot"/>
+    <text x="541" y="330" text-anchor="middle" class="s b">行は出さない</text>
     <path d="M200 356 H400" fill="none" stroke="#277b74" stroke-width="4"/>
     <path d="M400 356 H548" fill="none" stroke="#b5c2cc" stroke-width="3" stroke-dasharray="8 6"/>
     <circle cx="250" cy="356" r="9" fill="#277b74"/>
