@@ -29,7 +29,7 @@ SELECT id, title FROM books WHERE title = '実験用の本 42';
 
 ## SQLを入力する場所を作る
 
-実験用リポジトリ `postgresql-structures-lab` の `compose.yaml` を使います。Docker Desktopなどを起動し、リポジトリのディレクトリで次のコマンドを実行してください。
+実験用リポジトリ [`postgresql-structures-lab`](https://github.com/hatsu38/postgresql-structures-lab) の `compose.yaml` を使います。Docker Desktopなどを起動し、リポジトリのディレクトリで次のコマンドを実行してください。
 
 ```bash
 docker compose up -d --wait
