@@ -709,6 +709,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="320" y="426" text-anchor="middle" class="b">○ 一致 1行</text>
     <text x="320" y="454" text-anchor="middle" class="mono">rows=1.00</text>
     <path d="M434 431 H494" class="flow"/>
+    <text x="464" y="418" text-anchor="middle" class="s teal">返す</text>
     <rect x="500" y="403" width="116" height="56" rx="10" class="panel"/>
     <text x="558" y="439" text-anchor="middle" class="b">結果</text>
   </g>
@@ -839,8 +840,8 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </style>
   <rect width="640" height="550" fill="#f5f7f9"/>
   <text x="24" y="48" class="h">位置で変わる、比べる行数</text>
-  <rect x="426" y="22" width="190" height="36" rx="18" class="real"/>
-  <text x="521" y="47" text-anchor="middle" class="tag">実測 2026-09-23</text>
+  <rect x="396" y="22" width="220" height="36" rx="18" class="real"/>
+  <text x="506" y="47" text-anchor="middle" class="tag">実測 2026-09-23</text>
   <text x="200" y="98" class="m">先頭</text>
   <text x="616" y="98" text-anchor="end" class="m">最後</text>
   <g id="row-1">
@@ -857,8 +858,8 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="200" y="202" width="4" height="36" class="band"/>
     <circle cx="208" cy="220" r="7" fill="#fff" stroke="#176e65" stroke-width="3"/>
     <path d="M218 194 V246" stroke="#243b50" stroke-width="3"/>
-    <rect x="232" y="204" width="300" height="32" rx="6" class="hot"/>
-    <text x="382" y="228" text-anchor="middle" class="s b">ここで止まった（帯のほぼ0%）</text>
+    <rect x="232" y="204" width="340" height="32" rx="6" class="hot"/>
+    <text x="402" y="228" text-anchor="middle" class="s b">ここで止まった（帯のほぼ0%）</text>
     <text x="616" y="268" text-anchor="end" class="s b brown">42行</text>
   </g>
   <g id="row-3">
@@ -1375,7 +1376,6 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="24" y="298" class="mono">Index Cond: (id = 42)</text>
     <text x="24" y="328" class="m">索引も何ページかある（中身は第3章）</text>
   </g>
-  <path d="M186 181 C 568 181, 568 445, 380 445" class="ref"/>
   <text x="350" y="300" class="s">場所をたどる</text>
   <g id="table">
     <rect x="24" y="350" width="592" height="160" rx="10" class="page"/>
@@ -1387,6 +1387,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="44" y="466" width="330" height="30" rx="4" class="row"/>
     <text x="58" y="488" class="s">43　実験用の本 43</text>
   </g>
+  <path d="M186 181 C 568 181, 568 445, 380 445" class="ref"/>
   <text x="24" y="548" class="s"><tspan class="mono">Rows Removed by Filter</tspan> なし＝捨てた行がない</text>
   <text x="24" y="582" class="s"><tspan class="mono">shared hit=7</tspan>＝索引と表のページを使った回数</text>
 </svg>
@@ -1692,9 +1693,9 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </g>
   <g id="arrows">
     <path d="M200 266 V324" class="req"/>
-    <text x="214" y="302" class="s brown">題名で探す</text>
+    <text x="228" y="302" class="s brown">題名で探す</text>
     <path d="M440 326 V268" class="flow"/>
-    <text x="454" y="302" class="s teal">1冊を返す</text>
+    <text x="468" y="302" class="s teal">1冊を返す</text>
   </g>
   <g id="database">
     <rect x="24" y="334" width="592" height="180" rx="12" fill="none" stroke="#243b50" stroke-width="2" stroke-dasharray="8 6"/>
@@ -2084,3 +2085,22 @@ git commit -m "docs(query-journey): 図の枚数を48枚に更新し、第1〜2�
 - [ ] **Step 7: ユーザーに試作の確認を頼む**
 
 PRのURLと、確認してほしい点（上の「試作で決めたいこと」）を伝える。横展開（設計書5章の手順3・4）は、ユーザーの確認を待ってから別の計画にする。
+
+---
+
+## 実装で直した点（2026-09-25）
+
+計画の SVG のまま描くと問題が出た4枚は、実装で直した。上の Task 3・4・7・9 の SVG は、直した後の内容に同期してある。
+
+| Task | 図 | 計画のままで出た問題 | 直し方 |
+| --- | --- | --- | --- |
+| 3 | `01-scan-and-filter` | 結果へ向かう矢印に動詞のラベルがない | 矢印の上に「返す」を足した |
+| 4 | `05-limit-bands` | 「実測 2026-09-23」の札と「ここで止まった」の橙の枠が文字より狭く、文字が線に重なった | 札を幅220、枠を幅340に広げ、文字を中央に置き直した |
+| 7 | `01-index-to-row` | 参照の矢印を表のページより前に描いたため、表の塗りに矢印の後半と矢じりが隠れた | 矢印を表のページの後ろに描く順へ移した |
+| 9 | `01-search-window` | 矢じり（線の太さに合わせて30単位の大きさになる）がラベルの先頭の文字に触れた | 2つのラベルを右へ14ずらした |
+
+横展開の計画に活かすこと：
+
+- 文字のはみ出しは目で見るだけでは見落とした（実装担当とレビュー担当の両方が見落とした）。ブラウザで文字の実寸（getBBox）を測り、すぐ下に描いた図形と比べる。この試作では SDD の作業用スクリプト（コミットしていない）で測った。横展開では `check-figures.cjs` に取り込むとよい。
+- 線や矢印は、重なる図形より後に描く。矢じりの近くのラベルは、矢じりの大きさ（線の太さ×10単位）の分だけ離す。
+- 約束の「画像の中に置くのは短い見出しと札だけ」は、図の中のラベルと字面上ぶつかる。「副題と断り書きは置かない」に言い換える。
