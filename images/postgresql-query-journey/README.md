@@ -14,7 +14,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第1章 | 計画・実行・表示のどこまで進むか | [SVG](sources/01-explain-stages.svg) | [PNG](01-explain-stages.png) |
 | 第1章 | 1行のために、100万行を比べた | [SVG](sources/01-scan-and-filter.svg) | [PNG](01-scan-and-filter.png) |
 | 第1章 | 索引で場所を探し、その行だけ読む | [SVG](sources/01-index-to-row.svg) | [PNG](01-index-to-row.png) |
-| 第2章 | 100万冊から、1冊見つけたら止める？ | [SVG](sources/05-growing-library.svg) | [PNG](05-growing-library.png) |
+| 第2章 | 見つかったら、止めていい？ | [SVG](sources/05-growing-library.svg) | [PNG](05-growing-library.png) |
 | 第2章 | 一致した後も、最後まで比べる | [SVG](sources/05-linear-scan.svg) | [PNG](05-linear-scan.png) |
 | 第2章 | Limitが次の行を求めなくなる | [SVG](sources/05-limit-search.svg) | [PNG](05-limit-search.png) |
 | 第2章 | 位置で変わる、比べる行数 | [SVG](sources/05-limit-bands.svg) | [PNG](05-limit-bands.png) |
