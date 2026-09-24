@@ -36,12 +36,12 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="24" y="224" class="s b">本42</text>
     <text x="24" y="252" class="mono">LIMIT 1</text>
     <rect x="200" y="202" width="416" height="36" rx="4" class="skip"/>
+    <rect x="192" y="192" width="36" height="56" rx="10" class="hot"/>
     <rect x="200" y="202" width="4" height="36" class="band"/>
     <circle cx="208" cy="220" r="7" fill="#fff" stroke="#176e65" stroke-width="3"/>
     <path d="M218 194 V246" stroke="#243b50" stroke-width="3"/>
-    <rect x="232" y="204" width="340" height="32" rx="6" class="hot"/>
-    <text x="402" y="228" text-anchor="middle" class="s b">ここで止まった（帯のほぼ0%）</text>
-    <text x="616" y="268" text-anchor="end" class="s b brown">42行</text>
+    <text x="240" y="228" class="s b">ここで止まった（帯のほぼ0%）</text>
+    <text x="616" y="268" text-anchor="end" class="s b">42行</text>
   </g>
   <g id="row-3">
     <text x="24" y="314" class="s b">本999999</text>
