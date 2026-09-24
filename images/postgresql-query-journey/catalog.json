@@ -30,6 +30,12 @@
     "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
+    "name": "01-explain-stages",
+    "chapter": 1,
+    "title": "計画・実行・表示のどこまで進むか",
+    "description": "仕組み：SELECT・EXPLAIN・EXPLAIN ANALYZEの比較"
+  },
+  {
     "name": "01-scan-and-filter",
     "chapter": 1,
     "title": "1行のために、100万行を比べた",
