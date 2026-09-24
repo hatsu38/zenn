@@ -236,8 +236,8 @@
   {
     "name": "11-visibility-map",
     "chapter": 11,
-    "title": "Indexだけで返せるかは、可視性にもよる",
-    "description": "Index Only Scanの模型 ／ ページごとに判断"
+    "title": "×のページだけ、表を確かめに行く",
+    "description": "仕組み：Index Only Scanと可視性マップの模型"
   },
   {
     "name": "11-wal-and-pages",

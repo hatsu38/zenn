@@ -83,8 +83,8 @@ PostgreSQLでは、更新によって新しい**行バージョン**が作られ
 
 そこでPostgreSQLは、表のページごとに「このページの行はすべての読み手に見えてよいか」を記録した補助情報を持っています。これが**可視性マップ**です。Index Only Scanは、可視性マップで「すべて見えてよい」と確かめられないページについては、表の行を見に行きます。
 
-![Indexだけで返せるかは、可視性にもよる](/images/postgresql-query-journey/11-visibility-map.png)
-*Index Only Scanの模型。ページごとに判断します。*
+![Index (book_id, finished_at) の二つの項目のうち、可視性マップが✓のページの項目は表を見ずに返し、×のページの項目だけ表の行を確かめる](/images/postgresql-query-journey/11-visibility-map.png)
+*×のマスと、そこから表へ伸びる矢印を見てください。この矢印の回数がHeap Fetchesです（模型）。*
 
 AとBのトランザクションをすべて終了してから、試します。第8章のIndexは日時が先頭なので、本42だけを探すには向きません。本の番号から探せる実験用のIndexを一つ作ってから、VACUUMして検索します。VACUUMはBEGINで始めたトランザクションの中では実行できないので、BEGINは付けません。
 
