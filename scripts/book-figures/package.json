@@ -1,6 +1,11 @@
 {
   "name": "postgresql-book-figures",
   "private": true,
-  "scripts": { "export": "node export.cjs" },
+  "scripts": {
+    "export": "node export.cjs",
+    "check": "node check-figures.cjs",
+    "index": "node build-index.cjs",
+    "test": "node --test check-figures.test.cjs"
+  },
   "devDependencies": { "playwright": "1.62.1" }
 }

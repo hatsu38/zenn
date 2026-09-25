@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="950" viewBox="0 0 640 950" role="img" aria-labelledby="title">
+  <title id="title">図の部品見本</title>
+  <defs>
+    <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
+    <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
+    <marker id="ref" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#7d93a3"/></marker>
+  </defs>
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50}
+.h{font-size:30px;font-weight:700}.b{font-weight:700}.s{font-size:22px}.m{font-size:22px;fill:#566c7b}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:22px}.tag{font-size:22px;font-weight:700;fill:#fff}
+.teal{fill:#176e65}.brown{fill:#945e11}.real{fill:#176e65}.model{fill:#566c7b}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2}.node{fill:#ecf2f8;stroke:#56738a;stroke-width:2}
+.row{fill:#fff;stroke:#448b7c;stroke-width:2}.match{fill:#fff;stroke:#176e65;stroke-width:4}
+.page{fill:#f7fbf9;stroke:#6d9f94;stroke-width:2}.ipage{fill:#f4f6f8;stroke:#6b7f8e;stroke-width:2}
+.band{fill:#d5dde3;stroke:#92a7b5;stroke-width:2}.skip{fill:none;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5}
+.hot{fill:#fff0d5;stroke:#b88020;stroke-width:4}.ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5}
+.flow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#flow)}.req{fill:none;stroke:#945e11;stroke-width:3;stroke-dasharray:8 6;marker-end:url(#req)}
+.ref{fill:none;stroke:#7d93a3;stroke-width:2;marker-end:url(#ref)}.step{fill:#fff;stroke:#243b50;stroke-width:2.5}
+.spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
+  </style>
+  <rect width="640" height="950" fill="#f5f7f9"/>
+  <text x="24" y="48" class="h">図の部品見本</text>
+  <g id="row-card">
+    <text x="24" y="124" class="s b">行カード</text>
+    <rect x="220" y="100" width="240" height="36" rx="4" class="row"/>
+    <text x="234" y="125" class="s">42　実験用の本 42</text>
+  </g>
+  <g id="match-card">
+    <text x="24" y="176" class="s b">一致した行</text>
+    <rect x="220" y="152" width="240" height="36" rx="4" class="match"/>
+    <text x="234" y="177" class="s">42　実験用の本 42</text>
+  </g>
+  <g id="table-page">
+    <text x="24" y="232" class="s b">表のページ</text>
+    <rect x="220" y="204" width="396" height="92" rx="10" class="page"/>
+    <text x="236" y="230" class="s b">ページ 0</text>
+    <rect x="236" y="244" width="170" height="34" rx="4" class="row"/>
+    <text x="248" y="268" class="s">1　本1</text>
+    <rect x="418" y="244" width="170" height="34" rx="4" class="row"/>
+    <text x="430" y="268" class="s">2　本2</text>
+  </g>
+  <g id="index-entry">
+    <text x="24" y="350" class="s b">Indexの項目</text>
+    <rect x="220" y="314" width="396" height="60" rx="10" class="ipage"/>
+    <rect x="236" y="326" width="52" height="36" rx="4" class="row"/>
+    <text x="262" y="351" text-anchor="middle" class="s">42</text>
+    <text x="300" y="351" class="s m">▸ 場所</text>
+  </g>
+  <g id="plan-node">
+    <text x="24" y="424" class="s b">計画のノード</text>
+    <rect x="220" y="394" width="396" height="48" rx="12" class="node"/>
+    <text x="236" y="426" class="mono b">Seq Scan on books</text>
+  </g>
+  <g id="quantity-band">
+    <text x="24" y="488" class="s b">量の帯</text>
+    <rect x="220" y="464" width="300" height="32" rx="4" class="band"/>
+    <rect x="520" y="464" width="96" height="32" rx="4" class="skip"/>
+    <text x="220" y="524" class="m">灰色＝比べた行、破線＝比べなかった行</text>
+  </g>
+  <g id="emphasis">
+    <text x="24" y="572" class="s b">焦点</text>
+    <rect x="220" y="548" width="160" height="36" rx="6" class="hot"/>
+    <text x="300" y="573" text-anchor="middle" class="s b">注目する所</text>
+    <text x="400" y="572" class="s b">比べない</text>
+    <rect x="496" y="548" width="120" height="36" rx="6" class="ghost"/>
+    <text x="556" y="573" text-anchor="middle" class="m">本3</text>
+  </g>
+  <g id="arrows">
+    <text x="24" y="630" class="s b">行・データの流れ</text>
+    <path d="M260 624 H420" class="flow"/>
+    <text x="24" y="680" class="s b">要求</text>
+    <path d="M260 674 H420" class="req"/>
+    <text x="24" y="730" class="s b">参照・対応</text>
+    <path d="M260 724 H420" class="ref"/>
+    <text x="24" y="780" class="s b">処理の段階・時間の順</text>
+    <path d="M260 756 H400 V746 L436 772 L400 798 V788 H260 Z" class="step"/>
+  </g>
+  <g id="tags">
+    <text x="24" y="850" class="s b">札</text>
+    <rect x="220" y="826" width="130" height="36" rx="18" class="real"/>
+    <text x="285" y="851" text-anchor="middle" class="tag">実測</text>
+    <rect x="370" y="826" width="130" height="36" rx="18" class="model"/>
+    <text x="435" y="851" text-anchor="middle" class="tag">模型</text>
+  </g>
+  <g id="marks">
+    <text x="24" y="910" class="s b">記号</text>
+    <text x="220" y="910" class="b teal">○ 一致</text>
+    <text x="340" y="910" class="b">× 除外</text>
+    <text x="460" y="910" class="b teal">✓ 条件に合う</text>
+  </g>
+</svg>

@@ -2,7 +2,7 @@
 
 SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆すると次の書き出しで失われるため、修正はSVGに行ってください。
 
-序章から第12章まで、計46枚を本文へ掲載しています。序章は導入の絵2枚と技術図2枚です。第4章にはctidの図、第6章にはSQLの処理段階の図を追加しています。[図の一覧](index.html)からまとめて確認できます。
+序章から第12章まで、計48枚を本文へ掲載しています。序章は導入の絵2枚と技術図2枚です。第4章にはctidの図、第6章にはSQLの処理段階の図を追加しています。第1〜2章の8枚は、[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)の型で描き直した試作です。[図の一覧](index.html)からまとめて確認できます。
 
 | 章 | 題材 | SVG原本 | 掲載用PNG |
 | --- | --- | --- | --- |
@@ -10,12 +10,14 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 序章 | こんな読書記録サービスを作ります | [SVG](sources/00-reading-service.svg) | [PNG](00-reading-service.png) |
 | 序章 | 本の冊数と、読了記録の件数 | [SVG](sources/00-books-and-records.svg) | [PNG](00-books-and-records.png) |
 | 序章 | 20冊を返すまでに、何をしている？ | [SVG](sources/00-ranking-question.svg) | [PNG](00-ranking-question.png) |
-| 第1章 | 番号で場所を探し、表から行を取り出す | [SVG](sources/01-index-to-row.svg) | [PNG](01-index-to-row.png) |
-| 第1章 | 結果が1行でも、調べたのは100万行 | [SVG](sources/01-scan-and-filter.svg) | [PNG](01-scan-and-filter.png) |
 | 第1章 | まずは、1冊だけ探してみる | [SVG](sources/01-search-window.svg) | [PNG](01-search-window.png) |
-| 第2章 | LIMIT 1でも、探す量は変わる | [SVG](sources/05-limit-search.svg) | [PNG](05-limit-search.png) |
-| 第2章 | 見つけても、そこで終わりとは限らない | [SVG](sources/05-linear-scan.svg) | [PNG](05-linear-scan.png) |
-| 第2章 | 100万冊から、1冊見つけたら止める？ | [SVG](sources/05-growing-library.svg) | [PNG](05-growing-library.png) |
+| 第1章 | どの段階まで進むか | [SVG](sources/01-explain-stages.svg) | [PNG](01-explain-stages.png) |
+| 第1章 | 1行のために、100万行を比べた | [SVG](sources/01-scan-and-filter.svg) | [PNG](01-scan-and-filter.png) |
+| 第1章 | Indexで場所を探し、その行だけ読む | [SVG](sources/01-index-to-row.svg) | [PNG](01-index-to-row.png) |
+| 第2章 | 見つかったら、止めていい？ | [SVG](sources/05-growing-library.svg) | [PNG](05-growing-library.png) |
+| 第2章 | 一致した後も、最後まで比べる | [SVG](sources/05-linear-scan.svg) | [PNG](05-linear-scan.png) |
+| 第2章 | Limitが次の行を求めなくなる | [SVG](sources/05-limit-search.svg) | [PNG](05-limit-search.png) |
+| 第2章 | 位置で変わる、比べる行数 | [SVG](sources/05-limit-bands.svg) | [PNG](05-limit-bands.png) |
 | 第3章 | 8を探す：範囲を選んでから、値を探す | [SVG](sources/06-btree-path.svg) | [PNG](06-btree-path.png) |
 | 第3章 | 4以上8以下なら、隣の葉も読む | [SVG](sources/06-range-scan.svg) | [PNG](06-range-scan.png) |
 | 第3章 | 目録も大きい。それでも速い？ | [SVG](sources/06-catalog-question.svg) | [PNG](06-catalog-question.png) |
@@ -61,6 +63,8 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 
 図の設計意図・用語と模型の対応は [制作方針](../../books/postgresql-query-journey/ILLUSTRATION-GUIDE.md) にあります。
 
+新しく描く図と描き直す図は、[部品見本](parts/figure-parts.svg)の`<defs>`と`<style>`を写して使います。行カード・ページ枠・Indexの項目・計画のノード・量の帯・矢印・札の見た目がそろいます。見本の見た目は[PNG](parts/figure-parts.png)で確認できます。
+
 ## PNGを再出力する
 
 PNGを書き出すには、Playwrightをインストールした環境で次を実行します。
@@ -71,13 +75,39 @@ NODE_PATH=./scripts/book-figures/node_modules node images/postgresql-query-journ
 
 `sources/`内のSVGをすべてChromiumで描画し、フォントの読み込み後に2倍解像度でPNGを書き出します。出力先はこのREADMEと同じディレクトリです。同名のPNGは更新されます。元のSVGは変更しません。
 
+図の名前を渡すと、その図だけを書き出します。変更していない図のPNGに差分を出さないため、ふだんはこちらを使います。
+
+```sh
+NODE_PATH=./scripts/book-figures/node_modules node images/postgresql-query-journey/export.cjs 01-scan-and-filter 05-limit-bands
+```
+
+`.svg`で終わるパスを渡すと、そのSVGを同じ場所のPNGへ書き出します（例：`parts/figure-parts.svg`）。Playwrightは`scripts/book-figures`で`npm install`して入れます。書き出しの処理は`scripts/book-figures/export.cjs`にあり、`scripts/book-figures`で`npm run export -- 01-scan-and-filter`としても同じです。
+
 PNGは横1280ピクセルで、高さは図ごとに異なります。共有バッファの配置図は1280×1818、ヒープの4コマは1280×3580ピクセルです。本文では横幅に合わせて縮小されます。文字やコマの配置を変えたら、幅360pxの表示も確認してください。
+
+## 約束を確かめる
+
+図が[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)4章の約束を満たしているかを確かめます。見るのは、文字の大きさ、縦横比、画像内の断り書き、PNGの書き出し、catalog.jsonへの登録、本文からの参照とキャプション・代替テキストです。
+
+```sh
+node scripts/book-figures/check-figures.cjs 01-scan-and-filter
+```
+
+`--all`を付けると全部の図を確かめます。描き直す前の図は約束を満たしていないので、`--all`では多くの図が✗になります。
+
+## 図の一覧を作り直す
+
+[図の一覧](index.html)は`catalog.json`から作ります。図を足したり見出しを変えたりしたら、次を実行します。
+
+```sh
+node scripts/book-figures/build-index.cjs
+```
 
 ## 本文に掲載する
 
 ```md
-![絵を見なくても変化が伝わる代替テキスト](/images/postgresql-query-journey/shared-buffer-reuse.png)
-*説明用の模型。どの条件の例なのかを補足する。*
+![100万行の帯を先頭から最後まで比べ、999,999行を除外して1行だけを返す](/images/postgresql-query-journey/01-scan-and-filter.png)
+*帯の長さで、除外した行と返した1行の差を見てください（件数は実測）。*
 ```
 
 本文で見る目的を示し、図の後で変化と理由を説明します。実測値ではない図には模型と明記し、数値や構造の正確さを確認してから掲載します。

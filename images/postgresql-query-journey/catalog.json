@@ -24,40 +24,52 @@
     "description": "処理量を調べる前の見取り図 ／ 行数の縮尺ではない"
   },
   {
-    "name": "01-index-to-row",
+    "name": "01-search-window",
     "chapter": 1,
-    "title": "番号で場所を探し、表から行を取り出す",
-    "description": "Index Scanの模型 ／ Indexの内部は第3章で扱う"
+    "title": "まずは、1冊だけ探してみる",
+    "description": "問い：画面の1冊と、裏の100万冊"
+  },
+  {
+    "name": "01-explain-stages",
+    "chapter": 1,
+    "title": "どの段階まで進むか",
+    "description": "仕組み：SELECT・EXPLAIN・EXPLAIN ANALYZEの比較"
   },
   {
     "name": "01-scan-and-filter",
     "chapter": 1,
-    "title": "結果が1行でも、調べたのは100万行",
-    "description": "初期データの単純な逐次走査 ／ loops = 1"
+    "title": "1行のために、100万行を比べた",
+    "description": "観察：Seq Scanの実測を帯で見る"
   },
   {
-    "name": "01-search-window",
+    "name": "01-index-to-row",
     "chapter": 1,
-    "title": "まずは、1冊だけ探してみる",
-    "description": "サービスの場面・学ぶきっかけの絵"
-  },
-  {
-    "name": "05-limit-search",
-    "chapter": 2,
-    "title": "LIMIT 1でも、探す量は変わる",
-    "description": "読み順を固定した模型 ／ SQLの行順を保証しない"
-  },
-  {
-    "name": "05-linear-scan",
-    "chapter": 2,
-    "title": "見つけても、そこで終わりとは限らない",
-    "description": "5冊へ縮めた模型 ／ 題名に一意性の指定なし"
+    "title": "Indexで場所を探し、その行だけ読む",
+    "description": "仕組み：Index Scanの模型"
   },
   {
     "name": "05-growing-library",
     "chapter": 2,
-    "title": "100万冊から、1冊見つけたら止める？",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "title": "見つかったら、止めていい？",
+    "description": "問い：同じ100万冊で、目的の本の位置が違う"
+  },
+  {
+    "name": "05-linear-scan",
+    "chapter": 2,
+    "title": "一致した後も、最後まで比べる",
+    "description": "仕組み：5冊の模型（LIMITなし）"
+  },
+  {
+    "name": "05-limit-search",
+    "chapter": 2,
+    "title": "Limitが次の行を求めなくなる",
+    "description": "仕組み：LIMIT 1の模型"
+  },
+  {
+    "name": "05-limit-bands",
+    "chapter": 2,
+    "title": "位置で変わる、比べる行数",
+    "description": "観察：4つの実測を帯で比べる"
   },
   {
     "name": "06-btree-path",
