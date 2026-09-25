@@ -146,8 +146,8 @@ Limit  (cost=0.42..0.57 rows=3 width=30)
 
 実行計画は、上の処理が下の処理から行を受け取る親子の形をしているので、計画の木と呼ばれます。この二つの処理が行を受け渡す様子を図にします。左の矢印が行を返す向き、右が次の行を要求する向きです。
 
-![Index Scanが題名順に1行ずつ返し、Limitが3行で要求を止める](/images/postgresql-query-journey/02-execution-tree.png)
-*直前のIndex ScanとLimitの計画に対応する模型。実測した行数の図ではありません。*
+![Limitが次の行を3回要求し、Index Scanが題名の順に3行を返す。4回目は要求しない。出力の見積もりはLimitがrows=3、Index Scanがrows=1000000](/images/postgresql-query-journey/02-execution-tree.png)
+*①〜③の3往復の後、4回目の要求をしないことを見てください（直前の計画に対応する模型。rowsは見積もり）。*
 
 実行時は、上の`Limit`が下の`Index Scan`に次の1行を要求します。`Index Scan`は題名のIndexをたどり、表から取り出した行を返します。この受け渡しを繰り返し、`Limit`は3行を受け取ったら要求を止める計画です。
 

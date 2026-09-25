@@ -164,8 +164,8 @@
   {
     "name": "02-execution-tree",
     "chapter": 6,
-    "title": "Index Scanから、Limitへ行が渡る",
-    "description": "ORDER BY title LIMIT 3 の計画の模型"
+    "title": "Limitは3行で要求を止める",
+    "description": "仕組み：LimitとIndex Scanの要求と行の受け渡し（模型）"
   },
   {
     "name": "07-recent-records",
