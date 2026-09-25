@@ -67,10 +67,10 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="429" y="166" class="s brown">次の行を要求</text>
   </g>
   <g id="fourth-request">
-    <rect x="426" y="196" width="190" height="126" rx="8" class="hot"/>
+    <rect x="420" y="196" width="196" height="126" rx="8" class="hot"/>
     <text x="494" y="250" class="s b brown">4回目は</text>
     <text x="494" y="282" class="s b brown">要求しない</text>
-    <path d="M448 206 V308" class="req"/>
+    <path d="M448 206 V302" class="req"/>
     <text x="448" y="246" text-anchor="middle" class="h">×</text>
   </g>
 </svg>
