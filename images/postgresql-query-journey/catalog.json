@@ -198,6 +198,12 @@
     "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
+    "name": "08-sort-vs-topn",
+    "chapter": 8,
+    "title": "LIMITで減るのは、持つ量と返す行",
+    "description": "比較：ORDER BYだけとLIMIT 20の四つの数（実測）"
+  },
+  {
     "name": "09-hash-join",
     "chapter": 9,
     "title": "先に分類し、同じ箱の中で照合する",
