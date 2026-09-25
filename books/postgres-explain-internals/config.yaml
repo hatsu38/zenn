@@ -1,5 +1,5 @@
-title: "「インデックス貼ったのに遅い」を、EXPLAIN で説明できるようになる本"
-summary: "「インデックスは貼ったのに、このクエリだけ遅い」。その理由は EXPLAIN の出力に書いてあります。本書は EXPLAIN を 1 行ずつ読み解いて、遅いクエリの原因を推測ではなく自分の言葉で説明できるようになるための本です。cost / actual time / loops / BUFFERS の意味から、Seq Scan / Index Scan / Nested Loop などのノード、ページとヒープタプル、visibility map、VACUUM と MVCC、統計情報といった PostgreSQL 内部のしくみまで踏み込みます。Docker で立ち上がるサンプル DB と章別クエリ集付き。"
+title: "PostgreSQL 実行計画の教科書 ─ EXPLAIN でのぞく内部構造"
+summary: "EXPLAIN の出力に並ぶ数字を、1 行ずつ自分の言葉で説明できるようになるための教科書です。cost / rows / actual time / loops / BUFFERS の意味と計算のされ方から、Seq Scan / Index Scan / Nested Loop などのノードの選ばれ方、その裏にあるページとヒープタプル、visibility map、統計情報、MVCC と VACUUM といった PostgreSQL の内部構造まで降りて確かめます。Docker で立ち上がるサンプル DB と章別クエリ集付きで、本書のすべての数字を実機で再現しながら読み進められます。"
 topics: ["postgresql", "database", "sql", "explain", "performance"]
 # TODO(human): 公開準備が整ったら published: true に切り替える。有料化するなら price: 200〜5000 に
 published: false
