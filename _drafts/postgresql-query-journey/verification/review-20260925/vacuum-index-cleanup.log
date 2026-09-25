@@ -1,0 +1,43 @@
+CREATE INDEX
+                                                                            QUERY PLAN                                                                            
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Index Only Scan Backward using reading_records_visibility_idx on reading_records  (cost=0.43..8.46 rows=2 width=16) (actual time=0.094..0.100 rows=2.00 loops=1)
+   Index Cond: (book_id = 42)
+   Heap Fetches: 0
+   Index Searches: 1
+   Buffers: shared hit=4 read=3
+ Planning:
+   Buffers: shared hit=73 read=1 dirtied=2
+ Planning Time: 0.706 ms
+ Execution Time: 0.172 ms
+(9 rows)
+
+INFO:  vacuuming "journey_review_20260925_2156.public.reading_records"
+INFO:  launched 1 parallel vacuum worker for index vacuuming (planned: 1)
+INFO:  finished vacuuming "journey_review_20260925_2156.public.reading_records": index scans: 1
+pages: 0 removed, 10811 remain, 3 scanned (0.03% of total), 0 eagerly scanned
+tuples: 0 removed, 2000000 remain, 0 are dead but not yet removable
+removable cutoff: 861, which was 0 XIDs old when operation ended
+frozen: 0 pages from table (0.00% of total) had 0 tuples frozen
+visibility map: 2 pages set all-visible, 0 pages set all-frozen (0 were all-visible)
+index scan needed: 2 pages from table (0.02% of total) had 2 dead item identifiers removed
+index "reading_records_order_idx": pages: 7692 in total, 0 newly deleted, 0 currently deleted, 0 reusable
+index "reading_records_visibility_idx": pages: 7698 in total, 0 newly deleted, 0 currently deleted, 0 reusable
+avg read rate: 2039.288 MB/s, avg write rate: 0.454 MB/s
+buffer usage: 1981 hits, 13467 reads, 3 dirtied
+WAL usage: 8 records, 7 full page images, 49767 bytes, 0 buffers full
+system usage: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.05 s
+VACUUM
+                                                                            QUERY PLAN                                                                            
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Index Only Scan Backward using reading_records_visibility_idx on reading_records  (cost=0.43..4.46 rows=2 width=16) (actual time=0.013..0.013 rows=2.00 loops=1)
+   Index Cond: (book_id = 42)
+   Heap Fetches: 0
+   Index Searches: 1
+   Buffers: shared hit=4
+ Planning:
+   Buffers: shared hit=4
+ Planning Time: 0.090 ms
+ Execution Time: 0.031 ms
+(9 rows)
+

@@ -1,0 +1,168 @@
+Pager usage is off.
+SET
+SET
+SET
+Timing is on.
+ week_records 
+--------------
+       499998
+(1 row)
+
+Time: 113.405 ms
+ read_count | books  
+------------+--------
+          2 |   7276
+          1 | 485446
+(2 rows)
+
+Time: 297.783 ms
+ c |  count  
+---+---------
+ 2 | 1000000
+(1 row)
+
+Time: 1088.557 ms (00:01.089)
+                                                                                   QUERY PLAN                                                                                   
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=155298.45..155298.50 rows=20 width=38) (actual time=798.258..798.275 rows=20.00 loops=1)
+   Buffers: shared hit=282 read=17885, temp read=9964 written=12569
+   ->  Sort  (cost=155298.45..156561.88 rows=505373 width=38) (actual time=798.256..798.271 rows=20.00 loops=1)
+         Sort Key: (count(*)) DESC, b.id
+         Sort Method: top-N heapsort  Memory: 27kB
+         Buffers: shared hit=282 read=17885, temp read=9964 written=12569
+         ->  HashAggregate  (cost=129887.53..141850.65 rows=505373 width=38) (actual time=654.124..756.419 rows=492722.00 loops=1)
+               Group Key: b.id
+               Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 23568kB
+               Buffers: shared hit=282 read=17885, temp read=9964 written=12569
+               ->  Hash Join  (cost=36689.00..89615.62 rows=505373 width=30) (actual time=197.223..529.021 rows=499998.00 loops=1)
+                     Hash Cond: (r.book_id = b.id)
+                     Buffers: shared hit=282 read=17885, temp read=7441 written=7441
+                     ->  Seq Scan on reading_records r  (cost=0.00..40814.00 rows=505373 width=8) (actual time=0.183..86.910 rows=499998.00 loops=1)
+                           Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                           Rows Removed by Filter: 1500002
+                           Buffers: shared hit=282 read=10532
+                     ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=196.000..196.001 rows=1000000.00 loops=1)
+                           Buckets: 131072  Batches: 16  Memory Usage: 4872kB
+                           Buffers: shared read=7353, temp written=5815
+                           ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.255..62.032 rows=1000000.00 loops=1)
+                                 Buffers: shared read=7353
+ Planning:
+   Buffers: shared hit=81 read=9
+ Planning Time: 8.373 ms
+ Execution Time: 800.999 ms
+(26 rows)
+
+Time: 810.629 ms
+                                                                                   QUERY PLAN                                                                                   
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=89353.88..89522.56 rows=20 width=38) (actual time=299.147..300.483 rows=20.00 loops=1)
+   Buffers: shared hit=433 read=10461, temp read=1366 written=3079
+   ->  Limit  (cost=89353.46..89353.51 rows=20 width=16) (actual time=299.044..299.048 rows=20.00 loops=1)
+         Buffers: shared hit=376 read=10438, temp read=1366 written=3079
+         ->  Sort  (cost=89353.46..90457.26 rows=441523 width=16) (actual time=299.042..299.045 rows=20.00 loops=1)
+               Sort Key: (count(*)) DESC, reading_records.book_id
+               Sort Method: top-N heapsort  Memory: 26kB
+               Buffers: shared hit=376 read=10438, temp read=1366 written=3079
+               ->  HashAggregate  (cost=69241.23..77604.69 rows=441523 width=16) (actual time=182.409..268.892 rows=492722.00 loops=1)
+                     Group Key: reading_records.book_id
+                     Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 15248kB
+                     Buffers: shared hit=376 read=10438, temp read=1366 written=3079
+                     ->  Seq Scan on reading_records  (cost=0.00..40814.00 rows=505373 width=8) (actual time=0.130..77.552 rows=499998.00 loops=1)
+                           Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                           Rows Removed by Filter: 1500002
+                           Buffers: shared hit=376 read=10438
+   ->  Index Scan using books_pkey on books b  (cost=0.42..8.44 rows=1 width=30) (actual time=0.070..0.070 rows=1.00 loops=20)
+         Index Cond: (id = reading_records.book_id)
+         Index Searches: 20
+         Buffers: shared hit=57 read=23
+ Planning Time: 0.147 ms
+ Execution Time: 302.493 ms
+(22 rows)
+
+Time: 303.018 ms
+BEGIN
+Time: 0.078 ms
+CREATE INDEX
+Time: 1466.627 ms (00:01.467)
+ANALYZE
+Time: 327.902 ms
+                                                                             QUERY PLAN                                                                             
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.43..1.14 rows=20 width=16) (actual time=0.131..0.351 rows=20.00 loops=1)
+   Buffers: shared hit=4
+   ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..17718.77 rows=500317 width=16) (actual time=0.039..0.046 rows=20.00 loops=1)
+         Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+         Heap Fetches: 0
+         Index Searches: 1
+         Buffers: shared hit=4
+ Planning:
+   Buffers: shared hit=25 read=5
+ Planning Time: 2.254 ms
+ Execution Time: 0.614 ms
+(11 rows)
+
+Time: 3.897 ms
+                                                                                         QUERY PLAN                                                                                         
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=131492.82..131492.87 rows=20 width=38) (actual time=1033.519..1033.524 rows=20.00 loops=1)
+   Buffers: shared hit=184 read=9161, temp read=9959 written=12563
+   ->  Sort  (cost=131492.82..132743.61 rows=500317 width=38) (actual time=1033.517..1033.520 rows=20.00 loops=1)
+         Sort Key: (count(*)) DESC, b.id
+         Sort Method: top-N heapsort  Memory: 27kB
+         Buffers: shared hit=184 read=9161, temp read=9959 written=12563
+         ->  HashAggregate  (cost=106336.12..118179.56 rows=500317 width=38) (actual time=890.952..992.289 rows=492722.00 loops=1)
+               Group Key: b.id
+               Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 23560kB
+               Buffers: shared hit=184 read=9161, temp read=9959 written=12563
+               ->  Hash Join  (cost=36689.43..66467.11 rows=500317 width=30) (actual time=403.584..760.760 rows=499998.00 loops=1)
+                     Hash Cond: (r.book_id = b.id)
+                     Buffers: shared hit=184 read=9161, temp read=7441 written=7441
+                     ->  Index Only Scan using reading_records_order_idx on reading_records r  (cost=0.43..17718.77 rows=500317 width=8) (actual time=0.016..75.120 rows=499998.00 loops=1)
+                           Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                           Heap Fetches: 95
+                           Index Searches: 1
+                           Buffers: shared hit=75 read=1917
+                     ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=403.458..403.459 rows=1000000.00 loops=1)
+                           Buckets: 131072  Batches: 16  Memory Usage: 4872kB
+                           Buffers: shared hit=109 read=7244, temp written=5815
+                           ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.026..109.791 rows=1000000.00 loops=1)
+                                 Buffers: shared hit=109 read=7244
+ Planning:
+   Buffers: shared hit=15
+ Planning Time: 0.516 ms
+ Execution Time: 1035.937 ms
+(27 rows)
+
+Time: 1037.248 ms (00:01.037)
+                                                                                        QUERY PLAN                                                                                        
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=65583.11..65751.79 rows=20 width=38) (actual time=397.551..397.594 rows=20.00 loops=1)
+   Buffers: shared hit=2072, temp read=1345 written=3060
+   ->  Limit  (cost=65582.69..65582.74 rows=20 width=16) (actual time=397.520..397.523 rows=20.00 loops=1)
+         Buffers: shared hit=1992, temp read=1345 written=3060
+         ->  Sort  (cost=65582.69..66662.48 rows=431918 width=16) (actual time=397.519..397.520 rows=20.00 loops=1)
+               Sort Key: (count(*)) DESC, reading_records.book_id
+               Sort Method: top-N heapsort  Memory: 26kB
+               Buffers: shared hit=1992, temp read=1345 written=3060
+               ->  HashAggregate  (cost=45861.60..54089.51 rows=431918 width=16) (actual time=259.322..363.399 rows=492722.00 loops=1)
+                     Group Key: reading_records.book_id
+                     Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 15224kB
+                     Buffers: shared hit=1992, temp read=1345 written=3060
+                     ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..17718.77 rows=500317 width=8) (actual time=0.010..62.198 rows=499998.00 loops=1)
+                           Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                           Heap Fetches: 95
+                           Index Searches: 1
+                           Buffers: shared hit=1992
+   ->  Index Scan using books_pkey on books b  (cost=0.42..8.44 rows=1 width=30) (actual time=0.003..0.003 rows=1.00 loops=20)
+         Index Cond: (id = reading_records.book_id)
+         Index Searches: 20
+         Buffers: shared hit=80
+ Planning:
+   Buffers: shared hit=4
+ Planning Time: 0.209 ms
+ Execution Time: 398.844 ms
+(25 rows)
+
+Time: 399.428 ms
+ROLLBACK
+Time: 7.995 ms
