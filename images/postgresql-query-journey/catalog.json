@@ -230,8 +230,8 @@
   {
     "name": "09-nested-loop",
     "chapter": 9,
-    "title": "記録を1件取り出すたびに、本を探す",
-    "description": "Nested Loopの模型 ／ キャッシュによる省略は示さない"
+    "title": "外側の行ごとに、内側を1回たどる",
+    "description": "仕組み：Nested Loopの模型（内側の回数は外側の行数と同じ）"
   },
   {
     "name": "09-loops",
@@ -248,14 +248,14 @@
   {
     "name": "09-merge-join",
     "chapter": 9,
-    "title": "並んだ二つの入力を、先頭から合わせる",
-    "description": "Merge Joinの模型 ／ 本の番号は一意、記録は重複あり"
+    "title": "小さい番号の列だけを、右へ進める",
+    "description": "仕組み：Merge Joinの模型（見ている位置は右にだけ進む）"
   },
   {
     "name": "10-planner-choice",
     "chapter": 10,
-    "title": "Indexがあるのに、なぜ使わない？",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "title": "計画は、1行も読まずに決まる",
+    "description": "問い：20件と50万件で、実行前に方法が分かれる"
   },
   {
     "name": "10-stats-to-rows",
@@ -266,14 +266,14 @@
   {
     "name": "10-estimate-propagation",
     "chapter": 10,
-    "title": "入口の見積もりが、後ろの判断に響く",
-    "description": "推定と実測のずれの説明例 ／ 実測ログではない"
+    "title": "推定のずれが、後ろの件数に効く",
+    "description": "比較：第9章の実測と、推定20のまま実際が約50万件になる模型"
   },
   {
     "name": "11-editing-scene",
     "chapter": 11,
     "title": "題名を直している間に、読まれたら？",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "description": "問い：同じ行を指す接続Aと、まだ確定していない接続B"
   },
   {
     "name": "11-snapshots",
@@ -291,30 +291,30 @@
     "name": "11-wal-and-pages",
     "chapter": 11,
     "title": "ログの保存と、ページの書き出し",
-    "description": "役割と順序の制約を示す模型 ／ 実際の処理は並行する"
+    "description": "仕組み：WALを保存してから電源断・再起動までの順序を示す模型"
   },
   {
     "name": "12-decision-notebook",
     "chapter": 12,
     "title": "今度は、根拠を持って選べる",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "description": "案1〜3×四つの観点の空欄の表を持つ、学ぶきっかけの場面"
   },
   {
     "name": "12-ranking-before",
     "chapter": 12,
     "title": "題名を付けてから、上位を選ぶ",
-    "description": "6記録・3冊から上位2冊の模型 ／ 本文では上位20冊"
+    "description": "6記録・3冊の模型 ／ 対象週499,998行→20冊は実測"
   },
   {
     "name": "12-ranking-after",
     "chapter": 12,
     "title": "上位を選んでから題名を付ける",
-    "description": "6記録・3冊から上位2冊の模型 ／ 本文では上位20冊"
+    "description": "6記録を本ごとに数え、上位2冊だけ題名を結び付ける模型 ／ 本文では上位20冊"
   },
   {
     "name": "12-preaggregation",
     "chapter": 12,
-    "title": "表示は軽くなる。集計の更新は必要。",
-    "description": "事前集計の模型 ／ 訂正・削除への対応も必要"
+    "title": "集計表は更新するまで古いまま",
+    "description": "仕組み：事前集計の模型（記録が増えても更新まで値は古いまま、画面は上位20行を読むだけ）"
   }
 ]

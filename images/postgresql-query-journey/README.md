@@ -2,7 +2,7 @@
 
 SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆すると次の書き出しで失われるため、修正はSVGに行ってください。
 
-序章から第12章まで、計53枚を本文へ掲載しています。序章は導入の絵2枚と技術図2枚です。第4章にはctidの図、第6章にはSQLの処理段階の図を追加しています。そのうち42枚は、[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)の型で描き直しました（2026-09-25、第1〜2章の試作8枚と、横展開の段階A〜Dの34枚）。[図の一覧](index.html)からまとめて確認できます。
+序章から第12章まで、計53枚を本文へ掲載しています。序章は導入の絵2枚と技術図2枚です。第4章にはctidの図、第6章にはSQLの処理段階の図を追加しています。そのうち53枚すべてを、[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)の型で描き直しました（2026-09-25、第1〜2章の試作8枚と、横展開の段階A〜Eの45枚）。[図の一覧](index.html)からまとめて確認できます。
 
 | 章 | 題材 | SVG原本 | 掲載用PNG |
 | --- | --- | --- | --- |
@@ -44,13 +44,13 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第8章 | LIMITで減るのは、持つ量と返す行 | [SVG](sources/08-sort-vs-topn.svg) | [PNG](08-sort-vs-topn.png) |
 | 第8章 | 全部読むか、3件で止まるか | [SVG](sources/08-top-n-vs-index.svg) | [PNG](08-top-n-vs-index.png) |
 | 第9章 | 本の番号だけでは、題名が分からない | [SVG](sources/09-title-lookup.svg) | [PNG](09-title-lookup.png) |
-| 第9章 | 記録を1件取り出すたびに、本を探す | [SVG](sources/09-nested-loop.svg) | [PNG](09-nested-loop.png) |
+| 第9章 | 外側の行ごとに、内側を1回たどる | [SVG](sources/09-nested-loop.svg) | [PNG](09-nested-loop.png) |
 | 第9章 | 1回1行を20回で、20行 | [SVG](sources/09-loops.svg) | [PNG](09-loops.png) |
 | 第9章 | 先に分類し、同じ箱の中で照合する | [SVG](sources/09-hash-join.svg) | [PNG](09-hash-join.png) |
-| 第9章 | 並んだ二つの入力を、先頭から合わせる | [SVG](sources/09-merge-join.svg) | [PNG](09-merge-join.png) |
-| 第10章 | Indexがあるのに、なぜ使わない？ | [SVG](sources/10-planner-choice.svg) | [PNG](10-planner-choice.png) |
+| 第9章 | 小さい番号の列だけを、右へ進める | [SVG](sources/09-merge-join.svg) | [PNG](09-merge-join.png) |
+| 第10章 | 計画は、1行も読まずに決まる | [SVG](sources/10-planner-choice.svg) | [PNG](10-planner-choice.png) |
 | 第10章 | 割合のメモから、行数を見積もる | [SVG](sources/10-stats-to-rows.svg) | [PNG](10-stats-to-rows.png) |
-| 第10章 | 入口の見積もりが、後ろの判断に響く | [SVG](sources/10-estimate-propagation.svg) | [PNG](10-estimate-propagation.png) |
+| 第10章 | 推定のずれが、後ろの件数に効く | [SVG](sources/10-estimate-propagation.svg) | [PNG](10-estimate-propagation.png) |
 | 第11章 | 題名を直している間に、読まれたら？ | [SVG](sources/11-editing-scene.svg) | [PNG](11-editing-scene.png) |
 | 第11章 | Bが確定しても、Aは版1を読む | [SVG](sources/11-snapshots.svg) | [PNG](11-snapshots.png) |
 | 第11章 | ×のページだけ、表を確かめに行く | [SVG](sources/11-visibility-map.svg) | [PNG](11-visibility-map.png) |
@@ -58,7 +58,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第12章 | 今度は、根拠を持って選べる | [SVG](sources/12-decision-notebook.svg) | [PNG](12-decision-notebook.png) |
 | 第12章 | 題名を付けてから、上位を選ぶ | [SVG](sources/12-ranking-before.svg) | [PNG](12-ranking-before.png) |
 | 第12章 | 上位を選んでから題名を付ける | [SVG](sources/12-ranking-after.svg) | [PNG](12-ranking-after.png) |
-| 第12章 | 表示は軽くなる。集計の更新は必要。 | [SVG](sources/12-preaggregation.svg) | [PNG](12-preaggregation.png) |
+| 第12章 | 集計表は更新するまで古いまま | [SVG](sources/12-preaggregation.svg) | [PNG](12-preaggregation.png) |
 
 ## 編集する
 

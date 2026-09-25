@@ -44,8 +44,8 @@ ORDER BY r.finished_at DESC, r.book_id ASC;
 
 一つずつ探す方法を模型にします。
 
-![記録を1件取り出すたびに、本を探す](/images/postgresql-query-journey/09-nested-loop.png)
-*Nested Loopの模型。キャッシュによる省略は示していません。*
+![①②③の記録（本2・本1・本2）が、同じ本のIndexを1回ずつたどって題名を得る](/images/postgresql-query-journey/09-nested-loop.png)
+*同じ本のIndexを3回たどっていることに注目してください（模型）。*
 
 このような繰り返しが`Nested Loop`です。外側で記録を取り出し、内側で本を探します。内側に効率のよいIndexがあり、外側が少なければ合理的な方法です。名前だけで「遅い結合」と決めないでください。
 
@@ -154,8 +154,8 @@ Execution Time: 664.568 ms
 
 先頭同士を比較して、小さい側を進めれば対応を探せます。この方法で結合するのが`Merge Join`です。
 
-![並んだ二つの入力を、先頭から合わせる](/images/postgresql-query-journey/09-merge-join.png)
-*Merge Joinの模型。本の番号は一意で、記録には重複があります。*
+![記録を並べ替えたあと、一致では両方の▼が、本だけ小さいときは本の▼だけが右へ進み、3と4で追いつく](/images/postgresql-query-journey/09-merge-join.png)
+*見ている位置▼の動きだけを追ってください（模型）。*
 
 この模型では本の番号は一意です。両側に重複がある一般の結合では、一致する組み合わせをすべて返す必要があります。
 
