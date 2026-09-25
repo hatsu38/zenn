@@ -20,6 +20,8 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
 .work{fill:#fff;stroke:#56738a;stroke-width:2;stroke-dasharray:8 5}.val{fill:#dcefe8;stroke:#448b7c;stroke-width:2}.buffer{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2}
 .route{fill:#f4f6f8;stroke:#243b50;stroke-width:3}.leader{fill:none;stroke:#56738a;stroke-width:2}
+.storage{fill:#ece7f5;stroke:#735f9f;stroke-width:2}.file{fill:#fff;stroke:#735f9f;stroke-width:2}
+  .cmp{fill:#dfe5ea}
   </style>
   <rect width="640" height="706" fill="#f5f7f9"/>
   <text x="24" y="48" class="h">4枚を、比較5回で並べる</text>
@@ -36,10 +38,10 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="422" y="157" text-anchor="middle" class="b">6</text>
     <rect x="456" y="126" width="44" height="44" rx="6" class="val"/>
     <text x="478" y="157" text-anchor="middle" class="b">1</text>
-    <rect x="148" y="190" width="84" height="30" rx="15" class="model"/>
-    <text x="190" y="213" text-anchor="middle" class="tag">比較1</text>
-    <rect x="408" y="190" width="84" height="30" rx="15" class="model"/>
-    <text x="450" y="213" text-anchor="middle" class="tag">比較2</text>
+    <rect x="148" y="190" width="84" height="30" rx="15" class="cmp"/>
+    <text x="190" y="213" text-anchor="middle" class="s b">比較1</text>
+    <rect x="408" y="190" width="84" height="30" rx="15" class="cmp"/>
+    <text x="450" y="213" text-anchor="middle" class="s b">比較2</text>
     <rect x="128" y="276" width="124" height="60" rx="10" class="panel"/>
     <rect x="388" y="276" width="124" height="60" rx="10" class="panel"/>
     <rect x="140" y="284" width="44" height="44" rx="6" class="val"/>
@@ -61,20 +63,20 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="122" y="425" text-anchor="middle" class="b">8</text>
     <rect x="156" y="394" width="44" height="44" rx="6" class="val"/>
     <text x="178" y="425" text-anchor="middle" class="b">6</text>
-    <rect x="108" y="458" width="84" height="30" rx="15" class="model"/>
-    <text x="150" y="481" text-anchor="middle" class="tag">比較3</text>
+    <rect x="108" y="458" width="84" height="30" rx="15" class="cmp"/>
+    <text x="150" y="481" text-anchor="middle" class="s b">比較3</text>
     <rect x="236" y="394" width="44" height="44" rx="6" class="val"/>
     <text x="258" y="425" text-anchor="middle" class="b">3</text>
     <rect x="292" y="394" width="44" height="44" rx="6" class="val"/>
     <text x="314" y="425" text-anchor="middle" class="b">6</text>
-    <rect x="244" y="458" width="84" height="30" rx="15" class="model"/>
-    <text x="286" y="481" text-anchor="middle" class="tag">比較4</text>
+    <rect x="244" y="458" width="84" height="30" rx="15" class="cmp"/>
+    <text x="286" y="481" text-anchor="middle" class="s b">比較4</text>
     <rect x="372" y="394" width="44" height="44" rx="6" class="val"/>
     <text x="394" y="425" text-anchor="middle" class="b">3</text>
     <rect x="428" y="394" width="44" height="44" rx="6" class="val"/>
     <text x="450" y="425" text-anchor="middle" class="b">1</text>
-    <rect x="380" y="458" width="84" height="30" rx="15" class="model"/>
-    <text x="422" y="481" text-anchor="middle" class="tag">比較5</text>
+    <rect x="380" y="458" width="84" height="30" rx="15" class="cmp"/>
+    <text x="422" y="481" text-anchor="middle" class="s b">比較5</text>
     <rect x="536" y="394" width="44" height="44" rx="6" class="val"/>
     <text x="558" y="425" text-anchor="middle" class="b">1</text>
     <text x="558" y="481" text-anchor="middle" class="m">そのまま</text>
@@ -96,7 +98,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <path d="M558 488 V541" class="flow"/>
   </g>
   <g id="count">
-    <rect x="24" y="632" width="300" height="50" rx="6" class="hot"/>
-    <text x="40" y="665" class="b">4枚なら 比較5回・2段</text>
+    <rect x="24" y="632" width="332" height="50" rx="6" class="hot"/>
+    <text x="40" y="665" class="b">この4枚なら 比較5回・2段</text>
   </g>
 </svg>
