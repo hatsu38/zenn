@@ -25,7 +25,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <rect x="548" y="22" width="68" height="36" rx="18" class="real"/>
   <text x="582" y="47" text-anchor="middle" class="tag">実測</text>
   <g id="columns">
-    <text x="24" y="104"><tspan class="mono b">ORDER BY</tspan><tspan class="s b">だけ</tspan></text>
+    <text x="24" y="104" class="s b"><tspan class="mono">ORDER BY</tspan>だけ</text>
     <text x="24" y="134" class="mono m">work_mem 64MB</text>
     <text x="336" y="104" class="mono b">ORDER BY … LIMIT 20</text>
     <text x="336" y="134" class="mono m">work_mem 4MB</text>
