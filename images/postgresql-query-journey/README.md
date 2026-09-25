@@ -2,7 +2,7 @@
 
 SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆すると次の書き出しで失われるため、修正はSVGに行ってください。
 
-序章から第12章まで、計53枚を本文へ掲載しています。序章は導入の絵2枚と技術図2枚です。第4章にはctidの図、第6章にはSQLの処理段階の図を追加しています。そのうち53枚すべてを、[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)の型で描き直しました（2026-09-25、第1〜2章の試作8枚と、横展開の段階A〜Eの45枚）。[図の一覧](index.html)からまとめて確認できます。
+序章から第12章まで、計54枚を本文へ掲載しています。序章は導入の絵2枚と技術図2枚です。第4章にはctidの図、第6章にはSQLの処理段階の図を追加しています。そのうち2026-09-25までの53枚すべてを、[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)の型で描き直しました（2026-09-25、第1〜2章の試作8枚と、横展開の段階A〜Eの45枚）。[図の一覧](index.html)からまとめて確認できます。
 
 | 章 | 題材 | SVG原本 | 掲載用PNG |
 | --- | --- | --- | --- |
@@ -22,6 +22,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第3章 | 境目を見て、開く箱を選ぶ | [SVG](sources/06-btree-path.svg) | [PNG](06-btree-path.png) |
 | 第3章 | 100万冊でも、読むのは3枚 | [SVG](sources/06-tree-levels.svg) | [PNG](06-tree-levels.png) |
 | 第3章 | 4以上8以下なら、隣の箱も開く | [SVG](sources/06-range-scan.svg) | [PNG](06-range-scan.png) |
+| 第3章 | 取りに行く順で、開く回数が変わる | [SVG](sources/06-bitmap-scan.svg) | [PNG](06-bitmap-scan.png) |
 | 第4章 | 100万行なのに、7,353回 | [SVG](sources/03-storage-question.svg) | [PNG](03-storage-question.png) |
 | 第4章 | 本5の1行も、ページ0ごと読む | [SVG](sources/03-pages-and-rows.svg) | [PNG](03-pages-and-rows.png) |
 | 第4章 | ctid = (0,1) が指す場所 | [SVG](sources/03-ctid-location.svg) | [PNG](03-ctid-location.png) |
