@@ -53,11 +53,11 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="576" y="428" text-anchor="middle" class="h">9</text>
   </g>
   <g id="branches">
-    <path d="M280 168 L112 340" fill="none" stroke="#b5c2cc" stroke-width="2"/>
-    <path d="M320 168 V340" fill="none" stroke="#b5c2cc" stroke-width="2"/>
+    <path d="M280 169.5 L112 340" fill="none" stroke="#b5c2cc" stroke-width="2"/>
+    <path d="M320 169.5 V340" fill="none" stroke="#b5c2cc" stroke-width="2"/>
   </g>
   <g id="search">
-    <path d="M360 168 L525 337" class="ref"/>
+    <path d="M360 169.5 L525 337" class="ref"/>
   </g>
   <g id="labels">
     <text x="616" y="206" text-anchor="end" class="s">① 7以上なので右へ</text>
