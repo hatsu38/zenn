@@ -286,26 +286,27 @@ ROLLBACK;
 
 :::details 64kBでの実行結果
 ```sql
-Hash Join  (cost=36689.00..89545.86 rows=498993 width=30) (actual time=228.809..523.584 rows=499998.00 loops=1)
+Hash Join  (cost=36689.43..65899.61 rows=488229 width=30) (actual time=216.690..418.515 rows=499998.00 loops=1)
   Hash Cond: (r.book_id = b.id)
-  Buffers: shared hit=13519 read=4645, temp read=7992 written=7992
-  ->  Seq Scan on reading_records r  (cost=0.00..40811.00 rows=498993 width=8) (actual time=0.015..93.837 rows=499998.00 loops=1)
-        Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
-        Rows Removed by Filter: 1500002
-        Buffers: shared hit=10811
-  ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=221.692..221.692 rows=1000000.00 loops=1)
-        Buckets: 32768  Batches: 64  Memory Usage: 1236kB
-        Buffers: shared hit=2708 read=4645, temp written=6218
-        ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.004..80.588 rows=1000000.00 loops=1)
-              Buffers: shared hit=2708 read=4645
+  Buffers: shared hit=6404 read=2868, temp read=7824 written=7824
+  ->  Index Only Scan using reading_records_order_idx on reading_records r  (cost=0.43..17277.01 rows=488229 width=8) (actual time=0.007..35.118 rows=499998.00 loops=1)
+        Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+        Heap Fetches: 0
+        Index Searches: 1
+        Buffers: shared hit=1919
+  ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=216.243..216.244 rows=1000000.00 loops=1)
+        Buckets: 32768  Batches: 64  Memory Usage: 1249kB
+        Buffers: shared hit=4485 read=2868, temp written=6218
+        ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.007..72.504 rows=1000000.00 loops=1)
+              Buffers: shared hit=4485 read=2868
 Planning:
   Buffers: shared hit=12
-Planning Time: 0.218 ms
-Execution Time: 539.429 ms
+Planning Time: 0.160 ms
+Execution Time: 432.850 ms
 ```
 :::
 
-今回の再実行では`Batches: 64`でした。先ほどの4MBの例の16より分割が増え、`temp read/written`は7,992ブロックずつになりました。記録を読む方法もSeq Scanへ変わっています。設定を変えると計画全体が変わることがあるので、時間差のすべてをハッシュの分割だけの効果にはしません。
+今回の再実行では`Batches: 64`でした。先ほどの4MBの例の16より分割が増え、`temp read/written`は7,824ブロックずつになりました。記録を読む方法は、4MBのときと同じIndex Only Scanです。ただし、設定を変えると計画全体が変わることもあるので、時間差のすべてをハッシュの分割だけの効果にはしません。
 
 ## 数えてから題名を付けても、同じ答えになる？
 
