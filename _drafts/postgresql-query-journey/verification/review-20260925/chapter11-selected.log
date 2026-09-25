@@ -3,7 +3,7 @@ SET
 SET
 CREATE INDEX
 VACUUM
-                                                                            QUERY PLAN                                                                            
+                                                                            QUERY PLAN
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
  Index Only Scan Backward using reading_records_visibility_idx on reading_records  (cost=0.43..4.46 rows=2 width=16) (actual time=0.033..0.036 rows=2.00 loops=1)
    Index Cond: (book_id = 42)
@@ -16,7 +16,7 @@ VACUUM
  Execution Time: 0.057 ms
 (9 rows)
 
-                                                                        QUERY PLAN                                                                         
+                                                                        QUERY PLAN
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
  Update on reading_records  (cost=0.43..12.46 rows=0 width=0) (actual time=0.082..0.082 rows=0.00 loops=1)
    Buffers: shared hit=26 read=3 dirtied=3
@@ -31,7 +31,7 @@ VACUUM
  Execution Time: 0.113 ms
 (11 rows)
 
-                                                                            QUERY PLAN                                                                            
+                                                                            QUERY PLAN
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
  Index Only Scan Backward using reading_records_visibility_idx on reading_records  (cost=0.43..4.46 rows=2 width=16) (actual time=0.005..0.006 rows=2.00 loops=1)
    Index Cond: (book_id = 42)
@@ -43,7 +43,7 @@ VACUUM
 (7 rows)
 
 VACUUM
-                                                                            QUERY PLAN                                                                            
+                                                                            QUERY PLAN
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
  Index Only Scan Backward using reading_records_visibility_idx on reading_records  (cost=0.43..8.46 rows=2 width=16) (actual time=0.008..0.012 rows=2.00 loops=1)
    Index Cond: (book_id = 42)
@@ -57,8 +57,7 @@ VACUUM
 (9 rows)
 
 DROP INDEX
-  pid  |        state        |          xact_start           
+  pid  |        state        |          xact_start
 -------+---------------------+-------------------------------
  22521 | idle in transaction | 2026-09-24 16:00:58.490196+00
 (1 row)
-

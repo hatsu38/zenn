@@ -3,7 +3,7 @@ SET
 SET
 SET
 SET
-                                                         version                                                          
+                                                         version
 --------------------------------------------------------------------------------------------------------------------------
  PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
 (1 row)
@@ -15,12 +15,12 @@ INSERT 0 1000000
 INSERT 0 2000000
 ANALYZE
 ANALYZE
-  count  
+  count
 ---------
  1000000
 (1 row)
 
-  count  
+  count
 ---------
  2000000
 (1 row)
@@ -31,12 +31,12 @@ SET
 SET
 SET
 SET
-  count  
+  count
 ---------
  1000000
 (1 row)
 
-                                               QUERY PLAN                                               
+                                               QUERY PLAN
 --------------------------------------------------------------------------------------------------------
  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.011..36.848 rows=1.00 loops=1)
    Filter: (title = '実験用の本 42'::text)
@@ -48,7 +48,7 @@ SET
  Execution Time: 36.869 ms
 (8 rows)
 
-                                                 QUERY PLAN                                                  
+                                                 QUERY PLAN
 -------------------------------------------------------------------------------------------------------------
  Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.016..0.017 rows=1.00 loops=1)
    Buffers: shared hit=2
@@ -60,7 +60,7 @@ SET
  Execution Time: 0.033 ms
 (8 rows)
 
-                                                  QUERY PLAN                                                   
+                                                  QUERY PLAN
 ---------------------------------------------------------------------------------------------------------------
  Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=40.417..40.418 rows=1.00 loops=1)
    Buffers: shared hit=4469 read=2884
@@ -72,7 +72,7 @@ SET
  Execution Time: 40.430 ms
 (8 rows)
 
-                                                  QUERY PLAN                                                   
+                                                  QUERY PLAN
 ---------------------------------------------------------------------------------------------------------------
  Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=38.334..38.335 rows=0.00 loops=1)
    Buffers: shared hit=4563 read=2790 written=85
@@ -86,7 +86,7 @@ SET
 
 RESET
 CHAPTER 3
-                                               QUERY PLAN                                               
+                                               QUERY PLAN
 --------------------------------------------------------------------------------------------------------
  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.010..38.387 rows=1.00 loops=1)
    Filter: (title = '実験用の本 42'::text)
@@ -98,7 +98,7 @@ CHAPTER 3
 
 CREATE INDEX
 ANALYZE
-                                                        QUERY PLAN                                                         
+                                                        QUERY PLAN
 ---------------------------------------------------------------------------------------------------------------------------
  Index Scan using books_title_idx on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.053..0.054 rows=1.00 loops=1)
    Index Cond: (title = '実験用の本 42'::text)
@@ -110,7 +110,7 @@ ANALYZE
  Execution Time: 0.067 ms
 (8 rows)
 
-                                                       QUERY PLAN                                                       
+                                                       QUERY PLAN
 ------------------------------------------------------------------------------------------------------------------------
  Index Scan using books_pkey on books  (cost=0.42..8.64 rows=11 width=30) (actual time=0.053..0.054 rows=11.00 loops=1)
    Index Cond: ((id >= 400000) AND (id <= 400010))
@@ -122,7 +122,7 @@ ANALYZE
  Execution Time: 0.059 ms
 (8 rows)
 
-                                                    QUERY PLAN                                                    
+                                                    QUERY PLAN
 ------------------------------------------------------------------------------------------------------------------
  Seq Scan on books  (cost=0.00..22353.00 rows=901290 width=30) (actual time=0.009..67.702 rows=900000.00 loops=1)
    Filter: ((id >= 1) AND (id <= 900000))
@@ -134,7 +134,7 @@ ANALYZE
  Execution Time: 93.910 ms
 (8 rows)
 
-                                                               QUERY PLAN                                                               
+                                                               QUERY PLAN
 ----------------------------------------------------------------------------------------------------------------------------------------
  Bitmap Heap Scan on books  (cost=3311.93..12314.92 rows=110000 width=30) (actual time=9.774..18.401 rows=111111.00 loops=1)
    Recheck Cond: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
@@ -150,7 +150,7 @@ ANALYZE
  Execution Time: 21.632 ms
 (12 rows)
 
-   id   |       title       
+   id   |       title
 --------+-------------------
       4 | 実験用の本 4
      40 | 実験用の本 40
@@ -163,7 +163,7 @@ ANALYZE
 (8 rows)
 
 SET
-                                                                QUERY PLAN                                                                
+                                                                QUERY PLAN
 ------------------------------------------------------------------------------------------------------------------------------------------
  Index Scan using books_title_idx on books  (cost=0.42..14611.45 rows=110000 width=30) (actual time=0.430..16.008 rows=111111.00 loops=1)
    Index Cond: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
@@ -174,7 +174,7 @@ SET
 (6 rows)
 
 SET
-                                                     QUERY PLAN                                                     
+                                                     QUERY PLAN
 --------------------------------------------------------------------------------------------------------------------
  Seq Scan on books  (cost=0.00..22353.00 rows=110000 width=30) (actual time=0.014..1799.404 rows=111111.00 loops=1)
    Filter: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
@@ -186,7 +186,7 @@ SET
 
 RESET
 RESET
- pg_size_pretty 
+ pg_size_pretty
 ----------------
  39 MB
 (1 row)
@@ -199,27 +199,27 @@ ALTER TABLE
 INSERT 0 1000
 SET
 ANALYZE
- count 
+ count
 -------
   1000
 (1 row)
 
- pg_relation_filepath 
+ pg_relation_filepath
 ----------------------
  base/16851/16868
 (1 row)
 
- table_size | total_size 
+ table_size | total_size
 ------------+------------
  64 kB      | 136 kB
 (1 row)
 
- block_size 
+ block_size
 ------------
  8192
 (1 row)
 
- id | ctid  |    title     
+ id | ctid  |    title
 ----+-------+--------------
   1 | (0,1) | 実験用の本 1
   2 | (0,2) | 実験用の本 2
@@ -231,13 +231,13 @@ ANALYZE
   8 | (0,8) | 実験用の本 8
 (8 rows)
 
- table_size | pages 
+ table_size | pages
 ------------+-------
  57 MB      |  7353
 (1 row)
 
 CREATE EXTENSION
- level 
+ level
 -------
      2
 (1 row)
@@ -245,7 +245,7 @@ CREATE EXTENSION
 SAVEPOINT
 SELECT 1000
 SELECT 1000
- short_bytes | long_bytes 
+ short_bytes | long_bytes
 -------------+------------
        65536 |     262144
 (1 row)
@@ -260,18 +260,18 @@ ALTER TABLE
 INSERT 0 1000
 SET
 ANALYZE
- count 
+ count
 -------
   1000
 (1 row)
 
 CREATE EXTENSION
- buffers_evicted | buffers_flushed | buffers_skipped 
+ buffers_evicted | buffers_flushed | buffers_skipped
 -----------------+-----------------+-----------------
               11 |               8 |               0
 (1 row)
 
-                                             QUERY PLAN                                             
+                                             QUERY PLAN
 ----------------------------------------------------------------------------------------------------
  Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.123..0.257 rows=1.00 loops=1)
    Filter: (title = '実験用の本 42'::text)
@@ -283,29 +283,29 @@ CREATE EXTENSION
  Execution Time: 0.263 ms
 (8 rows)
 
- shared_buffers 
+ shared_buffers
 ----------------
  128MB
 (1 row)
 
- work_mem 
+ work_mem
 ----------
  4MB
 (1 row)
 
- temp_buffers 
+ temp_buffers
 --------------
  8MB
 (1 row)
 
- maintenance_work_mem 
+ maintenance_work_mem
 ----------------------
  64MB
 (1 row)
 
 ROLLBACK
 CHAPTER 7
-  count  
+  count
 ---------
  2000000
 (1 row)
@@ -313,7 +313,7 @@ CHAPTER 7
 SET
 SET
 SET
-                                                                          QUERY PLAN                                                                          
+                                                                          QUERY PLAN
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
  Sort  (cost=88051.71..89299.54 rows=499134 width=16) (actual time=289.405..325.496 rows=499998.00 loops=1)
    Sort Key: finished_at DESC, book_id
@@ -330,7 +330,7 @@ SET
 (12 rows)
 
 SET
-                                                                          QUERY PLAN                                                                          
+                                                                          QUERY PLAN
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
  Sort  (cost=122183.71..123431.54 rows=499134 width=16) (actual time=289.741..325.654 rows=499998.00 loops=1)
    Sort Key: finished_at DESC, book_id
@@ -349,7 +349,7 @@ CHAPTER 8
 SET
 SET
 SET
-                                                                             QUERY PLAN                                                                             
+                                                                             QUERY PLAN
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
  Limit  (cost=54092.78..54092.83 rows=20 width=16) (actual time=125.644..125.648 rows=20.00 loops=1)
    Buffers: shared hit=9545 read=1266
@@ -367,7 +367,7 @@ SET
 
 CREATE INDEX
 ANALYZE
-                                                                             QUERY PLAN                                                                             
+                                                                             QUERY PLAN
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
  Limit  (cost=0.43..2.87 rows=20 width=16) (actual time=0.010..0.055 rows=20.00 loops=1)
    Buffers: shared hit=21 read=2
@@ -382,7 +382,7 @@ ANALYZE
  Execution Time: 0.083 ms
 (11 rows)
 
-                                                                             QUERY PLAN                                                                             
+                                                                             QUERY PLAN
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..60903.81 rows=498993 width=16) (actual time=0.006..391.229 rows=499998.00 loops=1)
    Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
@@ -396,7 +396,7 @@ ANALYZE
 (9 rows)
 
 CHAPTER 9
-                                                                                 QUERY PLAN                                                                                 
+                                                                                 QUERY PLAN
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  Nested Loop  (cost=0.86..90.61 rows=20 width=38) (actual time=0.535..3.908 rows=20.00 loops=1)
    Buffers: shared hit=68 read=35 written=2
@@ -421,7 +421,7 @@ CHAPTER 9
  Execution Time: 3.970 ms
 (21 rows)
 
-                                                                               QUERY PLAN                                                                               
+                                                                               QUERY PLAN
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  Hash Join  (cost=49484.11..79825.86 rows=498993 width=30) (actual time=239.828..514.350 rows=499998.00 loops=1)
    Hash Cond: (r.book_id = b.id)
@@ -448,7 +448,7 @@ CHAPTER 9
 BEGIN
 SET
 SET
-                                                                 QUERY PLAN                                                                  
+                                                                 QUERY PLAN
 ---------------------------------------------------------------------------------------------------------------------------------------------
  Merge Join  (cost=308490.11..318500.51 rows=220 width=16) (actual time=559.465..559.520 rows=200.00 loops=1)
    Merge Cond: (r.book_id = b.id)
@@ -471,7 +471,7 @@ SET
 (18 rows)
 
 ROLLBACK
-                                                             QUERY PLAN                                                             
+                                                             QUERY PLAN
 ------------------------------------------------------------------------------------------------------------------------------------
  HashAggregate  (cost=143311.00..168847.22 rows=991122 width=16) (actual time=586.125..916.907 rows=1000000.00 loops=1)
    Group Key: book_id
@@ -483,19 +483,19 @@ ROLLBACK
  Execution Time: 951.731 ms
 (8 rows)
 
- work_mem 
+ work_mem
 ----------
  4MB
 (1 row)
 
- hash_mem_multiplier 
+ hash_mem_multiplier
 ---------------------
  2
 (1 row)
 
 BEGIN
 SET
-                                                                          QUERY PLAN                                                                          
+                                                                          QUERY PLAN
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
  Hash Join  (cost=36689.00..89545.86 rows=498993 width=30) (actual time=228.809..523.584 rows=499998.00 loops=1)
    Hash Cond: (r.book_id = b.id)
@@ -521,7 +521,7 @@ BEGIN
 SELECT 10000
 CREATE INDEX
 ANALYZE
-                                                   QUERY PLAN                                                   
+                                                   QUERY PLAN
 ----------------------------------------------------------------------------------------------------------------
  Seq Scan on stats_demo  (cost=0.00..189.00 rows=9000 width=11) (actual time=0.006..0.682 rows=9000.00 loops=1)
    Filter: (category = 'popular'::text)
@@ -533,7 +533,7 @@ ANALYZE
  Execution Time: 0.970 ms
 (8 rows)
 
-                                                                  QUERY PLAN                                                                   
+                                                                  QUERY PLAN
 -----------------------------------------------------------------------------------------------------------------------------------------------
  Index Scan using stats_demo_category_idx on stats_demo  (cost=0.29..35.78 rows=1000 width=11) (actual time=0.023..0.106 rows=1000.00 loops=1)
    Index Cond: (category = 'rare'::text)
@@ -543,14 +543,14 @@ ANALYZE
  Execution Time: 0.141 ms
 (6 rows)
 
- attname  | n_distinct | most_common_vals | most_common_freqs |                                                                                                                                                                                                                                                histogram_bounds                                                                                                                                                                                                                                                 
+ attname  | n_distinct | most_common_vals | most_common_freqs |                                                                                                                                                                                                                                                histogram_bounds
 ----------+------------+------------------+-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  id       |         -1 |                  |                   | {1,100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000,3100,3200,3300,3400,3500,3600,3700,3800,3900,4000,4100,4200,4300,4400,4500,4600,4700,4800,4900,5000,5100,5200,5300,5400,5500,5600,5700,5800,5900,6000,6100,6200,6300,6400,6500,6600,6700,6800,6900,7000,7100,7200,7300,7400,7500,7600,7700,7800,7900,8000,8100,8200,8300,8400,8500,8600,8700,8800,8900,9000,9100,9200,9300,9400,9500,9600,9700,9800,9900,10000}
- category |          2 | {popular,rare}   | {0.9,0.1}         | 
+ category |          2 | {popular,rare}   | {0.9,0.1}         |
 (2 rows)
 
 UPDATE 8000
-                                                                  QUERY PLAN                                                                   
+                                                                  QUERY PLAN
 -----------------------------------------------------------------------------------------------------------------------------------------------
  Index Scan using stats_demo_category_idx on stats_demo  (cost=0.29..51.55 rows=1672 width=11) (actual time=0.013..0.722 rows=9000.00 loops=1)
    Index Cond: (category = 'rare'::text)
@@ -561,7 +561,7 @@ UPDATE 8000
 (6 rows)
 
 ANALYZE
-                                                  QUERY PLAN                                                   
+                                                  QUERY PLAN
 ---------------------------------------------------------------------------------------------------------------
  Seq Scan on stats_demo  (cost=0.00..232.00 rows=9000 width=9) (actual time=0.143..0.799 rows=9000.00 loops=1)
    Filter: (category = 'rare'::text)
@@ -578,18 +578,18 @@ CHAPTER 12
 SET
 SET
 SET
-  count  
+  count
 ---------
  1000000
 (1 row)
 
-  count  
+  count
 ---------
  2000000
 (1 row)
 
 CREATE VIEW
-                                                                                        QUERY PLAN                                                                                        
+                                                                                        QUERY PLAN
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  Limit  (cost=144679.49..144679.54 rows=20 width=38) (actual time=845.097..845.109 rows=20.00 loops=1)
    Buffers: shared hit=15508 read=4574, temp read=9964 written=12569
@@ -627,7 +627,7 @@ BEGIN
 SET
 SET
 SET
-                                                                                   QUERY PLAN                                                                                   
+                                                                                   QUERY PLAN
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  Limit  (cost=154399.49..154399.54 rows=20 width=38) (actual time=876.207..876.217 rows=20.00 loops=1)
    Buffers: shared hit=13684 read=4480, temp read=9964 written=12569
@@ -659,7 +659,7 @@ SET
 
 ROLLBACK
 CREATE VIEW
-                                                                                        QUERY PLAN                                                                                        
+                                                                                        QUERY PLAN
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  Nested Loop  (cost=79010.08..79178.76 rows=20 width=38) (actual time=315.882..316.888 rows=20.00 loops=1)
    Buffers: shared hit=12803 read=6, temp read=1366 written=3079
@@ -691,12 +691,12 @@ CREATE VIEW
  Execution Time: 318.503 ms
 (28 rows)
 
- records_without_book 
+ records_without_book
 ----------------------
                     0
 (1 row)
 
- differing_rows 
+ differing_rows
 ----------------
               0
 (1 row)
@@ -708,7 +708,7 @@ CREATE INDEX
 Time: 211.821 ms
 ANALYZE
 Time: 21.638 ms
-                                                                                    QUERY PLAN                                                                                    
+                                                                                    QUERY PLAN
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  Limit  (cost=0.85..12.21 rows=20 width=46) (actual time=0.030..0.097 rows=20.00 loops=1)
    Buffers: shared hit=100 read=3
@@ -729,14 +729,14 @@ Time: 21.638 ms
 (16 rows)
 
 Time: 0.535 ms
- read_count | books_with_count 
+ read_count | books_with_count
 ------------+------------------
           1 |           485446
           2 |             7276
 (2 rows)
 
 Time: 35.488 ms
- all_books | min_records | max_records 
+ all_books | min_records | max_records
 -----------+-------------+-------------
    1000000 |           2 |           2
 (1 row)
