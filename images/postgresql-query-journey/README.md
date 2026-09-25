@@ -95,6 +95,8 @@ node scripts/book-figures/check-figures.cjs 01-scan-and-filter
 
 `--all`を付けると全部の図を確かめます。描き直す前の図は約束を満たしていないので、`--all`では多くの図が✗になります。git worktreeの中で実行するときは、Playwrightを入れた本体の`scripts/book-figures/node_modules`を`NODE_PATH`で指定します。
 
+描画の検査は、要素の座標を`getBBox`でそのまま測ります。`transform`を付けた要素は正しい位置で測れないので、原本では`transform`を使いません。矢じり以外の線と文字の交わりや、`marker-start`の矢じりは測らないため、書き出したPNGも目で確かめてください。
+
 ## 図の一覧を作り直す
 
 [図の一覧](index.html)は`catalog.json`から作ります。図を足したり見出しを変えたりしたら、次を実行します。
