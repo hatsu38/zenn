@@ -86,6 +86,11 @@ Execution Time: 7.494 ms
 
 計画に`loops=20`があれば、その処理を20回実行しています。`actual rows`や`actual time`は、複数回実行では1回当たりの平均として表示されます。1回1行を20回返せば、全体では20行です。第7章で見たとおり親の時間は子を含むので、親子の時間をすべて足すと子の処理時間を二重に数えることになります。
 
+図で、内側の`Index Scan`の`rows`・`loops`・`Buffers`を、1回あたりの値と20回分の合計に分けて読んでください。
+
+![Nested Loopの内側のIndex Scanは rows=1.00、loops=20 で、1回1行を20回返して全体で20行。Buffers の hit=54 と read=26 は20回分の合計](/images/postgresql-query-journey/09-loops.png)
+*rows=1.00 と loops=20 を掛けると20行です。Buffers の hit=54 と read=26 は、20回分の合計です（実測）。*
+
 ## 何十万回も探すなら？
 
 対象を1週間の全記録に広げます。

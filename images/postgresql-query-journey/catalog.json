@@ -228,6 +228,12 @@
     "description": "問い：記録の本番号から題名を探す"
   },
   {
+    "name": "09-loops",
+    "chapter": 9,
+    "title": "1回1行を20回で、20行",
+    "description": "観察：Nested Loop の rows と loops と Buffers（実測）"
+  },
+  {
     "name": "10-estimate-propagation",
     "chapter": 10,
     "title": "入口の見積もりが、後ろの判断に響く",
