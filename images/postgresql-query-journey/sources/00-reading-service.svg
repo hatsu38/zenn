@@ -1,1 +1,68 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="995" viewBox="0 0 640 995" role="img"><title>架空の読書記録サービス：読了を記録し、週間ランキングを見る</title><style>text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif}path{stroke-linejoin:round;stroke-linecap:round}</style><rect width="640" height="995" fill="#fffdf7"/><g id="illustration"><text x="32" y="47" font-size="27" fill="#25374b" font-weight="700">こんな読書記録サービスを作ります</text><text x="32" y="80" font-size="18" fill="#25374b" font-weight="400">本を探す。読み終えたら残す。みんなの記録を見る。</text><g transform="translate(45 128)"><circle cx="32" cy="25" r="23" fill="#f4d3b3" stroke="#25374b" stroke-width="3"/><path d="M9 22 Q5 -8 37 1 Q64 3 54 25 L44 12 Q24 20 9 22" fill="#25374b"/><path d="M0 106 Q-3 57 32 55 Q68 57 65 106" fill="#79b8c1" stroke="#25374b" stroke-width="3"/><circle cx="25" cy="26" r="2"/><circle cx="42" cy="26" r="2"/><path d="M28 38 Q34 44 40 37" fill="none" stroke="#25374b" stroke-width="2"/></g><g transform="translate(44 206) scale(0.8)"><path d="M0 4 Q25 -4 50 8 L50 70 Q23 56 0 65 Z" fill="#79b8c1" stroke="#25374b" stroke-width="3"/><path d="M50 8 Q74 -4 100 4 L100 65 Q75 56 50 70 Z" fill="#fff" stroke="#25374b" stroke-width="3"/><path d="M60 20 L89 16 M60 32 L89 28 M60 44 L89 40" stroke="#8fa8b5" stroke-width="3"/></g><rect x="150" y="112" width="454" height="146" rx="15" fill="#e9f3f4" stroke="#25374b" stroke-width="2.5"/><text x="176" y="150" font-size="24" fill="#25374b" font-weight="700">本を探して、読了を記録</text><text x="176" y="189" font-size="20" fill="#25374b" font-weight="400">「星の図鑑、読み終わった！」</text><text x="176" y="229" font-size="20" fill="#25374b" font-weight="400">9月14日　読了を記録する ✓</text><path d="M320 270 q-7 18 0 35 m-9 -10 l9 10 9 -10" fill="none" stroke="#25374b" stroke-width="3" stroke-linecap="round"/><rect x="38" y="325" width="564" height="470" rx="15" fill="#fff" stroke="#25374b" stroke-width="2.5"/><text x="63" y="361" font-size="22" fill="#25374b" font-weight="700">読書ノート</text><path d="M38 382 H602" stroke="#25374b" stroke-width="2"/><text x="65" y="418" font-size="25" fill="#25374b" font-weight="700">今週よく読まれた本</text><text x="65" y="451" font-size="18" fill="#25374b" font-weight="400">読了記録の件数が多い順に、20冊</text><text x="66" y="522" font-size="25" fill="#25374b" font-weight="700">1</text><rect x="105" y="480" width="46" height="61" rx="3" fill="#79b8c1" stroke="#25374b" stroke-width="2"/><path d="M114 484 V536" stroke="#fff" stroke-width="2"/><text x="172" y="508" font-size="22" fill="#25374b" font-weight="700">星の図鑑</text><text x="172" y="536" font-size="16" fill="#25374b" font-weight="400">この本を読んだ記録</text><text x="507" y="516" font-size="21" fill="#25374b" font-weight="400">12件</text><text x="66" y="607" font-size="25" fill="#25374b" font-weight="700">2</text><rect x="105" y="565" width="46" height="61" rx="3" fill="#e8b359" stroke="#25374b" stroke-width="2"/><path d="M114 569 V621" stroke="#fff" stroke-width="2"/><text x="172" y="593" font-size="22" fill="#25374b" font-weight="700">海の図鑑</text><text x="172" y="621" font-size="16" fill="#25374b" font-weight="400">この本を読んだ記録</text><text x="507" y="601" font-size="21" fill="#25374b" font-weight="400">9件</text><text x="66" y="692" font-size="25" fill="#25374b" font-weight="700">3</text><rect x="105" y="650" width="46" height="61" rx="3" fill="#b6adc9" stroke="#25374b" stroke-width="2"/><path d="M114 654 V706" stroke="#fff" stroke-width="2"/><text x="172" y="678" font-size="22" fill="#25374b" font-weight="700">森の図鑑</text><text x="172" y="706" font-size="16" fill="#25374b" font-weight="400">この本を読んだ記録</text><text x="507" y="686" font-size="21" fill="#25374b" font-weight="400">7件</text><text x="65" y="767" font-size="17" fill="#25374b" font-weight="400">※ 同じ本の再読も、別の記録として数える</text><rect x="38" y="825" width="564" height="108" rx="15" fill="#fff0d3" stroke="#25374b" stroke-width="2.5"/><text x="63" y="864" font-size="23" fill="#25374b" font-weight="700">記録が増えたら、表示まで待つように。</text><text x="63" y="903" font-size="21" fill="#25374b" font-weight="400">返すのは20冊。裏では何件を調べている？</text><text x="38" y="970" font-size="17" fill="#25374b" font-weight="400">架空の画面イメージ。書名・件数は説明用です。</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="800" viewBox="0 0 640 800" role="img" aria-labelledby="title">
+  <title id="title">記録は増えても、表示は20冊</title>
+  <defs>
+    <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
+    <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
+    <marker id="ref" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#7d93a3"/></marker>
+  </defs>
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50}
+.h{font-size:30px;font-weight:700}.b{font-weight:700}.s{font-size:22px}.m{font-size:22px;fill:#566c7b}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:22px}.tag{font-size:22px;font-weight:700;fill:#fff}
+.teal{fill:#176e65}.brown{fill:#945e11}.real{fill:#176e65}.model{fill:#566c7b}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2}.node{fill:#ecf2f8;stroke:#56738a;stroke-width:2}
+.row{fill:#fff;stroke:#448b7c;stroke-width:2}.match{fill:#fff;stroke:#176e65;stroke-width:4}
+.page{fill:#f7fbf9;stroke:#6d9f94;stroke-width:2}.ipage{fill:#f4f6f8;stroke:#6b7f8e;stroke-width:2}
+.band{fill:#d5dde3;stroke:#92a7b5;stroke-width:2}.skip{fill:none;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5}
+.hot{fill:#fff0d5;stroke:#b88020;stroke-width:4}.ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5}
+.flow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#flow)}.req{fill:none;stroke:#945e11;stroke-width:3;stroke-dasharray:8 6;marker-end:url(#req)}
+.ref{fill:none;stroke:#7d93a3;stroke-width:2;marker-end:url(#ref)}.step{fill:#fff;stroke:#243b50;stroke-width:2.5}
+.spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
+.work{fill:#fff;stroke:#56738a;stroke-width:2;stroke-dasharray:8 5}.val{fill:#dcefe8;stroke:#448b7c;stroke-width:2}.buffer{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2}
+.route{fill:#f4f6f8;stroke:#243b50;stroke-width:3}.leader{fill:none;stroke:#56738a;stroke-width:2}
+  </style>
+  <rect width="640" height="800" fill="#fffdf7"/>
+  <text x="24" y="48" class="h">記録は増えても、表示は20冊</text>
+  <g id="record-screen">
+    <rect x="24" y="72" width="592" height="88" rx="10" fill="#fff" stroke="#243b50" stroke-width="2.5"/>
+    <path d="M24 110 H616" fill="none" stroke="#243b50" stroke-width="2.5"/>
+    <text x="40" y="99" class="s">読了を記録</text>
+    <text x="58" y="144" class="s">星の図鑑　9月16日　読了 ✓</text>
+  </g>
+  <g id="records">
+    <rect x="24" y="228" width="592" height="212" rx="10" class="panel"/>
+    <text x="44" y="260" class="s b">読了記録 <tspan class="mono">reading_records</tspan></text>
+    <text x="69" y="292" text-anchor="middle" class="b">⋮</text>
+    <rect x="44" y="304" width="360" height="36" rx="4" class="row"/>
+    <text x="58" y="329" class="s">本1・9月14日</text>
+    <rect x="44" y="348" width="360" height="36" rx="4" class="row"/>
+    <text x="58" y="373" class="s">本2・9月15日</text>
+    <rect x="44" y="392" width="360" height="36" rx="4" class="hot"/>
+    <text x="58" y="417" class="s b">本1・9月16日</text>
+    <text x="420" y="417" class="s b">＋1件</text>
+  </g>
+  <g id="ranking-screen">
+    <rect x="24" y="508" width="592" height="192" rx="10" fill="#fff" stroke="#243b50" stroke-width="2.5"/>
+    <path d="M24 546 H616" fill="none" stroke="#243b50" stroke-width="2.5"/>
+    <text x="40" y="535" class="s">今週よく読まれた本</text>
+    <text x="58" y="580" class="s b">1</text>
+    <text x="92" y="580" class="s">星の図鑑</text>
+    <text x="404" y="580" text-anchor="end" class="s">12件</text>
+    <text x="58" y="614" class="s b">2</text>
+    <text x="92" y="614" class="s">海の図鑑</text>
+    <text x="404" y="614" text-anchor="end" class="s">9件</text>
+    <text x="58" y="648" class="s b">3</text>
+    <text x="92" y="648" class="s">森の図鑑</text>
+    <text x="404" y="648" text-anchor="end" class="s">7件</text>
+    <text x="66" y="682" text-anchor="middle" class="b">⋮</text>
+    <text x="92" y="682" class="m">20位まで</text>
+  </g>
+  <g id="steps">
+    <path d="M309 172 V200 H298 L320 216 L342 200 H331 V172 Z" class="step"/>
+    <text x="358" y="201" class="s">記録が1件増える</text>
+    <path d="M309 452 V480 H298 L320 496 L342 480 H331 V452 Z" class="step"/>
+    <text x="358" y="481" class="s">本ごとに数える</text>
+  </g>
+  <rect x="24" y="720" width="592" height="60" rx="10" fill="#fff0d3" stroke="#243b50" stroke-width="2.5"/>
+  <text x="44" y="759" class="b">20冊を出すために、何件の記録を数える？</text>
+</svg>

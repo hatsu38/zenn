@@ -3,25 +3,25 @@
     "name": "00-book-sketch",
     "chapter": 0,
     "title": "この本で、一緒に調べること",
-    "description": "本全体を見渡すグラレコ風の導入"
+    "description": "仕組み：本全体の道のりと章番号、観察の道具のEXPLAIN"
   },
   {
     "name": "00-reading-service",
     "chapter": 0,
-    "title": "こんな読書記録サービスを作ります",
-    "description": "架空の画面イメージ ／ 件数は説明用"
+    "title": "記録は増えても、表示は20冊",
+    "description": "問い：読了の記録から上位20冊を出すまで"
   },
   {
     "name": "00-books-and-records",
     "chapter": 0,
-    "title": "本の冊数と、読了記録の件数",
-    "description": "サンプルの2冊・3件で考える"
+    "title": "本ごとに、記録の件数を数える",
+    "description": "仕組み：booksとreading_recordsの対応と、本ごとの件数（模型）"
   },
   {
     "name": "00-ranking-question",
     "chapter": 0,
-    "title": "20冊を返すまでに、何をしている？",
-    "description": "処理量を調べる前の見取り図 ／ 行数の縮尺ではない"
+    "title": "200万件から、20行を返す",
+    "description": "問い：ランキングのSQLの途中で扱う行数"
   },
   {
     "name": "01-search-window",
@@ -74,14 +74,14 @@
   {
     "name": "06-catalog-question",
     "chapter": 3,
-    "title": "目録も大きい。それでも速い？",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "title": "目録も、本と同じ100万件",
+    "description": "問い：Indexにも100万冊分の情報がある"
   },
   {
     "name": "06-btree-path",
     "chapter": 3,
-    "title": "8を探す：範囲を選んでから、値を探す",
-    "description": "番号1〜9で説明する図 ／ 矢印は探索で進む向き"
+    "title": "境目を見て、開く箱を選ぶ",
+    "description": "仕組み：案内板の境目で開く箱を選び、箱の中で8を見つける（説明するための図）"
   },
   {
     "name": "06-tree-levels",
@@ -92,14 +92,14 @@
   {
     "name": "06-range-scan",
     "chapter": 3,
-    "title": "4以上8以下なら、隣の葉も読む",
-    "description": "Indexの葉をたどる図 ／ 表への参照は省略"
+    "title": "4以上8以下なら、隣の箱も開く",
+    "description": "仕組み：範囲の検索で隣の箱へ進み、表から5行を取り出す（説明するための図）"
   },
   {
     "name": "03-storage-question",
     "chapter": 4,
-    "title": "本の一覧は、どこに保存される？",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "title": "100万行なのに、7,353回",
+    "description": "問い：100万行を調べたアクセスが7,353回だった"
   },
   {
     "name": "03-pages-and-rows",
@@ -111,13 +111,13 @@
     "name": "03-ctid-location",
     "chapter": 4,
     "title": "ctid = (0,1) が指す場所",
-    "description": "ページ番号は0から、項目番号は1から数える"
+    "description": "仕組み：ctidのページ番号と項目番号で行を指す（模型）"
   },
   {
     "name": "03-index-reference",
     "chapter": 4,
-    "title": "Indexをたどって、表の行へ届く",
-    "description": "3段のIndexの模型 ／ 矢印は参照する順番"
+    "title": "7,353ページか、4ページか",
+    "description": "比較：Seq Scanの7,353ページとIndex Scanの4ページ（ページ数は実測）"
   },
   {
     "name": "03-row-width",
@@ -126,10 +126,10 @@
     "description": "比較：行の長さとページ数（実測）"
   },
   {
-    "name": "04-memory-regions",
+    "name": "04-repeat-observation",
     "chapter": 5,
-    "title": "ページの保存場所と、計算の作業場所",
-    "description": "仕組み：共有バッファと処理ごとの作業領域の模型"
+    "title": "同じ検索を、もう一度",
+    "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
     "name": "shared-buffer-reuse",
@@ -138,10 +138,10 @@
     "description": "読み込み経路の模型 ／ ページ7は説明用"
   },
   {
-    "name": "04-repeat-observation",
+    "name": "04-memory-regions",
     "chapter": 5,
-    "title": "同じ検索を、もう一度",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "title": "ページの保存場所と、計算の作業場所",
+    "description": "仕組み：共有バッファと処理ごとの作業領域の模型"
   },
   {
     "name": "02-client-scene",
@@ -264,6 +264,12 @@
     "description": "推定と実測のずれの説明例 ／ 実測ログではない"
   },
   {
+    "name": "11-editing-scene",
+    "chapter": 11,
+    "title": "題名を直している間に、読まれたら？",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
     "name": "11-snapshots",
     "chapter": 11,
     "title": "Bが確定しても、Aは版1を読む",
@@ -282,22 +288,10 @@
     "description": "役割と順序の制約を示す模型 ／ 実際の処理は並行する"
   },
   {
-    "name": "11-editing-scene",
-    "chapter": 11,
-    "title": "題名を直している間に、読まれたら？",
+    "name": "12-decision-notebook",
+    "chapter": 12,
+    "title": "今度は、根拠を持って選べる",
     "description": "サービスの場面・学ぶきっかけの絵"
-  },
-  {
-    "name": "12-preaggregation",
-    "chapter": 12,
-    "title": "表示は軽くなる。集計の更新は必要。",
-    "description": "事前集計の模型 ／ 訂正・削除への対応も必要"
-  },
-  {
-    "name": "12-ranking-after",
-    "chapter": 12,
-    "title": "上位を選んでから題名を付ける",
-    "description": "6記録・3冊から上位2冊の模型 ／ 本文では上位20冊"
   },
   {
     "name": "12-ranking-before",
@@ -306,9 +300,15 @@
     "description": "6記録・3冊から上位2冊の模型 ／ 本文では上位20冊"
   },
   {
-    "name": "12-decision-notebook",
+    "name": "12-ranking-after",
     "chapter": 12,
-    "title": "今度は、根拠を持って選べる",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "title": "上位を選んでから題名を付ける",
+    "description": "6記録・3冊から上位2冊の模型 ／ 本文では上位20冊"
+  },
+  {
+    "name": "12-preaggregation",
+    "chapter": 12,
+    "title": "表示は軽くなる。集計の更新は必要。",
+    "description": "事前集計の模型 ／ 訂正・削除への対応も必要"
   }
 ]

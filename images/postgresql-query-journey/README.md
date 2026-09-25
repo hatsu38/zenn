@@ -2,14 +2,14 @@
 
 SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆すると次の書き出しで失われるため、修正はSVGに行ってください。
 
-序章から第12章まで、計52枚を本文へ掲載しています。序章は導入の絵2枚と技術図2枚です。第4章にはctidの図、第6章にはSQLの処理段階の図を追加しています。第1〜2章の8枚は、[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)の型で描き直した試作です。[図の一覧](index.html)からまとめて確認できます。
+序章から第12章まで、計52枚を本文へ掲載しています。序章は導入の絵2枚と技術図2枚です。第4章にはctidの図、第6章にはSQLの処理段階の図を追加しています。そのうち31枚は、[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)の型で描き直しました（2026-09-25、第1〜2章の試作8枚と、横展開の段階A〜Cの23枚）。[図の一覧](index.html)からまとめて確認できます。
 
 | 章 | 題材 | SVG原本 | 掲載用PNG |
 | --- | --- | --- | --- |
 | 序章 | この本で、一緒に調べること | [SVG](sources/00-book-sketch.svg) | [PNG](00-book-sketch.png) |
-| 序章 | こんな読書記録サービスを作ります | [SVG](sources/00-reading-service.svg) | [PNG](00-reading-service.png) |
-| 序章 | 本の冊数と、読了記録の件数 | [SVG](sources/00-books-and-records.svg) | [PNG](00-books-and-records.png) |
-| 序章 | 20冊を返すまでに、何をしている？ | [SVG](sources/00-ranking-question.svg) | [PNG](00-ranking-question.png) |
+| 序章 | 記録は増えても、表示は20冊 | [SVG](sources/00-reading-service.svg) | [PNG](00-reading-service.png) |
+| 序章 | 本ごとに、記録の件数を数える | [SVG](sources/00-books-and-records.svg) | [PNG](00-books-and-records.png) |
+| 序章 | 200万件から、20行を返す | [SVG](sources/00-ranking-question.svg) | [PNG](00-ranking-question.png) |
 | 第1章 | まずは、1冊だけ探してみる | [SVG](sources/01-search-window.svg) | [PNG](01-search-window.png) |
 | 第1章 | どの段階まで進むか | [SVG](sources/01-explain-stages.svg) | [PNG](01-explain-stages.png) |
 | 第1章 | 1行のために、100万行を比べた | [SVG](sources/01-scan-and-filter.svg) | [PNG](01-scan-and-filter.png) |
@@ -18,18 +18,18 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第2章 | 一致した後も、最後まで比べる | [SVG](sources/05-linear-scan.svg) | [PNG](05-linear-scan.png) |
 | 第2章 | Limitが次の行を求めなくなる | [SVG](sources/05-limit-search.svg) | [PNG](05-limit-search.png) |
 | 第2章 | 位置で変わる、比べる行数 | [SVG](sources/05-limit-bands.svg) | [PNG](05-limit-bands.png) |
-| 第3章 | 目録も大きい。それでも速い？ | [SVG](sources/06-catalog-question.svg) | [PNG](06-catalog-question.png) |
-| 第3章 | 8を探す：範囲を選んでから、値を探す | [SVG](sources/06-btree-path.svg) | [PNG](06-btree-path.png) |
+| 第3章 | 目録も、本と同じ100万件 | [SVG](sources/06-catalog-question.svg) | [PNG](06-catalog-question.png) |
+| 第3章 | 境目を見て、開く箱を選ぶ | [SVG](sources/06-btree-path.svg) | [PNG](06-btree-path.png) |
 | 第3章 | 100万冊でも、読むのは3枚 | [SVG](sources/06-tree-levels.svg) | [PNG](06-tree-levels.png) |
-| 第3章 | 4以上8以下なら、隣の葉も読む | [SVG](sources/06-range-scan.svg) | [PNG](06-range-scan.png) |
-| 第4章 | 本の一覧は、どこに保存される？ | [SVG](sources/03-storage-question.svg) | [PNG](03-storage-question.png) |
+| 第3章 | 4以上8以下なら、隣の箱も開く | [SVG](sources/06-range-scan.svg) | [PNG](06-range-scan.png) |
+| 第4章 | 100万行なのに、7,353回 | [SVG](sources/03-storage-question.svg) | [PNG](03-storage-question.png) |
 | 第4章 | 本5の1行も、ページ0ごと読む | [SVG](sources/03-pages-and-rows.svg) | [PNG](03-pages-and-rows.png) |
 | 第4章 | ctid = (0,1) が指す場所 | [SVG](sources/03-ctid-location.svg) | [PNG](03-ctid-location.png) |
-| 第4章 | Indexをたどって、表の行へ届く | [SVG](sources/03-index-reference.svg) | [PNG](03-index-reference.png) |
+| 第4章 | 7,353ページか、4ページか | [SVG](sources/03-index-reference.svg) | [PNG](03-index-reference.png) |
 | 第4章 | 同じ1,000行でも、8ページと32ページ | [SVG](sources/03-row-width.svg) | [PNG](03-row-width.png) |
-| 第5章 | ページの保存場所と、計算の作業場所 | [SVG](sources/04-memory-regions.svg) | [PNG](04-memory-regions.png) |
-| 第5章 | ファイルのページを、メモリで再利用する | [SVG](sources/shared-buffer-reuse.svg) | [PNG](shared-buffer-reuse.png) |
 | 第5章 | 同じ検索を、もう一度 | [SVG](sources/04-repeat-observation.svg) | [PNG](04-repeat-observation.png) |
+| 第5章 | ファイルのページを、メモリで再利用する | [SVG](sources/shared-buffer-reuse.svg) | [PNG](shared-buffer-reuse.png) |
+| 第5章 | ページの保存場所と、計算の作業場所 | [SVG](sources/04-memory-regions.svg) | [PNG](04-memory-regions.png) |
 | 第6章 | 画面の向こうで、SQLが動く | [SVG](sources/02-client-scene.svg) | [PNG](02-client-scene.png) |
 | 第6章 | 接続ごとにプロセスが動く | [SVG](sources/02-connections.svg) | [PNG](02-connections.png) |
 | 第6章 | SQLの文字列から、検索結果が返るまで | [SVG](sources/02-query-stages.svg) | [PNG](02-query-stages.png) |
@@ -50,14 +50,14 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第10章 | Indexがあるのに、なぜ使わない？ | [SVG](sources/10-planner-choice.svg) | [PNG](10-planner-choice.png) |
 | 第10章 | 割合のメモから、行数を見積もる | [SVG](sources/10-stats-to-rows.svg) | [PNG](10-stats-to-rows.png) |
 | 第10章 | 入口の見積もりが、後ろの判断に響く | [SVG](sources/10-estimate-propagation.svg) | [PNG](10-estimate-propagation.png) |
+| 第11章 | 題名を直している間に、読まれたら？ | [SVG](sources/11-editing-scene.svg) | [PNG](11-editing-scene.png) |
 | 第11章 | Bが確定しても、Aは版1を読む | [SVG](sources/11-snapshots.svg) | [PNG](11-snapshots.png) |
 | 第11章 | ×のページだけ、表を確かめに行く | [SVG](sources/11-visibility-map.svg) | [PNG](11-visibility-map.png) |
 | 第11章 | ログの保存と、ページの書き出し | [SVG](sources/11-wal-and-pages.svg) | [PNG](11-wal-and-pages.png) |
-| 第11章 | 題名を直している間に、読まれたら？ | [SVG](sources/11-editing-scene.svg) | [PNG](11-editing-scene.png) |
-| 第12章 | 表示は軽くなる。集計の更新は必要。 | [SVG](sources/12-preaggregation.svg) | [PNG](12-preaggregation.png) |
-| 第12章 | 上位を選んでから題名を付ける | [SVG](sources/12-ranking-after.svg) | [PNG](12-ranking-after.png) |
-| 第12章 | 題名を付けてから、上位を選ぶ | [SVG](sources/12-ranking-before.svg) | [PNG](12-ranking-before.png) |
 | 第12章 | 今度は、根拠を持って選べる | [SVG](sources/12-decision-notebook.svg) | [PNG](12-decision-notebook.png) |
+| 第12章 | 題名を付けてから、上位を選ぶ | [SVG](sources/12-ranking-before.svg) | [PNG](12-ranking-before.png) |
+| 第12章 | 上位を選んでから題名を付ける | [SVG](sources/12-ranking-after.svg) | [PNG](12-ranking-after.png) |
+| 第12章 | 表示は軽くなる。集計の更新は必要。 | [SVG](sources/12-preaggregation.svg) | [PNG](12-preaggregation.png) |
 
 ## 編集する
 
@@ -116,6 +116,6 @@ node scripts/book-figures/build-index.cjs
 *帯の長さで、除外した行と返した1行の差を見てください（件数は実測）。*
 ```
 
-本文で見る目的を示し、図の後で変化と理由を説明します。実測値ではない図には模型と明記し、数値や構造の正確さを確認してから掲載します。
+本文で見る目的を示し、図の後で変化と理由を説明します。実測値ではない図には模型と明記し（第3章では「模型」を使わず「説明するための図」と書く）、数値や構造の正確さを確認してから掲載します。
 
 新構成用の独立コピーです。ファイル名の先頭番号は元の章番号を保持し、所属はcatalog.jsonと本文で管理します。
