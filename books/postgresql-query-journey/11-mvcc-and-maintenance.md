@@ -130,8 +130,8 @@ DROP INDEX reading_records_visibility_idx;
 
 メモリ上の内容は電源断で失われるため、変更を確定するにはストレージへの保存が必要です。そこで、データページを書き出すより先に、変更を再現するための記録を保存します。これが**WAL**（先行書き込みログ）です。
 
-![ログの保存と、ページの書き出し](/images/postgresql-query-journey/11-wal-and-pages.png)
-*役割と順序の制約を示す模型。実際の処理は並行します。*
+![電源が切れてもWALが残っていれば、ページを作り直せる](/images/postgresql-query-journey/11-wal-and-pages.png)
+*見るのは、WALを保存する順序と、電源断で消えないもの。模型。*
 
 WALを先に保存する順序は、`synchronous_commit`の設定を変えても守られます。この設定で変わるのは、COMMITがWALの保存を待ってから返るかどうかです。
 

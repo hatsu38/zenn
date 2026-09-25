@@ -291,7 +291,7 @@
     "name": "11-wal-and-pages",
     "chapter": 11,
     "title": "ログの保存と、ページの書き出し",
-    "description": "役割と順序の制約を示す模型 ／ 実際の処理は並行する"
+    "description": "仕組み：WALを保存してから電源断・再起動までの順序を示す模型"
   },
   {
     "name": "12-decision-notebook",
