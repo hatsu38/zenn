@@ -1,0 +1,210 @@
+BEGIN
+SET
+SET
+SET
+                                                         version                                                          
+--------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+  count  |         min         |         max         
+---------+---------------------+---------------------
+ 2000000 | 2026-08-24 00:00:01 | 2026-09-20 23:59:59
+(1 row)
+
+CREATE INDEX
+ANALYZE
+   attname   |  correlation  | n_distinct 
+-------------+---------------+------------
+ book_id     |  0.0027742486 | -0.4944635
+ finished_at | -0.0076628933 |         -1
+(2 rows)
+
+=== A. 序章のランキングSQL (1週間 = 499,998件, 25%)
+                                                                                        QUERY PLAN                                                                                        
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit (actual rows=20.00 loops=1)
+   Buffers: shared hit=12587 read=6946, temp read=9964 written=12569
+   ->  Sort (actual rows=20.00 loops=1)
+         Sort Key: (count(*)) DESC, b.id
+         Sort Method: top-N heapsort  Memory: 27kB
+         Buffers: shared hit=12587 read=6946, temp read=9964 written=12569
+         ->  HashAggregate (actual rows=492722.00 loops=1)
+               Group Key: b.id
+               Batches: 9  Memory Usage: 8281kB  Disk Usage: 23568kB
+               Buffers: shared hit=12587 read=6946, temp read=9964 written=12569
+               ->  Hash Join (actual rows=499998.00 loops=1)
+                     Hash Cond: (r.book_id = b.id)
+                     Buffers: shared hit=12587 read=6946, temp read=7441 written=7441
+                     ->  Bitmap Heap Scan on reading_records r (actual rows=499998.00 loops=1)
+                           Recheck Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                           Heap Blocks: exact=10811
+                           Buffers: shared hit=10813 read=1367
+                           ->  Bitmap Index Scan on reading_records_finished_at_idx (actual rows=499998.00 loops=1)
+                                 Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                                 Index Searches: 1
+                                 Buffers: shared hit=2 read=1367
+                     ->  Hash (actual rows=1000000.00 loops=1)
+                           Buckets: 131072  Batches: 16  Memory Usage: 4872kB
+                           Buffers: shared hit=1774 read=5579, temp written=5815
+                           ->  Seq Scan on books b (actual rows=1000000.00 loops=1)
+                                 Buffers: shared hit=1774 read=5579
+ Planning:
+   Buffers: shared hit=112 read=4
+(28 rows)
+
+=== B. 期間を狭める: 1日 / 1時間 / 1分 (読了記録のみ, book_id を返すので heap が要る)
+                                                                            QUERY PLAN                                                                            
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on reading_records r  (cost=1569.20..13487.66 rows=73831 width=8) (actual rows=71427.00 loops=1)
+   Recheck Cond: ((finished_at >= '2026-09-20 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+   Heap Blocks: exact=10811
+   Buffers: shared hit=11008 read=1
+   ->  Bitmap Index Scan on reading_records_finished_at_idx  (cost=0.00..1550.74 rows=73831 width=0) (actual rows=71427.00 loops=1)
+         Index Cond: ((finished_at >= '2026-09-20 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+         Index Searches: 1
+         Buffers: shared hit=197 read=1
+ Planning:
+   Buffers: shared hit=4
+(10 rows)
+
+                                                                            QUERY PLAN                                                                            
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on reading_records r  (cost=66.35..6634.61 rows=2919 width=8) (actual rows=2974.00 loops=1)
+   Recheck Cond: ((finished_at >= '2026-09-20 12:00:00'::timestamp without time zone) AND (finished_at < '2026-09-20 13:00:00'::timestamp without time zone))
+   Heap Blocks: exact=2974
+   Buffers: shared hit=2986
+   ->  Bitmap Index Scan on reading_records_finished_at_idx  (cost=0.00..65.62 rows=2919 width=0) (actual rows=2974.00 loops=1)
+         Index Cond: ((finished_at >= '2026-09-20 12:00:00'::timestamp without time zone) AND (finished_at < '2026-09-20 13:00:00'::timestamp without time zone))
+         Index Searches: 1
+         Buffers: shared hit=12
+ Planning:
+   Buffers: shared hit=8
+(10 rows)
+
+                                                                            QUERY PLAN                                                                            
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on reading_records r  (cost=4.93..191.77 rows=49 width=8) (actual rows=50.00 loops=1)
+   Recheck Cond: ((finished_at >= '2026-09-20 12:00:00'::timestamp without time zone) AND (finished_at < '2026-09-20 12:01:00'::timestamp without time zone))
+   Heap Blocks: exact=50
+   Buffers: shared hit=54
+   ->  Bitmap Index Scan on reading_records_finished_at_idx  (cost=0.00..4.92 rows=49 width=0) (actual rows=50.00 loops=1)
+         Index Cond: ((finished_at >= '2026-09-20 12:00:00'::timestamp without time zone) AND (finished_at < '2026-09-20 12:01:00'::timestamp without time zone))
+         Index Searches: 1
+         Buffers: shared hit=4
+ Planning:
+   Buffers: shared hit=8
+(10 rows)
+
+=== C. コスト比較 (1週間): Bitmap / Seq Scan / Index Scan
+                                                                            QUERY PLAN                                                                            
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on reading_records r  (cost=10619.43..28933.35 rows=500195 width=8)
+   Recheck Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+   ->  Bitmap Index Scan on reading_records_finished_at_idx  (cost=0.00..10494.38 rows=500195 width=0)
+         Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+(4 rows)
+
+SET
+                                                                       QUERY PLAN                                                                       
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+ Seq Scan on reading_records r  (cost=0.00..40811.00 rows=500195 width=8)
+   Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+(2 rows)
+
+SET
+                                                                         QUERY PLAN                                                                         
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using reading_records_finished_at_idx on reading_records r  (cost=0.43..58737.95 rows=500195 width=8)
+   Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+(2 rows)
+
+SET
+SET
+=== D. lossy ビットマップ: work_mem=64kB + enable_seqscan=off
+SET
+SET
+                                                                                  QUERY PLAN                                                                                  
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate (actual rows=1.00 loops=1)
+   Buffers: shared hit=12180, temp read=2214 written=2396
+   ->  Sort (actual rows=499998.00 loops=1)
+         Sort Key: book_id
+         Sort Method: external merge  Disk: 5944kB
+         Buffers: shared hit=12180, temp read=2214 written=2396
+         ->  Bitmap Heap Scan on reading_records r (actual rows=499998.00 loops=1)
+               Recheck Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+               Rows Removed by Index Recheck: 1434353
+               Heap Blocks: exact=471 lossy=10340
+               Buffers: shared hit=12180
+               ->  Bitmap Index Scan on reading_records_finished_at_idx (actual rows=499998.00 loops=1)
+                     Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                     Index Searches: 1
+                     Buffers: shared hit=1369
+ Planning:
+   Buffers: shared hit=7
+(17 rows)
+
+SET
+SET
+=== E. 可視性マップ: Index Only Scan の Heap Fetches が UPDATE 後に増える
+                                                                            QUERY PLAN                                                                            
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate (actual rows=1.00 loops=1)
+   Buffers: shared hit=199
+   ->  Index Only Scan using reading_records_finished_at_idx on reading_records r (actual rows=71427.00 loops=1)
+         Index Cond: ((finished_at >= '2026-09-20 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+         Heap Fetches: 0
+         Index Searches: 1
+         Buffers: shared hit=199
+ Planning:
+   Buffers: shared hit=4
+(9 rows)
+
+--- UPDATE を EXPLAIN (ANALYZE, WAL) で観察
+                                                                               QUERY PLAN                                                                               
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Update on reading_records (actual rows=0.00 loops=1)
+   Buffers: shared hit=3991 read=3 dirtied=511 written=5
+   WAL: records=1499 fpi=501 bytes=4206051 buffers full=5
+   ->  Bitmap Heap Scan on reading_records (actual rows=496.00 loops=1)
+         Recheck Cond: ((finished_at >= '2026-09-20 12:00:00'::timestamp without time zone) AND (finished_at < '2026-09-20 12:10:00'::timestamp without time zone))
+         Heap Blocks: exact=496
+         Buffers: shared hit=501
+         ->  Bitmap Index Scan on reading_records_finished_at_idx (actual rows=496.00 loops=1)
+               Index Cond: ((finished_at >= '2026-09-20 12:00:00'::timestamp without time zone) AND (finished_at < '2026-09-20 12:10:00'::timestamp without time zone))
+               Index Searches: 1
+               Buffers: shared hit=5
+ Planning:
+   Buffers: shared hit=11
+(13 rows)
+
+--- 同じ SELECT を再実行 (VACUUM 前)
+                                                                            QUERY PLAN                                                                            
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate (actual rows=1.00 loops=1)
+   Buffers: shared hit=4303
+   ->  Index Only Scan using reading_records_finished_at_idx on reading_records r (actual rows=71427.00 loops=1)
+         Index Cond: ((finished_at >= '2026-09-20 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+         Heap Fetches: 4102
+         Index Searches: 1
+         Buffers: shared hit=4303
+ Planning:
+   Buffers: shared hit=4
+(9 rows)
+
+--- 参考: SELECT が書く WAL
+                                                                            QUERY PLAN                                                                            
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate (actual rows=1.00 loops=1)
+   Buffers: shared hit=4303
+   ->  Index Only Scan using reading_records_finished_at_idx on reading_records r (actual rows=71427.00 loops=1)
+         Index Cond: ((finished_at >= '2026-09-20 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+         Heap Fetches: 4102
+         Index Searches: 1
+         Buffers: shared hit=4303
+ Planning:
+   Buffers: shared hit=4
+(9 rows)
+
+ROLLBACK
