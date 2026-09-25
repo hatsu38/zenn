@@ -195,7 +195,7 @@
     "name": "08-twenty-window",
     "chapter": 8,
     "title": "画面に欲しいのは、最新20件",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "description": "問い：LIMIT 20で減るのは、読む・持つ・返すのどれか"
   },
   {
     "name": "top-three-heap",
