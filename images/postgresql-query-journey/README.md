@@ -27,7 +27,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第4章 | 本5の1行も、ページ0ごと読む | [SVG](sources/03-pages-and-rows.svg) | [PNG](03-pages-and-rows.png) |
 | 第4章 | ctid = (0,1) が指す場所 | [SVG](sources/03-ctid-location.svg) | [PNG](03-ctid-location.png) |
 | 第4章 | 7,353ページか、4ページか | [SVG](sources/03-index-reference.svg) | [PNG](03-index-reference.png) |
-| 第4章 | 同じ1,000行でも、8ページと32ページ | [SVG](sources/03-row-width.svg) | [PNG](03-row-width.png) |
+| 第4章 | 同じ1,000件でも、8ページと32ページ | [SVG](sources/03-row-width.svg) | [PNG](03-row-width.png) |
 | 第5章 | 同じ検索を、もう一度 | [SVG](sources/04-repeat-observation.svg) | [PNG](04-repeat-observation.png) |
 | 第5章 | 読み込んだページを、次も使う | [SVG](sources/shared-buffer-reuse.svg) | [PNG](shared-buffer-reuse.png) |
 | 第5章 | ページは再利用、行は毎回比べる | [SVG](sources/04-two-levels.svg) | [PNG](04-two-levels.png) |
