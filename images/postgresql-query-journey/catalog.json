@@ -138,6 +138,12 @@
     "description": "仕組み：共有バッファ・OSキャッシュ・ストレージの読み込み経路（模型）"
   },
   {
+    "name": "04-two-levels",
+    "chapter": 5,
+    "title": "ページは再利用、行は毎回比べる",
+    "description": "観察：3回の実行のページの使い方と比べた行（実測）"
+  },
+  {
     "name": "04-memory-regions",
     "chapter": 5,
     "title": "ページの保存場所と、計算の作業場所",
