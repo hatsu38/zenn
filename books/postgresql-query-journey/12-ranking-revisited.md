@@ -59,44 +59,41 @@ EXPLAIN (ANALYZE, BUFFERS)
 SELECT * FROM ranking_before;
 ```
 
-2026年9月25日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件、並列実行とJITは無効です。 次の計画は、第1章から第10章まで進めた後、第11章のVACUUM実験より前に採取しました。章末には、第11章の実験後に3回ずつ測った比較も載せます。
+2026年9月26日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件、並列実行とJITは無効です。 次の計画は、第1章から第10章まで進めた後、第11章のVACUUM実験より前に採取しました。章末には、第11章の実験後に3回ずつ測った比較も載せます。
 
 :::details 基準SQLの実行結果
 ```sql
-Limit  (cost=144679.49..144679.54 rows=20 width=38) (actual time=845.097..845.109 rows=20.00 loops=1)
-  Buffers: shared hit=15508 read=4574, temp read=9964 written=12569
-  ->  Sort  (cost=144679.49..145926.97 rows=498993 width=38) (actual time=845.096..845.105 rows=20.00 loops=1)
+Limit  (cost=129354.25..129354.30 rows=20 width=38) (actual time=576.650..576.657 rows=20.00 loops=1)
+  Buffers: shared hit=6592 read=2680, temp read=9038 written=10753
+  ->  Sort  (cost=129354.25..130574.82 rows=488229 width=38) (actual time=576.648..576.653 rows=20.00 loops=1)
         Sort Key: (count(*)) DESC, b.id
         Sort Method: top-N heapsort  Memory: 27kB
-        Buffers: shared hit=15508 read=4574, temp read=9964 written=12569
-        ->  HashAggregate  (cost=119589.36..131401.46 rows=498993 width=38) (actual time=692.218..802.384 rows=492722.00 loops=1)
+        Buffers: shared hit=6592 read=2680, temp read=9038 written=10753
+        ->  HashAggregate  (cost=104805.36..116362.65 rows=488229 width=38) (actual time=498.999..555.530 rows=255238.00 loops=1)
               Group Key: b.id
-              Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 23568kB
-              Buffers: shared hit=15508 read=4574, temp read=9964 written=12569
-              ->  Hash Join  (cost=49484.11..79825.86 rows=498993 width=30) (actual time=206.603..553.852 rows=499998.00 loops=1)
+              Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 15560kB
+              Buffers: shared hit=6592 read=2680, temp read=9038 written=10753
+              ->  Hash Join  (cost=36689.43..65899.61 rows=488229 width=30) (actual time=166.012..405.124 rows=499998.00 loops=1)
                     Hash Cond: (r.book_id = b.id)
-                    Buffers: shared hit=15508 read=4574, temp read=7441 written=7441
-                    ->  Bitmap Heap Scan on reading_records r  (cost=12795.11..31091.00 rows=498993 width=8) (actual time=21.234..84.550 rows=499998.00 loops=1)
-                          Recheck Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
-                          Heap Blocks: exact=10811
-                          Buffers: shared hit=12729
-                          ->  Bitmap Index Scan on reading_records_order_idx  (cost=0.00..12670.36 rows=498993 width=0) (actual time=20.191..20.191 rows=499998.00 loops=1)
-                                Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
-                                Index Searches: 1
-                                Buffers: shared hit=1918
-                    ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=184.698..184.704 rows=1000000.00 loops=1)
-                          Buckets: 131072  Batches: 16  Memory Usage: 4872kB
-                          Buffers: shared hit=2779 read=4574, temp written=5815
-                          ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.008..71.297 rows=1000000.00 loops=1)
-                                Buffers: shared hit=2779 read=4574
+                    Buffers: shared hit=6592 read=2680, temp read=7276 written=7276
+                    ->  Index Only Scan using reading_records_order_idx on reading_records r  (cost=0.43..17277.01 rows=488229 width=8) (actual time=0.007..35.307 rows=499998.00 loops=1)
+                          Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                          Heap Fetches: 0
+                          Index Searches: 1
+                          Buffers: shared hit=1919
+                    ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=165.769..165.771 rows=1000000.00 loops=1)
+                          Buckets: 131072  Batches: 16  Memory Usage: 4883kB
+                          Buffers: shared hit=4673 read=2680, temp written=5815
+                          ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.006..60.127 rows=1000000.00 loops=1)
+                                Buffers: shared hit=4673 read=2680
 Planning:
   Buffers: shared hit=21
-Planning Time: 0.199 ms
-Execution Time: 847.516 ms
+Planning Time: 0.188 ms
+Execution Time: 578.434 ms
 ```
 :::
 
-下から読むと、対象週499,998件を取り出し、Hash Joinで同じ499,998件へ題名を付けています。HashAggregateで492,722冊に数え、最後のSortとLimitで20冊を選びました。20件へ減るのは、題名を付けた後です。
+下から読むと、対象週499,998件を取り出し、Hash Joinで同じ499,998件へ題名を付けています。HashAggregateで255,238冊に数え、最後のSortとLimitで20冊を選びました。20件へ減るのは、題名を付けた後です。
 
 自分の環境でも、レコード数、方式、時間、BUFFERSを残してください。キャッシュや実行順でも時間は変わるので、1回だけの小さな差で勝ち負けを決めません。
 
@@ -118,36 +115,36 @@ ROLLBACK;
 
 :::details Indexを使う候補を制限した実行結果
 ```sql
-Limit  (cost=154399.49..154399.54 rows=20 width=38) (actual time=876.207..876.217 rows=20.00 loops=1)
-  Buffers: shared hit=13684 read=4480, temp read=9964 written=12569
-  ->  Sort  (cost=154399.49..155646.97 rows=498993 width=38) (actual time=876.206..876.214 rows=20.00 loops=1)
+Limit  (cost=152888.24..152888.29 rows=20 width=38) (actual time=634.337..634.343 rows=20.00 loops=1)
+  Buffers: shared hit=13916 read=4248, temp read=9038 written=10749
+  ->  Sort  (cost=152888.24..154108.82 rows=488229 width=38) (actual time=634.336..634.340 rows=20.00 loops=1)
         Sort Key: (count(*)) DESC, b.id
         Sort Method: top-N heapsort  Memory: 27kB
-        Buffers: shared hit=13684 read=4480, temp read=9964 written=12569
-        ->  HashAggregate  (cost=129309.36..141121.46 rows=498993 width=38) (actual time=706.797..829.648 rows=492722.00 loops=1)
+        Buffers: shared hit=13916 read=4248, temp read=9038 written=10749
+        ->  HashAggregate  (cost=128339.35..139896.65 rows=488229 width=38) (actual time=558.750..613.946 rows=255238.00 loops=1)
               Group Key: b.id
-              Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 23568kB
-              Buffers: shared hit=13684 read=4480, temp read=9964 written=12569
-              ->  Hash Join  (cost=36689.00..89545.86 rows=498993 width=30) (actual time=182.946..570.437 rows=499998.00 loops=1)
+              Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 15560kB
+              Buffers: shared hit=13916 read=4248, temp read=9038 written=10749
+              ->  Hash Join  (cost=36689.00..89433.60 rows=488229 width=30) (actual time=175.634..460.219 rows=499998.00 loops=1)
                     Hash Cond: (r.book_id = b.id)
-                    Buffers: shared hit=13684 read=4480, temp read=7441 written=7441
-                    ->  Seq Scan on reading_records r  (cost=0.00..40811.00 rows=498993 width=8) (actual time=0.062..102.692 rows=499998.00 loops=1)
+                    Buffers: shared hit=13916 read=4248, temp read=7276 written=7276
+                    ->  Seq Scan on reading_records r  (cost=0.00..40811.00 rows=488229 width=8) (actual time=0.113..76.162 rows=499998.00 loops=1)
                           Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
                           Rows Removed by Filter: 1500002
-                          Buffers: shared hit=10811
-                    ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=179.468..179.469 rows=1000000.00 loops=1)
-                          Buckets: 131072  Batches: 16  Memory Usage: 4872kB
-                          Buffers: shared hit=2873 read=4480, temp written=5815
-                          ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.010..68.463 rows=1000000.00 loops=1)
-                                Buffers: shared hit=2873 read=4480
+                          Buffers: shared hit=9149 read=1662
+                    ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=175.281..175.282 rows=1000000.00 loops=1)
+                          Buckets: 131072  Batches: 16  Memory Usage: 4883kB
+                          Buffers: shared hit=4767 read=2586, temp written=5815
+                          ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.003..62.081 rows=1000000.00 loops=1)
+                                Buffers: shared hit=4767 read=2586
 Planning:
   Buffers: shared hit=12
-Planning Time: 0.186 ms
-Execution Time: 878.667 ms
+Planning Time: 0.185 ms
+Execution Time: 635.629 ms
 ```
 :::
 
-日時のIndexを使ったBitmap Heap Scanから、200万件を読むSeq Scanへ変わりました。ただし、どちらも結合へ渡すレコードは499,998件で、その後の集計と上位選びも残ります。Indexだけでランキング全体の処理がなくなるわけではありません。
+日時のIndexを使ったIndex Only Scanから、200万件を読むSeq Scanへ変わりました。ただし、どちらも結合へ渡すレコードは499,998件で、その後の集計と上位選びも残ります。Indexだけでランキング全体の処理がなくなるわけではありません。
 
 これはIndexを物理的に削除した測定ではなく、候補を制限する診断実験です。この2回の時間差だけではIndexの効果を断定せず、アクセス方法と後続へ渡すレコード数を対応させて読みます。
 
@@ -194,34 +191,31 @@ SELECT * FROM ranking_after;
 
 :::details 集計してから題名を付けた実行結果
 ```sql
-Nested Loop  (cost=79010.08..79178.76 rows=20 width=38) (actual time=315.882..316.888 rows=20.00 loops=1)
-  Buffers: shared hit=12803 read=6, temp read=1366 written=3079
-  ->  Limit  (cost=79009.66..79009.71 rows=20 width=16) (actual time=315.840..315.844 rows=20.00 loops=1)
-        Buffers: shared hit=12729, temp read=1366 written=3079
-        ->  Sort  (cost=79009.66..80098.98 rows=435730 width=16) (actual time=315.838..315.841 rows=20.00 loops=1)
+Nested Loop  (cost=22604.00..22772.68 rows=20 width=38) (actual time=164.705..165.474 rows=20.00 loops=1)
+  Buffers: shared hit=1973 read=26, temp read=641 written=1378
+  ->  Limit  (cost=22603.58..22603.63 rows=20 width=16) (actual time=164.674..164.680 rows=20.00 loops=1)
+        Buffers: shared hit=1919, temp read=641 written=1378
+        ->  Sort  (cost=22603.58..22800.62 rows=78816 width=16) (actual time=164.673..164.677 rows=20.00 loops=1)
               Sort Key: (count(*)) DESC, reading_records.book_id
               Sort Method: top-N heapsort  Memory: 26kB
-              Buffers: shared hit=12729, temp read=1366 written=3079
-              ->  HashAggregate  (cost=59159.36..67415.04 rows=435730 width=16) (actual time=195.561..285.591 rows=492722.00 loops=1)
+              Buffers: shared hit=1919, temp read=641 written=1378
+              ->  HashAggregate  (cost=19718.15..20506.31 rows=78816 width=16) (actual time=111.935..149.717 rows=255238.00 loops=1)
                     Group Key: reading_records.book_id
-                    Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 15248kB
-                    Buffers: shared hit=12729, temp read=1366 written=3079
-                    ->  Bitmap Heap Scan on reading_records  (cost=12795.11..31091.00 rows=498993 width=8) (actual time=19.915..72.414 rows=499998.00 loops=1)
-                          Recheck Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
-                          Heap Blocks: exact=10811
-                          Buffers: shared hit=12729
-                          ->  Bitmap Index Scan on reading_records_order_idx  (cost=0.00..12670.36 rows=498993 width=0) (actual time=18.809..18.809 rows=499998.00 loops=1)
-                                Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
-                                Index Searches: 1
-                                Buffers: shared hit=1918
-  ->  Index Scan using books_pkey on books b  (cost=0.42..8.44 rows=1 width=30) (actual time=0.051..0.051 rows=1.00 loops=20)
+                    Batches: 5  Memory Usage: 8249kB  Disk Usage: 7224kB
+                    Buffers: shared hit=1919, temp read=641 written=1378
+                    ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..17277.01 rows=488229 width=8) (actual time=0.007..32.766 rows=499998.00 loops=1)
+                          Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                          Heap Fetches: 0
+                          Index Searches: 1
+                          Buffers: shared hit=1919
+  ->  Index Scan using books_pkey on books b  (cost=0.42..8.44 rows=1 width=30) (actual time=0.038..0.038 rows=1.00 loops=20)
         Index Cond: (id = reading_records.book_id)
         Index Searches: 20
-        Buffers: shared hit=74 read=6
+        Buffers: shared hit=54 read=26
 Planning:
   Buffers: shared hit=7
-Planning Time: 0.203 ms
-Execution Time: 318.503 ms
+Planning Time: 0.148 ms
+Execution Time: 166.251 ms
 ```
 :::
 
@@ -302,38 +296,38 @@ ORDER BY w.read_count DESC, w.book_id ASC LIMIT 20;
 同日の準備の実行結果です。psqlが測った経過時間も分けて残します。
 
 ```sql
-SELECT 492722
-Time: 478.098 ms
+SELECT 255238
+Time: 195.385 ms
 CREATE INDEX
-Time: 211.821 ms
+Time: 93.357 ms
 ANALYZE
-Time: 21.638 ms
+Time: 18.157 ms
 ```
 
 作成済みのテーブルから読み出した実行結果です。
 
 :::details 事前集計テーブルの読み出し
 ```sql
-Limit  (cost=0.85..12.21 rows=20 width=46) (actual time=0.030..0.097 rows=20.00 loops=1)
+Limit  (cost=0.84..13.87 rows=20 width=46) (actual time=0.038..0.137 rows=20.00 loops=1)
   Buffers: shared hit=100 read=3
-  ->  Nested Loop  (cost=0.85..279979.69 rows=492722 width=46) (actual time=0.029..0.095 rows=20.00 loops=1)
+  ->  Nested Loop  (cost=0.84..166283.20 rows=255238 width=46) (actual time=0.037..0.134 rows=20.00 loops=1)
         Buffers: shared hit=100 read=3
-        ->  Index Only Scan using weekly_read_counts_order_idx on weekly_read_counts w  (cost=0.42..21558.21 rows=492722 width=16) (actual time=0.024..0.052 rows=20.00 loops=1)
+        ->  Index Only Scan using weekly_read_counts_order_idx on weekly_read_counts w  (cost=0.42..12948.39 rows=255238 width=16) (actual time=0.028..0.049 rows=20.00 loops=1)
               Heap Fetches: 20
               Index Searches: 1
               Buffers: shared hit=20 read=3
-        ->  Index Scan using books_pkey on books b  (cost=0.42..0.52 rows=1 width=30) (actual time=0.002..0.002 rows=1.00 loops=20)
+        ->  Index Scan using books_pkey on books b  (cost=0.42..0.60 rows=1 width=30) (actual time=0.004..0.004 rows=1.00 loops=20)
               Index Cond: (id = w.book_id)
               Index Searches: 20
               Buffers: shared hit=80
 Planning:
   Buffers: shared hit=18 read=1
-Planning Time: 0.179 ms
-Execution Time: 0.111 ms
+Planning Time: 0.217 ms
+Execution Time: 0.151 ms
 ```
 :::
 
-集計テーブルのIndexから20件を取り出し、本の題名を20回探しています。表示時の計画にはAggregateもSortもありません。ただし、作成直後の集計テーブルでは`Heap Fetches: 20`となり、テーブルのレコードも確認しています。第11章と同じく、値がIndexにあることと、テーブルへの確認を省けることは別です。その準備として、492,722件のテーブルとIndexを作った負担が別にあります。
+集計テーブルのIndexから20件を取り出し、本の題名を20回探しています。表示時の計画にはAggregateもSortもありません。ただし、作成直後の集計テーブルでは`Heap Fetches: 20`となり、テーブルのレコードも確認しています。第11章と同じく、値がIndexにあることと、テーブルへの確認を省けることは別です。その準備として、255,238件のテーブルとIndexを作った負担が別にあります。
 
 中身は記録が増えたり週が替わったりするたびに作り直すか更新します。ここで測った作成時間は初回の値で、運用中の継続更新や同時アクセスの負担はまだ測っていません。psqlの経過時間とEXPLAINのExecution Timeは測る範囲も違うので、混ぜて一つの処理時間にはしません。
 
@@ -356,31 +350,31 @@ Execution Time: 0.111 ms
 
 ## このサービスで、何を選ぶ？
 
-第11章の更新とVACUUMの実験後、同じDBで3方式を3回ずつ測りました。PostgreSQL 18.6、`work_mem=4MB`、並列実行とJITは無効です。キャッシュを空にせず、基準SQL、案2、案3の順に実行しました。他のDBも動く共有コンテナでの値なので、改善倍率を他環境へ当てはめるための測定ではありません。
+第11章の更新とVACUUMの実験後、同じDBで3方式を3回ずつ測りました。PostgreSQL 18.6、`work_mem=4MB`、並列実行とJITは無効です。キャッシュを空にせず、基準SQL、案2、案3の順に実行しました。実験用に起動したコンテナでの値で、改善倍率を他環境へ当てはめるための測定ではありません。
 
 | 方式 | 3回のExecution Time（ms） | 中央値（ms） | 減った処理・残った負担 |
 | --- | --- | ---: | --- |
-| 日時Indexを使う基準SQL | 695.730 / 703.906 / 684.870 | 695.730 | 期間で絞れても、499,998件の結合と集計が残る |
-| 案2：集計後に題名を付ける | 240.353 / 242.852 / 256.120 | 242.852 | 題名を探すのは20回。期間内の集計は残る |
-| 案3：作成済みの集計テーブルを読む | 0.120 / 0.038 / 0.034 | 0.038 | 表示時の集計が消える。集計テーブルの作成・更新は別に必要 |
+| 日時Indexを使う基準SQL | 608.768 / 629.833 / 677.358 | 629.833 | 期間で絞れても、499,998件の結合と集計が残る |
+| 案2：集計後に題名を付ける | 204.982 / 194.781 / 174.590 | 194.781 | 題名を探すのは20回。期間内の集計は残る |
+| 案3：作成済みの集計テーブルを読む | 0.310 / 0.088 / 0.102 | 0.102 | 表示時の集計が消える。集計テーブルの作成・更新は別に必要 |
 
-この再測定では、基準SQLと案2の記録の取得がIndex Only Scanになりました。先に載せたBitmap Heap Scanの計画と違うのは、VACUUMなどを経てテーブルの状態と統計が変わった後だからです。取得方法が変わっても、基準では約50万件へ題名を付け、案2では20件へ付けるという違いは残りました。
+この再測定でも、基準SQLと案2の記録の取得は、先に載せた計画と同じIndex Only Scanでした。基準では約50万件へ題名を付け、案2では20件へ付けるという違いも同じです。
 
-ここでは「新しい記録を次の表示に反映したい」「まずは数百ミリ秒程度まで短くしたい」というサービスの条件を置き、**日時Indexを残して案2を採用する**判断にします。別の集計テーブルを維持せず、今回の測定では約243msまで短くなり、結果の同値性も確認できたためです。これは今回の条件での判断で、応答時間の保証ではありません。
+ここでは「新しい記録を次の表示に反映したい」「まずは数百ミリ秒程度まで短くしたい」というサービスの条件を置き、**日時Indexを残して案2を採用する**判断にします。別の集計テーブルを維持せず、今回の測定では約195msまで短くなり、結果の同値性も確認できたためです。これは今回の条件での判断で、応答時間の保証ではありません。
 
-「多数のアクセスでも、さらに短い応答が必要」「5分前までの集計でよい」という条件なら案3を次に検証します。更新が5分以内に完了するか、更新中も表示できるか、訂正・削除・週替わりを正しく反映できるかを確かめてから採用します。0.038msという読み出しだけの値では、その判断まで済みません。
+「多数のアクセスでも、さらに短い応答が必要」「5分前までの集計でよい」という条件なら案3を次に検証します。更新が5分以内に完了するか、更新中も表示できるか、訂正・削除・週替わりを正しく反映できるかを確かめてから採用します。0.102msという読み出しだけの値では、その判断まで済みません。
 
 :::details 調査メモの完成例
 - 困りごと：20冊の表示なのに、結合へ約50万件が渡っていた。
 - 仮説：本番号で集計し、上位を決めてから題名を付ければ結合対象を減らせる。
 - そろえた条件：同じDB、期間、Index、設定で比較した。時間の測定は第11章の実験後にまとめて行った。
-- 観察：題名の取得が20回になり、3回の中央値は695.730msから242.852msへ変わった。
+- 観察：題名の取得が20回になり、3回の中央値は629.833msから194.781msへ変わった。
 - 正しさ：対応する本のない記録は0件、双方向の差分も0件。主キーと並び順も確認した。
 - 判断：今回は案2。継続更新の仕組みが必要になる案3は、負荷と鮮度の条件を決めてから検証する。
 - 残る疑問：実際の人気の偏り、同時アクセス、対象期間の変更でも同じ計画と応答になるか。
 :::
 
-基本データでは、各本の全期間の記録はちょうど2件ずつです。対象週は1件の本が485,446冊、2件の本が7,276冊で、上位20冊もすべて2件です。これは仕組みを観察しやすくするためのデータで、現実の人気の分布を再現したものではありません。少数の本へ記録が集中すれば、集計後のグループ数や、集計を先にする効果も変わります。実サービスへ当てはめるときは、自分のデータの偏りも調べます。
+基本データは、よく読まれる本ほど記録が多くなるように作っています（第1章）。対象週は、1件の本が188,581冊、2件の本が45,208冊で、記録の少ない本が大半です。上位には、1位の5,009件から20位の599件までが並びます。ただし、偏りの形は一つの式で決めたもので、現実の人気の分布を再現したものではありません。記録がもっと少数の本に集中すれば、集計後のグループ数や、集計を先にする効果も変わります。実サービスへ当てはめるときは、自分のデータの偏りも調べます。
 
 ## 最後の課題：AIの案を検証する
 
