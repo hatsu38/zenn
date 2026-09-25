@@ -27,12 +27,12 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="24" y="76" width="592" height="108" rx="10" class="ipage"/>
     <text x="44" y="108" class="s b"><tspan class="mono">(book_id, finished_at)</tspan>のIndex</text>
     <rect x="44" y="124" width="136" height="36" rx="4" class="row"/>
-    <path d="M96 124 V160" stroke="#448b7c" stroke-width="2"/>
+    <path d="M96 124 V160" class="row"/>
     <text x="70" y="149" text-anchor="middle" class="s">42</text>
     <text x="138" y="149" text-anchor="middle" class="s">日時1</text>
     <text x="192" y="149" class="s m">▸ 場所</text>
     <rect x="385" y="124" width="136" height="36" rx="4" class="row"/>
-    <path d="M437 124 V160" stroke="#448b7c" stroke-width="2"/>
+    <path d="M437 124 V160" class="row"/>
     <text x="411" y="149" text-anchor="middle" class="s">42</text>
     <text x="479" y="149" text-anchor="middle" class="s">日時2</text>
     <text x="533" y="149" class="s m">▸ 場所</text>
@@ -40,16 +40,15 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <g id="visibility-map">
     <rect x="24" y="204" width="592" height="132" rx="10" class="panel"/>
     <text x="44" y="236" class="s b">可視性マップ</text>
-    <rect x="44" y="250" width="112" height="72" rx="6" class="ipage"/>
-    <text x="100" y="277" text-anchor="middle" class="s">ページ10</text>
-    <text x="100" y="311" text-anchor="middle" class="h teal">✓</text>
-    <rect x="492" y="250" width="112" height="72" rx="6" class="hot"/>
-    <text x="548" y="277" text-anchor="middle" class="s b">ページ11</text>
-    <text x="548" y="311" text-anchor="middle" class="h">×</text>
+    <rect x="44" y="250" width="120" height="72" rx="6" class="panel"/>
+    <text x="104" y="277" text-anchor="middle" class="s">ページ10</text>
+    <text x="104" y="311" text-anchor="middle" class="h teal">✓</text>
+    <rect x="484" y="250" width="120" height="72" rx="6" class="hot"/>
+    <text x="544" y="277" text-anchor="middle" class="s b">ページ11</text>
+    <text x="544" y="311" text-anchor="middle" class="h">×</text>
     <text x="44" y="368" class="s"><tspan class="b teal">✓</tspan> <tspan class="m">すべて見えてよい</tspan></text>
-    <text x="534" y="368" text-anchor="end" class="s"><tspan class="b">×</tspan> <tspan class="m">確かめが要る</tspan></text>
+    <text x="530" y="368" text-anchor="end" class="s"><tspan class="b">×</tspan> <tspan class="m">確かめが要る</tspan></text>
   </g>
-  <text x="44" y="410" class="s teal">表を見ずに返す</text>
   <g id="table">
     <rect x="24" y="468" width="284" height="92" rx="10" class="page"/>
     <text x="44" y="498" class="s b">ページ10</text>
@@ -60,9 +59,12 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="352" y="512" width="244" height="34" rx="4" class="row"/>
     <text x="366" y="535" class="s">42　日時2</text>
   </g>
+  <g id="no-heap-fetch">
+    <text x="44" y="410" class="s teal">表を見ずに返す</text>
+  </g>
   <g id="heap-fetch">
-    <path d="M548 324 V506" class="ref"/>
-    <text x="534" y="410" text-anchor="end" class="s">表の行を確かめる</text>
-    <text x="534" y="444" text-anchor="end" class="s"><tspan class="mono">Heap Fetches</tspan>＝この回数</text>
+    <path d="M544 324 V506" class="ref"/>
+    <text x="530" y="410" text-anchor="end" class="s">表の行を確かめる</text>
+    <text x="530" y="444" text-anchor="end" class="s"><tspan class="mono">Heap Fetches</tspan>＝この回数</text>
   </g>
 </svg>
