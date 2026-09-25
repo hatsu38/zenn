@@ -2,15 +2,22 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** 設計書8章で「新規・高」とした7枚のうち、ユーザーの判断を待たずに描ける3枚（`06-tree-levels`・`07-sort-bands`・`08-sort-vs-topn`）を描き、本文の指定した位置へ入れる。
+**Goal:** 設計書8章で「新規・高」とした7枚のうち、描くと決めた5枚（段階B-1の `06-tree-levels`・`07-sort-bands`・`08-sort-vs-topn`、段階B-2の `09-loops`・`10-stats-to-rows`）を描き、本文の指定した位置へ入れる。`10-stats-to-rows` にまとめる `10-selectivity` は外す。
 
 **Architecture:** 段階Aと同じく、1枚1タスクで SVG 原本・PNG・本文（図の直前の1文、図、キャプション、代替テキスト）・catalog.json の自分の項目を作ってコミットする。README・index.html・book-flow.html・執筆方針の枚数は最後のタスクでまとめて合わせる。検査は段階Aで強めた `check-figures.cjs`（描画して測る検査を含む）を使う。
 
 **Tech Stack:** SVG、Node.js、Playwright 1.62.1（Chromium）、Zenn の Markdown。
 
-## この段階で描かない4枚
+## 残る4枚の扱い（2026-09-25 のユーザーの判断）
 
-`09-loops`・`10-stats-to-rows`・`11-heap-fetches`・`12-plan-overview` は、本の範囲に関わる判断（章の技術の図の枚数、本文が「結果は載せていない」とする箇所に実測の図を置くか）をユーザーに確かめてから、段階B-2で描く。下調べの記録は `.superpowers/sdd/b-research.md`（作業用、git の管理外）。
+下調べ（`.superpowers/sdd/b-research.md`、作業用で git の管理外）で、本の範囲に関わる判断が要ると分かった4枚を、ユーザーに確かめた。
+
+| 図 | 判断 | 理由 |
+| --- | --- | --- |
+| `09-loops` | 描く（段階B-2、Task 5） | 第9章の技術の図は4枚になるが、`loops` を読む観察の図はほかにない。中優先度の `09-hash-batches` は見送る |
+| `10-stats-to-rows` | 模型として描く（段階B-2、Task 6）。`10-selectivity` はこの図にまとめて外す | 第10章は実験結果を本に載せない方針。9,000行と1,000行の準備から、ANALYZE のメモ（0.9と0.1）と計画の rows=1000 は計算で決まる |
+| `11-heap-fetches` | 見送る | 段階Aで直した可視性マップの図と、本文の表（0→4→0）で足りる |
+| `12-plan-overview` | 見送る | 第12章は実行計画を本に載せない方針で、実測値がない。段階Eで `12-ranking-before` を描き直すとき、「499,998行 → ？冊 → 20冊」の流れで全体像の役を持たせる |
 
 ## Global Constraints
 
@@ -32,7 +39,7 @@
 - git worktree の中では `NODE_PATH=/Users/hatsu/development/github.com/hatsu38/zenn/scripts/book-figures/node_modules` を付ける。
 - コミットは日本語の Conventional Commits。`Co-Authored-By` は付けない。署名は自動。`git add` はパスを明示し、`.claude/worktrees/` は入れない。
 
-## 図のタスクに共通する手順（Task 1〜3）
+## 図のタスクに共通する手順（Task 1〜3、Task 5〜6）
 
 1. 読む：各タスクの「本文」に書いた位置の前後40行、部品見本の SVG と PNG、参考にする承認済みの図（各タスクに書く）。
 2. SVG を新しく書く：`images/postgresql-query-journey/sources/<名前>.svg`。先頭は段階Aと同じ形（`<title>`、部品見本の `<defs>`・`<style>`、背景、見出し）。
@@ -173,16 +180,109 @@ path.write_text(text, encoding='utf-8')
 
 ---
 
-### Task 4: 一覧を合わせ、全体を確かめて ship する
+### Task 4: 一覧を合わせ、全体を確かめて ship する（Task 1〜3 と Task 5〜6 の後）
 
-- [ ] **Step 1: Task 1〜3 のコミットを作業ブランチへ cherry-pick する**（コントローラー）
+- [ ] **Step 1: Task 1〜3・5〜6 のコミットを作業ブランチへ cherry-pick する**（コントローラー）
 
-- [ ] **Step 2: catalog.json の第3・7・8章の項目を本文の順に並べ直し、README の一覧・執筆方針と README の枚数を合わせる**
+- [ ] **Step 2: catalog.json の第3・7・8・9・10章の項目を本文の順に並べ直し、README の一覧・執筆方針と README の枚数を合わせる**
 
-catalog.json の第3章は `06-catalog-question`・`06-btree-path`・`06-tree-levels`・`06-range-scan`、第7章は `07-recent-records`・`07-merge-cards`・`07-sort-bands`・`07-external-sort`、第8章は `08-twenty-window`・`top-three-heap`・`08-sort-vs-topn`・`08-top-n-vs-index` の順にする。README の一覧の表は catalog.json と同じ順・同じ見出しにし、新しい3行を足す。`images/postgresql-query-journey/README.md` 5行目と `books/postgresql-query-journey/AGENTS.md` の「計48枚」を「計51枚」にする。
+catalog.json の各章は、本文の順にする。第3章は `06-catalog-question`・`06-btree-path`・`06-tree-levels`・`06-range-scan`、第7章は `07-recent-records`・`07-merge-cards`・`07-sort-bands`・`07-external-sort`、第8章は `08-twenty-window`・`top-three-heap`・`08-sort-vs-topn`・`08-top-n-vs-index`、第9章は `09-title-lookup`・`09-nested-loop`・`09-loops`・`09-hash-join`・`09-merge-join`、第10章は `10-planner-choice`・`10-stats-to-rows`・`10-estimate-propagation`。README の一覧の表は catalog.json と同じ順・同じ見出しにし、新しい5行を足し、`10-selectivity` の行を外す。`images/postgresql-query-journey/README.md` 5行目と `books/postgresql-query-journey/AGENTS.md` の「計48枚」を「計52枚」にする（新規5枚、`10-selectivity` を外して1枚減る）。
 
-- [ ] **Step 3: book-flow.html の第3・7・8章の図の一覧に、新しい3枚を本文の順で足し、図の一覧を作り直す**（`node scripts/book-figures/build-index.cjs` → `index.html を更新しました（51枚）`）
+- [ ] **Step 3: book-flow.html の図の一覧に新しい5枚を本文の順で足し、`10-selectivity` を外して、図の一覧を作り直す**（`node scripts/book-figures/build-index.cjs` → `index.html を更新しました（52枚）`）
 
-- [ ] **Step 4: 全体を確かめる**（`check-figures.cjs` で3枚と段階Aまでの16枚が ✓、`npm test` が12件、章の画像参照が51件すべて実在）
+- [ ] **Step 4: 設計書の記録を更新する**
 
-- [ ] **Step 5: コミットし、ブランチ全体をレビューしてから ship する**
+`books/postgresql-query-journey/FIGURE-PLAN.md` の8章の表で、描いた5枚の判定を「新規・高（2026-09-25 描いた）」、`10-selectivity` を「統合（2026-09-25 `10-stats-to-rows` にまとめて外した）」、見送った `11-heap-fetches`・`12-plan-overview`・`09-hash-batches` を「見送り（2026-09-25 のユーザーの判断）」にする。11章の未決事項のうち、第9〜12章の枚数と第12章の実測値の項目に、決まったことを書き足す。
+
+- [ ] **Step 5: 全体を確かめる**（`check-figures.cjs` で新しい5枚と段階Aまでの16枚が ✓、`npm test` が12件、章の画像参照が52件すべて実在、`10-selectivity` への参照が本文・一覧に残っていない）
+
+- [ ] **Step 6: コミットし、ブランチ全体をレビューしてから ship する**
+
+---
+
+## 段階B-2
+
+### Task 5: 第9章 新規 `09-loops`（観察）
+
+**問い:** `rows=1.00` と `loops=20` は、全部で何行を返したことを表すか。`Buffers` は1回分か合計か。
+
+**数値と出典:** 本文 `books/postgresql-query-journey/09-join.md` の60〜80行目の出力（ログ `_drafts/postgresql-query-journey/verification/chapter-09-joins-20260923.log`、2026-09-23、PostgreSQL 18.6）。`Nested Loop` は `rows=20.00 loops=1`。外側は `Limit`（`rows=20.00 loops=1`）と、その下の `Index Only Scan using reading_records_order_idx`（`rows=20.00`）。内側は `Memoize`（`rows=1.00 loops=20`、`Hits: 0  Misses: 20`）と、その下の `Index Scan using books_pkey on books b`（`actual time=0.344..0.344 rows=1.00 loops=20`、`Buffers: shared hit=54 read=26`）。85行目の説明（1回1行を20回返せば全体で20行）。図で新しく出す数は、1.00×20＝20 と 54＋26＝80 の計算だけ。
+
+**描く（計画の木の向きどおり、親が上、子が下、行は下から上へ）:**
+- 見出し：`1回1行を20回で、20行`
+- 右上に札「実測」（`.real`）。
+- 小さな木：いちばん上に計画のノード `Nested Loop`（横に `rows=20`）。その下、左に `Limit`（`rows=20`）、右に `Memoize`、その下に `Index Scan using books_pkey`。ノード名は等幅。`Index Only Scan` は描かなくてよい（`Limit` の下に省く）。
+- 行の流れ：子から親へ実線の青緑（`.flow`）。ラベルは1か所だけ「行を渡す」。
+- `Index Scan using books_pkey` の横に、等幅で `rows=1.00`・`loops=20`・`actual time=0.344..0.344`・`Buffers: shared hit=54 read=26` を縦に並べ、それぞれにラベル：`rows=1.00` と `actual time` に「1回あたり」、`Buffers` に「20回分の合計（54＋26＝80）」。
+- 焦点の枠（`.hot`）は「1.00 × 20 ＝ 20行」の計算の札に付ける（`rows=1.00` と `loops=20` の横か下に置く）。
+
+**焦点:** 「1.00 × 20 ＝ 20行」。
+
+**描かない:** 1回あたりのページ数（主キーの Index の段数を確かめていないため、80÷20＝4 などは書かない）、`Planning` の Buffers、`Hits`・`Misses` の説明、`Index Searches`。
+
+**参考にする図:** `images/postgresql-query-journey/sources/05-limit-search.svg`（計画のノードと、子から親への矢印）、`02-query-stages.svg`（段階Aの等幅の書き方）。
+
+**本文:** 85行目の段落と「## 何十万回も探すなら？」の見出しの間に入れる。
+
+```python
+import pathlib
+path = pathlib.Path('books/postgresql-query-journey/09-join.md')
+text = path.read_text(encoding='utf-8')
+anchor = '\n## 何十万回も探すなら？\n'
+block = ('図で、内側の`Index Scan`の`rows`・`loops`・`Buffers`を、1回あたりの値と20回分の合計に分けて読んでください。\n\n'
+         '![Nested Loopの内側のIndex Scanは rows=1.00、loops=20 で、1回1行を20回返して全体で20行。Buffers の hit=54 と read=26 は20回分の合計](/images/postgresql-query-journey/09-loops.png)\n'
+         '*rows=1.00 と loops=20 を掛けると20行です。Buffers の hit=54 と read=26 は、20回分の合計です（実測）。*\n')
+assert text.count(anchor) == 1
+text = text.replace(anchor, '\n' + block + anchor)
+path.write_text(text, encoding='utf-8')
+```
+
+**catalog.json（第9章の最後の項目 `09-title-lookup` の直後）:** `{"name": "09-loops", "chapter": 9, "title": "1回1行を20回で、20行", "description": "観察：Nested Loop の rows と loops と Buffers（実測）"}`
+
+**コミット:** `docs(query-journey): 第9章に、Nested Loop の rows と loops を読む図を足す`（本文：`rows=1.00 は1回あたりの行数で、loops=20 を掛けて全体の20行になること、Buffers は20回分の合計であることを、実測の小さな計画の木で見せる。1回あたりのページ数は、主キーの Index の段数を確かめていないので書かない。`）
+
+---
+
+### Task 6: 第10章 新規 `10-stats-to-rows`（仕組み・模型）と `10-selectivity` を外す
+
+**問い:** 計画の `rows=1000` は、どこから来るのか。
+
+**数値と出典:** 本文 `books/postgresql-query-journey/10-planner-and-statistics.md` の28〜42行目の準備（1万行のうち `n <= 9000` が `popular`、残りが `rare`）、44行目（選択率は90%と10%）、62〜69行目（`pg_stats` の `most_common_vals`・`most_common_freqs`、「それぞれの割合が入っているはず」）。第10章は実験結果を本に載せない方針なので、図の値はこの準備から計算で決まる値として描き、実測とは書かない（1万行は ANALYZE が全行を標本にするので、割合はちょうど0.9と0.1になり、rare の見積もりは10,000×0.1＝1,000）。
+
+**描く（左から右、またはスマホで読みやすく上から下へ、4つの段）:**
+- 見出し：`割合のメモから、行数を見積もる`
+- 右上に札「模型」（`.model`、幅68、x=548）。
+- ① 表：帯（部品見本の量の帯）「表 stats_demo の1万行」を、`popular` 9,000行（90%）と `rare` 1,000行（10%）に長さで分ける。
+- ② ANALYZE のメモ：カード「pg_stats（ANALYZE のメモ）」の中に、等幅で `most_common_vals` と `{popular,rare}`、`most_common_freqs` と `{0.9,0.1}`。①から②へ太い白抜きの矢印（`.step`）、ラベル「ANALYZE が数える」。
+- ③ 計算：`popular：10,000 × 0.9 ＝ 9,000`、`rare：10,000 × 0.1 ＝ 1,000`（10,000 は表の行数）。②から③へ太い白抜きの矢印。
+- ④ 計画：計画のノードの形で `WHERE category = 'rare'` と、その見積もり `rows=1000`（等幅）。
+- 焦点の枠（`.hot`）は、③の `rare：10,000 × 0.1 ＝ 1,000` に付ける。
+
+**焦点:** rare の計算 `10,000 × 0.1 ＝ 1,000`。
+
+**描かない:** 選ばれる探し方（Seq Scan か Index Scan か。読者が自分の出力で確かめる）、`actual rows`、`histogram_bounds`・`n_distinct`、実測の日付。
+
+**参考にする図:** `images/postgresql-query-journey/sources/02-query-stages.svg`（太い白抜きの矢印で段を進める）、`01-scan-and-filter.svg`（帯）。
+
+**本文:** 69行目の段落の後に図を入れ、46〜47行目の `10-selectivity` の図とキャプションを外す。
+
+```python
+import pathlib
+path = pathlib.Path('books/postgresql-query-journey/10-planner-and-statistics.md')
+text = path.read_text(encoding='utf-8')
+old_figure = '![同じ「1種類」でも、9,000行と1,000行](/images/postgresql-query-journey/10-selectivity.png)\n*本文の生成データの分布。四角一つは1,000行です。*\n\n'
+anchor = '\nすべての列で、すべての項目が埋まるわけではありません。'
+block = ('図で、メモの割合から計画の`rows`ができるまでをたどってください。\n\n'
+         '![1万行の表の popular 9,000行と rare 1,000行を ANALYZE が割合 0.9 と 0.1 としてメモし、10,000×0.1＝1,000 が rare を探す計画の rows=1000 になる](/images/postgresql-query-journey/10-stats-to-rows.png)\n'
+         '*表の1万行にメモの割合0.1を掛けた1,000が、計画の rows になります（模型。自分の出力の値と比べてください）。*\n')
+assert text.count(old_figure) == 1 and text.count(anchor) == 1
+text = text.replace(old_figure, '')
+text = text.replace(anchor, '\n' + block + anchor)
+path.write_text(text, encoding='utf-8')
+```
+
+あわせて、`git rm images/postgresql-query-journey/sources/10-selectivity.svg images/postgresql-query-journey/10-selectivity.png` で原本と画像を消し、catalog.json から `10-selectivity` の項目を外す。
+
+**catalog.json（第10章の最後の項目 `10-planner-choice` の直後）:** `{"name": "10-stats-to-rows", "chapter": 10, "title": "割合のメモから、行数を見積もる", "description": "仕組み：ANALYZE のメモの割合から計画の rows を見積もる模型"}`
+
+**コミット:** `docs(query-journey): 第10章の選択率の図を、統計のメモから rows を見積もる図にまとめる`（本文：`選択率の図（10-selectivity）は分布だけを描いていた。1万行の分布、ANALYZE のメモ（0.9と0.1）、10,000×0.1＝1,000、計画の rows=1000 を1枚につなぎ、選択率の図は外した。第10章は実験結果を載せない方針なので、値は準備から計算で決まる値として模型で描いた。`）
