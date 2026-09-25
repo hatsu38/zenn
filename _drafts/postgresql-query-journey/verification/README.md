@@ -57,6 +57,18 @@
 - `size_long`（200文字）：262,144バイト＝32ページ。行が入っているのはページ0〜29（34行×29＋14行）で、ページ30・31は空き。
 - 最後にROLLBACKし、`book_observation`スキーマが残らないことを確認した。これはエージェントによる実測で、表の大きさは本文の2026-09-23のユーザー提供出力と一致する。
 
+## 一意の約束とIndexの比較（2026-09-25）
+
+第1章259行目・300行目と第2章89行目の書き直しの出典。旧文は、Seq Scanが1行見つけても止まらない理由を「題名に一意の約束がないから」としていた（FIGURE-PLAN.mdの「9. 本文の要確認」1番）。実験用ComposeのPostgreSQL 18.6（DB `reading_map`）で、公開用の`books`には触れず、トランザクションの中に別スキーマ`uq_check`を作った。そこへ本と同じ100万冊（`id`が主キー、題名は「実験用の本 N」）を入れて比べた。並列実行とJITは無効、work_mem=4MB、synchronize_seqscans=off。各EXPLAIN ANALYZEは1回。SQLは`chapter01-unique-vs-index-20260925.sql`、出力は`chapter01-unique-vs-index-20260925.log`。
+
+- データの上では、題名はすでに全部ちがう（`count(DISTINCT title)`=1,000,000、`pg_stats.n_distinct`=-1）。
+- A. 題名に約束なし・Indexなし：Seq Scan、Rows Removed by Filter 999,999、shared hit=7353。
+- B. 主キーの番号（`id = 42`）で探し、Indexを使わせない（`enable_indexscan`・`enable_bitmapscan`・`enable_indexonlyscan`をoff）：Seq Scan、999,999行を除外、shared hit=7353。
+- C. 題名にUNIQUEを付け、Indexを使わせない：Seq Scan、999,999行を除外、shared hit=7353。一意の約束があっても、Seq Scanは途中で止まらない。
+- D. UNIQUEのままIndexを使ってよいことにする（LIMITなし）：Index Scan using books_title_key、rows=1、shared hit=1 read=3。
+- E. UNIQUEを外し、一意でないふつうのIndexを作る（LIMITなし）：Index Scan using books_title_idx、rows=1、shared hit=1 read=3。
+- 最後にROLLBACKし、`uq_check`スキーマが残らないことを確認した。これはエージェントによる実測。2026-09-24に10万行の一時テーブルで確かめた結論（FIGURE-PLAN.mdに記録）を、本と同じ100万冊で確かめ直した。同じ接続で、`public.books`に第3章の`books_title_idx`が残っていることも`\d`で確認した。
+
 ## 序章の過去実測の移設（2026-09-24）
 
 序章「この数値を測った条件」の出典（2026-09-21、Homebrew PostgreSQL 18.3、一時テーブル、本100万冊・読了記録2,000万件）を、削除した初期版の `_drafts/sql-data-structures/experiments/` から [prologue-ranking-20260921](prologue-ranking-20260921/README.md) へ移した。値は再実測していない。
