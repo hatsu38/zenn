@@ -146,8 +146,8 @@
   {
     "name": "02-client-scene",
     "chapter": 6,
-    "title": "画面の向こうで、SQLが動く",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "title": "SQLを受け取る側は、いくつ？",
+    "description": "問い：psqlを二つ開いたときのサーバ側"
   },
   {
     "name": "02-connections",
