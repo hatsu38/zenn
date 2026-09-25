@@ -176,8 +176,8 @@
   {
     "name": "07-merge-cards",
     "chapter": 7,
-    "title": "二つの並びを、比べながら合流する",
-    "description": "比較の模型 ／ PostgreSQLの実装そのものではない"
+    "title": "4枚を、比較5回で並べる",
+    "description": "仕組み：二組に分けて比べ、合流する比較の回数（模型）"
   },
   {
     "name": "07-sort-bands",
