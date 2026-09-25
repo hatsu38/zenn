@@ -94,7 +94,7 @@ path = pathlib.Path('books/postgresql-query-journey/00-prologue.md')
 text = path.read_text(encoding='utf-8')
 pairs = [
     ('![ランキングの疑問から、小さなSQLでの実験、探索、並べ替え、結合の理解を経て、改善の判断へ戻る](/images/postgresql-query-journey/00-book-sketch.png)',
-     '![序章のランキングの疑問から、第1章のEXPLAINを道具に、探す・並べる・組み合わせる仕組みと、それを支えるページ・メモリ・プロセスを章ごとに学び、第12章でランキングへ戻る](/images/postgresql-query-journey/00-book-sketch.png)'),
+     '![序章のランキングの疑問から、第1章のEXPLAINを道具に、探す・並べる・組み合わせる仕組み、それを支えるページ・メモリ・プロセス、計画の選び方と更新・保守を章ごとに学び、第12章でランキングへ戻る](/images/postgresql-query-journey/00-book-sketch.png)'),
     ('*本全体の道のり。各章で、この中の仕組みを一つずつ確かめます。*',
      '*箱ごとの章番号で、どの章で何を確かめるかを見てください。どの仕組みも、第1章のEXPLAINを使って調べます。*'),
 ]
