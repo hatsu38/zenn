@@ -1,0 +1,69 @@
+SET
+SET
+SET
+ attname | correlation 
+---------+-------------
+ id      |           1
+ title   |  0.82070637
+(2 rows)
+
+=== 題名の並び順（Index の順）で先頭の8冊
+   id   |       title       
+--------+-------------------
+      4 | 実験用の本 4
+     40 | 実験用の本 40
+    400 | 実験用の本 400
+   4000 | 実験用の本 4000
+  40000 | 実験用の本 40000
+ 400000 | 実験用の本 400000
+ 400001 | 実験用の本 400001
+ 400002 | 実験用の本 400002
+(8 rows)
+
+=== 題名が「実験用の本 4」で始まる本（111,111冊）
+                                                                QUERY PLAN                                                                
+------------------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on books  (cost=3311.93..12314.92 rows=110000 width=30) (actual time=11.747..25.821 rows=111111.00 loops=1)
+   Recheck Cond: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
+   Heap Blocks: exact=821
+   Buffers: shared hit=1371
+   ->  Bitmap Index Scan on books_title_idx  (cost=0.00..3284.43 rows=110000 width=0) (actual time=11.680..11.680 rows=111111.00 loops=1)
+         Index Cond: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
+         Index Searches: 1
+         Buffers: shared hit=550
+ Planning Time: 0.092 ms
+ Execution Time: 29.090 ms
+(10 rows)
+
+=== 同じ範囲を Index Scan に限定
+SET
+                                                                QUERY PLAN                                                                
+------------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_title_idx on books  (cost=0.42..14532.64 rows=110000 width=30) (actual time=0.571..16.464 rows=111111.00 loops=1)
+   Index Cond: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
+   Index Searches: 1
+   Buffers: shared hit=22395
+ Planning Time: 0.131 ms
+ Execution Time: 19.673 ms
+(6 rows)
+
+=== 同じ範囲を Seq Scan に限定
+SET
+                                                     QUERY PLAN                                                     
+--------------------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..22353.00 rows=110000 width=30) (actual time=0.039..1785.254 rows=111111.00 loops=1)
+   Filter: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
+   Rows Removed by Filter: 888889
+   Buffers: shared hit=2583 read=4770
+ Planning Time: 0.083 ms
+ Execution Time: 1788.428 ms
+(6 rows)
+
+RESET
+RESET
+=== 参考: 範囲に入る行が載っているページ数
+ pages 
+-------
+   821
+(1 row)
+
