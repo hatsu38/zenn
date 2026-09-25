@@ -303,7 +303,7 @@
     "name": "12-ranking-before",
     "chapter": 12,
     "title": "題名を付けてから、上位を選ぶ",
-    "description": "6記録・3冊から上位2冊の模型 ／ 本文では上位20冊"
+    "description": "6記録・3冊の模型 ／ 対象週499,998行→20冊は実測"
   },
   {
     "name": "12-ranking-after",
