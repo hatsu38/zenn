@@ -41,7 +41,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <text x="350" y="300" class="s">場所をたどる</text>
   <g id="table">
     <rect x="24" y="350" width="592" height="160" rx="10" class="page"/>
-    <text x="44" y="380" class="s b">表 books のページ</text>
+    <text x="44" y="380" class="s b">テーブル books のページ</text>
     <rect x="44" y="394" width="330" height="30" rx="4" class="row"/>
     <text x="58" y="416" class="s">41　実験用の本 41</text>
     <rect x="44" y="430" width="330" height="30" rx="4" class="hot"/>

@@ -45,7 +45,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="44" y="482" class="mono b">Seq Scan on reading_records</text>
     <text x="44" y="518" class="mono m">Buffers: shared hit=10811</text>
     <rect x="44" y="536" width="552" height="44" rx="4" class="band"/>
-    <text x="60" y="566" class="s b">表の200万行</text>
+    <text x="60" y="566" class="s b">テーブルの200万行</text>
     <text x="44" y="618" class="b">× 除外 1,500,002行</text>
     <text x="44" y="652" class="mono">Rows Removed by Filter: 1500002</text>
   </g>

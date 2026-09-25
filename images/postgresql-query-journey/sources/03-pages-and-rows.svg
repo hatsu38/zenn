@@ -25,7 +25,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <text x="551" y="47" text-anchor="middle" class="tag">行数は実測</text>
   <g id="table">
     <rect x="24" y="76" width="592" height="380" rx="12" class="panel"/>
-    <text x="56" y="108" class="s b">観察用の表 books（1,000行）</text>
+    <text x="56" y="108" class="s b">観察用のテーブル books（1,000行）</text>
     <text x="56" y="160" class="s b">読み込む単位</text>
     <rect x="56" y="170" width="126" height="128" rx="10" class="hot"/>
     <text x="70" y="200" class="s b">ページ0</text>

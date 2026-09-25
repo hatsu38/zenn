@@ -38,10 +38,10 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="460" y="207" class="s teal">保存</text>
     <rect x="44" y="216" width="552" height="60" rx="10" class="storage"/>
     <text x="60" y="252" class="s b">ストレージ</text>
-    <rect x="180" y="227" width="152" height="38" rx="6" class="file"/>
-    <text x="196" y="252" class="s">表のファイル</text>
-    <rect x="344" y="227" width="236" height="38" rx="6" class="file"/>
-    <text x="360" y="252" class="s">WALのファイル</text>
+    <rect x="180" y="227" width="224" height="38" rx="6" class="file"/>
+    <text x="196" y="252" class="s">テーブルのファイル</text>
+    <rect x="416" y="227" width="164" height="38" rx="6" class="file"/>
+    <text x="424" y="252" class="s">WALファイル</text>
   </g>
   <g id="panel-2">
     <rect x="24" y="320" width="592" height="230" rx="14" class="panel"/>
@@ -51,10 +51,10 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <path d="M305 389 L335 419 M335 389 L305 419" fill="none" stroke="#7d93a3" stroke-width="3" stroke-linecap="round"/>
     <rect x="44" y="460" width="552" height="60" rx="10" class="storage"/>
     <text x="60" y="496" class="s b">ストレージ</text>
-    <rect x="180" y="471" width="152" height="38" rx="6" class="file"/>
-    <text x="196" y="496" class="s">表のファイル</text>
-    <rect x="344" y="471" width="236" height="38" rx="6" class="file"/>
-    <text x="360" y="496" class="s">WALのファイル</text>
+    <rect x="180" y="471" width="224" height="38" rx="6" class="file"/>
+    <text x="196" y="496" class="s">テーブルのファイル</text>
+    <rect x="416" y="471" width="164" height="38" rx="6" class="file"/>
+    <text x="424" y="496" class="s">WALファイル</text>
   </g>
   <g id="panel-3">
     <rect x="24" y="564" width="592" height="230" rx="14" class="panel"/>
@@ -67,9 +67,9 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="460" y="700" class="s teal">再現</text>
     <rect x="44" y="704" width="552" height="60" rx="10" class="storage"/>
     <text x="60" y="740" class="s b">ストレージ</text>
-    <rect x="180" y="715" width="152" height="38" rx="6" class="file"/>
-    <text x="196" y="740" class="s">表のファイル</text>
-    <rect x="344" y="715" width="236" height="38" rx="6" class="file"/>
-    <text x="360" y="740" class="s">WALのファイル</text>
+    <rect x="180" y="715" width="224" height="38" rx="6" class="file"/>
+    <text x="196" y="740" class="s">テーブルのファイル</text>
+    <rect x="416" y="715" width="164" height="38" rx="6" class="file"/>
+    <text x="424" y="740" class="s">WALファイル</text>
   </g>
 </svg>
