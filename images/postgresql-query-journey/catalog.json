@@ -234,16 +234,16 @@
     "description": "推定と実測のずれの説明例 ／ 実測ログではない"
   },
   {
-    "name": "10-selectivity",
-    "chapter": 10,
-    "title": "同じ「1種類」でも、9,000行と1,000行",
-    "description": "本文の生成データの分布 ／ 四角一つは1,000行"
-  },
-  {
     "name": "10-planner-choice",
     "chapter": 10,
     "title": "Indexがあるのに、なぜ使わない？",
     "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
+    "name": "10-stats-to-rows",
+    "chapter": 10,
+    "title": "割合のメモから、行数を見積もる",
+    "description": "仕組み：ANALYZE のメモの割合から計画の rows を見積もる模型"
   },
   {
     "name": "11-snapshots",
