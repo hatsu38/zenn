@@ -266,8 +266,8 @@
   {
     "name": "10-estimate-propagation",
     "chapter": 10,
-    "title": "入口の見積もりが、後ろの判断に響く",
-    "description": "推定と実測のずれの説明例 ／ 実測ログではない"
+    "title": "推定のずれが、後ろの件数に効く",
+    "description": "比較：第9章の実測と、推定20のまま実際が約50万件になる模型"
   },
   {
     "name": "11-editing-scene",
