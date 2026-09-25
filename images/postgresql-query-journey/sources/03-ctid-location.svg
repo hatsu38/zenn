@@ -31,9 +31,9 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="72" y="144" class="mono" xml:space="preserve">  1 | (0,1) | 実験用の本 1</text>
   </g>
   <g id="ctid-numbers">
-    <path d="M165.7 151 V159 H177 V151" class="leader"/>
+    <path d="M165.7 151 V159 H177 V151 M171.3 159 V180 H163" class="leader"/>
     <path d="M192.2 151 V159 H203.5 V151 M197.8 159 V180 H206" class="leader"/>
-    <text x="162" y="188" text-anchor="end" class="s b">ページ番号</text>
+    <text x="159" y="188" text-anchor="end" class="s b">ページ番号</text>
     <text x="210" y="188" class="s b">項目番号</text>
   </g>
   <g id="page">
@@ -59,7 +59,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="126" y="582" text-anchor="middle" class="s b">⋮</text>
   </g>
   <g id="select-page">
-    <path d="M171.3 159 V280" class="ref"/>
+    <path d="M171.3 180 V280" class="ref"/>
     <text x="189" y="240" class="s">① ページを選ぶ</text>
   </g>
   <g id="item-to-row">
