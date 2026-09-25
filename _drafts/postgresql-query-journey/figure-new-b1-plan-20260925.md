@@ -137,7 +137,7 @@ path.write_text(text, encoding='utf-8')
 
 ### Task 3: 第8章 新規 `08-sort-vs-topn`（比較・実測）
 
-**問い:** `LIMIT 20` を付けると、調べる行・並べる行・持つ量・返す行のどれが変わるか。
+**問い:** `LIMIT 20` を付けると、Sort に入る行・持つ量・返す行のどれが変わるか。
 
 **数値と出典:** 左の列は第7章（`books/postgresql-query-journey/07-sort.md` の88〜97行目・115行目：調べた2,000,000行、Sort に入った499,998行、`quicksort  Memory: 27913kB`、返した499,998行、`work_mem` 64MB）。右の列は第8章（`books/postgresql-query-journey/08-top-n-heap.md` の66〜72行目：対象週499,998行が Sort に入る、`top-N heapsort  Memory: 26kB`、返すのは20行、`work_mem` 4MB）。右の列の「調べる2,000,000行」は、同じ表と同じ期間の条件の Seq Scan であることから（第8章18行目「読了記録は200万件」、66行目）。
 
@@ -145,13 +145,12 @@ path.write_text(text, encoding='utf-8')
 - 見出し：`LIMITで減るのは、持つ量と返す行`
 - 右上に札「実測」（`.real`）。
 - 列の見出し：左は等幅の `ORDER BY` と「だけ」、その下に小さく `work_mem 64MB`。右は等幅の `ORDER BY … LIMIT 20`、その下に `work_mem 4MB`。
-- 行の名前を左端に4つ：「調べる」「Sortに入る」「持つ」「返す」。
+- 行の名前を3つ：「Sortに入る」「持つ」「返す」。「調べる」（Seq Scan の2,000,000行）の行は置かない（第8章72行目は Sort に入った499,998行を「調べた行数」と呼んでいて、2,000,000を「調べる」とすると食い違う。第8章は Seq Scan の出力を載せていないので、右の列の2,000,000は実測として示せない）。
 - 各行に、左右の列で同じ尺度の帯（どれも部品見本の量の帯 `.band`）を描き、数を添える。
-  - 調べる：2,000,000行｜2,000,000行（同じ長さ。どちらも灰色の `.band`）。
   - Sortに入る：499,998行｜499,998行（同じ長さ）。
   - 持つ：左は等幅の `quicksort` と「27,913kB」、右は `top-N heapsort` と「26kB」。同じ尺度なので右はほぼ0の長さになる（見えるように最小2の幅で描く）。
   - 返す：499,998行｜20行（右はほぼ0）。
-- 同じだった上の2行は、行の名前の横に「＝同じ」を添え、帯は灰色のまま。変わった下の2行の右の数（26kB と 20行）のうち、「26kB」を焦点の枠（`.hot`）にする。
+- 同じだった「Sortに入る」の行は、行の名前の横に「＝同じ」を添える。変わった下の2行の右の数（26kB と 20行）のうち、「26kB」を焦点の枠（`.hot`）にする。
 
 **焦点:** 右の列の「26kB」。
 
@@ -166,17 +165,17 @@ import pathlib
 path = pathlib.Path('books/postgresql-query-journey/08-top-n-heap.md')
 text = path.read_text(encoding='utf-8')
 anchor = '\n## 最初から順序が分かるなら？\n'
-block = ('図で、第7章の`ORDER BY`だけの実行と、四つの数を並べて比べてください。\n\n'
-         '![ORDER BYだけとLIMIT 20の比較。調べる200万行とSortに入る499,998行は同じで、持つ量は27,913kBと26kB、返す行は499,998行と20行に変わる](/images/postgresql-query-journey/08-sort-vs-topn.png)\n'
-         '*調べる行とSortに入る行は同じで、持つ量と返す行だけが減ります（左は第7章、右はこの章の実測。work_memの設定は64MBと4MBで違います）。*\n')
+block = ('図で、第7章の`ORDER BY`だけの実行と、三つの数を並べて比べてください。\n\n'
+         '![ORDER BYだけとLIMIT 20の比較。Sortに入る499,998行は同じで、持つ量は27,913kBと26kB、返す行は499,998行と20行に変わる](/images/postgresql-query-journey/08-sort-vs-topn.png)\n'
+         '*Sortに入る行は同じで、持つ量と返す行だけが減ります（左は第7章、右はこの章の実測。work_memの設定は64MBと4MBで違います）。*\n')
 assert text.count(anchor) == 1
 text = text.replace(anchor, '\n' + block + anchor)
 path.write_text(text, encoding='utf-8')
 ```
 
-**catalog.json（第8章の最後の項目 `08-twenty-window` の直後）:** `{"name": "08-sort-vs-topn", "chapter": 8, "title": "LIMITで減るのは、持つ量と返す行", "description": "比較：ORDER BYだけとLIMIT 20の四つの数（実測）"}`
+**catalog.json（第8章の最後の項目 `08-twenty-window` の直後）:** `{"name": "08-sort-vs-topn", "chapter": 8, "title": "LIMITで減るのは、持つ量と返す行", "description": "比較：ORDER BYだけとLIMIT 20の三つの数（実測）"}`
 
-**コミット:** `docs(query-journey): 第8章に、ORDER BYだけとLIMIT 20を並べて比べる図を足す`（本文：`調べる行とSortに入る行は同じで、持つ量（27,913kBと26kB）と返す行（499,998行と20行）だけが変わることを、同じ尺度の帯で見せる。`）
+**コミット:** `docs(query-journey): 第8章に、ORDER BYだけとLIMIT 20を並べて比べる図を足す`（本文：`Sortに入る行は同じで、持つ量（27,913kBと26kB）と返す行（499,998行と20行）だけが変わることを、同じ尺度の帯で見せる。`）
 
 ---
 
