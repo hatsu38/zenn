@@ -97,6 +97,6 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <g id="uses">
     <path d="M300 400 V484" class="ref"/>
     <path d="M500 400 V484" class="ref"/>
-    <text x="400" y="444" text-anchor="middle" class="s">ページを使う</text>
+    <text x="400" y="456" text-anchor="middle" class="s">ページを使う</text>
   </g>
 </svg>
