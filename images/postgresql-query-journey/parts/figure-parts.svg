@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1490" viewBox="0 0 640 1490" role="img" aria-labelledby="title">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1690" viewBox="0 0 640 1690" role="img" aria-labelledby="title">
   <title id="title">図の部品見本</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
@@ -19,8 +19,9 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .ref{fill:none;stroke:#7d93a3;stroke-width:2;marker-end:url(#ref)}.step{fill:#fff;stroke:#243b50;stroke-width:2.5}
 .spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
 .work{fill:#fff;stroke:#56738a;stroke-width:2;stroke-dasharray:8 5}.val{fill:#dcefe8;stroke:#448b7c;stroke-width:2}.buffer{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2}
+.route{fill:#f4f6f8;stroke:#243b50;stroke-width:3}.leader{fill:none;stroke:#56738a;stroke-width:2}
   </style>
-  <rect width="640" height="1490" fill="#f5f7f9"/>
+  <rect width="640" height="1690" fill="#f5f7f9"/>
   <text x="24" y="48" class="h">図の部品見本</text>
   <g id="row-card">
     <text x="24" y="124" class="s b">行カード</text>
@@ -126,5 +127,17 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="396" y="1386" width="98" height="16" rx="3" class="row"/>
     <rect x="396" y="1410" width="98" height="16" rx="3" class="row"/>
     <text x="418" y="1340" text-anchor="middle" class="s b">P1</text>
+  </g>
+  <g id="route-page">
+    <text x="24" y="1506" class="s b">たどって読むページ</text>
+    <rect x="260" y="1480" width="26" height="36" rx="5" class="route"/>
+  </g>
+  <g id="leader-line">
+    <text x="24" y="1606" class="s b">引き出し線</text>
+    <rect x="220" y="1540" width="172" height="48" rx="12" class="node"/>
+    <text x="236" y="1572" class="mono b">Index Scan</text>
+    <rect x="220" y="1608" width="172" height="48" rx="10" class="panel"/>
+    <text x="236" y="1640" class="mono">rows=1.00</text>
+    <path d="M340 1588 V1608" class="leader"/>
   </g>
 </svg>

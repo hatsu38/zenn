@@ -19,6 +19,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .ref{fill:none;stroke:#7d93a3;stroke-width:2;marker-end:url(#ref)}.step{fill:#fff;stroke:#243b50;stroke-width:2.5}
 .spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
 .work{fill:#fff;stroke:#56738a;stroke-width:2;stroke-dasharray:8 5}.val{fill:#dcefe8;stroke:#448b7c;stroke-width:2}.buffer{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2}
+.route{fill:#f4f6f8;stroke:#243b50;stroke-width:3}.leader{fill:none;stroke:#56738a;stroke-width:2}
   </style>
   <rect width="640" height="708" fill="#f5f7f9"/>
   <text x="24" y="48" class="h">1回1行を20回で、20行</text>
@@ -44,7 +45,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </g>
   <g id="values">
     <rect x="24" y="440" width="592" height="244" rx="12" class="panel"/>
-    <path d="M419 420 V440" fill="none" stroke="#56738a" stroke-width="2"/>
+    <path d="M560 420 V440" class="leader"/>
   </g>
   <g id="rows-and-loops">
     <text x="44" y="480" class="mono">rows=1.00</text>
