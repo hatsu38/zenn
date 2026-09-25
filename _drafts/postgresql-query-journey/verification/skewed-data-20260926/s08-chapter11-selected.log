@@ -1,0 +1,67 @@
+SET
+SET
+SET
+CREATE INDEX
+VACUUM
+                                                                            QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Index Only Scan Backward using reading_records_visibility_idx on reading_records  (cost=0.43..4.85 rows=24 width=16) (actual time=0.055..0.062 rows=1.00 loops=1)
+   Index Cond: (book_id = 42)
+   Heap Fetches: 0
+   Index Searches: 1
+   Buffers: shared hit=4 read=3
+ Planning:
+   Buffers: shared hit=33 read=4
+ Planning Time: 0.832 ms
+ Execution Time: 0.093 ms
+(9 rows)
+
+                                                                   QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Update on reading_records  (cost=4.61..97.52 rows=0 width=0) (actual time=0.095..0.096 rows=0.00 loops=1)
+   Buffers: shared hit=16 read=2 dirtied=2
+   WAL: records=4 bytes=304
+   ->  Bitmap Heap Scan on reading_records  (cost=4.61..97.52 rows=24 width=14) (actual time=0.009..0.010 rows=1.00 loops=1)
+         Recheck Cond: (book_id = 42)
+         Heap Blocks: exact=1
+         Buffers: shared hit=4
+         ->  Bitmap Index Scan on reading_records_visibility_idx  (cost=0.00..4.61 rows=24 width=0) (actual time=0.003..0.004 rows=1.00 loops=1)
+               Index Cond: (book_id = 42)
+               Index Searches: 1
+               Buffers: shared hit=3
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.037 ms
+ Execution Time: 0.340 ms
+(15 rows)
+
+                                                                            QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Index Only Scan Backward using reading_records_visibility_idx on reading_records  (cost=0.43..4.85 rows=24 width=16) (actual time=0.004..0.011 rows=1.00 loops=1)
+   Index Cond: (book_id = 42)
+   Heap Fetches: 2
+   Index Searches: 1
+   Buffers: shared hit=6
+ Planning Time: 0.020 ms
+ Execution Time: 0.014 ms
+(7 rows)
+
+VACUUM
+                                                                            QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Index Only Scan Backward using reading_records_visibility_idx on reading_records  (cost=0.43..8.83 rows=23 width=16) (actual time=0.006..0.006 rows=1.00 loops=1)
+   Index Cond: (book_id = 42)
+   Heap Fetches: 0
+   Index Searches: 1
+   Buffers: shared hit=4
+ Planning:
+   Buffers: shared hit=8
+ Planning Time: 0.069 ms
+ Execution Time: 0.018 ms
+(9 rows)
+
+DROP INDEX
+ pid | state | xact_start
+-----+-------+------------
+(0 rows)
+

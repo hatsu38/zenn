@@ -1,0 +1,26 @@
+SET
+SET
+SET
+DROP INDEX
+CREATE INDEX
+VACUUM
+                                                                   QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Update on reading_records  (cost=4.61..93.71 rows=0 width=0) (actual time=0.117..0.121 rows=0.00 loops=1)
+   Buffers: shared hit=7 read=3
+   WAL: records=1 bytes=76
+   ->  Bitmap Heap Scan on reading_records  (cost=4.61..93.71 rows=23 width=14) (actual time=0.076..0.077 rows=1.00 loops=1)
+         Recheck Cond: (book_id = 42)
+         Heap Blocks: exact=1
+         Buffers: shared hit=4 read=3
+         ->  Bitmap Index Scan on reading_records_visibility_idx  (cost=0.00..4.60 rows=23 width=0) (actual time=0.065..0.065 rows=1.00 loops=1)
+               Index Cond: (book_id = 42)
+               Index Searches: 1
+               Buffers: shared hit=3 read=3
+ Planning:
+   Buffers: shared hit=17
+ Planning Time: 0.127 ms
+ Execution Time: 0.275 ms
+(15 rows)
+
+DROP INDEX

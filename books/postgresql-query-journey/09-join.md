@@ -55,45 +55,39 @@ ORDER BY r.finished_at DESC, r.book_id ASC;
 
 先ほどのSQLの実行結果です。条件は次のとおりです。
 
-- 2026年9月23日、DockerのPostgreSQL 18.6
+- 2026年9月26日、DockerのPostgreSQL 18.6
 - 本100万冊、読了記録200万件
 - 第8章の日時順のIndexあり
 - 並列実行とJITは無効、`work_mem`は4MB
 
 ```sql
-Nested Loop  (cost=0.86..90.18 rows=20 width=38) (actual time=0.216..7.073 rows=20.00 loops=1)
-  Buffers: shared hit=55 read=29
-  ->  Limit  (cost=0.43..1.04 rows=20 width=16) (actual time=0.101..0.111 rows=20.00 loops=1)
-        Buffers: shared hit=1 read=3
-        ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..60768.43 rows=2000000 width=16) (actual time=0.097..0.105 rows=20.00 loops=1)
+Nested Loop  (cost=0.85..169.89 rows=20 width=38) (actual time=1.082..3.042 rows=20.00 loops=1)
+  Buffers: shared hit=50 read=34 written=13
+  ->  Limit  (cost=0.43..1.04 rows=20 width=16) (actual time=0.008..0.019 rows=20.00 loops=1)
+        Buffers: shared hit=4
+        ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..60768.43 rows=2000000 width=16) (actual time=0.007..0.016 rows=20.00 loops=1)
               Heap Fetches: 0
               Index Searches: 1
-              Buffers: shared hit=1 read=3
-  ->  Memoize  (cost=0.43..8.45 rows=1 width=30) (actual time=0.346..0.346 rows=1.00 loops=20)
-        Cache Key: reading_records.book_id
-        Cache Mode: logical
-        Hits: 0  Misses: 20  Evictions: 0  Overflows: 0  Memory Usage: 3kB
-        Buffers: shared hit=54 read=26
-        ->  Index Scan using books_pkey on books b  (cost=0.42..8.44 rows=1 width=30) (actual time=0.344..0.344 rows=1.00 loops=20)
-              Index Cond: (id = reading_records.book_id)
-              Index Searches: 20
-              Buffers: shared hit=54 read=26
+              Buffers: shared hit=4
+  ->  Index Scan using books_pkey on books b  (cost=0.42..8.44 rows=1 width=30) (actual time=0.150..0.150 rows=1.00 loops=20)
+        Index Cond: (id = reading_records.book_id)
+        Index Searches: 20
+        Buffers: shared hit=46 read=34 written=13
 Planning:
-  Buffers: shared hit=105 read=2
-Planning Time: 1.981 ms
-Execution Time: 7.494 ms
+  Buffers: shared hit=18 read=2
+Planning Time: 0.255 ms
+Execution Time: 3.059 ms
 ```
 
 外側は、日時順のIndexから20件を取り出す`Limit`です。内側は、主キーのIndexである`books_pkey`で本を1冊探す`Index Scan`で、`loops=20`になっています。記録1件ごとに本を1回探し、それを20回繰り返しました。
 
-内側の`Memoize`は、同じ本の番号をもう一度探すときに、前の結果を使い回すための処理です。今回の20件はすべて別の本だったので、`Hits: 0  Misses: 20`となり、使い回しは起きていません。
 
 計画に`loops=20`があれば、その処理を20回実行しています。`actual rows`や`actual time`は、複数回実行では1回当たりの平均として表示されます。1回1件を20回返せば、全体では20件です。第7章で見たとおり親の時間は子を含むので、親子の時間をすべて足すと子の処理時間を二重に数えることになります。
 
 図で、内側の`Index Scan`の`rows`・`loops`・`Buffers`を、1回当たりの値と20回分の合計に分けて読んでください。
 
-![Nested Loopの内側のIndex Scanはrows=1.00、loops=20で、1回1件を20回返して全体で20件。Buffersのhit=54とread=26は20回分の合計](/images/postgresql-query-journey/09-loops.png)
-*rows=1.00とloops=20を掛けると20件です。Buffersのhit=54とread=26は、20回分の合計です（実測）。*
+![Nested Loopの内側のIndex Scanはrows=1.00、loops=20で、1回1件を20回返して全体で20件。Buffersのhit=46とread=34は20回分の合計](/images/postgresql-query-journey/09-loops.png)
+*rows=1.00とloops=20を掛けると20件です。Buffersのhit=46とread=34は、20回分の合計です（実測）。*
 
 ## 何十万回も探すなら？
 
@@ -113,23 +107,23 @@ WHERE r.finished_at >= timestamp '2026-09-14'
 1週間分へ広げたSQLの実行結果です。条件は20件のときと同じです。
 
 ```sql
-Hash Join  (cost=36689.43..66472.66 rows=500739 width=30) (actual time=307.583..649.631 rows=499998.00 loops=1)
+Hash Join  (cost=36689.43..65899.61 rows=488229 width=30) (actual time=220.657..462.415 rows=499998.00 loops=1)
   Hash Cond: (r.book_id = b.id)
-  Buffers: shared hit=4207 read=5065, temp read=7569 written=7569
-  ->  Index Only Scan using reading_records_order_idx on reading_records r  (cost=0.43..17719.21 rows=500739 width=8) (actual time=0.008..126.412 rows=499998.00 loops=1)
+  Buffers: shared hit=6482 read=2790 written=94, temp read=7404 written=7404
+  ->  Index Only Scan using reading_records_order_idx on reading_records r  (cost=0.43..17277.01 rows=488229 width=8) (actual time=0.009..35.626 rows=499998.00 loops=1)
         Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
         Heap Fetches: 0
         Index Searches: 1
-        Buffers: shared hit=4 read=1915
-  ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=307.533..307.533 rows=1000000.00 loops=1)
-        Buckets: 131072  Batches: 16  Memory Usage: 4940kB
-        Buffers: shared hit=4203 read=3150, temp written=5943
-        ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.026..173.931 rows=1000000.00 loops=1)
-              Buffers: shared hit=4203 read=3150
+        Buffers: shared hit=1919
+  ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=220.387..220.388 rows=1000000.00 loops=1)
+        Buckets: 131072  Batches: 16  Memory Usage: 4952kB
+        Buffers: shared hit=4563 read=2790 written=94, temp written=5943
+        ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.008..84.017 rows=1000000.00 loops=1)
+              Buffers: shared hit=4563 read=2790 written=94
 Planning:
-  Buffers: shared hit=18
-Planning Time: 0.170 ms
-Execution Time: 664.568 ms
+  Buffers: shared hit=15
+Planning Time: 0.129 ms
+Execution Time: 477.379 ms
 ```
 
 今度は`Hash Join`が選ばれました。何十万回も別々に本を探す代わりに、先に照合用のハッシュ表を作る方法です。
@@ -149,7 +143,7 @@ Execution Time: 664.568 ms
 
 `Batches: 16`と`temp`の値は、ハッシュ表が作業用メモリに収まらず一時ファイルを使ったことを示します。ハッシュのメモリ量には`work_mem`に加えて`hash_mem_multiplier`も関わります。詳しくは、この章の後半で読みます。
 
-20件のときとSQLの形はほとんど同じです。変わったのは、外側から届く記録の件数でした。外側の推定は、Nested Loopの計画で`rows=20`、Hash Joinの計画で`rows=500739`です。件数の違いを実行前にどう見込んだのかは、第10章で調べます。
+20件のときとSQLの形はほとんど同じです。変わったのは、外側から届く記録の件数でした。外側の推定は、Nested Loopの計画で`rows=20`、Hash Joinの計画で`rows=488229`です。件数の違いを実行前にどう見込んだのかは、第10章で調べます。
 
 ## すでに並んでいるなら、合流できる
 
@@ -180,34 +174,34 @@ WHERE b.id <= 100;
 ROLLBACK;
 ```
 
-2026年9月25日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件、並列実行とJITは無効です。 `work_mem`は4MBです。
+2026年9月26日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件、並列実行とJITは無効です。 `work_mem`は4MBです。
 
 :::details Merge Joinの実行結果
 ```sql
-Merge Join  (cost=308490.11..318500.51 rows=220 width=16) (actual time=559.465..559.520 rows=200.00 loops=1)
+Merge Join  (cost=308490.01..318500.50 rows=214 width=16) (actual time=563.927..563.970 rows=141.00 loops=1)
   Merge Cond: (r.book_id = b.id)
-  Buffers: shared hit=10815, temp read=6854 written=12751
-  ->  Sort  (cost=308488.69..313488.69 rows=2000000 width=16) (actual time=559.428..559.442 rows=201.00 loops=1)
+  Buffers: shared hit=8871 read=1944, temp read=6854 written=12751
+  ->  Sort  (cost=308488.69..313488.69 rows=2000000 width=16) (actual time=563.892..563.902 rows=142.00 loops=1)
         Sort Key: r.book_id
         Sort Method: external merge  Disk: 50896kB
-        Buffers: shared hit=10811, temp read=6854 written=12751
-        ->  Seq Scan on reading_records r  (cost=0.00..30811.00 rows=2000000 width=16) (actual time=0.011..135.107 rows=2000000.00 loops=1)
-              Buffers: shared hit=10811
-  ->  Index Only Scan using books_pkey on books b  (cost=0.42..10.35 rows=110 width=8) (actual time=0.030..0.043 rows=100.00 loops=1)
+        Buffers: shared hit=8867 read=1944, temp read=6854 written=12751
+        ->  Seq Scan on reading_records r  (cost=0.00..30811.00 rows=2000000 width=16) (actual time=0.165..125.741 rows=2000000.00 loops=1)
+              Buffers: shared hit=8867 read=1944
+  ->  Index Only Scan using books_pkey on books b  (cost=0.42..10.30 rows=107 width=8) (actual time=0.028..0.040 rows=100.00 loops=1)
         Index Cond: (id <= 100)
         Heap Fetches: 100
         Index Searches: 1
         Buffers: shared hit=4
 Planning:
   Buffers: shared hit=12
-Planning Time: 0.169 ms
-Execution Time: 563.841 ms
+Planning Time: 0.165 ms
+Execution Time: 568.076 ms
 ```
 :::
 
-本の側は主キーのIndexから番号順に100件を返しています。記録の側はSeq Scanで200万件を読み、`Sort Key: r.book_id`で並べ替えました。Sortが親へ返したのは201件ですが、その子の入力は200万件です。並べ替えの準備まで201件で済んだ、とは読めません。
+本の側は主キーのIndexから番号順に100件を返しています。記録の側はSeq Scanで200万件を読み、`Sort Key: r.book_id`で並べ替えました。Sortが親へ返したのは142件ですが、その子の入力は200万件です。並べ替えの準備まで142件で済んだ、とは読めません。
 
-結合が返したのは200件です。このデータでは本1冊に記録が2件ずつあるので、本100冊と組になる記録は200件になります。少数の結果を返すために、大きな並べ替えが追加された例です。方法を固定する設定は仕組みを観察するためで、本番へそのまま持ち込むものではありません。
+結合が返したのは141件です。本100冊のうち、記録のある本だけが、その本の記録の件数だけ組になります。記録が一度もない本は組になりません。少数の結果を返すために、大きな並べ替えが追加された例です。方法を固定する設定は仕組みを観察するためで、本番へそのまま持ち込むものではありません。
 
 ## 数えるときは、グループごとにメモする
 
@@ -232,17 +226,17 @@ FROM reading_records GROUP BY book_id;
 同日の集約の実行結果です。
 
 ```sql
-HashAggregate  (cost=143311.00..168847.22 rows=991122 width=16) (actual time=586.125..916.907 rows=1000000.00 loops=1)
+HashAggregate  (cost=40811.00..41599.81 rows=78881 width=16) (actual time=421.904..611.755 rows=736097.00 loops=1)
   Group Key: book_id
-  Planned Partitions: 16  Batches: 17  Memory Usage: 8345kB  Disk Usage: 63520kB
-  Buffers: shared hit=10811, temp read=6150 written=13645
-  ->  Seq Scan on reading_records  (cost=0.00..30811.00 rows=2000000 width=8) (actual time=0.018..125.241 rows=2000000.00 loops=1)
-        Buffers: shared hit=10811
-Planning Time: 0.069 ms
-Execution Time: 951.731 ms
+  Batches: 21  Memory Usage: 8257kB  Disk Usage: 27752kB
+  Buffers: shared hit=8961 read=1850, temp read=4090 written=6731
+  ->  Seq Scan on reading_records  (cost=0.00..30811.00 rows=2000000 width=8) (actual time=0.178..102.246 rows=2000000.00 loops=1)
+        Buffers: shared hit=8961 read=1850
+Planning Time: 0.070 ms
+Execution Time: 634.511 ms
 ```
 
-入力は200万件、`HashAggregate`が返したグループは100万個です。1冊に2件ずつの記録があるため、件数は半分になりました。`Memory Usage: 8345kB`に加え、`Batches: 17`と`Disk Usage`もあります。100万個のカウンタを一度にメモリへ置けず、一時ファイルも使っています。
+入力は200万件、`HashAggregate`が返したグループは736,097個です。記録が一度もない本はグループになりません。`Memory Usage: 8257kB`に加え、`Batches: 21`と`Disk Usage`もあります。73万個余りのカウンタを一度にメモリへ置けず、一時ファイルも使っています。なお、実行前の見積もり`rows=78881`は、実際の736,097個よりかなり少なくなっています。見積もりをどう作っているかは、第10章で調べます。
 
 別の環境で`GroupAggregate`とSortが見えたら、先に並べ替え、隣り合った同じ番号をまとめる方式です。
 
@@ -274,7 +268,7 @@ SHOW hash_mem_multiplier;
 (1 row)
 ```
 
-先ほどの1週間分のHash Joinは、`work_mem`が4MBの状態で`Batches: 16`となり、`temp read=7569 written=7569`も出ていました。本100万件のハッシュ表を一度にメモリへ置けず、16個に分けて一時ファイルを使いながら照合したと読めます。
+先ほどの1週間分のHash Joinは、`work_mem`が4MBの状態で`Batches: 16`となり、`temp read=7404 written=7404`も出ていました。本100万件のハッシュ表を一度にメモリへ置けず、16個に分けて一時ファイルを使いながら照合したと読めます。
 
 さらに小さなメモリで比べるなら、`BEGIN`の後に`SET LOCAL work_mem = '64kB'`を実行し、同じSQLを実行してから`ROLLBACK`します。
 

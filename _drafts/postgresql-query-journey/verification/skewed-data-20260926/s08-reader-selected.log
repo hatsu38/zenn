@@ -1,0 +1,968 @@
+Pager usage is off.
+SET
+SET
+SET
+SET
+                                                         version
+--------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+BEGIN
+CREATE TABLE
+CREATE TABLE
+INSERT 0 1000000
+INSERT 0 2000000
+ANALYZE
+ANALYZE
+  count
+---------
+ 1000000
+(1 row)
+
+  count
+---------
+ 2000000
+(1 row)
+
+COMMIT
+CHAPTER 2
+SET
+SET
+SET
+SET
+  count
+---------
+ 1000000
+(1 row)
+
+                                               QUERY PLAN
+--------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.013..33.114 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999999
+   Buffers: shared hit=7353
+ Planning:
+   Buffers: shared hit=10 read=1 written=1
+ Planning Time: 0.114 ms
+ Execution Time: 33.131 ms
+(8 rows)
+
+                                                 QUERY PLAN
+-------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.011..0.011 rows=1.00 loops=1)
+   Buffers: shared hit=2
+   ->  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.010..0.010 rows=1.00 loops=1)
+         Filter: (title = '実験用の本 42'::text)
+         Rows Removed by Filter: 41
+         Buffers: shared hit=2
+ Planning Time: 0.058 ms
+ Execution Time: 0.023 ms
+(8 rows)
+
+                                                  QUERY PLAN
+---------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=35.830..35.830 rows=1.00 loops=1)
+   Buffers: shared hit=7353
+   ->  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=35.829..35.829 rows=1.00 loops=1)
+         Filter: (title = '実験用の本 999999'::text)
+         Rows Removed by Filter: 999998
+         Buffers: shared hit=7353
+ Planning Time: 0.011 ms
+ Execution Time: 35.840 ms
+(8 rows)
+
+                                                  QUERY PLAN
+---------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=32.082..32.083 rows=0.00 loops=1)
+   Buffers: shared hit=7353
+   ->  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=32.081..32.081 rows=0.00 loops=1)
+         Filter: (title = '存在しない本'::text)
+         Rows Removed by Filter: 1000000
+         Buffers: shared hit=7353
+ Planning Time: 0.058 ms
+ Execution Time: 32.097 ms
+(8 rows)
+
+RESET
+CHAPTER 3
+                                               QUERY PLAN
+--------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.021..33.381 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999999
+   Buffers: shared hit=7353
+ Planning Time: 0.074 ms
+ Execution Time: 33.405 ms
+(6 rows)
+
+CREATE INDEX
+ANALYZE
+                                                        QUERY PLAN
+---------------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_title_idx on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.058..0.059 rows=1.00 loops=1)
+   Index Cond: (title = '実験用の本 42'::text)
+   Index Searches: 1
+   Buffers: shared hit=1 read=3
+ Planning:
+   Buffers: shared hit=10 read=1
+ Planning Time: 0.292 ms
+ Execution Time: 0.109 ms
+(8 rows)
+
+                                                       QUERY PLAN
+------------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_pkey on books  (cost=0.42..8.62 rows=10 width=30) (actual time=0.056..0.058 rows=11.00 loops=1)
+   Index Cond: ((id >= 400000) AND (id <= 400010))
+   Index Searches: 1
+   Buffers: shared hit=4 read=3
+ Planning:
+   Buffers: shared hit=6
+ Planning Time: 0.042 ms
+ Execution Time: 0.062 ms
+(8 rows)
+
+                                                    QUERY PLAN
+------------------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..22353.00 rows=901110 width=30) (actual time=0.015..63.654 rows=900000.00 loops=1)
+   Filter: ((id >= 1) AND (id <= 900000))
+   Rows Removed by Filter: 100000
+   Buffers: shared hit=7257 read=96
+ Planning:
+   Buffers: shared hit=2 read=2
+ Planning Time: 0.060 ms
+ Execution Time: 89.118 ms
+(8 rows)
+
+                                                                QUERY PLAN
+------------------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on books  (cost=3311.94..12314.95 rows=110001 width=30) (actual time=11.032..19.043 rows=111111.00 loops=1)
+   Recheck Cond: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
+   Heap Blocks: exact=821
+   Buffers: shared hit=821 read=550 written=180
+   ->  Bitmap Index Scan on books_title_idx  (cost=0.00..3284.44 rows=110001 width=0) (actual time=10.957..10.959 rows=111111.00 loops=1)
+         Index Cond: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
+         Index Searches: 1
+         Buffers: shared hit=2 read=548 written=178
+ Planning:
+   Buffers: shared hit=2 read=1 written=1
+ Planning Time: 0.439 ms
+ Execution Time: 22.238 ms
+(12 rows)
+
+   id   |       title
+--------+-------------------
+      4 | 実験用の本 4
+     40 | 実験用の本 40
+    400 | 実験用の本 400
+   4000 | 実験用の本 4000
+  40000 | 実験用の本 40000
+ 400000 | 実験用の本 400000
+ 400001 | 実験用の本 400001
+ 400002 | 実験用の本 400002
+(8 rows)
+
+SET
+                                                                QUERY PLAN
+------------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_title_idx on books  (cost=0.42..14857.42 rows=110001 width=30) (actual time=0.475..15.729 rows=111111.00 loops=1)
+   Index Cond: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
+   Index Searches: 1
+   Buffers: shared hit=22395
+ Planning Time: 0.049 ms
+ Execution Time: 18.940 ms
+(6 rows)
+
+SET
+                                                     QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..22353.00 rows=110001 width=30) (actual time=0.015..1744.493 rows=111111.00 loops=1)
+   Filter: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
+   Rows Removed by Filter: 888889
+   Buffers: shared hit=7353
+ Planning Time: 0.138 ms
+ Execution Time: 1747.792 ms
+(6 rows)
+
+RESET
+RESET
+ pg_size_pretty
+----------------
+ 39 MB
+(1 row)
+
+CHAPTER 4
+BEGIN
+CREATE SCHEMA
+CREATE TABLE
+ALTER TABLE
+INSERT 0 1000
+SET
+ANALYZE
+ count
+-------
+  1000
+(1 row)
+
+ pg_relation_filepath
+----------------------
+ base/16718/16735
+(1 row)
+
+ table_size | total_size
+------------+------------
+ 64 kB      | 136 kB
+(1 row)
+
+ block_size
+------------
+ 8192
+(1 row)
+
+ id | ctid  |    title
+----+-------+--------------
+  1 | (0,1) | 実験用の本 1
+  2 | (0,2) | 実験用の本 2
+  3 | (0,3) | 実験用の本 3
+  4 | (0,4) | 実験用の本 4
+  5 | (0,5) | 実験用の本 5
+  6 | (0,6) | 実験用の本 6
+  7 | (0,7) | 実験用の本 7
+  8 | (0,8) | 実験用の本 8
+(8 rows)
+
+ table_size | pages
+------------+-------
+ 57 MB      |  7353
+(1 row)
+
+CREATE EXTENSION
+ level
+-------
+     2
+(1 row)
+
+SAVEPOINT
+SELECT 1000
+SELECT 1000
+ short_bytes | long_bytes
+-------------+------------
+       65536 |     262144
+(1 row)
+
+ROLLBACK
+ROLLBACK
+CHAPTER 5
+BEGIN
+CREATE SCHEMA
+CREATE TABLE
+ALTER TABLE
+INSERT 0 1000
+SET
+ANALYZE
+ count
+-------
+  1000
+(1 row)
+
+CREATE EXTENSION
+ buffers_evicted | buffers_flushed | buffers_skipped
+-----------------+-----------------+-----------------
+              11 |               8 |               0
+(1 row)
+
+                                             QUERY PLAN
+----------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.123..0.211 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999
+   Buffers: shared read=8
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.037 ms
+ Execution Time: 0.216 ms
+(8 rows)
+
+ shared_buffers
+----------------
+ 128MB
+(1 row)
+
+ work_mem
+----------
+ 4MB
+(1 row)
+
+ temp_buffers
+--------------
+ 8MB
+(1 row)
+
+ maintenance_work_mem
+----------------------
+ 64MB
+(1 row)
+
+ROLLBACK
+CHAPTER 7
+  count
+---------
+ 2000000
+(1 row)
+
+SET
+SET
+SET
+                                                                          QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=88296.72..89550.57 rows=501539 width=16) (actual time=155.956..185.650 rows=499998.00 loops=1)
+   Sort Key: finished_at DESC, book_id
+   Sort Method: quicksort  Memory: 27913kB
+   Buffers: shared hit=8182 read=2629 written=2
+   ->  Seq Scan on reading_records  (cost=0.00..40811.00 rows=501539 width=16) (actual time=0.122..75.757 rows=499998.00 loops=1)
+         Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+         Rows Removed by Filter: 1500002
+         Buffers: shared hit=8182 read=2629 written=2
+ Planning:
+   Buffers: shared hit=19 read=3
+ Planning Time: 0.735 ms
+ Execution Time: 201.672 ms
+(12 rows)
+
+SET
+                                                                          QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=122582.72..123836.57 rows=501539 width=16) (actual time=229.052..263.768 rows=499998.00 loops=1)
+   Sort Key: finished_at DESC, book_id
+   Sort Method: external merge  Disk: 12784kB
+   Buffers: shared hit=8276 read=2535, temp read=6367 written=6793
+   ->  Seq Scan on reading_records  (cost=0.00..40811.00 rows=501539 width=16) (actual time=0.100..73.040 rows=499998.00 loops=1)
+         Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+         Rows Removed by Filter: 1500002
+         Buffers: shared hit=8276 read=2535
+ Planning Time: 0.057 ms
+ Execution Time: 279.239 ms
+(10 rows)
+
+SET
+CHAPTER 8
+SET
+SET
+SET
+                                                                             QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=54156.77..54156.82 rows=20 width=16) (actual time=101.633..101.636 rows=20.00 loops=1)
+   Buffers: shared hit=8370 read=2441
+   ->  Sort  (cost=54156.77..55410.62 rows=501539 width=16) (actual time=101.632..101.633 rows=20.00 loops=1)
+         Sort Key: finished_at DESC, book_id
+         Sort Method: top-N heapsort  Memory: 26kB
+         Buffers: shared hit=8370 read=2441
+         ->  Seq Scan on reading_records  (cost=0.00..40811.00 rows=501539 width=16) (actual time=0.177..71.197 rows=499998.00 loops=1)
+               Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+               Rows Removed by Filter: 1500002
+               Buffers: shared hit=8370 read=2441
+ Planning Time: 0.065 ms
+ Execution Time: 101.654 ms
+(12 rows)
+
+CREATE INDEX
+ANALYZE
+                                                                             QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.43..1.14 rows=20 width=16) (actual time=0.008..0.012 rows=20.00 loops=1)
+   Buffers: shared hit=4
+   ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..17277.01 rows=488229 width=16) (actual time=0.007..0.009 rows=20.00 loops=1)
+         Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+         Heap Fetches: 0
+         Index Searches: 1
+         Buffers: shared hit=4
+ Planning:
+   Buffers: shared hit=11 read=4
+ Planning Time: 0.142 ms
+ Execution Time: 0.030 ms
+(11 rows)
+
+                                                                            QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..17277.01 rows=488229 width=16) (actual time=0.008..47.691 rows=499998.00 loops=1)
+   Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+   Heap Fetches: 0
+   Index Searches: 1
+   Buffers: shared hit=4 read=1915
+ Planning:
+   Buffers: shared hit=4
+ Planning Time: 0.055 ms
+ Execution Time: 62.511 ms
+(9 rows)
+
+CHAPTER 9
+                                                                                QUERY PLAN
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.85..169.89 rows=20 width=38) (actual time=1.082..3.042 rows=20.00 loops=1)
+   Buffers: shared hit=50 read=34 written=13
+   ->  Limit  (cost=0.43..1.04 rows=20 width=16) (actual time=0.008..0.019 rows=20.00 loops=1)
+         Buffers: shared hit=4
+         ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..60768.43 rows=2000000 width=16) (actual time=0.007..0.016 rows=20.00 loops=1)
+               Heap Fetches: 0
+               Index Searches: 1
+               Buffers: shared hit=4
+   ->  Index Scan using books_pkey on books b  (cost=0.42..8.44 rows=1 width=30) (actual time=0.150..0.150 rows=1.00 loops=20)
+         Index Cond: (id = reading_records.book_id)
+         Index Searches: 20
+         Buffers: shared hit=46 read=34 written=13
+ Planning:
+   Buffers: shared hit=18 read=2
+ Planning Time: 0.255 ms
+ Execution Time: 3.059 ms
+(16 rows)
+
+                                                                                QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Hash Join  (cost=36689.43..65899.61 rows=488229 width=30) (actual time=220.657..462.415 rows=499998.00 loops=1)
+   Hash Cond: (r.book_id = b.id)
+   Buffers: shared hit=6482 read=2790 written=94, temp read=7404 written=7404
+   ->  Index Only Scan using reading_records_order_idx on reading_records r  (cost=0.43..17277.01 rows=488229 width=8) (actual time=0.009..35.626 rows=499998.00 loops=1)
+         Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+         Heap Fetches: 0
+         Index Searches: 1
+         Buffers: shared hit=1919
+   ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=220.387..220.388 rows=1000000.00 loops=1)
+         Buckets: 131072  Batches: 16  Memory Usage: 4952kB
+         Buffers: shared hit=4563 read=2790 written=94, temp written=5943
+         ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.008..84.017 rows=1000000.00 loops=1)
+               Buffers: shared hit=4563 read=2790 written=94
+ Planning:
+   Buffers: shared hit=15
+ Planning Time: 0.129 ms
+ Execution Time: 477.379 ms
+(17 rows)
+
+BEGIN
+SET
+SET
+                                                                 QUERY PLAN
+---------------------------------------------------------------------------------------------------------------------------------------------
+ Merge Join  (cost=308490.01..318500.50 rows=214 width=16) (actual time=563.927..563.970 rows=141.00 loops=1)
+   Merge Cond: (r.book_id = b.id)
+   Buffers: shared hit=8871 read=1944, temp read=6854 written=12751
+   ->  Sort  (cost=308488.69..313488.69 rows=2000000 width=16) (actual time=563.892..563.902 rows=142.00 loops=1)
+         Sort Key: r.book_id
+         Sort Method: external merge  Disk: 50896kB
+         Buffers: shared hit=8867 read=1944, temp read=6854 written=12751
+         ->  Seq Scan on reading_records r  (cost=0.00..30811.00 rows=2000000 width=16) (actual time=0.165..125.741 rows=2000000.00 loops=1)
+               Buffers: shared hit=8867 read=1944
+   ->  Index Only Scan using books_pkey on books b  (cost=0.42..10.30 rows=107 width=8) (actual time=0.028..0.040 rows=100.00 loops=1)
+         Index Cond: (id <= 100)
+         Heap Fetches: 100
+         Index Searches: 1
+         Buffers: shared hit=4
+ Planning:
+   Buffers: shared hit=12
+ Planning Time: 0.165 ms
+ Execution Time: 568.076 ms
+(18 rows)
+
+ROLLBACK
+                                                             QUERY PLAN
+------------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=40811.00..41599.81 rows=78881 width=16) (actual time=421.904..611.755 rows=736097.00 loops=1)
+   Group Key: book_id
+   Batches: 21  Memory Usage: 8257kB  Disk Usage: 27752kB
+   Buffers: shared hit=8961 read=1850, temp read=4090 written=6731
+   ->  Seq Scan on reading_records  (cost=0.00..30811.00 rows=2000000 width=8) (actual time=0.178..102.246 rows=2000000.00 loops=1)
+         Buffers: shared hit=8961 read=1850
+ Planning Time: 0.070 ms
+ Execution Time: 634.511 ms
+(8 rows)
+
+ work_mem
+----------
+ 4MB
+(1 row)
+
+ hash_mem_multiplier
+---------------------
+ 2
+(1 row)
+
+BEGIN
+SET
+                                                                                QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Hash Join  (cost=36689.43..65899.61 rows=488229 width=30) (actual time=216.690..418.515 rows=499998.00 loops=1)
+   Hash Cond: (r.book_id = b.id)
+   Buffers: shared hit=6404 read=2868, temp read=7824 written=7824
+   ->  Index Only Scan using reading_records_order_idx on reading_records r  (cost=0.43..17277.01 rows=488229 width=8) (actual time=0.007..35.118 rows=499998.00 loops=1)
+         Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+         Heap Fetches: 0
+         Index Searches: 1
+         Buffers: shared hit=1919
+   ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=216.243..216.244 rows=1000000.00 loops=1)
+         Buckets: 32768  Batches: 64  Memory Usage: 1249kB
+         Buffers: shared hit=4485 read=2868, temp written=6218
+         ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.007..72.504 rows=1000000.00 loops=1)
+               Buffers: shared hit=4485 read=2868
+ Planning:
+   Buffers: shared hit=12
+ Planning Time: 0.160 ms
+ Execution Time: 432.850 ms
+(17 rows)
+
+ROLLBACK
+CHAPTER 10
+BEGIN
+SELECT 10000
+CREATE INDEX
+ANALYZE
+                                                   QUERY PLAN
+----------------------------------------------------------------------------------------------------------------
+ Seq Scan on stats_demo  (cost=0.00..189.00 rows=9000 width=11) (actual time=0.005..0.692 rows=9000.00 loops=1)
+   Filter: (category = 'popular'::text)
+   Rows Removed by Filter: 1000
+   Buffers: shared hit=64
+ Planning:
+   Buffers: shared hit=8 read=1
+ Planning Time: 0.055 ms
+ Execution Time: 0.991 ms
+(8 rows)
+
+                                                                  QUERY PLAN
+-----------------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using stats_demo_category_idx on stats_demo  (cost=0.29..35.78 rows=1000 width=11) (actual time=0.038..0.127 rows=1000.00 loops=1)
+   Index Cond: (category = 'rare'::text)
+   Index Searches: 1
+   Buffers: shared hit=7 read=3
+ Planning Time: 0.017 ms
+ Execution Time: 0.160 ms
+(6 rows)
+
+ attname  | n_distinct | most_common_vals | most_common_freqs |                                                                                                                                                                                                                                                histogram_bounds
+----------+------------+------------------+-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ id       |         -1 |                  |                   | {1,100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000,3100,3200,3300,3400,3500,3600,3700,3800,3900,4000,4100,4200,4300,4400,4500,4600,4700,4800,4900,5000,5100,5200,5300,5400,5500,5600,5700,5800,5900,6000,6100,6200,6300,6400,6500,6600,6700,6800,6900,7000,7100,7200,7300,7400,7500,7600,7700,7800,7900,8000,8100,8200,8300,8400,8500,8600,8700,8800,8900,9000,9100,9200,9300,9400,9500,9600,9700,9800,9900,10000}
+ category |          2 | {popular,rare}   | {0.9,0.1}         |
+(2 rows)
+
+UPDATE 8000
+                                                                  QUERY PLAN
+-----------------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using stats_demo_category_idx on stats_demo  (cost=0.29..51.55 rows=1672 width=11) (actual time=0.006..0.676 rows=9000.00 loops=1)
+   Index Cond: (category = 'rare'::text)
+   Index Searches: 1
+   Buffers: shared hit=60
+ Planning Time: 0.033 ms
+ Execution Time: 0.956 ms
+(6 rows)
+
+ANALYZE
+                                                  QUERY PLAN
+---------------------------------------------------------------------------------------------------------------
+ Seq Scan on stats_demo  (cost=0.00..232.00 rows=9000 width=9) (actual time=0.112..0.744 rows=9000.00 loops=1)
+   Filter: (category = 'rare'::text)
+   Rows Removed by Filter: 1000
+   Buffers: shared hit=107
+ Planning:
+   Buffers: shared hit=11
+ Planning Time: 0.036 ms
+ Execution Time: 1.012 ms
+(8 rows)
+
+ROLLBACK
+CHAPTER 12
+SET
+SET
+SET
+  count
+---------
+ 1000000
+(1 row)
+
+  count
+---------
+ 2000000
+(1 row)
+
+CREATE VIEW
+                                                                                         QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=129354.25..129354.30 rows=20 width=38) (actual time=576.650..576.657 rows=20.00 loops=1)
+   Buffers: shared hit=6592 read=2680, temp read=9038 written=10753
+   ->  Sort  (cost=129354.25..130574.82 rows=488229 width=38) (actual time=576.648..576.653 rows=20.00 loops=1)
+         Sort Key: (count(*)) DESC, b.id
+         Sort Method: top-N heapsort  Memory: 27kB
+         Buffers: shared hit=6592 read=2680, temp read=9038 written=10753
+         ->  HashAggregate  (cost=104805.36..116362.65 rows=488229 width=38) (actual time=498.999..555.530 rows=255238.00 loops=1)
+               Group Key: b.id
+               Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 15560kB
+               Buffers: shared hit=6592 read=2680, temp read=9038 written=10753
+               ->  Hash Join  (cost=36689.43..65899.61 rows=488229 width=30) (actual time=166.012..405.124 rows=499998.00 loops=1)
+                     Hash Cond: (r.book_id = b.id)
+                     Buffers: shared hit=6592 read=2680, temp read=7276 written=7276
+                     ->  Index Only Scan using reading_records_order_idx on reading_records r  (cost=0.43..17277.01 rows=488229 width=8) (actual time=0.007..35.307 rows=499998.00 loops=1)
+                           Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                           Heap Fetches: 0
+                           Index Searches: 1
+                           Buffers: shared hit=1919
+                     ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=165.769..165.771 rows=1000000.00 loops=1)
+                           Buckets: 131072  Batches: 16  Memory Usage: 4883kB
+                           Buffers: shared hit=4673 read=2680, temp written=5815
+                           ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.006..60.127 rows=1000000.00 loops=1)
+                                 Buffers: shared hit=4673 read=2680
+ Planning:
+   Buffers: shared hit=21
+ Planning Time: 0.188 ms
+ Execution Time: 578.434 ms
+(27 rows)
+
+BEGIN
+SET
+SET
+SET
+                                                                                   QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=152888.24..152888.29 rows=20 width=38) (actual time=634.337..634.343 rows=20.00 loops=1)
+   Buffers: shared hit=13916 read=4248, temp read=9038 written=10749
+   ->  Sort  (cost=152888.24..154108.82 rows=488229 width=38) (actual time=634.336..634.340 rows=20.00 loops=1)
+         Sort Key: (count(*)) DESC, b.id
+         Sort Method: top-N heapsort  Memory: 27kB
+         Buffers: shared hit=13916 read=4248, temp read=9038 written=10749
+         ->  HashAggregate  (cost=128339.35..139896.65 rows=488229 width=38) (actual time=558.750..613.946 rows=255238.00 loops=1)
+               Group Key: b.id
+               Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 15560kB
+               Buffers: shared hit=13916 read=4248, temp read=9038 written=10749
+               ->  Hash Join  (cost=36689.00..89433.60 rows=488229 width=30) (actual time=175.634..460.219 rows=499998.00 loops=1)
+                     Hash Cond: (r.book_id = b.id)
+                     Buffers: shared hit=13916 read=4248, temp read=7276 written=7276
+                     ->  Seq Scan on reading_records r  (cost=0.00..40811.00 rows=488229 width=8) (actual time=0.113..76.162 rows=499998.00 loops=1)
+                           Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                           Rows Removed by Filter: 1500002
+                           Buffers: shared hit=9149 read=1662
+                     ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=175.281..175.282 rows=1000000.00 loops=1)
+                           Buckets: 131072  Batches: 16  Memory Usage: 4883kB
+                           Buffers: shared hit=4767 read=2586, temp written=5815
+                           ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.003..62.081 rows=1000000.00 loops=1)
+                                 Buffers: shared hit=4767 read=2586
+ Planning:
+   Buffers: shared hit=12
+ Planning Time: 0.185 ms
+ Execution Time: 635.629 ms
+(26 rows)
+
+ROLLBACK
+CREATE VIEW
+                                                                                        QUERY PLAN
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=22604.00..22772.68 rows=20 width=38) (actual time=164.705..165.474 rows=20.00 loops=1)
+   Buffers: shared hit=1973 read=26, temp read=641 written=1378
+   ->  Limit  (cost=22603.58..22603.63 rows=20 width=16) (actual time=164.674..164.680 rows=20.00 loops=1)
+         Buffers: shared hit=1919, temp read=641 written=1378
+         ->  Sort  (cost=22603.58..22800.62 rows=78816 width=16) (actual time=164.673..164.677 rows=20.00 loops=1)
+               Sort Key: (count(*)) DESC, reading_records.book_id
+               Sort Method: top-N heapsort  Memory: 26kB
+               Buffers: shared hit=1919, temp read=641 written=1378
+               ->  HashAggregate  (cost=19718.15..20506.31 rows=78816 width=16) (actual time=111.935..149.717 rows=255238.00 loops=1)
+                     Group Key: reading_records.book_id
+                     Batches: 5  Memory Usage: 8249kB  Disk Usage: 7224kB
+                     Buffers: shared hit=1919, temp read=641 written=1378
+                     ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..17277.01 rows=488229 width=8) (actual time=0.007..32.766 rows=499998.00 loops=1)
+                           Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                           Heap Fetches: 0
+                           Index Searches: 1
+                           Buffers: shared hit=1919
+   ->  Index Scan using books_pkey on books b  (cost=0.42..8.44 rows=1 width=30) (actual time=0.038..0.038 rows=1.00 loops=20)
+         Index Cond: (id = reading_records.book_id)
+         Index Searches: 20
+         Buffers: shared hit=54 read=26
+ Planning:
+   Buffers: shared hit=7
+ Planning Time: 0.148 ms
+ Execution Time: 166.251 ms
+(25 rows)
+
+ records_without_book
+----------------------
+                    0
+(1 row)
+
+ differing_rows
+----------------
+              0
+(1 row)
+
+Timing is on.
+SELECT 255238
+Time: 195.385 ms
+CREATE INDEX
+Time: 93.357 ms
+ANALYZE
+Time: 18.157 ms
+                                                                                    QUERY PLAN
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.84..13.87 rows=20 width=46) (actual time=0.038..0.137 rows=20.00 loops=1)
+   Buffers: shared hit=100 read=3
+   ->  Nested Loop  (cost=0.84..166283.20 rows=255238 width=46) (actual time=0.037..0.134 rows=20.00 loops=1)
+         Buffers: shared hit=100 read=3
+         ->  Index Only Scan using weekly_read_counts_order_idx on weekly_read_counts w  (cost=0.42..12948.39 rows=255238 width=16) (actual time=0.028..0.049 rows=20.00 loops=1)
+               Heap Fetches: 20
+               Index Searches: 1
+               Buffers: shared hit=20 read=3
+         ->  Index Scan using books_pkey on books b  (cost=0.42..0.60 rows=1 width=30) (actual time=0.004..0.004 rows=1.00 loops=20)
+               Index Cond: (id = w.book_id)
+               Index Searches: 20
+               Buffers: shared hit=80
+ Planning:
+   Buffers: shared hit=18 read=1
+ Planning Time: 0.217 ms
+ Execution Time: 0.151 ms
+(16 rows)
+
+Time: 0.561 ms
+ read_count | books_with_count
+------------+------------------
+          1 |           188581
+          2 |            45208
+          3 |             6426
+          4 |             5116
+          5 |             2158
+          6 |             1612
+          7 |              892
+          8 |              799
+          9 |              576
+         10 |              442
+         11 |              421
+         12 |              315
+         13 |              245
+         14 |              233
+         15 |              185
+         16 |              171
+         17 |              147
+         18 |              120
+         19 |              117
+         20 |               84
+         21 |               76
+         22 |               73
+         23 |               61
+         24 |               53
+         25 |               66
+         26 |               40
+         27 |               44
+         28 |               45
+         29 |               40
+         30 |               29
+         31 |               36
+         32 |               26
+         33 |               39
+         34 |               26
+         35 |               37
+         36 |               22
+         37 |               22
+         38 |               22
+         39 |               21
+         40 |               15
+         41 |               20
+         42 |               17
+         43 |               16
+         44 |               13
+         45 |               13
+         46 |               14
+         47 |               10
+         48 |               11
+         49 |               15
+         50 |               19
+         51 |               10
+         52 |                9
+         53 |               10
+         54 |                9
+         55 |               13
+         56 |               11
+         57 |                3
+         58 |                7
+         59 |                8
+         60 |                5
+         61 |               10
+         62 |                7
+         63 |                6
+         64 |                6
+         65 |                9
+         66 |                7
+         67 |                3
+         68 |                4
+         69 |                8
+         70 |                7
+         71 |                4
+         72 |                7
+         73 |                5
+         74 |                6
+         75 |                6
+         76 |                3
+         77 |                3
+         78 |                4
+         79 |                2
+         80 |                4
+         81 |                4
+         82 |                3
+         83 |                4
+         84 |                3
+         85 |                3
+         86 |                4
+         87 |                6
+         88 |                3
+         89 |                2
+         90 |                4
+         91 |                2
+         92 |                4
+         93 |                1
+         94 |                4
+         95 |                4
+         97 |                2
+         98 |                2
+         99 |                4
+        100 |                3
+        101 |                1
+        102 |                5
+        103 |                1
+        104 |                3
+        105 |                2
+        106 |                1
+        107 |                3
+        108 |                1
+        109 |                1
+        110 |                5
+        111 |                1
+        113 |                4
+        114 |                2
+        115 |                1
+        116 |                3
+        118 |                2
+        119 |                1
+        120 |                2
+        122 |                4
+        123 |                2
+        125 |                3
+        126 |                1
+        127 |                1
+        129 |                2
+        130 |                2
+        131 |                1
+        132 |                1
+        133 |                2
+        134 |                1
+        135 |                4
+        138 |                1
+        140 |                2
+        142 |                1
+        143 |                2
+        144 |                2
+        145 |                1
+        147 |                1
+        148 |                2
+        150 |                1
+        152 |                1
+        153 |                1
+        154 |                2
+        155 |                1
+        156 |                2
+        158 |                1
+        160 |                1
+        161 |                2
+        164 |                1
+        166 |                1
+        168 |                2
+        169 |                1
+        170 |                2
+        171 |                1
+        176 |                1
+        177 |                2
+        180 |                2
+        181 |                1
+        182 |                1
+        186 |                1
+        189 |                2
+        190 |                1
+        191 |                1
+        193 |                1
+        194 |                1
+        197 |                1
+        198 |                1
+        201 |                1
+        205 |                1
+        206 |                1
+        207 |                1
+        209 |                1
+        211 |                1
+        212 |                1
+        216 |                2
+        218 |                1
+        225 |                1
+        228 |                1
+        229 |                1
+        234 |                2
+        236 |                1
+        238 |                1
+        244 |                1
+        248 |                1
+        249 |                1
+        251 |                1
+        259 |                3
+        270 |                1
+        275 |                1
+        276 |                1
+        278 |                1
+        287 |                1
+        289 |                1
+        290 |                1
+        301 |                2
+        307 |                1
+        313 |                1
+        315 |                1
+        326 |                1
+        330 |                1
+        332 |                1
+        346 |                1
+        347 |                1
+        357 |                1
+        359 |                1
+        364 |                1
+        383 |                2
+        398 |                1
+        404 |                1
+        411 |                1
+        430 |                1
+        438 |                1
+        448 |                1
+        461 |                1
+        480 |                1
+        492 |                1
+        504 |                1
+        526 |                1
+        537 |                1
+        560 |                1
+        582 |                1
+        599 |                1
+        624 |                1
+        652 |                1
+        679 |                1
+        711 |                1
+        747 |                1
+        795 |                1
+        838 |                1
+        896 |                1
+        957 |                1
+       1031 |                1
+       1118 |                1
+       1213 |                1
+       1344 |                1
+       1504 |                1
+       1724 |                1
+       2033 |                1
+       2485 |                1
+       3267 |                1
+       5009 |                1
+(239 rows)
+
+Time: 18.573 ms
+ all_books | min_records | max_records
+-----------+-------------+-------------
+    736097 |           1 |       20027
+(1 row)
+
+Time: 504.420 ms

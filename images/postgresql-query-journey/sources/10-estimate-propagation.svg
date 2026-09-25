@@ -42,7 +42,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="24" y="218" width="592" height="80" rx="12" class="node"/>
     <text x="44" y="250" class="mono b">Hash Join</text>
     <text x="44" y="282" class="s">推定</text>
-    <text x="104" y="282" class="mono">rows=500739</text>
+    <text x="104" y="282" class="mono">rows=488229</text>
     <text x="290" y="282" class="s">実際</text>
     <text x="350" y="282" class="mono b">rows=499998.00</text>
     <text x="590" y="282" text-anchor="middle" class="b teal">○</text>
