@@ -1,4 +1,4 @@
-# 高優先度の新規図 3枚 実装計画（横展開の段階B-1）
+# 高優先度の新規図 5枚 実装計画（横展開の段階B）
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -285,3 +285,19 @@ path.write_text(text, encoding='utf-8')
 **catalog.json（第10章の最後の項目 `10-planner-choice` の直後）:** `{"name": "10-stats-to-rows", "chapter": 10, "title": "割合のメモから、行数を見積もる", "description": "仕組み：ANALYZE のメモの割合から計画の rows を見積もる模型"}`
 
 **コミット:** `docs(query-journey): 第10章の選択率の図を、統計のメモから rows を見積もる図にまとめる`（本文：`選択率の図（10-selectivity）は分布だけを描いていた。1万行の分布、ANALYZE のメモ（0.9と0.1）、10,000×0.1＝1,000、計画の rows=1000 を1枚につなぎ、選択率の図は外した。第10章は実験結果を載せない方針なので、値は準備から計算で決まる値として模型で描いた。`）
+
+## 実装で直した点（2026-09-25）
+
+| 場面 | 図・道具 | 計画のままで出た問題 | 直し方 |
+| --- | --- | --- | --- |
+| 実装担当の報告 | `08-sort-vs-topn` | 第8章72行目は Sort に入った499,998行を「調べた行数」と呼ぶので、Seq Scan の2,000,000行を「調べる」と書くと食い違った。第8章は Seq Scan の出力を載せていない | 「調べる」の行を外し、Sort に入る・持つ・返すの3行にした |
+| 実装担当の報告 | `06-tree-levels` | 1億冊で増える段を箱の下に描いていた。B-tree は根の上に段が増える | 根の上に1枚の破線の案内板で描いた |
+| 実装担当の報告 | `09-loops` | 図の「1回あたり」が本文の「1回当たり」と違い、rows=20 が推定とも読めた。`Index Scan` の枠が `Limit` の下にもかかっていた | 表記をそろえ、rows を実際の値の書き方にし、`Index Scan` を `Memoize` の下だけに置いた |
+| タスクのレビュー | `07-sort-bands`・`08-sort-vs-topn`・`10-stats-to-rows`・`06-tree-levels` | 描いていない1,500,002行の帯を指すキャプション、比べる相手のない直前の文、帯とラベルのつながり、名前の重なり | キャプションと直前の文を直し、線を足し、名前を分けた |
+| 全体レビュー | `08-sort-vs-topn`・`09-loops`・`10-stats-to-rows`・部品見本・設計書・catalog | 持つ量を行数の帯で描いた。新しい描き方（たどるページの紺の太枠、メモリの中の塗り、引き出し線）が設計書と部品見本になかった。catalog の並びで README の2行が末尾へずれた。設計書の位置と型が古かった | 持つ量を `.val` にし、`.route`・`.leader` を部品見本と設計書に書き、catalog の第4・6章を本文の順にし、設計書の位置と型を直した |
+
+横展開の次の段階に活かすこと：
+
+- 図の直前の文の語（「調べた」など）と図のラベルを読み比べる。同じ語で別の量を指すと食い違う。
+- 新しい描き方を足したら、その段階の中で部品見本と設計書4章に書く（次の段階の図が写せるように）。
+- README の一覧は catalog の順に作るので、catalog を章ごとに本文の順にしておく。
