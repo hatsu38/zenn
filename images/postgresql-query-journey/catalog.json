@@ -20,8 +20,8 @@
   {
     "name": "00-ranking-question",
     "chapter": 0,
-    "title": "20冊を返すまでに、何をしている？",
-    "description": "処理量を調べる前の見取り図 ／ 行数の縮尺ではない"
+    "title": "200万件から、20行を返す",
+    "description": "問い：ランキングのSQLの途中で扱う行数"
   },
   {
     "name": "01-search-window",
