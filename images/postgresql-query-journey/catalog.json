@@ -72,28 +72,28 @@
     "description": "観察：4つの実測を帯で比べる"
   },
   {
-    "name": "06-btree-path",
-    "chapter": 3,
-    "title": "8を探す：範囲を選んでから、値を探す",
-    "description": "番号1〜9で説明する図 ／ 矢印は探索で進む向き"
-  },
-  {
-    "name": "06-range-scan",
-    "chapter": 3,
-    "title": "4以上8以下なら、隣の葉も読む",
-    "description": "Indexの葉をたどる図 ／ 表への参照は省略"
-  },
-  {
     "name": "06-catalog-question",
     "chapter": 3,
     "title": "目録も大きい。それでも速い？",
     "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
+    "name": "06-btree-path",
+    "chapter": 3,
+    "title": "8を探す：範囲を選んでから、値を探す",
+    "description": "番号1〜9で説明する図 ／ 矢印は探索で進む向き"
+  },
+  {
     "name": "06-tree-levels",
     "chapter": 3,
     "title": "100万冊でも、読むのは3枚",
     "description": "仕組み：分岐100の3段の木で、各段1枚だけ読む（説明するための図）"
+  },
+  {
+    "name": "06-range-scan",
+    "chapter": 3,
+    "title": "4以上8以下なら、隣の葉も読む",
+    "description": "Indexの葉をたどる図 ／ 表への参照は省略"
   },
   {
     "name": "03-index-reference",
@@ -156,10 +156,10 @@
     "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
-    "name": "07-external-sort",
+    "name": "07-recent-records",
     "chapter": 7,
-    "title": "メモリに収まらないときの並べ替え",
-    "description": "外部ソートの模型 ／ まとまりの個数・容量は模式的"
+    "title": "読み終えた順に、並べたい",
+    "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
     "name": "07-merge-cards",
@@ -168,28 +168,16 @@
     "description": "比較の模型 ／ PostgreSQLの実装そのものではない"
   },
   {
-    "name": "07-recent-records",
-    "chapter": 7,
-    "title": "読み終えた順に、並べたい",
-    "description": "サービスの場面・学ぶきっかけの絵"
-  },
-  {
     "name": "07-sort-bands",
     "chapter": 7,
     "title": "200万行を調べ、4分の1を並べた",
     "description": "観察：Seq ScanからSortへ渡る行数と、Sortのメモリ（実測）"
   },
   {
-    "name": "08-top-n-vs-index",
-    "chapter": 8,
-    "title": "候補を絞る方法と、途中で止まる方法",
-    "description": "大きい順に3件を求める模型 ／ 本文は日時順20件"
-  },
-  {
-    "name": "top-three-heap",
-    "chapter": 8,
-    "title": "上位3枚を保つ：入れ替えるのはどれ？",
-    "description": "候補の比較・交換・除外を追う4コマ"
+    "name": "07-external-sort",
+    "chapter": 7,
+    "title": "メモリに収まらないときの並べ替え",
+    "description": "外部ソートの模型 ／ まとまりの個数・容量は模式的"
   },
   {
     "name": "08-twenty-window",
@@ -198,10 +186,40 @@
     "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
+    "name": "top-three-heap",
+    "chapter": 8,
+    "title": "上位3枚を保つ：入れ替えるのはどれ？",
+    "description": "候補の比較・交換・除外を追う4コマ"
+  },
+  {
     "name": "08-sort-vs-topn",
     "chapter": 8,
     "title": "LIMITで減るのは、持つ量と返す行",
     "description": "比較：ORDER BYだけとLIMIT 20の三つの数（実測）"
+  },
+  {
+    "name": "08-top-n-vs-index",
+    "chapter": 8,
+    "title": "候補を絞る方法と、途中で止まる方法",
+    "description": "大きい順に3件を求める模型 ／ 本文は日時順20件"
+  },
+  {
+    "name": "09-title-lookup",
+    "chapter": 9,
+    "title": "本の番号だけでは、題名が分からない",
+    "description": "問い：記録の本番号から題名を探す"
+  },
+  {
+    "name": "09-nested-loop",
+    "chapter": 9,
+    "title": "記録を1件取り出すたびに、本を探す",
+    "description": "Nested Loopの模型 ／ キャッシュによる省略は示さない"
+  },
+  {
+    "name": "09-loops",
+    "chapter": 9,
+    "title": "1回1行を20回で、20行",
+    "description": "観察：Nested Loop の rows と loops と Buffers（実測）"
   },
   {
     "name": "09-hash-join",
@@ -216,30 +234,6 @@
     "description": "Merge Joinの模型 ／ 本の番号は一意、記録は重複あり"
   },
   {
-    "name": "09-nested-loop",
-    "chapter": 9,
-    "title": "記録を1件取り出すたびに、本を探す",
-    "description": "Nested Loopの模型 ／ キャッシュによる省略は示さない"
-  },
-  {
-    "name": "09-title-lookup",
-    "chapter": 9,
-    "title": "本の番号だけでは、題名が分からない",
-    "description": "問い：記録の本番号から題名を探す"
-  },
-  {
-    "name": "09-loops",
-    "chapter": 9,
-    "title": "1回1行を20回で、20行",
-    "description": "観察：Nested Loop の rows と loops と Buffers（実測）"
-  },
-  {
-    "name": "10-estimate-propagation",
-    "chapter": 10,
-    "title": "入口の見積もりが、後ろの判断に響く",
-    "description": "推定と実測のずれの説明例 ／ 実測ログではない"
-  },
-  {
     "name": "10-planner-choice",
     "chapter": 10,
     "title": "Indexがあるのに、なぜ使わない？",
@@ -250,6 +244,12 @@
     "chapter": 10,
     "title": "割合のメモから、行数を見積もる",
     "description": "仕組み：ANALYZE のメモの割合から計画の rows を見積もる模型"
+  },
+  {
+    "name": "10-estimate-propagation",
+    "chapter": 10,
+    "title": "入口の見積もりが、後ろの判断に響く",
+    "description": "推定と実測のずれの説明例 ／ 実測ログではない"
   },
   {
     "name": "11-snapshots",
