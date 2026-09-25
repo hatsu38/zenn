@@ -230,8 +230,8 @@
   {
     "name": "09-nested-loop",
     "chapter": 9,
-    "title": "記録を1件取り出すたびに、本を探す",
-    "description": "Nested Loopの模型 ／ キャッシュによる省略は示さない"
+    "title": "外側の行ごとに、内側を1回たどる",
+    "description": "仕組み：Nested Loopの模型（内側の回数は外側の行数と同じ）"
   },
   {
     "name": "09-loops",

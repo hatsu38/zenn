@@ -44,8 +44,8 @@ ORDER BY r.finished_at DESC, r.book_id ASC;
 
 一つずつ探す方法を模型にします。
 
-![記録を1件取り出すたびに、本を探す](/images/postgresql-query-journey/09-nested-loop.png)
-*Nested Loopの模型。キャッシュによる省略は示していません。*
+![①②③の記録（本2・本1・本2）が、同じ本のIndexを1回ずつたどって題名を得る](/images/postgresql-query-journey/09-nested-loop.png)
+*同じ本のIndexを3回たどっていることに注目してください（模型）。*
 
 このような繰り返しが`Nested Loop`です。外側で記録を取り出し、内側で本を探します。内側に効率のよいIndexがあり、外側が少なければ合理的な方法です。名前だけで「遅い結合」と決めないでください。
 
