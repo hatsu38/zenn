@@ -145,18 +145,18 @@ DROP INDEX reading_records_visibility_idx;
 
 値を同じにしてもUPDATEはレコードバージョンを作ります。ただし、結果は次の条件で変わります。検索が変更したページを読むかどうか、別の計画が選ばれるかどうか、その間にautovacuumが動いたかどうかです。Heap Fetchesが必ず決まった数増える、とは予告しません。正式な条件は[Index Only Scanの解説](https://www.postgresql.org/docs/18/indexes-index-only-scans.html)にあります。
 
-今回の確認では、同じ本42の2件を返す検索で、次の違いが出ました。
+今回の確認では、本42の1件を返す検索で、次の違いが出ました。
 
 | 状態 | 選ばれた方法 | Heap Fetches |
 | --- | --- | ---: |
 | VACUUM後 | Index Only Scan Backward | 0 |
-| UPDATE後 | Index Only Scan Backward | 4 |
+| UPDATE後 | Index Only Scan Backward | 2 |
 | 再びVACUUM後 | Index Only Scan Backward | 0 |
 
-これは2026年9月22日のPostgreSQL 18.6での実測です。返すレコードは2件でも、テーブルへの確認回数は2とは限りません。UPDATEで本42の2件に新しい版ができ、Indexには古い版と新しい版の項目が両方残った可能性があります。更新したページは可視性マップの印が消えるので、4つの項目それぞれでテーブルを確かめ、見えない古い版を除いて2件を返したと考えられます。VACUUM後は0に戻りました。古い版の項目が片付き、印が戻ったためと考えられます。結果の件数と、テーブルへ確認する処理は分けて読みます。時間も測っていますが、この小さな実験では速さの順位ではなく、テーブルへの確認の変化に注目します。
+これは2026年9月26日のPostgreSQL 18.6での実測です。返すレコードは1件でも、テーブルへの確認回数は1とは限りません。UPDATEで本42の1件に新しい版ができ、Indexには古い版と新しい版の項目が両方残った可能性があります。更新したページは可視性マップの印が消えるので、2つの項目それぞれでテーブルを確かめ、見えない古い版を除いて1件を返したと考えられます。VACUUM後は0に戻りました。古い版の項目が片付き、印が戻ったためと考えられます。結果の件数と、テーブルへ確認する処理は分けて読みます。時間も測っていますが、この小さな実験では速さの順位ではなく、テーブルへの確認の変化に注目します。
 
 :::details VACUUM後にHeap Fetchesが戻らなかった実例
-2026年9月25日に同じ手順を実行し直したときは、再びVACUUMした後も`Heap Fetches`が4のままでした。別の接続が前日から`BEGIN`したまま、`COMMIT`も`ROLLBACK`もしていなかったためです。`VACUUM (VERBOSE) reading_records`を実行すると、`2 are dead but not yet removable`と報告されました。古い版が2つあるが、まだ捨てられない、という意味です。「いつ古い版を片付けられる？」で書いた、長く終わらないトランザクションがあると片付けられない状況が、そのまま起きていました。読者の環境で0に戻らないときは、次のSQLで開いたままの接続がないかを確かめてください。
+2026年9月25日に同じ手順を実行し直したときは、再びVACUUMした後も`Heap Fetches`が4のままでした（当時のデータでは、本42の記録は2件でした）。別の接続が前日から`BEGIN`したまま、`COMMIT`も`ROLLBACK`もしていなかったためです。`VACUUM (VERBOSE) reading_records`を実行すると、`2 are dead but not yet removable`と報告されました。古い版が2つあるが、まだ捨てられない、という意味です。「いつ古い版を片付けられる？」で書いた、長く終わらないトランザクションがあると片付けられない状況が、そのまま起きていました。読者の環境で0に戻らないときは、次のSQLで開いたままの接続がないかを確かめてください。
 
 ```sql
 SELECT pid, state, xact_start FROM pg_stat_activity
@@ -170,25 +170,29 @@ WHERE state = 'idle in transaction';
 
 ## 電源が切れたら、メモリの変更はどうなる？
 
-先ほどの`UPDATE`の実行結果に戻ります。`WAL`オプションを付けたので、`Buffers`の次に`WAL:`の行が出ています。2026年9月25日の実行結果です。この出力は第8章の`reading_records_order_idx`がない状態で採取しました。本の順に進めてそのIndexが残っている場合は、更新するIndexが増えるため、WALやBuffersの数値も変わりえます。
+先ほどの`UPDATE`の実行結果に戻ります。`WAL`オプションを付けたので、`Buffers`の次に`WAL:`の行が出ています。2026年9月26日の実行結果です。本の順に進め、第8章の`reading_records_order_idx`が残っている状態で採取しました。Indexの数が違うと、更新するIndexの数も変わるため、WALやBuffersの数値も変わりえます。
 
 ```sql
-Update on reading_records  (cost=0.43..12.46 rows=0 width=0) (actual time=0.193..0.193 rows=0.00 loops=1)
-  Buffers: shared hit=20 dirtied=3
-  WAL: records=6 fpi=2 bytes=16786
-  ->  Index Scan using reading_records_visibility_idx on reading_records  (cost=0.43..12.46 rows=2 width=14) (actual time=0.015..0.021 rows=2.00 loops=1)
-        Index Cond: (book_id = 42)
-        Index Searches: 1
-        Buffers: shared hit=5
+Update on reading_records  (cost=4.61..97.52 rows=0 width=0) (actual time=0.095..0.096 rows=0.00 loops=1)
+  Buffers: shared hit=16 read=2 dirtied=2
+  WAL: records=4 bytes=304
+  ->  Bitmap Heap Scan on reading_records  (cost=4.61..97.52 rows=24 width=14) (actual time=0.009..0.010 rows=1.00 loops=1)
+        Recheck Cond: (book_id = 42)
+        Heap Blocks: exact=1
+        Buffers: shared hit=4
+        ->  Bitmap Index Scan on reading_records_visibility_idx  (cost=0.00..4.61 rows=24 width=0) (actual time=0.003..0.004 rows=1.00 loops=1)
+              Index Cond: (book_id = 42)
+              Index Searches: 1
+              Buffers: shared hit=3
 Planning:
   Buffers: shared hit=3
-Planning Time: 0.051 ms
-Execution Time: 0.307 ms
+Planning Time: 0.037 ms
+Execution Time: 0.340 ms
 ```
 
-`Buffers`の`dirtied=3`は、この実行中に、まだ変更済みではなかったページを3枚、新たに変更済みにしたことを示します。すでに変更済みのページをさらに書き換えても、この数には加わりません。また、この数だけではテーブルとIndexのどのページを変更したかまでは分かりません。`written`の表示がないのは、この実行を担当したバックエンドによる計測対象の書き戻しが0だった、という意味です。同時に動く別のプロセスの書き出しまで0だったとは言えません。
+`Buffers`の`dirtied=2`は、この実行中に、まだ変更済みではなかったページを2枚、新たに変更済みにしたことを示します。すでに変更済みのページをさらに書き換えても、この数には加わりません。また、この数だけではテーブルとIndexのどのページを変更したかまでは分かりません。`written`の表示がないのは、この実行を担当したバックエンドによる計測対象の書き戻しが0だった、という意味です。同時に動く別のプロセスの書き出しまで0だったとは言えません。
 
-`WAL:`の行は、この文が**生成した**記録の数（`records=6`）と大きさ（`bytes=16786`）を示します。ストレージへの保存が完了した量ではありません。`fpi=2`はページ全体のイメージを記録した数です。特に`fpi`は、直前のチェックポイント（後述）からそのページを初めて変更したかどうかで変わります。各項目の定義は[EXPLAINの公式説明](https://www.postgresql.org/docs/18/sql-explain.html)で確認できます。
+`WAL:`の行は、この文が**生成した**記録の数（`records=4`）と大きさ（`bytes=304`）を示します。ストレージへの保存が完了した量ではありません。この出力には、ページ全体のイメージを記録した数を表す`fpi`がありません。0の項目は表示されないためです。`fpi`は、直前のチェックポイント（後述）の後で初めて変更するページがあると現れます。各項目の定義は[EXPLAINの公式説明](https://www.postgresql.org/docs/18/sql-explain.html)で確認できます。
 
 ここまでのSELECTには`WAL`オプションを付けていないので、その出力からWALの有無は判断できません。SELECTでもWALを生成する場合があります。読み取り中に、レコードの可視性の判断を助ける印をページに付ける場合があり、データのチェックサムや`wal_log_hints`の設定によっては、その変更でもWALが生成されます。
 
