@@ -61,7 +61,8 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <path d="M316 182 L206 174" class="ref"/>
     <path d="M316 232 L206 192" class="ref"/>
     <path d="M316 282 L206 238" class="ref"/>
-    <text x="40" y="300" class="mono">JOIN　book_id = id</text>
+    <text x="40" y="318" class="mono">JOIN　book_id = id</text>
+    <path d="M261 294 V261" class="leader"/>
   </g>
   <g id="result">
     <rect x="24" y="424" width="592" height="114" rx="10" class="panel"/>
