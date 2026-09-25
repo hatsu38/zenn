@@ -27,7 +27,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <text x="527" y="47" text-anchor="middle" class="tag">ページ数は実測</text>
   <g id="seq-scan">
     <text x="24" y="104" class="mono b">Seq Scan</text>
-    <text x="616" y="104" text-anchor="end" class="mono">hit 4657 + read 2696</text>
+    <text x="616" y="104" text-anchor="end" class="s">表全体を読む</text>
   </g>
   <g id="seq-table">
     <text x="24" y="144" class="s">表 <tspan class="mono">books</tspan></text>
@@ -57,7 +57,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <path d="M24 276 H616" class="panel"/>
   <g id="index-scan">
     <text x="24" y="320" class="mono b">Index Scan</text>
-    <text x="616" y="320" text-anchor="end" class="mono">shared hit=1 read=3</text>
+    <text x="616" y="320" text-anchor="end" class="s">Indexをたどって探す</text>
   </g>
   <g id="index-levels">
     <text x="24" y="370" class="s">根</text>
@@ -107,7 +107,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="209" y="607" class="s">表のページへ</text>
   </g>
   <g id="index-count">
-    <rect x="24" y="714" width="255" height="40" rx="6" class="hot"/>
-    <text x="38" y="743" class="b">読むページ 3＋1＝4</text>
+    <rect x="24" y="714" width="334" height="40" rx="6" class="hot"/>
+    <text x="38" y="743" class="b">Index 3 ＋ 表 1 ＝ 4</text>
   </g>
 </svg>
