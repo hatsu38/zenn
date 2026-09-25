@@ -212,8 +212,8 @@
   {
     "name": "08-top-n-vs-index",
     "chapter": 8,
-    "title": "候補を絞る方法と、途中で止まる方法",
-    "description": "大きい順に3件を求める模型 ／ 本文は日時順20件"
+    "title": "全部読むか、3件で止まるか",
+    "description": "比較：候補を持って全部読む方法と、Indexの順で3件で止まる方法（模型）"
   },
   {
     "name": "09-title-lookup",
