@@ -207,7 +207,21 @@ SHOW hash_mem_multiplier;
 
 先ほどの1週間分のHash Joinは、`work_mem`が4MBの状態で`Batches: 16`となり、`temp read=7569 written=7569`も出ていました。本100万行のハッシュ表を一度にメモリへ置けず、16個に分けて一時ファイルを使いながら照合したと読めます。
 
-さらに小さなメモリで比べるなら、`BEGIN`の後に`SET LOCAL work_mem = '64kB'`を実行し、同じSQLを実行してから`ROLLBACK`します。`Batches`と一時ファイルが増えたかを確かめましょう。
+さらに小さなメモリで比べるなら、`BEGIN`の後に`SET LOCAL work_mem = '64kB'`を実行し、同じSQLを実行してから`ROLLBACK`します。
+
+```sql
+BEGIN;
+SET LOCAL work_mem = '64kB';
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT r.book_id, b.title
+FROM reading_records AS r
+JOIN books AS b ON b.id = r.book_id
+WHERE r.finished_at >= timestamp '2026-09-14'
+  AND r.finished_at < timestamp '2026-09-21';
+ROLLBACK;
+```
+
+`Batches`と一時ファイルが増えたかを確かめましょう。
 
 ## 数えてから題名を付けても、同じ答えになる？
 

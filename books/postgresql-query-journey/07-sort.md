@@ -152,7 +152,18 @@ Execution Time: 223.929 ms
 SET work_mem = '64kB';
 ```
 
-同じ`EXPLAIN (ANALYZE, BUFFERS)`をもう一度実行します。`external merge`や`Disk`、`temp read/written`が現れたか比べてください。結果は環境やデータで変わるので、自分の出力で確かめてください。時間が何倍になるかは、ここでは予告しません。
+同じ`EXPLAIN (ANALYZE, BUFFERS)`をもう一度実行します。
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT book_id, finished_at
+FROM reading_records
+WHERE finished_at >= timestamp '2026-09-14'
+  AND finished_at < timestamp '2026-09-21'
+ORDER BY finished_at DESC, book_id ASC;
+```
+
+`external merge`や`Disk`、`temp read/written`が現れたか比べてください。結果は環境やデータで変わるので、自分の出力で確かめてください。時間が何倍になるかは、ここでは予告しません。
 
 次の比較表は、本書の原稿検証時に別途採取したログの抜粋です。2026年9月22日、DockerのPostgreSQL 18.6、並列実行とJITは無効です。上に載せた2026年9月23日の実行結果とは別の測定ですが、同じ200万件のサンプルを使い、対象週の入力は499,998行でした。
 
