@@ -200,8 +200,8 @@
   {
     "name": "top-three-heap",
     "chapter": 8,
-    "title": "上位3枚を保つ：入れ替えるのはどれ？",
-    "description": "候補の比較・交換・除外を追う4コマ"
+    "title": "根の最小値と比べて、入れ替える",
+    "description": "仕組み：上位3枚を保つ最小ヒープの4コマ（模型）"
   },
   {
     "name": "08-sort-vs-topn",
