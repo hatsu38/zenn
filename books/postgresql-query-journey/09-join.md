@@ -167,7 +167,7 @@ Execution Time: 664.568 ms
 
 この図では本の番号は一意です。両側に重複がある一般の結合では、一致する組み合わせをすべて返す必要があります。
 
-Merge Joinを観察するために、実験の間だけ、Hash JoinとNested Loopを選ばないように設定します。
+Merge Joinを観察するために、実験の間だけ、Hash JoinとNested Loopを選ばないように設定します。`SET LOCAL`の設定は、`BEGIN`で始めたトランザクションの中だけ有効です。最後に`ROLLBACK`すると元に戻ります。
 
 ```sql
 BEGIN;

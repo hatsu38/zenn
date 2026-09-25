@@ -1,0 +1,13 @@
+Pager usage is off.
+SET
+SET
+SET
+                                                         version
+--------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+CREATE TABLE
+INSERT 0 1000000
+CREATE INDEX
+ANALYZE

@@ -7,7 +7,7 @@ title: "第5章：同じページを、毎回ストレージから読むのか"
 一度使ったページは、次の検索で再利用できるのでしょうか。ページを保存するストレージと、実行中に使うメモリの関係を図で確認し、`BUFFERS`の`hit`と`read`を読みます。テーブルのページをメモリから追い出してから同じ検索を3回実行し、ページの再利用と、行の条件を調べる処理を区別します。
 
 :::message
-第4章のトランザクションを終了してから始めます。この章も、観察用のテーブルの作成からROLLBACKまで同じ接続で進めます。
+第4章で作った`books_observation`を使います。接続し直した場合は、第1章末の共通設定を実行してください。この章の最後に観察用テーブルを削除します。
 :::
 
 ## 同じ検索を、もう一度
@@ -41,57 +41,62 @@ PostgreSQLは、読み込んだテーブルやIndexのページをメモリ内�
 
 共有バッファに残るのは、検索結果の1行ではなく、テーブルやIndexのページです。では、ページを再利用できたら、その中から条件に合う行を探す処理も省けるでしょうか。次の実験で確かめます。
 
-## この章だけの小さなテーブルを用意する
+## 前章の観察用テーブルを確認する
 
-第4章と同じ手順で、1,000冊の観察用のテーブルをもう一度作ります。第4章末の`ROLLBACK`で取り消したためです。通常のテーブルなので、そのページはこの章で見る共有バッファに置かれます。同じ名前のスキーマが既にある場合は、削除せずに別の名前へ書き換えてから実行してください。
+第4章で作った`books_observation`を引き続き使います。まだ作っていない場合や削除済みの場合は、先に下の補足の準備SQLを実行してください。1,000冊あることを確認します。
 
 ```sql
-BEGIN;
-CREATE SCHEMA book_observation;
-CREATE TABLE book_observation.books
-  (LIKE public.books INCLUDING DEFAULTS INCLUDING CONSTRAINTS);
-ALTER TABLE book_observation.books ADD PRIMARY KEY (id);
-INSERT INTO book_observation.books
-SELECT id, title FROM public.books WHERE id BETWEEN 1 AND 1000;
-SET LOCAL search_path = book_observation, public;
-ANALYZE books;
-SELECT count(*) FROM books;
+SELECT count(*) FROM books_observation;
 ```
 
-:::details 準備SQLの実行結果
-2026年9月25日、DockerのPostgreSQL 18.6での実行結果から、入力SQLとpsqlのプロンプトを除いて掲載しています。
+実行結果です。
 
 ```sql
-BEGIN
-CREATE SCHEMA
-CREATE TABLE
-ALTER TABLE
-INSERT 0 1000
-SET
-ANALYZE
  count
 -------
   1000
 (1 row)
 ```
 
-`INSERT 0 1000`と最後の`count`から、観察用のテーブルに1,000行あると確認できます。
-:::
+:::details 第5章から始める場合、または観察用テーブルを削除済みの場合
+`books_observation`がない場合だけ、次のSQLで準備します。既に1,000冊ある場合は作り直す必要はありません。別の用途の同名テーブルがある場合は、削除せずに名前を変えてください。
 
-このトランザクションは開いたまま観察を続け、観察が終わったところで`ROLLBACK`して片付けます。
+```sql
+CREATE TABLE books_observation (
+  id bigint PRIMARY KEY,
+  title text NOT NULL
+);
+INSERT INTO books_observation
+SELECT id, title FROM books WHERE id BETWEEN 1 AND 1000 ORDER BY id;
+ANALYZE books_observation;
+SELECT count(*) FROM books_observation;
+```
+
+準備の実行結果です。
+
+```sql
+CREATE TABLE
+INSERT 0 1000
+ANALYZE
+ count
+-------
+  1000
+(1 row)
+```
+:::
 
 ## 同じ検索を3回実行する
 
-テーブルを作って1,000行を挿入した直後なので、観察用のテーブルのページは共有バッファに載っているはずです。このまま検索すると1回目から`shared hit`になり、ファイルから読み込む場面を観察できません。
+前章の観察や、先ほどの件数確認で、観察用テーブルのページは共有バッファに読み込まれています。このまま検索すると1回目から`shared hit`になり、ファイルから読み込む場面を観察できません。
 
 そこで、観察の前に、このテーブルのページを共有バッファから追い出します。`pg_buffercache`は共有バッファの中身を調べる拡張機能で、PostgreSQL 18では`pg_buffercache_evict_relation`で指定したテーブルのページをまとめて追い出せます[^evict]。次の二つを実行してください。
 
 ```sql
 CREATE EXTENSION IF NOT EXISTS pg_buffercache;
-SELECT * FROM pg_buffercache_evict_relation('books');
+SELECT * FROM pg_buffercache_evict_relation('books_observation');
 ```
 
-2026年9月25日、DockerのPostgreSQL 18.6で、観察用のテーブルを作った同じトランザクションの中で実行した結果です。
+2026年9月25日、DockerのPostgreSQL 18.6で、第4章の観察を終えた後、接続し直して実行した結果です。
 
 ```sql
 CREATE EXTENSION
@@ -101,53 +106,53 @@ CREATE EXTENSION
 (1 row)
 ```
 
-`buffers_evicted`の11が、共有バッファから追い出したページの数です。このうち8ページが、第4章で数えたテーブル本体の8ページです。残りの3ページは、テーブルの空き領域を記録しておく付属のファイルのページで、この章では扱いません。
+`buffers_evicted`の11が、共有バッファから追い出したページの数です。テーブル本体以外の付属ファイルのページも対象になるため、第4章で数えた本体の8ページとは一致しません。
 
-`buffers_flushed`の8は、追い出すときにファイルへ書き出されたページの数で、テーブル本体の8ページがこれに当たります。挿入したばかりで、ファイルの内容よりメモリ上のページのほうが新しかったためです。`buffers_skipped`は追い出せなかったページの数で、今回は0でした。この出力から、挿入した直後のテーブルのページが共有バッファに置かれていたことも確かめられます。
+`buffers_flushed`の8は、追い出すときにファイルへ書き出されたページの数です。メモリ上に変更済みのページが残っていたため、書き出してから追い出しています。`buffers_skipped`は追い出せなかったページの数で、今回は0でした。作成からの経過時間や途中の操作によって、追い出す数や書き出す数は変わります。
 
-[^evict]: スーパーユーザーだけが実行できる、開発者の検証用の関数です。第1章のとおり`postgres`ユーザーで接続していれば実行できます。[pg_buffercacheの公式ドキュメント](https://www.postgresql.org/docs/18/pgbuffercache.html)には、追い出したページが別の処理によってすぐ読み戻されることもあると書かれています。本番のDBで使う道具ではありません。`CREATE EXTENSION`もトランザクションの中で実行しているので、章末の`ROLLBACK`で一緒に取り消されます。
+[^evict]: スーパーユーザーだけが実行できる、開発者の検証用の関数です。第1章のとおり`postgres`ユーザーで接続していれば実行できます。[pg_buffercacheの公式ドキュメント](https://www.postgresql.org/docs/18/pgbuffercache.html)には、追い出したページが別の処理によってすぐ読み戻されることもあると書かれています。本番のDBで使う道具ではありません。拡張機能はこのDBに残るため、次回以降も使えます。
 
 続けて、次のSQLを3回実行します。実行する前に予想してください。1回目と2回目で、`shared hit`と`shared read`はどう変わるでしょうか。そして、`Rows Removed by Filter`は変わるでしょうか。
 
 ```sql
 EXPLAIN (ANALYZE, BUFFERS)
-SELECT id, title FROM books WHERE title = '実験用の本 42';
+SELECT id, title FROM books_observation WHERE title = '実験用の本 42';
 ```
 
 追い出した直後の、1回目の実行結果です。
 
 ```sql
-Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.204..1.061 rows=1.00 loops=1)
+Seq Scan on books_observation  (cost=0.00..20.50 rows=1 width=27) (actual time=0.124..0.324 rows=1.00 loops=1)
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999
   Buffers: shared read=8
 Planning:
-  Buffers: shared hit=11
-Planning Time: 0.102 ms
-Execution Time: 1.079 ms
+  Buffers: shared hit=12
+Planning Time: 0.033 ms
+Execution Time: 0.329 ms
 ```
 
 :::details 2回目と3回目の実行結果
 2回目です。
 
 ```sql
-Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.005..0.036 rows=1.00 loops=1)
+Seq Scan on books_observation  (cost=0.00..20.50 rows=1 width=27) (actual time=0.005..0.038 rows=1.00 loops=1)
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999
   Buffers: shared hit=8
-Planning Time: 0.016 ms
-Execution Time: 0.040 ms
+Planning Time: 0.013 ms
+Execution Time: 0.041 ms
 ```
 
 3回目です。
 
 ```sql
-Seq Scan on books  (cost=0.00..20.50 rows=1 width=27) (actual time=0.004..0.071 rows=1.00 loops=1)
+Seq Scan on books_observation  (cost=0.00..20.50 rows=1 width=27) (actual time=0.005..0.037 rows=1.00 loops=1)
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999
   Buffers: shared hit=8
-Planning Time: 0.007 ms
-Execution Time: 0.073 ms
+Planning Time: 0.012 ms
+Execution Time: 0.040 ms
 ```
 :::
 
@@ -155,9 +160,9 @@ Execution Time: 0.073 ms
 
 | 実行 | 探す方法 | 調べた行 | shared hit | shared read | Execution Time |
 | --- | --- | ---: | ---: | ---: | ---: |
-| 1回目 | Seq Scan | 1,000 | 表示なし | 8 | 1.079 ms |
-| 2回目 | Seq Scan | 1,000 | 8 | 表示なし | 0.040 ms |
-| 3回目 | Seq Scan | 1,000 | 8 | 表示なし | 0.073 ms |
+| 1回目 | Seq Scan | 1,000 | 表示なし | 8 | 0.329 ms |
+| 2回目 | Seq Scan | 1,000 | 8 | 表示なし | 0.041 ms |
+| 3回目 | Seq Scan | 1,000 | 8 | 表示なし | 0.040 ms |
 
 ### ページは2回目から再利用され、行は毎回調べている
 
@@ -172,9 +177,9 @@ Execution Time: 0.073 ms
 
 SQLも、返る1行も、3回とも同じです。それなら前回の答えをそのまま返してもよさそうですが、PostgreSQLには、通常のSELECTの結果全体を保存し、次の実行でそのまま返す組み込みの結果キャッシュはありません。共有バッファに置くのはページです。一つのSQLの実行中に、同じ検索条件の途中結果を再利用する`Memoize`（第9章）とは区別します。
 
-この観察用のテーブルは、トランザクションをまだ終えていないので他の接続からは見えませんが、ふだんのテーブルなら、1回目と2回目の間に別の接続が同じ題名の本を追加したり、この本の題名を書き換えたりしているかもしれません。前回の1行を取っておいて返すと、その変更を見落とします。そのため、実行するたびにページの中の行を確認します。行の変更が他の接続からどう見えるかは、第11章で扱います。
+たとえば、1回目と2回目の間に別の接続が同じ題名の本を追加したり、この本の題名を書き換えたりしているかもしれません。前回の1行を取っておいて返すと、その変更を見落とします。そのため、実行するたびにページの中の行を確認します。行の変更が他の接続からどう見えるかは、第11章で扱います。
 
-時間は1.079 msから0.040 msへ短くなっていますが、それぞれ1回だけの測定です。また、追い出すときに8ページをファイルへ書き出しました。書き出した内容はOSキャッシュにも残りやすいので、1回目の`read`はOSキャッシュから読んだ可能性が高く、SSDを読む時間を測ったとは言えません。この出力から確かに言えるのは、探す方法と調べた行数が同じまま、`read`が`hit`へ変わったことです。
+時間は0.329 msから0.041 msへ短くなっていますが、それぞれ1回だけの測定です。また、追い出すときに8ページをファイルへ書き出しました。書き出した内容はOSキャッシュにも残りやすいので、1回目の`read`はOSキャッシュから読んだ可能性が高く、SSDを読む時間を測ったとは言えません。この出力から確かに言えるのは、探す方法と調べた行数が同じまま、`read`が`hit`へ変わったことです。
 
 第1〜3章の出力は測定日や間に実行したSQLが異なるため、hitとreadの変化を一続きのキャッシュ実験としては比較しません。同じ条件で続けた今回の3回を、ページの再利用の観察に使います。
 
@@ -184,7 +189,7 @@ SQLも、返る1行も、3回とも同じです。それなら前回の答えを
 
 
 :::details Planningの値は別に読む
-`Planning Time`は計画を作る時間、`Execution Time`は実行の時間です。1回目の`Planning`の下の`shared hit=11`も計画作成時のアクセスなので、検索の実行時の8回には足しません。テーブルの定義などを読んだ回数で、追い出した11ページとは別のものです。
+`Planning Time`は計画を作る時間、`Execution Time`は実行の時間です。1回目の`Planning`の下の`shared hit=12`も計画作成時のアクセスなので、検索の実行時の8回には足しません。テーブルの定義などを読んだ回数で、追い出した11ページとは別のものです。
 :::
 
 ## メモリの領域を用途で分ける
@@ -222,7 +227,7 @@ SHOW shared_buffers;
 (1 row)
 ```
 
-実行結果です。
+次に、作業用メモリの設定を確認します。
 
 ```sql
 SHOW work_mem;
@@ -261,7 +266,7 @@ SHOW temp_buffers;
 (1 row)
 ```
 
-実行結果です。
+続けて、メンテナンス用の設定も確認します。
 
 ```sql
 SHOW maintenance_work_mem;
@@ -281,13 +286,19 @@ SHOW maintenance_work_mem;
 
 ## 観察用のテーブルを片付ける
 
-この章の観察が終わったら、同じpsqlで次を実行します。観察用スキーマの準備からここまでを、一つのトランザクションとして扱ってきました。
+この本で作った観察用テーブルを削除します。
 
 ```sql
-ROLLBACK;
+DROP TABLE books_observation;
 ```
 
-観察用スキーマとテーブルが取り消され、`books`という名前が指すテーブルも元の`public.books`に戻ります。100万冊の`public.books`と題名のIndexは変更していません。
+実行結果です。
+
+```sql
+DROP TABLE
+```
+
+100万冊の`books`と題名のIndexは残ります。`pg_buffercache`など追加した拡張機能も、このDBで引き続き使えます。
 
 ## ページを再利用しても、調べる行数は減らない
 

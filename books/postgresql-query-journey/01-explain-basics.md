@@ -123,7 +123,7 @@ ANALYZE
 COMMIT
 ```
 
-準備を`BEGIN`から`COMMIT`までのひとまとまりにしたので、途中で失敗した場合は、次を入力して今回の準備を取り消せます。
+複数の操作をひとまとまりにして、まとめて確定したり取り消したりする単位を**トランザクション**と呼びます。ここでは`BEGIN`で始め、`COMMIT`で準備を確定しています。途中で失敗した場合は、`COMMIT`する前に次を入力すると、今回の準備を取り消せます。
 
 ```sql
 ROLLBACK;
@@ -406,7 +406,8 @@ SET work_mem = '4MB';
 | --- | --- | --- |
 | 第1〜2章 | 基本データあり、題名Indexなし | 基本データ |
 | 第3章 | 題名Indexなし | `books_title_idx` |
-| 第4〜5章 | 題名Indexあり。観察用のテーブルは章の冒頭から同じ接続で作る | ROLLBACKで観察用のテーブルは消える |
+| 第4章 | 題名Indexあり。`books_observation`を作る | `books_observation`を第5章へ残す |
+| 第5章 | 題名Indexあり、`books_observation`に1,000冊 | `DROP TABLE`で観察用テーブルを削除 |
 | 第6章 | 題名Indexあり。接続A・Bは同じDBへつなぐ | テーブル・Indexの変更なし |
 | 第7章 | 日時Indexなし | `work_mem`を4MBへ戻す |
 | 第8章 | 日時Indexなし | `reading_records_order_idx` |
@@ -436,7 +437,13 @@ CREATE INDEX IF NOT EXISTS books_title_idx ON public.books (title);
 ANALYZE public.books;
 ```
 
-第4・5章は、観察用スキーマを作るBEGINから章末のROLLBACKまで、同じ接続で進めます。
+第4章から作り直す場合は、この本で作った観察用テーブルだけを削除します。別の用途で同じ名前を使っている場合は実行しないでください。
+
+```sql
+DROP TABLE IF EXISTS books_observation, size_short, size_long;
+```
+
+第4章の作成SQLから再開します。第5章から再開する場合は削除せず、同章の件数確認から進めます。削除済みなら、同章の補足に準備SQLがあります。
 :::
 
 :::details 第7〜8章へ戻り、日時Indexなしからやり直す
