@@ -99,7 +99,7 @@ SQLで欲しいデータを取り出せても、その処理に時間がかか�
 
 大きいデータの対象週には4,999,999件の記録がありました。psqlの`\timing`による3回の経過時間は4,630.241、4,553.647、4,531.875ミリ秒です。キャッシュを空にした測定ではありません。
 
-元のSQLとログはリポジトリの`_drafts/postgresql-query-journey/verification/prologue-ranking-20260921/weekly-ranking.sql`および`results/weekly-ranking-*-pg18.3-20260921.txt`にあります。
+元のSQLとログは[過去測定の記録](https://github.com/hatsu38/zenn/tree/main/_drafts/postgresql-query-journey/verification/prologue-ranking-20260921)にあります。
 
 後続章は通常テーブルを使います。この値を、新しい実験の改善前の数値として直接比較しないでください。同じ環境で改めて測ります。
 :::
@@ -138,7 +138,18 @@ LIMIT 20;
 docker compose exec db psql -X -U postgres -d reading_map
 ```
 
-`reading_map=#` と表示されたら、Docker内のPostgreSQLに接続できています。**ここからはpsqlに**、上の`SELECT`から`LIMIT 20;`までを入力してください。最後の`;`まで入力すると実行されます。`reading_map=#`自体は入力しません。
+`reading_map=#` と表示されたら、Docker内のPostgreSQLに接続できています。**ここからはpsqlに**次のSQLを入力してください。最後の`;`まで入力すると実行されます。`reading_map=#`自体は入力しません。
+
+```sql
+SELECT b.id, b.title, count(*) AS read_count
+FROM books AS b
+JOIN reading_records AS r ON r.book_id = b.id
+WHERE r.finished_at >= timestamp '2026-09-14'
+  AND r.finished_at < timestamp '2026-09-21'
+GROUP BY b.id, b.title
+ORDER BY read_count DESC, b.id ASC
+LIMIT 20;
+```
 
 第1章で用意する本100万冊と読了記録200万件のデータで実行した結果です。2026年9月23日、DockerのPostgreSQL 18.6で確認しました。先ほどの約4.6秒を測ったデータ量とは異なります。
 
@@ -223,3 +234,7 @@ psqlを終了してターミナルに戻るときは、`\q`を入力します。
 ここでは、ランキングの改善策をまだ決めなくて大丈夫です。「Indexを付けたい」「先に集計しておきたい」など、今の自分なら何を試したいか、一つ書き残しておいてください。第12章で戻ってきたときに、その案のどこを確かめればよいかを考え直します。
 
 まずは、SQLの内側を観察する道具を用意しましょう。第1章では実験環境を作り、たった1冊を探すSQLから始めます。
+
+:::message
+本編の生成データでは、全期間でも各本の記録は2件ずつです。対象週の上位は2件で同点になり、本番号順で順位が決まります。仕組みを比較するためのデータで、序章の架空の画面のような人気の偏りは再現していません。第12章ではこの条件で測り直し、記録の偏りが違う場合に追加で調べる点も整理します。
+:::

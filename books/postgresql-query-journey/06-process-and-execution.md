@@ -6,6 +6,10 @@ title: "第6章：SQLは誰が受け取り、どう実行するのか"
 
 SQLはクライアントから送られ、接続を担当するバックエンドで解析、計画、実行へ進みます。二つの接続とPIDを観察して、接続ごとに別のプロセスがSQLを処理することを確かめ、実行計画の木が行を返す様子を小さな図で追います。作業用メモリと共有バッファを、プロセスとの関係で区別します。
 
+:::message
+第3章の題名Indexが必要です。接続A・Bは同じ実験用DBへつなぎます。表やIndexを新しく作る章ではありません。
+:::
+
 ## SQLは誰に届く？
 
 前章の図の接続Aと接続Bが、サーバの中で何に当たるのかを確かめます。psqlを二つ開き、接続先で動くプログラムを調べます。
@@ -25,7 +29,7 @@ Dockerで動かす今回の実験でも、このクライアントとサーバ�
 SELECT pg_backend_pid();
 ```
 
-実行結果です。
+2026年9月22日、PostgreSQL 18.6での実行結果です。
 
 ```sql
  pg_backend_pid
@@ -61,7 +65,7 @@ SELECT pg_backend_pid();
 
 接続Aは`952`、接続Bは`22521`でした。同じコマンドで同じDBに接続していますが、SQLを処理するプロセスの番号は別になっています。
 
-通常の接続では、接続ごとにSQLを処理するプロセスが作られます。これを**バックエンドプロセス**と呼びます。
+通常の接続では、接続ごとにSQLを処理するプロセスが作られます。これを**バックエンドプロセス**と呼びます。接続を受け付け、その接続を担当するバックエンドを起動する親のサーバプロセスは、postmasterとも呼ばれます。
 
 ![二つのターミナルのpsqlが、それぞれ別のバックエンドプロセス（PID 952と22521）につながり、二つとも同じDBを使う](/images/postgresql-query-journey/02-connections.png)
 *接続ごとに別のバックエンドプロセスが動き、DBは一つのままです（PIDは今回の実行例。配置は説明用）。*
@@ -143,6 +147,27 @@ Limit  (cost=0.42..0.57 rows=3 width=30)
 `Index Scan`がIndexの順に行を読み、`Limit`が3行まで受け取る計画です。
 
 `Index Scan`の`rows=1000000`は最後まで実行した場合の見積もりです。上の`Limit`は3行で要求を止める計画なので、100万行すべてを読む予定ではありません。ここでは`EXPLAIN`だけを実行しているため、実際の行数や時間は表示されていません。実際の行数は`EXPLAIN ANALYZE`で確かめられます。
+
+実際の受け渡しも測ってみます。
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books ORDER BY title LIMIT 3;
+```
+
+2026年9月25日、PostgreSQL 18.6で新規DBへ本100万冊を用意し、第3章の題名Indexを作った状態での実行結果です。並列実行とJITは無効です。
+
+```sql
+Limit  (cost=0.42..0.57 rows=3 width=30) (actual time=0.015..0.016 rows=3.00 loops=1)
+  Buffers: shared hit=2 read=2
+  ->  Index Scan using books_title_idx on books  (cost=0.42..49247.50 rows=1000000 width=30) (actual time=0.014..0.015 rows=3.00 loops=1)
+        Index Searches: 1
+        Buffers: shared hit=2 read=2
+Planning Time: 0.022 ms
+Execution Time: 0.020 ms
+```
+
+Index Scanの推定は最後まで読んだ場合の100万行ですが、実際には3行を返して止まっています。上のLimitの`actual rows=3`と、子の`actual rows=3`が対応しました。
 
 実行計画は、上の処理が下の処理から行を受け取る親子の形をしているので、計画の木と呼ばれます。この二つの処理が行を受け渡す様子を図にします。左の矢印が行を返す向き、右が次の行を要求する向きです。
 

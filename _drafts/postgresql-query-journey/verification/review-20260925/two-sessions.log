@@ -1,0 +1,6 @@
+A first: 実験用の本 42
+B update: BEGIN
+UPDATE 1
+COMMIT
+A same snapshot: 実験用の本 42
+A after commit: 改訂版の本 42

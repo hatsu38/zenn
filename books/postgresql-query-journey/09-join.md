@@ -6,6 +6,10 @@ title: "第9章：本と読了記録を組み合わせ、数える"
 
 読了記録に題名を付け、本ごとに読了記録を数える処理を学びます。少数の行を繰り返し探す方法から始め、大量の行をハッシュ表で照合する方法、並んだ入力を合流させる方法へ広げます。集約では入力行数とグループ数を区別します。結合や集計の前に行を減らす案が、同じ答えを返すか、何行分の処理を減らすかを考えます。
 
+:::message
+第8章の日時Indexを残して始めます。再接続した場合は第1章末の共通設定を実行し、`work_mem=4MB`、並列実行とJITが無効の状態にします。
+:::
+
 ## 番号だけでは、何の本か分からない
 
 第8章で取り出した最新20件には、本の番号`book_id`はありますが、題名はありません。一覧に題名を出すには、記録にある番号から本の表をたどり、対応する行を組み合わせます。この対応付けが**結合（JOIN）**です。
@@ -139,9 +143,11 @@ Execution Time: 664.568 ms
 
 実際のハッシュ関数は「3で割る」より複雑ですが、置き場所を絞って照合する考え方は同じです。
 
+この掲載例は、表の可視性マップが設定され、`Heap Fetches: 0`となった状態での結果です。第8章でIndexを作った直後は、Bitmap Heap Scanが選ばれたり、Index Only ScanでもHeap Fetchesが出たりします。Indexの定義が同じでも表の保守状態で変わる点は、第11章で扱います。
+
 出力に戻ります。下の`Hash`は、本の一覧100万行からハッシュ表を作っています。上の`Index Only Scan`は1週間分の499,998件を返し、その各行をハッシュ表で照合しています。ハッシュ表を作るために読む行数は`Hash`の下の`rows`、照合する回数は外側の`rows`で確かめられます。
 
-`Batches: 16`と`temp`の値は、ハッシュ表が`work_mem`に収まらず一時ファイルを使ったことを示します。詳しくは、この章の後半で読みます。
+`Batches: 16`と`temp`の値は、ハッシュ表が作業用メモリに収まらず一時ファイルを使ったことを示します。ハッシュのメモリ量には`work_mem`に加えて`hash_mem_multiplier`も関わります。詳しくは、この章の後半で読みます。
 
 20件のときとSQLの形はほとんど同じです。変わったのは、外側から届く記録の件数でした。外側の推定は、Nested Loopの計画で`rows=20`、Hash Joinの計画で`rows=500739`です。件数の違いを実行前にどう見込んだのかは、第10章で調べます。
 
@@ -152,10 +158,12 @@ Execution Time: 664.568 ms
 - 本：1、2、3、4
 - 記録：1、1、3、4
 
-先頭同士を比較して、小さい側を進めれば対応を探せます。この方法で結合するのが`Merge Join`です。
+先頭同士を比較し、番号が違えば小さい側を進めます。一致したら組を返します。番号順に並んだ入力をたどって結合する方法が`Merge Join`です。
 
-![記録を並べ替えたあと、一致では両方の▼が、本だけ小さいときは本の▼だけが右へ進み、3と4で追いつく](/images/postgresql-query-journey/09-merge-join.png)
-*見ている位置▼の動きだけを追ってください（説明するための図）。*
+この例では、記録に1が二つあります。本1の位置を保ったまま、最初の記録1と組にし、続く記録1とも組にします。二件とも返してから次の番号へ進みます。一致するたびに両側を一つずつ進めると、二件目を取りこぼしてしまいます。
+
+![記録を番号順に並べ、本1を保ったまま記録1の二件をそれぞれ返す。次に本2を通過して本3と記録3を組にし、本4と記録4も返す](/images/postgresql-query-journey/09-merge-join.png)
+*①では本1の位置を保ち、記録の二つの1をそれぞれ返します。③までに返すのは合計4組です（説明するための図）。*
 
 この図では本の番号は一意です。両側に重複がある一般の結合では、一致する組み合わせをすべて返す必要があります。
 
@@ -172,7 +180,34 @@ WHERE b.id <= 100;
 ROLLBACK;
 ```
 
-この結果は本書に載せていません。自分の出力でMerge Joinが現れたら、入力をどこで並べたかも見てください。結合そのものの処理量が少なくても、入力を並べ替える処理が追加される場合があります。これは仕組みを観察する実験で、本番の方法を固定する勧めではありません。
+2026年9月25日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件、並列実行とJITは無効です。 `work_mem`は4MBです。
+
+:::details Merge Joinの実行結果
+```sql
+Merge Join  (cost=308490.11..318500.51 rows=220 width=16) (actual time=559.465..559.520 rows=200.00 loops=1)
+  Merge Cond: (r.book_id = b.id)
+  Buffers: shared hit=10815, temp read=6854 written=12751
+  ->  Sort  (cost=308488.69..313488.69 rows=2000000 width=16) (actual time=559.428..559.442 rows=201.00 loops=1)
+        Sort Key: r.book_id
+        Sort Method: external merge  Disk: 50896kB
+        Buffers: shared hit=10811, temp read=6854 written=12751
+        ->  Seq Scan on reading_records r  (cost=0.00..30811.00 rows=2000000 width=16) (actual time=0.011..135.107 rows=2000000.00 loops=1)
+              Buffers: shared hit=10811
+  ->  Index Only Scan using books_pkey on books b  (cost=0.42..10.35 rows=110 width=8) (actual time=0.030..0.043 rows=100.00 loops=1)
+        Index Cond: (id <= 100)
+        Heap Fetches: 100
+        Index Searches: 1
+        Buffers: shared hit=4
+Planning:
+  Buffers: shared hit=12
+Planning Time: 0.169 ms
+Execution Time: 563.841 ms
+```
+:::
+
+本の側は主キーのIndexから番号順に100行を返しています。記録の側はSeq Scanで200万行を読み、`Sort Key: r.book_id`で並べ替えました。Sortが親へ返したのは201行ですが、その子の入力は200万行です。並べ替えの準備まで201行で済んだ、とは読めません。
+
+結合が返したのは200行です。このデータでは本1冊に記録が2件ずつあるので、本100冊と組になる記録は200件になります。少数の結果を返すために、大きな並べ替えが追加された例です。方法を固定する設定は仕組みを観察するためで、本番へそのまま持ち込むものではありません。
 
 ## 数えるときは、グループごとにメモする
 
@@ -194,15 +229,49 @@ SELECT book_id, count(*) AS read_count
 FROM reading_records GROUP BY book_id;
 ```
 
-こちらも自分の出力で、入力の行数（子の`actual rows`）と、集約が返したグループ数（`HashAggregate`の`actual rows`）を分けて読んでください。`GroupAggregate`とSortが見えたら、先に並べ替えて、隣り合った同じキーをまとめる方式です。ハッシュ方式と区別してください。
+同日の集約の実行結果です。
+
+```sql
+HashAggregate  (cost=143311.00..168847.22 rows=991122 width=16) (actual time=586.125..916.907 rows=1000000.00 loops=1)
+  Group Key: book_id
+  Planned Partitions: 16  Batches: 17  Memory Usage: 8345kB  Disk Usage: 63520kB
+  Buffers: shared hit=10811, temp read=6150 written=13645
+  ->  Seq Scan on reading_records  (cost=0.00..30811.00 rows=2000000 width=8) (actual time=0.018..125.241 rows=2000000.00 loops=1)
+        Buffers: shared hit=10811
+Planning Time: 0.069 ms
+Execution Time: 951.731 ms
+```
+
+入力は200万行、`HashAggregate`が返したグループは100万個です。1冊に2件ずつの記録があるため、件数は半分になりました。`Memory Usage: 8345kB`に加え、`Batches: 17`と`Disk Usage`もあります。100万個のカウンタを一度にメモリへ置けず、一時ファイルも使っています。
+
+別の環境で`GroupAggregate`とSortが見えたら、先に並べ替え、隣り合った同じ番号をまとめる方式です。
+
+| 方法 | 同じ本の記録をどう見つけるか | 必要な準備 |
+| --- | --- | --- |
+| HashAggregate | 本番号をハッシュ表で探し、カウンタを更新する | グループごとのメモリ。足りなければ一時ファイル |
+| GroupAggregate | 番号順に読み、同じ番号が続く間に数える | 入力の順序。なければSortなどで用意 |
 
 ## ハッシュ表がメモリに収まらないとき
 
-グループの数が多ければ、メモも多くなります。ハッシュ処理が使えるメモリの上限は、`work_mem`に`hash_mem_multiplier`を掛けた量です。
+グループの数が多ければ、メモも多くなります。ハッシュ処理のメモリ上限は、`work_mem`に`hash_mem_multiplier`を掛けて計算します。ただし、管理用の領域などもあるため、出力の`Memory Usage`がこの積を上回ることはあります。プロセス全体の使用量を厳密に止める上限ではありません。
 
 ```sql
 SHOW work_mem;
 SHOW hash_mem_multiplier;
+```
+
+実行結果は順に4MBと2です。
+
+```sql
+ work_mem
+----------
+ 4MB
+(1 row)
+
+ hash_mem_multiplier
+---------------------
+ 2
+(1 row)
 ```
 
 先ほどの1週間分のHash Joinは、`work_mem`が4MBの状態で`Batches: 16`となり、`temp read=7569 written=7569`も出ていました。本100万行のハッシュ表を一度にメモリへ置けず、16個に分けて一時ファイルを使いながら照合したと読めます。
@@ -221,7 +290,28 @@ WHERE r.finished_at >= timestamp '2026-09-14'
 ROLLBACK;
 ```
 
-`Batches`と一時ファイルが増えたかを確かめましょう。
+:::details 64kBでの実行結果
+```sql
+Hash Join  (cost=36689.00..89545.86 rows=498993 width=30) (actual time=228.809..523.584 rows=499998.00 loops=1)
+  Hash Cond: (r.book_id = b.id)
+  Buffers: shared hit=13519 read=4645, temp read=7992 written=7992
+  ->  Seq Scan on reading_records r  (cost=0.00..40811.00 rows=498993 width=8) (actual time=0.015..93.837 rows=499998.00 loops=1)
+        Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+        Rows Removed by Filter: 1500002
+        Buffers: shared hit=10811
+  ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=221.692..221.692 rows=1000000.00 loops=1)
+        Buckets: 32768  Batches: 64  Memory Usage: 1236kB
+        Buffers: shared hit=2708 read=4645, temp written=6218
+        ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.004..80.588 rows=1000000.00 loops=1)
+              Buffers: shared hit=2708 read=4645
+Planning:
+  Buffers: shared hit=12
+Planning Time: 0.218 ms
+Execution Time: 539.429 ms
+```
+:::
+
+今回の再実行では`Batches: 64`でした。先ほどの4MBの例の16より分割が増え、`temp read/written`は7,992ブロックずつになりました。記録を読む方法もSeq Scanへ変わっています。設定を変えると計画全体が変わることがあるので、時間差のすべてをハッシュの分割だけの効果にはしません。
 
 ## 数えてから題名を付けても、同じ答えになる？
 

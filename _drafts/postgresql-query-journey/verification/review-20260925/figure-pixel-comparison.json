@@ -1,0 +1,218 @@
+[
+  {
+    "name": "00-book-sketch",
+    "equal": true
+  },
+  {
+    "name": "00-reading-service",
+    "equal": true
+  },
+  {
+    "name": "00-books-and-records",
+    "equal": true
+  },
+  {
+    "name": "00-ranking-question",
+    "equal": true
+  },
+  {
+    "name": "01-search-window",
+    "equal": true
+  },
+  {
+    "name": "01-explain-stages",
+    "equal": true
+  },
+  {
+    "name": "01-scan-and-filter",
+    "equal": true
+  },
+  {
+    "name": "01-index-to-row",
+    "equal": true
+  },
+  {
+    "name": "05-growing-library",
+    "equal": true
+  },
+  {
+    "name": "05-linear-scan",
+    "equal": true
+  },
+  {
+    "name": "05-limit-search",
+    "equal": true
+  },
+  {
+    "name": "05-limit-bands",
+    "equal": true
+  },
+  {
+    "name": "06-catalog-question",
+    "equal": true
+  },
+  {
+    "name": "06-btree-path",
+    "equal": true
+  },
+  {
+    "name": "06-tree-levels",
+    "equal": true
+  },
+  {
+    "name": "06-range-scan",
+    "equal": true
+  },
+  {
+    "name": "06-bitmap-scan",
+    "equal": true
+  },
+  {
+    "name": "03-storage-question",
+    "equal": true
+  },
+  {
+    "name": "03-pages-and-rows",
+    "equal": true
+  },
+  {
+    "name": "03-ctid-location",
+    "equal": true
+  },
+  {
+    "name": "03-index-reference",
+    "equal": true
+  },
+  {
+    "name": "03-row-width",
+    "equal": true
+  },
+  {
+    "name": "04-repeat-observation",
+    "equal": true
+  },
+  {
+    "name": "shared-buffer-reuse",
+    "equal": true
+  },
+  {
+    "name": "04-two-levels",
+    "equal": true
+  },
+  {
+    "name": "04-memory-regions",
+    "equal": true
+  },
+  {
+    "name": "02-client-scene",
+    "equal": true
+  },
+  {
+    "name": "02-connections",
+    "equal": true
+  },
+  {
+    "name": "02-query-stages",
+    "equal": true
+  },
+  {
+    "name": "02-execution-tree",
+    "equal": true
+  },
+  {
+    "name": "07-recent-records",
+    "equal": true
+  },
+  {
+    "name": "07-merge-cards",
+    "equal": true
+  },
+  {
+    "name": "07-sort-bands",
+    "equal": true
+  },
+  {
+    "name": "07-external-sort",
+    "equal": true
+  },
+  {
+    "name": "08-twenty-window",
+    "equal": true
+  },
+  {
+    "name": "top-three-heap",
+    "equal": true
+  },
+  {
+    "name": "08-sort-vs-topn",
+    "equal": true
+  },
+  {
+    "name": "08-top-n-vs-index",
+    "equal": true
+  },
+  {
+    "name": "09-title-lookup",
+    "equal": true
+  },
+  {
+    "name": "09-nested-loop",
+    "equal": true
+  },
+  {
+    "name": "09-loops",
+    "equal": true
+  },
+  {
+    "name": "09-hash-join",
+    "equal": true
+  },
+  {
+    "name": "09-merge-join",
+    "equal": true
+  },
+  {
+    "name": "10-planner-choice",
+    "equal": true
+  },
+  {
+    "name": "10-stats-to-rows",
+    "equal": true
+  },
+  {
+    "name": "10-estimate-propagation",
+    "equal": true
+  },
+  {
+    "name": "11-editing-scene",
+    "equal": true
+  },
+  {
+    "name": "11-snapshots",
+    "equal": true
+  },
+  {
+    "name": "11-visibility-map",
+    "equal": true
+  },
+  {
+    "name": "11-wal-and-pages",
+    "equal": true
+  },
+  {
+    "name": "12-decision-notebook",
+    "equal": true
+  },
+  {
+    "name": "12-ranking-before",
+    "equal": true
+  },
+  {
+    "name": "12-ranking-after",
+    "equal": true
+  },
+  {
+    "name": "12-preaggregation",
+    "equal": true
+  }
+]

@@ -1,0 +1,13 @@
+INFO:  vacuuming "journey_review_20260925_2156.public.reading_records"
+INFO:  finished vacuuming "journey_review_20260925_2156.public.reading_records": index scans: 0
+pages: 0 removed, 10811 remain, 3 scanned (0.03% of total), 0 eagerly scanned
+tuples: 0 removed, 2000000 remain, 0 are dead but not yet removable
+removable cutoff: 857, which was 0 XIDs old when operation ended
+frozen: 0 pages from table (0.00% of total) had 0 tuples frozen
+visibility map: 0 pages set all-visible, 0 pages set all-frozen (0 were all-visible)
+index scan bypassed: 2 pages from table (0.02% of total) have 2 dead item identifiers
+avg read rate: 0.000 MB/s, avg write rate: 0.000 MB/s
+buffer usage: 61 hits, 0 reads, 0 dirtied
+WAL usage: 0 records, 0 full page images, 0 bytes, 0 buffers full
+system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+VACUUM

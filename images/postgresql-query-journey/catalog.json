@@ -254,7 +254,7 @@
   {
     "name": "09-merge-join",
     "chapter": 9,
-    "title": "小さい番号の列だけを、右へ進める",
+    "title": "同じ番号の組を、漏らさず返す",
     "description": "仕組み：Merge Join（見ている位置は右にだけ進む。説明するための図）"
   },
   {

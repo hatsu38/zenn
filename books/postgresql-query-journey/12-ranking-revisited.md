@@ -6,6 +6,10 @@ title: "第12章：ランキングを読み解き、改善を選ぶ"
 
 序章のランキングを、ここまで学んだ観察方法、アルゴリズム、内部構造から読み解きます。Indexの追加、集計と結合の順序の変更、事前集計について、減る処理と残る処理を予想して比較します。結果が同じか、必要な鮮度を満たすか、更新の負担は何かも確かめます。AIや検索で得た案を、自分の条件と根拠で判断するところまでを本の到達点にします。
 
+:::message
+第8章の日時Indexが必要です。一時ビューはこの章で作ります。読み直しで集計表が残っている場合は、第1章末の再開手順で片付けます。
+:::
+
 ## 最初の問いに戻る
 
 「20冊のランキングなのに、なぜ待たされる？」
@@ -55,7 +59,46 @@ EXPLAIN (ANALYZE, BUFFERS)
 SELECT * FROM ranking_before;
 ```
 
-この章の実行計画は本書に載せていません。自分の環境で同じ検索を3回測り、行数、方式、時間、BUFFERSを残してください。値がばらつくなら、それも結果です。必要なページがすでに共有バッファにあるかどうかでも時間は変わるので、1回だけの小さな差で勝ち負けを決めません。
+2026年9月25日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件、並列実行とJITは無効です。 次の計画は、第1章から第10章まで進めた後、第11章のVACUUM実験より前に採取しました。章末には、第11章の実験後に3回ずつ測った比較も載せます。
+
+:::details 基準SQLの実行結果
+```sql
+Limit  (cost=144679.49..144679.54 rows=20 width=38) (actual time=845.097..845.109 rows=20.00 loops=1)
+  Buffers: shared hit=15508 read=4574, temp read=9964 written=12569
+  ->  Sort  (cost=144679.49..145926.97 rows=498993 width=38) (actual time=845.096..845.105 rows=20.00 loops=1)
+        Sort Key: (count(*)) DESC, b.id
+        Sort Method: top-N heapsort  Memory: 27kB
+        Buffers: shared hit=15508 read=4574, temp read=9964 written=12569
+        ->  HashAggregate  (cost=119589.36..131401.46 rows=498993 width=38) (actual time=692.218..802.384 rows=492722.00 loops=1)
+              Group Key: b.id
+              Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 23568kB
+              Buffers: shared hit=15508 read=4574, temp read=9964 written=12569
+              ->  Hash Join  (cost=49484.11..79825.86 rows=498993 width=30) (actual time=206.603..553.852 rows=499998.00 loops=1)
+                    Hash Cond: (r.book_id = b.id)
+                    Buffers: shared hit=15508 read=4574, temp read=7441 written=7441
+                    ->  Bitmap Heap Scan on reading_records r  (cost=12795.11..31091.00 rows=498993 width=8) (actual time=21.234..84.550 rows=499998.00 loops=1)
+                          Recheck Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                          Heap Blocks: exact=10811
+                          Buffers: shared hit=12729
+                          ->  Bitmap Index Scan on reading_records_order_idx  (cost=0.00..12670.36 rows=498993 width=0) (actual time=20.191..20.191 rows=499998.00 loops=1)
+                                Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                                Index Searches: 1
+                                Buffers: shared hit=1918
+                    ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=184.698..184.704 rows=1000000.00 loops=1)
+                          Buckets: 131072  Batches: 16  Memory Usage: 4872kB
+                          Buffers: shared hit=2779 read=4574, temp written=5815
+                          ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.008..71.297 rows=1000000.00 loops=1)
+                                Buffers: shared hit=2779 read=4574
+Planning:
+  Buffers: shared hit=21
+Planning Time: 0.199 ms
+Execution Time: 847.516 ms
+```
+:::
+
+下から読むと、対象週499,998行を取り出し、Hash Joinで同じ499,998行へ題名を付けています。HashAggregateで492,722冊に数え、最後のSortとLimitで20冊を選びました。20行へ減るのは、題名を付けた後です。
+
+自分の環境でも、行数、方式、時間、BUFFERSを残してください。キャッシュや実行順でも時間は変わるので、1回だけの小さな差で勝ち負けを決めません。
 
 ## 案1：Indexで減る処理を確かめる
 
@@ -73,7 +116,40 @@ SELECT * FROM ranking_before;
 ROLLBACK;
 ```
 
-これはIndexを物理的に削除した測定ではなく、候補を制限する診断実験です。設定の違いを記録し、元の計画と比べます。計画を比べるときは、アクセス方法だけでなく、後続の処理へ渡す行数も確認します。
+:::details Indexを使う候補を制限した実行結果
+```sql
+Limit  (cost=154399.49..154399.54 rows=20 width=38) (actual time=876.207..876.217 rows=20.00 loops=1)
+  Buffers: shared hit=13684 read=4480, temp read=9964 written=12569
+  ->  Sort  (cost=154399.49..155646.97 rows=498993 width=38) (actual time=876.206..876.214 rows=20.00 loops=1)
+        Sort Key: (count(*)) DESC, b.id
+        Sort Method: top-N heapsort  Memory: 27kB
+        Buffers: shared hit=13684 read=4480, temp read=9964 written=12569
+        ->  HashAggregate  (cost=129309.36..141121.46 rows=498993 width=38) (actual time=706.797..829.648 rows=492722.00 loops=1)
+              Group Key: b.id
+              Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 23568kB
+              Buffers: shared hit=13684 read=4480, temp read=9964 written=12569
+              ->  Hash Join  (cost=36689.00..89545.86 rows=498993 width=30) (actual time=182.946..570.437 rows=499998.00 loops=1)
+                    Hash Cond: (r.book_id = b.id)
+                    Buffers: shared hit=13684 read=4480, temp read=7441 written=7441
+                    ->  Seq Scan on reading_records r  (cost=0.00..40811.00 rows=498993 width=8) (actual time=0.062..102.692 rows=499998.00 loops=1)
+                          Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                          Rows Removed by Filter: 1500002
+                          Buffers: shared hit=10811
+                    ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=179.468..179.469 rows=1000000.00 loops=1)
+                          Buckets: 131072  Batches: 16  Memory Usage: 4872kB
+                          Buffers: shared hit=2873 read=4480, temp written=5815
+                          ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.010..68.463 rows=1000000.00 loops=1)
+                                Buffers: shared hit=2873 read=4480
+Planning:
+  Buffers: shared hit=12
+Planning Time: 0.186 ms
+Execution Time: 878.667 ms
+```
+:::
+
+日時のIndexを使ったBitmap Heap Scanから、200万行を読むSeq Scanへ変わりました。ただし、どちらも結合へ渡す行は499,998行で、その後の集計と上位選びも残ります。Indexだけでランキング全体の処理がなくなるわけではありません。
+
+これはIndexを物理的に削除した測定ではなく、候補を制限する診断実験です。この2回の時間差だけではIndexの効果を断定せず、アクセス方法と後続へ渡す行数を対応させて読みます。
 
 ## 行の数が、どこで変わる？
 
@@ -116,6 +192,41 @@ SELECT * FROM ranking_after;
 
 どこへ渡す行が少なくなるか予想してから、実際の計画を読みましょう。
 
+:::details 集計してから題名を付けた実行結果
+```sql
+Nested Loop  (cost=79010.08..79178.76 rows=20 width=38) (actual time=315.882..316.888 rows=20.00 loops=1)
+  Buffers: shared hit=12803 read=6, temp read=1366 written=3079
+  ->  Limit  (cost=79009.66..79009.71 rows=20 width=16) (actual time=315.840..315.844 rows=20.00 loops=1)
+        Buffers: shared hit=12729, temp read=1366 written=3079
+        ->  Sort  (cost=79009.66..80098.98 rows=435730 width=16) (actual time=315.838..315.841 rows=20.00 loops=1)
+              Sort Key: (count(*)) DESC, reading_records.book_id
+              Sort Method: top-N heapsort  Memory: 26kB
+              Buffers: shared hit=12729, temp read=1366 written=3079
+              ->  HashAggregate  (cost=59159.36..67415.04 rows=435730 width=16) (actual time=195.561..285.591 rows=492722.00 loops=1)
+                    Group Key: reading_records.book_id
+                    Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 15248kB
+                    Buffers: shared hit=12729, temp read=1366 written=3079
+                    ->  Bitmap Heap Scan on reading_records  (cost=12795.11..31091.00 rows=498993 width=8) (actual time=19.915..72.414 rows=499998.00 loops=1)
+                          Recheck Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                          Heap Blocks: exact=10811
+                          Buffers: shared hit=12729
+                          ->  Bitmap Index Scan on reading_records_order_idx  (cost=0.00..12670.36 rows=498993 width=0) (actual time=18.809..18.809 rows=499998.00 loops=1)
+                                Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                                Index Searches: 1
+                                Buffers: shared hit=1918
+  ->  Index Scan using books_pkey on books b  (cost=0.42..8.44 rows=1 width=30) (actual time=0.051..0.051 rows=1.00 loops=20)
+        Index Cond: (id = reading_records.book_id)
+        Index Searches: 20
+        Buffers: shared hit=74 read=6
+Planning:
+  Buffers: shared hit=7
+Planning Time: 0.203 ms
+Execution Time: 318.503 ms
+```
+:::
+
+記録499,998行を数える処理は残っています。一方、Limitが先に20冊を選び、その後の`books_pkey`のIndex Scanは`rows=1 loops=20`です。題名を探す処理が20回になりました。基準SQLのHash Joinでは499,998件を照合していたので、ここが減った処理です。
+
 ## 速くても、答えが変わったら困る
 
 今回の書き換えが同じ結果を返すには、次の三つが前提です。
@@ -132,7 +243,16 @@ FROM reading_records AS r
 WHERE NOT EXISTS (SELECT 1 FROM books AS b WHERE b.id = r.book_id);
 ```
 
-この原稿の確認時には0件でした。0でなければ、先に上位を決める方法で結果が変わる可能性があります。
+実行結果です。
+
+```sql
+ records_without_book
+----------------------
+                    0
+(1 row)
+```
+
+対応する本のない記録は0件でした。0でなければ、先に上位を決める方法で結果が変わる可能性があります。
 
 両方の結果に差がないかも調べます。
 
@@ -144,7 +264,16 @@ SELECT count(*) AS differing_rows FROM (
 ) AS differences;
 ```
 
-確認時には、この差も0件でした。0なら、このデータで行の内容と個数に差がありません。ただし、この比較は表示順までは確かめていません。表示順は、両方の結果に`ORDER BY read_count DESC, id ASC`を付けて見比べます。
+実行結果です。
+
+```sql
+ differing_rows
+----------------
+              0
+(1 row)
+```
+
+このデータでは、行の内容と個数に差がありませんでした。ただし、この比較は表示順を調べません。両方のSQLで読了数の降順、同数なら本番号の昇順を指定していることも確認します。
 
 一つのデータで一致したことだけで、あらゆる場合の証明になるわけではありません。なぜ同じ結果になるかという前提と、実際の確認の両方が必要です。
 
@@ -170,32 +299,88 @@ FROM weekly_read_counts AS w JOIN books AS b ON b.id = w.book_id
 ORDER BY w.read_count DESC, w.book_id ASC LIMIT 20;
 ```
 
-集計表の作成、Indexの作成、読み出しの三つの時間を分けて記録します。表を作るのは最初の1回ですが、中身は記録が増えたり週が替わったりするたびに作り直すか更新します。
+同日の準備の実行結果です。psqlが測った経過時間も分けて残します。
+
+```sql
+SELECT 492722
+Time: 478.098 ms
+CREATE INDEX
+Time: 211.821 ms
+ANALYZE
+Time: 21.638 ms
+```
+
+作成済みの表から読み出した実行結果です。
+
+:::details 事前集計表の読み出し
+```sql
+Limit  (cost=0.85..12.21 rows=20 width=46) (actual time=0.030..0.097 rows=20.00 loops=1)
+  Buffers: shared hit=100 read=3
+  ->  Nested Loop  (cost=0.85..279979.69 rows=492722 width=46) (actual time=0.029..0.095 rows=20.00 loops=1)
+        Buffers: shared hit=100 read=3
+        ->  Index Only Scan using weekly_read_counts_order_idx on weekly_read_counts w  (cost=0.42..21558.21 rows=492722 width=16) (actual time=0.024..0.052 rows=20.00 loops=1)
+              Heap Fetches: 20
+              Index Searches: 1
+              Buffers: shared hit=20 read=3
+        ->  Index Scan using books_pkey on books b  (cost=0.42..0.52 rows=1 width=30) (actual time=0.002..0.002 rows=1.00 loops=20)
+              Index Cond: (id = w.book_id)
+              Index Searches: 20
+              Buffers: shared hit=80
+Planning:
+  Buffers: shared hit=18 read=1
+Planning Time: 0.179 ms
+Execution Time: 0.111 ms
+```
+:::
+
+集計表のIndexから20行を取り出し、本の題名を20回探しています。表示時の計画にはAggregateもSortもありません。ただし、作成直後の集計表では`Heap Fetches: 20`となり、表の行も確認しています。第11章と同じく、値がIndexにあることと、表への確認を省けることは別です。その準備として、492,722行の表とIndexを作った負担が別にあります。
+
+中身は記録が増えたり週が替わったりするたびに作り直すか更新します。ここで測った作成時間は初回の値で、運用中の継続更新や同時アクセスの負担はまだ測っていません。psqlの経過時間とEXPLAINのExecution Timeは測る範囲も違うので、混ぜて一つの処理時間にはしません。
 
 事前集計を使うと、表示時に読了記録を数える必要がなくなります。その代わり、集計表の作成や更新時に記録を数えます。比較では、読み出しと集計表の更新を分けて測ります。
 
 ![集計表が3件のまま読了記録が1件増え、数え直すまで画面はその3件を上位20行として表示する](/images/postgresql-query-journey/12-preaggregation.png)
 *オレンジの帯「表示が古い時間」を見てください（説明するための図）。*
 
+事前集計には、結果を保存するマテリアライズドビューを更新する方法や、トリガーなどで変更を反映する方法もあります。どの仕組みでも、更新の負担と表示の鮮度を一緒に考えます。
+
 では、更新前に新しい記録が届いたらどうでしょう。表示は最新より少し古くなります。削除や訂正、週の切り替わりも反映する必要があります。
 
 ## 10冊に減らせば、速くなる？
 
-序章の三つめの案は、表示を20冊から10冊に減らすことでした。第8章のtop-N heapsortを思い出してください。上位を選ぶには、順序が分からない入力を最後まで確かめる必要がありました。減るのは候補として保つ件数だけです。
+序章の三つめの案は、表示を20冊から10冊に減らすことでした。第8章のtop-N heapsortを思い出してください。順序が分からない入力から上位を選ぶには、入力を最後まで確かめる必要がありました。LIMITを小さくすると、候補として保持する件数と、返す件数は減りますが、入力を調べる件数は減りません。
 
-ランキングでも同じです。10冊に減らしても、対象週の記録を読み、本ごとに数える処理は変わりません。減るのは、数え終えた後に上位を選ぶときの候補の数だけです。第8章では、`LIMIT 20`でもSortへの入力は499,998行でした。この案で待ち時間が大きく変わるとは考えにくく、確かめるなら`LIMIT 10`にした計画で、上位を選ぶ段より前の行数が変わっていないことを見ます。
+基準のランキングSQLが、対象週の記録をすべて集計してからtop-Nで選ぶ計画なら、同じことが言えます。20冊を10冊にしても、対象週の記録を読み、本ごとに数える処理は残ります。上位を選ぶ段より前の行数が変わったかを、実行計画で確かめます。
+
+一方、案2のように上位を選んだ後で題名を付けるなら、結合する件数も20件から10件へ減らせます。案3で件数順のIndexから取り出す計画なら、集計表から取り出す件数も減らせます。どの案でも同じ効果とは限らないので、LIMITの前後にどの処理があるかを見て判断します。
 
 ## このサービスで、何を選ぶ？
 
-自分の結果を使い、比較表を埋めてください。比較表には読み出し時間だけでなく、更新の間隔と、そのあいだ表示が古くなることも書き込みます。
+第11章の更新とVACUUMの実験後、同じDBで3方式を3回ずつ測りました。PostgreSQL 18.6、`work_mem=4MB`、並列実行とJITは無効です。キャッシュを空にせず、基準SQL、案2、案3の順に実行しました。他のDBも動く共有コンテナでの値なので、改善倍率を他環境へ当てはめるための測定ではありません。
 
-| 案 | 減るはずの処理（見る値） | 残る・増える処理 | 自分の実測 |
-| --- | --- | --- | --- |
-| Indexを利用 | 期間内の記録を探すために読む範囲（BUFFERS、Rows Removed） | 集計と結合、Indexの維持 | |
-| 先に集計して結合 | 題名を付ける対象の行数（結合に渡るrows） | 期間内の記録を数える | |
-| 事前集計 | 表示時の集計（Aggregateの有無） | 集計の更新、鮮度の管理 | |
+| 方式 | 3回のExecution Time（ms） | 中央値（ms） | 減った処理・残った負担 |
+| --- | --- | ---: | --- |
+| 日時Indexを使う基準SQL | 695.730 / 703.906 / 684.870 | 695.730 | 期間で絞れても、499,998件の結合と集計が残る |
+| 案2：集計後に題名を付ける | 240.353 / 242.852 / 256.120 | 242.852 | 題名を探すのは20回。期間内の集計は残る |
+| 案3：作成済みの集計表を読む | 0.120 / 0.038 / 0.034 | 0.038 | 表示時の集計が消える。集計表の作成・更新は別に必要 |
 
-「最新の記録をすぐ反映したい」と「5分前までの集計でよい」では、判断が変わりえます。たとえば、この架空のサービスで5分の遅れを許せるなら、事前集計（案3）も候補に入ります。更新の負担が少ない案2を先に確かめ、足りなければ案3へ進む、という順も取れます。どちらの鮮度がこのサービスに必要かを、自分で決めて理由を書きましょう。
+この再測定では、基準SQLと案2の記録の取得がIndex Only Scanになりました。先に載せたBitmap Heap Scanの計画と違うのは、VACUUMなどを経て表の状態と統計が変わった後だからです。取得方法が変わっても、基準では約50万件へ題名を付け、案2では20件へ付けるという違いは残りました。
+
+ここでは「新しい記録を次の表示に反映したい」「まずは数百ミリ秒程度まで短くしたい」というサービスの条件を置き、**日時Indexを残して案2を採用する**判断にします。別の集計表を維持せず、今回の測定では約243msまで短くなり、結果の同値性も確認できたためです。これは今回の条件での判断で、応答時間の保証ではありません。
+
+「多数のアクセスでも、さらに短い応答が必要」「5分前までの集計でよい」という条件なら案3を次に検証します。更新が5分以内に完了するか、更新中も表示できるか、訂正・削除・週替わりを正しく反映できるかを確かめてから採用します。0.038msという読み出しだけの値では、その判断まで済みません。
+
+:::details 調査メモの完成例
+- 困りごと：20冊の表示なのに、結合へ約50万行が渡っていた。
+- 仮説：本番号で集計し、上位を決めてから題名を付ければ結合対象を減らせる。
+- そろえた条件：同じDB、期間、Index、設定で比較した。時間の測定は第11章の実験後にまとめて行った。
+- 観察：題名の取得が20回になり、3回の中央値は695.730msから242.852msへ変わった。
+- 正しさ：対応する本のない記録は0件、双方向の差分も0件。主キーと並び順も確認した。
+- 判断：今回は案2。継続更新の仕組みが必要になる案3は、負荷と鮮度の条件を決めてから検証する。
+- 残る疑問：実際の人気の偏り、同時アクセス、対象期間の変更でも同じ計画と応答になるか。
+:::
+
+基本データでは、各本の全期間の記録はちょうど2件ずつです。対象週は1件の本が485,446冊、2件の本が7,276冊で、上位20冊もすべて2件です。これは仕組みを観察しやすくするためのデータで、現実の人気の分布を再現したものではありません。少数の本へ記録が集中すれば、集計後のグループ数や、集計を先にする効果も変わります。実サービスへ当てはめるときは、自分のデータの偏りも調べます。
 
 ## 最後の課題：AIの案を検証する
 
@@ -210,6 +395,21 @@ AIから「`work_mem`を増やすと改善します」と提案されたとし�
 
 対象期間を1日、1週間、全期間に変えた場合も、同じ結論でしょうか。一度の成功から適用範囲を考えることが、学んだ仕組みを使う練習になります。
 
+## 調べたいことから、仕組みへ戻る
+
+読了後、自分のSQLを調べるときは、次の表を入口にしてください。
+
+| 仕組み | 処理中に持つもの・必要な前提 | 実行計画で見るところ | 戻る章 |
+| --- | --- | --- | --- |
+| 線形探索 | いま調べている行。条件に合うか順に確かめる | Seq ScanのrowsとRows Removed by Filter。LIMITが途中で止めたか | 第2章 |
+| B-tree | 並んだキーと行の場所を持つIndex | Index Cond、取り出した行数、BUFFERS | 第3〜4章 |
+| 全体のソート | 入力を並べる作業領域。収まらなければ一時ファイル | Sortの子のrows、Sort Method、Memory・Disk・temp | 第7章 |
+| top-N | 上位k件の候補。入力の順序がなければ全入力を調べる | Sortの子のrowsと、Limitのrowsを分ける | 第8章 |
+| ハッシュ結合・集約 | キーで相手やカウンタを探すハッシュ表 | HashやHashAggregateのMemory Usage、Batches、入力と出力のrows | 第9章 |
+| Merge Join | 結合キー順の入力と、同じキーの組を返すための状態 | 入力を並べるSortやIndex、重複を含む出力行数 | 第9章 |
+| 計画の選択 | 統計と設定から作る見積もり | rowsとactual rowsのずれ。costは時間と分ける | 第10章 |
+| 可視性の確認 | 行バージョンと可視性マップ | Index Only ScanのHeap Fetchesと、更新・VACUUMの履歴 | 第11章 |
+
 ## 20冊のために、何を調べていたのか
 
 20冊を返すまでに、PostgreSQLは対象週の記録（手元のデータでは約50万件、序章の条件では約500万件）を読み、題名と対応させ、本ごとに数えてから上位を選んでいました。返す20冊より前の段で、この途中の行数を扱っていました。待ち時間を減らす手掛かりは、この行数にあります。三つの案は、この途中の行数をどこで減らすか、あるいは表示の前に済ませておくかの違いです。
@@ -219,3 +419,14 @@ SQLを受け取るプロセス、データを格納するページ、ソート�
 知らないノードに出会っても、最初から全名称を覚え直す必要はありません。「何を受け取り、どんな状態を持ち、何を返す処理か」と問い、観察するところから始められます。
 
 序章で書いた予想を読み返してください。選ぶ案が同じでも、理由や確かめ方が増えていれば、第12章までの観察が役に立っています。
+
+## 実験を終える
+
+事前集計表は、この実験のために作りました。比較を終えたら片付け、psqlの時間表示も戻します。
+
+```sql
+DROP TABLE weekly_read_counts;
+\timing off
+```
+
+表に付いたIndexも削除されます。基本データのbooksとreading_records、前の章で作ったIndexは残ります。一時ビューは接続を閉じると消えます。
