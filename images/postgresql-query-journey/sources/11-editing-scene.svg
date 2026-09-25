@@ -1,1 +1,59 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="530" viewBox="0 0 640 530" role="img"><title>題名を直している間に、読まれたら？</title><style>text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif}</style><rect width="640" height="530" fill="#fffdf7"/><g id="chapter-scene"><text x="28" y="43" font-size="27" fill="#25374b">題名を直している間に、読まれたら？</text><text x="28" y="79" font-size="18" fill="#25374b">二つの接続から、同じ本を見る。</text><g transform="translate(72 122)"><circle cx="25" cy="24" r="21" fill="#f4d3b3" stroke="#25374b" stroke-width="2.5"/><path d="M4 20 Q0 -3 27 2 Q48 1 46 20" fill="none" stroke="#25374b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="24" r="2"/><circle cx="32" cy="24" r="2"/><path d="M19 34 Q26 40 32 34" fill="none" stroke="#25374b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M0 98 Q-4 54 25 52 Q54 54 52 98" fill="#79b8c1" stroke="#25374b" stroke-width="2.5"/></g><g transform="translate(470 122)"><circle cx="25" cy="24" r="21" fill="#f4d3b3" stroke="#25374b" stroke-width="2.5"/><path d="M4 20 Q0 -3 27 2 Q48 1 46 20" fill="none" stroke="#25374b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="24" r="2"/><circle cx="32" cy="24" r="2"/><path d="M19 34 Q26 40 32 34" fill="none" stroke="#25374b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M0 98 Q-4 54 25 52 Q54 54 52 98" fill="#e8b359" stroke="#25374b" stroke-width="2.5"/></g><rect x="29" y="240" width="270" height="139" rx="10" fill="white" stroke="#25374b" stroke-width="2.5"/><path d="M29 275 H299" fill="none" stroke="#25374b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="43" y="265" font-size="17" fill="#25374b">接続A / 読んでいる</text><path d="M164.0 379 v18 m-38 0 h76" fill="none" stroke="#25374b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="51" y="312" font-size="20" fill="#25374b">どの題名が見える？</text><rect x="341" y="240" width="270" height="139" rx="10" fill="white" stroke="#25374b" stroke-width="2.5"/><path d="M341 275 H611" fill="none" stroke="#25374b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="355" y="265" font-size="17" fill="#25374b">接続B / 書き換える</text><path d="M476.0 379 v18 m-38 0 h76" fill="none" stroke="#25374b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="361" y="312" font-size="21" fill="#25374b">改訂版の本 42</text><text x="272" y="182" font-size="25" fill="#25374b">本42</text><rect x="24" y="420" width="592" height="70" rx="10" fill="#fff0d3" stroke="#25374b" stroke-width="2.5"/><text x="43" y="463" font-size="21" fill="#25374b">確定の前後で、見える値は変わる？</text><text x="28" y="515" font-size="14" fill="#25374b">学ぶきっかけを描く絵 ／ 実行結果や内部配置の実測ではありません</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="540" viewBox="0 0 640 540" role="img" aria-labelledby="title">
+  <title id="title">題名を直している間に、読まれたら？</title>
+  <defs>
+    <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
+    <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
+    <marker id="ref" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#7d93a3"/></marker>
+  </defs>
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50}
+.h{font-size:30px;font-weight:700}.b{font-weight:700}.s{font-size:22px}.m{font-size:22px;fill:#566c7b}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:22px}.tag{font-size:22px;font-weight:700;fill:#fff}
+.teal{fill:#176e65}.brown{fill:#945e11}.real{fill:#176e65}.model{fill:#566c7b}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2}.node{fill:#ecf2f8;stroke:#56738a;stroke-width:2}
+.row{fill:#fff;stroke:#448b7c;stroke-width:2}.match{fill:#fff;stroke:#176e65;stroke-width:4}
+.page{fill:#f7fbf9;stroke:#6d9f94;stroke-width:2}.ipage{fill:#f4f6f8;stroke:#6b7f8e;stroke-width:2}
+.band{fill:#d5dde3;stroke:#92a7b5;stroke-width:2}.skip{fill:none;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5}
+.hot{fill:#fff0d5;stroke:#b88020;stroke-width:4}.ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5}
+.flow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#flow)}.req{fill:none;stroke:#945e11;stroke-width:3;stroke-dasharray:8 6;marker-end:url(#req)}
+.ref{fill:none;stroke:#7d93a3;stroke-width:2;marker-end:url(#ref)}.step{fill:#fff;stroke:#243b50;stroke-width:2.5}
+.spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
+.work{fill:#fff;stroke:#56738a;stroke-width:2;stroke-dasharray:8 5}.val{fill:#dcefe8;stroke:#448b7c;stroke-width:2}.buffer{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2}
+.route{fill:#f4f6f8;stroke:#243b50;stroke-width:3}.leader{fill:none;stroke:#56738a;stroke-width:2}
+.storage{fill:#ece7f5;stroke:#735f9f;stroke-width:2}.file{fill:#fff;stroke:#735f9f;stroke-width:2}
+  .cmp{fill:#dfe5ea}
+.swap{fill:#dcefe8;stroke:#243b50;stroke-width:4}
+.big{font-size:56px;font-weight:700}
+  </style>
+  <rect width="640" height="540" fill="#fffdf7"/>
+  <text x="24" y="48" class="h">題名を直している間に、読まれたら？</text>
+  <g id="conn-a">
+    <rect x="24" y="76" width="280" height="168" rx="10" fill="#fff" stroke="#243b50" stroke-width="2.5"/>
+    <path d="M24 114 H304" fill="none" stroke="#243b50" stroke-width="2.5"/>
+    <text x="40" y="103" class="s">接続A</text>
+    <text x="40" y="150" class="mono">SELECT … id=42</text>
+  </g>
+  <g id="conn-b">
+    <rect x="336" y="76" width="280" height="168" rx="10" fill="#fff" stroke="#243b50" stroke-width="2.5"/>
+    <path d="M336 114 H616" fill="none" stroke="#243b50" stroke-width="2.5"/>
+    <text x="352" y="103" class="s">接続B</text>
+    <text x="352" y="150" class="mono">UPDATE … id=42</text>
+    <text x="352" y="182" class="m">まだ確定していない</text>
+    <rect x="421" y="196" width="110" height="34" rx="17" class="ghost"/>
+    <text x="476" y="219" text-anchor="middle" class="mono b">COMMIT</text>
+  </g>
+  <g id="shared-row">
+    <rect x="150" y="300" width="340" height="120" rx="10" class="page"/>
+    <text x="170" y="336" class="s b">本42の行があるページ</text>
+    <rect x="205" y="352" width="230" height="40" rx="4" class="row"/>
+    <text x="222" y="378" class="s">42　？</text>
+  </g>
+  <g id="arrows">
+    <path d="M164 244 L230 300" class="ref"/>
+    <text x="125" y="266" class="s">見る</text>
+    <path d="M476 244 L410 300" class="req"/>
+    <text x="430" y="266" text-anchor="end" class="s brown">書き換える</text>
+  </g>
+  <rect x="24" y="460" width="592" height="60" rx="10" fill="#fff0d3" stroke="#243b50" stroke-width="2.5"/>
+  <text x="43" y="498" class="s b">確定の前後で、見える値は変わる？</text>
+</svg>
