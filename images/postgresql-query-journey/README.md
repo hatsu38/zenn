@@ -57,7 +57,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第11章 | ログの保存と、ページの書き出し | [SVG](sources/11-wal-and-pages.svg) | [PNG](11-wal-and-pages.png) |
 | 第12章 | 今度は、根拠を持って選べる | [SVG](sources/12-decision-notebook.svg) | [PNG](12-decision-notebook.png) |
 | 第12章 | 題名を付けてから、上位を選ぶ | [SVG](sources/12-ranking-before.svg) | [PNG](12-ranking-before.png) |
-| 第12章 | 上位を選んでから題名を付ける | [SVG](sources/12-ranking-after.svg) | [PNG](12-ranking-after.png) |
+| 第12章 | 上位を選んでから、題名を付ける | [SVG](sources/12-ranking-after.svg) | [PNG](12-ranking-after.png) |
 | 第12章 | 集計表は更新するまで古いまま | [SVG](sources/12-preaggregation.svg) | [PNG](12-preaggregation.png) |
 
 ## 編集する
