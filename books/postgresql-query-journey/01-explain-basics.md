@@ -413,7 +413,7 @@ SET work_mem = '4MB';
 | 第3章 | 題名Indexなし | `books_title_idx` |
 | 第4章 | 題名Indexあり。`books_observation`を作る | `books_observation`を第5章へ残す |
 | 第5章 | 題名Indexあり、`books_observation`に1,000冊 | `DROP TABLE`で観察用テーブルを削除 |
-| 第6章 | 題名Indexあり。接続A・Bは同じDBへつなぐ | テーブル・Indexの変更なし |
+| 第6章 | 題名Indexあり。章末の補足では、接続A・Bを同じDBへつなぐ | テーブル・Indexの変更なし |
 | 第7章 | 日時Indexなし | `work_mem`を4MBへ戻す |
 | 第8章 | 日時Indexなし | `reading_records_order_idx` |
 | 第9章 | 日時Indexあり | 実験用の設定はROLLBACKで戻す |
