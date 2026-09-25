@@ -248,8 +248,8 @@
   {
     "name": "09-merge-join",
     "chapter": 9,
-    "title": "並んだ二つの入力を、先頭から合わせる",
-    "description": "Merge Joinの模型 ／ 本の番号は一意、記録は重複あり"
+    "title": "小さい番号の列だけを、右へ進める",
+    "description": "仕組み：Merge Joinの模型（見ている位置は右にだけ進む）"
   },
   {
     "name": "10-planner-choice",
