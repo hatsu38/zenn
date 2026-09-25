@@ -27,7 +27,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <path d="M322 74 H460 L478 96 L460 118 H322 L340 96 Z" class="step"/>
     <text x="400" y="104" text-anchor="middle" class="s b">実行する</text>
     <path d="M468 74 H616 V118 H468 L486 96 Z" class="step"/>
-    <text x="548" y="104" text-anchor="middle" class="s b">行を画面へ</text>
+    <text x="544" y="104" text-anchor="middle" class="s b">結果を画面へ</text>
   </g>
   <g id="select">
     <text x="24" y="176" class="mono b">SELECT</text>
@@ -35,7 +35,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <circle cx="250" cy="170" r="9" fill="#277b74"/>
     <circle cx="400" cy="170" r="9" fill="#277b74"/>
     <circle cx="548" cy="170" r="9" fill="#277b74"/>
-    <text x="200" y="206" class="m">検索結果の行を表示</text>
+    <text x="200" y="206" class="m">検索結果のレコードを表示</text>
   </g>
   <g id="explain">
     <text x="24" y="266" class="mono b">EXPLAIN</text>
@@ -49,13 +49,13 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <g id="analyze">
     <text x="24" y="344" class="mono b">EXPLAIN</text>
     <text x="24" y="372" class="mono b">ANALYZE</text>
-    <rect x="466" y="306" width="150" height="34" rx="6" class="hot"/>
-    <text x="541" y="330" text-anchor="middle" class="s b">行は出さない</text>
+    <rect x="436" y="306" width="180" height="34" rx="6" class="hot"/>
+    <text x="526" y="330" text-anchor="middle" class="s b">結果は出さない</text>
     <path d="M200 356 H400" fill="none" stroke="#277b74" stroke-width="4"/>
     <path d="M400 356 H548" fill="none" stroke="#b5c2cc" stroke-width="3" stroke-dasharray="8 6"/>
     <circle cx="250" cy="356" r="9" fill="#277b74"/>
     <circle cx="400" cy="356" r="9" fill="#277b74"/>
     <circle cx="548" cy="356" r="9" fill="#fff" stroke="#b5c2cc" stroke-width="3"/>
-    <text x="200" y="392" class="m">計画＋実際の行数と時間を表示</text>
+    <text x="200" y="392" class="m">計画＋実際のレコード数と時間を表示</text>
   </g>
 </svg>

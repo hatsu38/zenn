@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="708" viewBox="0 0 640 708" role="img" aria-labelledby="title">
-  <title id="title">1回1行を20回で、20行</title>
+  <title id="title">1回1件を20回で、20件</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
     <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
@@ -22,7 +22,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .route{fill:#f4f6f8;stroke:#243b50;stroke-width:3}.leader{fill:none;stroke:#56738a;stroke-width:2}
   </style>
   <rect width="640" height="708" fill="#f5f7f9"/>
-  <text x="24" y="48" class="h">1回1行を20回で、20行</text>
+  <text x="24" y="48" class="h">1回1件を20回で、20件</text>
   <rect x="548" y="22" width="68" height="36" rx="18" class="real"/>
   <text x="582" y="47" text-anchor="middle" class="tag">実測</text>
   <g id="nested-loop">
@@ -55,7 +55,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </g>
   <g id="focus">
     <rect x="330" y="470" width="260" height="48" rx="8" class="hot"/>
-    <text x="460" y="503" text-anchor="middle" class="b">1.00 × 20 ＝ 20行</text>
+    <text x="460" y="503" text-anchor="middle" class="b">1.00 × 20 ＝ 20件</text>
   </g>
   <g id="time-and-buffers">
     <text x="44" y="568" class="mono">actual time=0.344..0.344</text>
@@ -68,6 +68,6 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <path d="M112 228 V166" class="flow"/>
     <path d="M419 228 V166" class="flow"/>
     <path d="M419 372 V286" class="flow"/>
-    <text x="389" y="358" text-anchor="end" class="s b teal">行を渡す</text>
+    <text x="389" y="358" text-anchor="end" class="s b teal">レコードを渡す</text>
   </g>
 </svg>

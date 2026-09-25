@@ -44,7 +44,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </g>
   <g id="output">
     <rect x="24" y="708" width="362" height="98" rx="10" class="panel"/>
-    <text x="40" y="740" class="s b">結果の行を画面へ</text>
+    <text x="40" y="740" class="s b">検索結果を画面へ</text>
     <rect x="40" y="754" width="240" height="36" rx="4" class="row"/>
     <text x="54" y="779" class="s">42　実験用の本 42</text>
   </g>
@@ -64,7 +64,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <path d="M396 268 H406 V656 H396" fill="none" stroke="#243b50" stroke-width="2"/>
     <text x="416" y="578" class="mono b">EXPLAIN ANALYZE</text>
     <text x="416" y="608" class="s">④まで</text>
-    <rect x="416" y="622" width="150" height="34" rx="6" class="hot"/>
-    <text x="491" y="646" text-anchor="middle" class="s b">行は出さない</text>
+    <rect x="416" y="622" width="180" height="34" rx="6" class="hot"/>
+    <text x="506" y="646" text-anchor="middle" class="s b">結果は出さない</text>
   </g>
 </svg>

@@ -87,7 +87,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="394" y="722" text-anchor="middle" class="mono m">GROUP BY</text>
     <text x="539" y="722" text-anchor="middle" class="mono m">LIMIT</text>
     <rect x="24" y="732" width="280" height="56" rx="10" class="val"/>
-    <text x="164" y="768" text-anchor="middle" class="b">499,998行</text>
+    <text x="164" y="768" text-anchor="middle" class="b">499,998件</text>
     <rect x="334" y="732" width="120" height="56" rx="10" class="hot"/>
     <text x="394" y="768" text-anchor="middle" class="b">？冊</text>
     <rect x="484" y="732" width="110" height="56" rx="10" class="val"/>

@@ -28,12 +28,12 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <rect width="640" height="2396" fill="#f5f7f9"/>
   <text x="24" y="48" class="h">図の部品見本</text>
   <g id="row-card">
-    <text x="24" y="124" class="s b">行カード</text>
+    <text x="24" y="124" class="s b">レコードカード</text>
     <rect x="220" y="100" width="240" height="36" rx="4" class="row"/>
     <text x="234" y="125" class="s">42　実験用の本 42</text>
   </g>
   <g id="match-card">
-    <text x="24" y="176" class="s b">一致した行</text>
+    <text x="24" y="176" class="s b">一致したレコード</text>
     <rect x="220" y="152" width="240" height="36" rx="4" class="match"/>
     <text x="234" y="177" class="s">42　実験用の本 42</text>
   </g>
@@ -62,7 +62,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="24" y="488" class="s b">量の帯</text>
     <rect x="220" y="464" width="300" height="32" rx="4" class="band"/>
     <rect x="520" y="464" width="96" height="32" rx="4" class="skip"/>
-    <text x="220" y="524" class="m">灰色＝比べた行、破線＝比べなかった行</text>
+    <text x="220" y="524" class="m">灰色＝比べたレコード、破線＝比べなかったレコード</text>
   </g>
   <g id="emphasis">
     <text x="24" y="572" class="s b">焦点</text>
@@ -73,7 +73,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="556" y="573" text-anchor="middle" class="m">本3</text>
   </g>
   <g id="arrows">
-    <text x="24" y="630" class="s b">行・データの流れ</text>
+    <text x="24" y="630" class="s b">レコード・データの流れ</text>
     <path d="M260 624 H420" class="flow"/>
     <text x="24" y="680" class="s b">要求</text>
     <path d="M260 674 H420" class="req"/>

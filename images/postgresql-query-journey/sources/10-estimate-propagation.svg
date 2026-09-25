@@ -55,7 +55,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="44" y="426" class="mono">rows=20</text>
   </g>
   <path d="M320 532 V442" class="flow"/>
-  <text x="300" y="490" text-anchor="end" class="s b teal">行を渡す</text>
+  <text x="300" y="490" text-anchor="end" class="s b teal">レコードを渡す</text>
   <g id="model-child">
     <rect x="24" y="532" width="592" height="100" rx="12" class="node"/>
     <text x="44" y="564" class="mono b">Index Scan using books_pkey</text>

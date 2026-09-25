@@ -62,7 +62,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </g>
   <g id="heap-fetch">
     <path d="M544 324 V506" class="ref"/>
-    <text x="530" y="410" text-anchor="end" class="s">テーブルの行を確かめる</text>
+    <text x="530" y="410" text-anchor="end" class="s">テーブルで確認</text>
     <text x="530" y="444" text-anchor="end" class="s"><tspan class="mono">Heap Fetches</tspan>＝この回数</text>
   </g>
 </svg>

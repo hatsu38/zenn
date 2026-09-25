@@ -44,7 +44,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </g>
   <g id="shared-row">
     <rect x="150" y="300" width="340" height="120" rx="10" class="page"/>
-    <text x="170" y="336" class="s b">本42の行があるページ</text>
+    <text x="170" y="336" class="s b">本42を含むページ</text>
     <rect x="205" y="352" width="230" height="40" rx="4" class="row"/>
     <text x="222" y="378" class="s">42　？</text>
   </g>

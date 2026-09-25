@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="696" viewBox="0 0 640 696" role="img" aria-labelledby="title">
-  <title id="title">200万行を調べ、4分の1を並べた</title>
+  <title id="title">200万件を調べ、4分の1を並べた</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
     <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
@@ -21,7 +21,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .work{fill:#fff;stroke:#56738a;stroke-width:2;stroke-dasharray:8 5}.val{fill:#dcefe8;stroke:#448b7c;stroke-width:2}.buffer{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2}
   </style>
   <rect width="640" height="696" fill="#f5f7f9"/>
-  <text x="24" y="48" class="h">200万行を調べ、4分の1を並べた</text>
+  <text x="24" y="48" class="h">200万件を調べ、4分の1を並べた</text>
   <rect x="548" y="22" width="68" height="36" rx="18" class="real"/>
   <text x="582" y="47" text-anchor="middle" class="tag">実測</text>
   <g id="sort">
@@ -35,18 +35,18 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </g>
   <g id="passed-rows">
     <rect x="44" y="384" width="138" height="44" rx="4" class="hot"/>
-    <text x="198" y="414" class="b">○ 499,998行</text>
+    <text x="198" y="414" class="b">○ 499,998件</text>
     <text x="380" y="414" class="mono">rows=499998.00</text>
     <path d="M113 382 V287" class="flow"/>
-    <text x="131" y="366" class="s b teal">行を渡す</text>
+    <text x="131" y="366" class="s b teal">レコードを渡す</text>
   </g>
   <g id="seqscan">
     <rect x="24" y="448" width="592" height="224" rx="12" class="node"/>
     <text x="44" y="482" class="mono b">Seq Scan on reading_records</text>
     <text x="44" y="518" class="mono m">Buffers: shared hit=10811</text>
     <rect x="44" y="536" width="552" height="44" rx="4" class="band"/>
-    <text x="60" y="566" class="s b">テーブルの200万行</text>
-    <text x="44" y="618" class="b">× 除外 1,500,002行</text>
+    <text x="60" y="566" class="s b">テーブルの200万件</text>
+    <text x="44" y="618" class="b">× 除外 1,500,002件</text>
     <text x="44" y="652" class="mono">Rows Removed by Filter: 1500002</text>
   </g>
 </svg>

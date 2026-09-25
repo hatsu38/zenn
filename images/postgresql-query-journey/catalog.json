@@ -20,8 +20,8 @@
   {
     "name": "00-ranking-question",
     "chapter": 0,
-    "title": "200万件から、20行を返す",
-    "description": "問い：ランキングのSQLの途中で扱う行数"
+    "title": "200万件から、20件を返す",
+    "description": "問い：ランキングのSQLの途中で扱うレコード数"
   },
   {
     "name": "01-search-window",
@@ -38,13 +38,13 @@
   {
     "name": "01-scan-and-filter",
     "chapter": 1,
-    "title": "1行のために、100万行を比べた",
+    "title": "1件のために、100万件を比べた",
     "description": "観察：Seq Scanの実測を帯で見る"
   },
   {
     "name": "01-index-to-row",
     "chapter": 1,
-    "title": "Indexで場所を探し、その行だけ読む",
+    "title": "Indexで場所を探し、そのレコードだけ読む",
     "description": "仕組み：Index Scanの経路（説明するための図）"
   },
   {
@@ -62,13 +62,13 @@
   {
     "name": "05-limit-search",
     "chapter": 2,
-    "title": "Limitが次の行を求めなくなる",
+    "title": "Limitが次のレコードを求めなくなる",
     "description": "仕組み：LIMIT 1で止まる（説明するための図）"
   },
   {
     "name": "05-limit-bands",
     "chapter": 2,
-    "title": "位置で変わる、比べる行数",
+    "title": "位置で変わる検索件数",
     "description": "観察：4つの実測を帯で比べる"
   },
   {
@@ -93,7 +93,7 @@
     "name": "06-range-scan",
     "chapter": 3,
     "title": "4以上8以下なら、隣の箱も開く",
-    "description": "仕組み：範囲の検索で隣の箱へ進み、テーブルから5行を取り出す（説明するための図）"
+    "description": "仕組み：範囲の検索で隣の箱へ進み、テーブルから5件を取り出す（説明するための図）"
   },
   {
     "name": "06-bitmap-scan",
@@ -104,20 +104,20 @@
   {
     "name": "03-storage-question",
     "chapter": 4,
-    "title": "100万行なのに、7,353回",
-    "description": "問い：100万行を調べたアクセスが7,353回だった"
+    "title": "100万件なのに、7,353回",
+    "description": "問い：100万件を調べたアクセスが7,353回だった"
   },
   {
     "name": "03-pages-and-rows",
     "chapter": 4,
-    "title": "本5の1行も、ページ0ごと読む",
-    "description": "仕組み：観察用のテーブルの8ページと行（行数は実測）"
+    "title": "本5の1件も、ページ0ごと読む",
+    "description": "仕組み：観察用のテーブルの8ページとレコード（件数は実測）"
   },
   {
     "name": "03-ctid-location",
     "chapter": 4,
     "title": "ctid = (0,1) が指す場所",
-    "description": "仕組み：ctidのページ番号と項目番号で行を指す（説明するための図）"
+    "description": "仕組み：ctidのページ番号と項目番号でレコードを指す（説明するための図）"
   },
   {
     "name": "03-index-reference",
@@ -129,7 +129,7 @@
     "name": "03-row-width",
     "chapter": 4,
     "title": "同じ1,000件でも、8ページと32ページ",
-    "description": "比較：行の長さとページ数（実測）"
+    "description": "比較：レコードの長さとページ数（実測）"
   },
   {
     "name": "04-repeat-observation",
@@ -146,8 +146,8 @@
   {
     "name": "04-two-levels",
     "chapter": 5,
-    "title": "ページは再利用、行は毎回比べる",
-    "description": "観察：3回の実行のページの使い方と比べた行（実測）"
+    "title": "ページは再利用、毎回比べる",
+    "description": "観察：3回の実行のページの使い方と比べたレコード（実測）"
   },
   {
     "name": "04-memory-regions",
@@ -176,8 +176,8 @@
   {
     "name": "02-execution-tree",
     "chapter": 6,
-    "title": "Limitは3行で要求を止める",
-    "description": "仕組み：LimitとIndex Scanの要求と行の受け渡し（説明するための図）"
+    "title": "Limitは3件で要求を止める",
+    "description": "仕組み：LimitとIndex Scanの要求とレコードの受け渡し（説明するための図）"
   },
   {
     "name": "07-recent-records",
@@ -194,8 +194,8 @@
   {
     "name": "07-sort-bands",
     "chapter": 7,
-    "title": "200万行を調べ、4分の1を並べた",
-    "description": "観察：Seq ScanからSortへ渡る行数と、Sortのメモリ（実測）"
+    "title": "200万件を調べ、4分の1を並べた",
+    "description": "観察：Seq ScanからSortへ渡るレコード数と、Sortのメモリ（実測）"
   },
   {
     "name": "07-external-sort",
@@ -218,7 +218,7 @@
   {
     "name": "08-sort-vs-topn",
     "chapter": 8,
-    "title": "LIMITで減るのは、持つ量と返す行",
+    "title": "LIMITで減る保持量と出力件数",
     "description": "比較：ORDER BYだけとLIMIT 20の三つの数（実測）"
   },
   {
@@ -236,13 +236,13 @@
   {
     "name": "09-nested-loop",
     "chapter": 9,
-    "title": "外側の行ごとに、内側を1回たどる",
-    "description": "仕組み：Nested Loop（内側の回数は外側の行数と同じ。説明するための図）"
+    "title": "外側のレコードごとに、内側を1回たどる",
+    "description": "仕組み：Nested Loop（内側の回数は外側のレコード数と同じ。説明するための図）"
   },
   {
     "name": "09-loops",
     "chapter": 9,
-    "title": "1回1行を20回で、20行",
+    "title": "1回1件を20回で、20件",
     "description": "観察：Nested Loop の rows と loops と Buffers（実測）"
   },
   {
@@ -260,13 +260,13 @@
   {
     "name": "10-planner-choice",
     "chapter": 10,
-    "title": "計画は、1行も読まずに決まる",
+    "title": "計画は、1件も読まずに決まる",
     "description": "問い：20件と50万件で、実行前に方法が分かれる"
   },
   {
     "name": "10-stats-to-rows",
     "chapter": 10,
-    "title": "割合のメモから、行数を見積もる",
+    "title": "割合のメモから、レコード数を見積もる",
     "description": "仕組み：ANALYZE のメモの割合から計画の rows を見積もる（説明するための図）"
   },
   {
@@ -279,7 +279,7 @@
     "name": "11-editing-scene",
     "chapter": 11,
     "title": "題名を直している間に、読まれたら？",
-    "description": "問い：同じ行を指す接続Aと、まだ確定していない接続B"
+    "description": "問い：同じレコードを指す接続Aと、まだ確定していない接続B"
   },
   {
     "name": "11-snapshots",
@@ -309,7 +309,7 @@
     "name": "12-ranking-before",
     "chapter": 12,
     "title": "題名を付けてから、上位を選ぶ",
-    "description": "6記録・3冊の小さな例 ／ 対象週499,998行→20冊は実測"
+    "description": "6記録・3冊の小さな例 ／ 対象週499,998件→20冊は実測"
   },
   {
     "name": "12-ranking-after",
@@ -321,6 +321,6 @@
     "name": "12-preaggregation",
     "chapter": 12,
     "title": "集計テーブルは更新するまで古いまま",
-    "description": "仕組み：事前集計（説明するための図。記録が増えても更新まで値は古いまま、画面は上位20行を読むだけ）"
+    "description": "仕組み：事前集計（説明するための図。記録が増えても更新まで値は古いまま、画面は上位20件を読むだけ）"
   }
 ]
