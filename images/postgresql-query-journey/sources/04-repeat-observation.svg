@@ -47,8 +47,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="385" y="408" class="s">表のファイル</text>
   </g>
   <g id="fetches">
-    <path d="M434 368 V170" class="flow"/>
-    <text x="422" y="284" text-anchor="end" class="s teal">1回目：取り寄せる</text>
+    <text x="466" y="284" text-anchor="end" class="s teal">1回目：取り寄せる</text>
     <path d="M478 368 V170" class="flow"/>
     <rect x="492" y="256" width="124" height="40" rx="6" class="hot"/>
     <text x="554" y="284" text-anchor="middle" class="s b">2回目：？</text>
