@@ -90,6 +90,12 @@
     "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
+    "name": "06-tree-levels",
+    "chapter": 3,
+    "title": "100万冊でも、読むのは3枚",
+    "description": "仕組み：分岐100の3段の木で、各段1枚だけ読む（説明するための図）"
+  },
+  {
     "name": "03-index-reference",
     "chapter": 4,
     "title": "Indexをたどって、表の行へ届く",
