@@ -8,8 +8,8 @@
   {
     "name": "00-reading-service",
     "chapter": 0,
-    "title": "こんな読書記録サービスを作ります",
-    "description": "架空の画面イメージ ／ 件数は説明用"
+    "title": "記録は増えても、表示は20冊",
+    "description": "問い：読了の記録から上位20冊を出すまで"
   },
   {
     "name": "00-books-and-records",
