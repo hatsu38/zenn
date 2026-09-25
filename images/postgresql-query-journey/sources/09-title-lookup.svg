@@ -47,7 +47,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </g>
   <g id="books">
     <rect x="24" y="340" width="592" height="188" rx="10" class="panel"/>
-    <text x="80" y="372" class="s b">本の表 books（100万冊）</text>
+    <text x="80" y="372" class="s b">booksテーブル（100万冊）</text>
     <rect x="80" y="388" width="360" height="40" rx="4" class="row"/>
     <text x="102" y="416" class="s">1　星の図鑑</text>
     <rect x="80" y="436" width="360" height="40" rx="4" class="row"/>

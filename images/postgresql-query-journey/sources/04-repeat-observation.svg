@@ -46,8 +46,8 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <g id="storage">
     <rect x="24" y="316" width="592" height="128" rx="12" class="storage"/>
     <text x="44" y="356" class="b">ストレージ（SSDなど）</text>
-    <rect x="371" y="376" width="170" height="48" rx="6" class="file"/>
-    <text x="385" y="408" class="s">表のファイル</text>
+    <rect x="371" y="376" width="225" height="48" rx="6" class="file"/>
+    <text x="385" y="408" class="s">テーブルのファイル</text>
   </g>
   <g id="fetches">
     <text x="466" y="284" text-anchor="end" class="s teal">1回目：取り寄せる</text>

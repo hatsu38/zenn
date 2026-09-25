@@ -77,7 +77,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="125" y="613" text-anchor="middle" class="b">本1：3</text>
     <rect x="40" y="648" width="170" height="44" rx="8" class="hot"/>
     <text x="125" y="677" text-anchor="middle" class="b">本2：2</text>
-    <text x="430" y="596" class="s m">本の表</text>
+    <text x="430" y="596" class="s m">booksテーブル</text>
     <rect x="430" y="604" width="150" height="40" rx="4" class="row"/>
     <text x="505" y="631" text-anchor="middle" class="s">1　星</text>
     <rect x="430" y="656" width="150" height="40" rx="4" class="row"/>

@@ -38,7 +38,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="234" y="177" class="s">42　実験用の本 42</text>
   </g>
   <g id="table-page">
-    <text x="24" y="232" class="s b">表のページ</text>
+    <text x="24" y="232" class="s b">テーブルのページ</text>
     <rect x="220" y="204" width="396" height="92" rx="10" class="page"/>
     <text x="236" y="230" class="s b">ページ 0</text>
     <rect x="236" y="244" width="170" height="34" rx="4" class="row"/>
@@ -159,8 +159,9 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </g>
   <g id="file">
     <text x="24" y="2002" class="s b">ファイル</text>
-    <rect x="240" y="1970" width="170" height="48" rx="6" class="file"/>
-    <text x="254" y="2002" class="s">表のファイル</text>
+    <rect x="240" y="1964" width="170" height="60" rx="6" class="file"/>
+    <text x="254" y="1988" class="s">テーブルの</text>
+    <text x="254" y="2014" class="s">ファイル</text>
     <rect x="426" y="1970" width="170" height="48" rx="6" class="file"/>
     <text x="440" y="2002" class="s">一時ファイル</text>
   </g>

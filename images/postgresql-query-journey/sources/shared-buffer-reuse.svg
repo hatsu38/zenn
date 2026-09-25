@@ -51,7 +51,8 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="24" y="588" width="592" height="216" rx="12" class="storage"/>
     <text x="44" y="628" class="b">ストレージ（SSDなど）</text>
     <rect x="302" y="646" width="294" height="142" rx="6" class="file"/>
-    <text x="316" y="678" class="s">表のファイル</text>
+    <text x="316" y="678" class="s">テーブルの</text>
+    <text x="316" y="706" class="s">ファイル</text>
     <rect x="470" y="658" width="52" height="36" rx="6" class="page"/>
     <rect x="460" y="688" width="126" height="88" rx="8" class="page"/>
     <rect x="474" y="702" width="98" height="16" rx="3" class="row"/>

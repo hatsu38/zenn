@@ -93,7 +93,7 @@
     "name": "06-range-scan",
     "chapter": 3,
     "title": "4以上8以下なら、隣の箱も開く",
-    "description": "仕組み：範囲の検索で隣の箱へ進み、表から5行を取り出す（説明するための図）"
+    "description": "仕組み：範囲の検索で隣の箱へ進み、テーブルから5行を取り出す（説明するための図）"
   },
   {
     "name": "06-bitmap-scan",
@@ -111,7 +111,7 @@
     "name": "03-pages-and-rows",
     "chapter": 4,
     "title": "本5の1行も、ページ0ごと読む",
-    "description": "仕組み：観察用の表の8ページと行（行数は実測）"
+    "description": "仕組み：観察用のテーブルの8ページと行（行数は実測）"
   },
   {
     "name": "03-ctid-location",
@@ -135,7 +135,7 @@
     "name": "04-repeat-observation",
     "chapter": 5,
     "title": "同じ検索を、もう一度",
-    "description": "問い：2回目も表のファイルからページを取り寄せるか"
+    "description": "問い：2回目もテーブルのファイルからページを取り寄せるか"
   },
   {
     "name": "shared-buffer-reuse",
@@ -290,7 +290,7 @@
   {
     "name": "11-visibility-map",
     "chapter": 11,
-    "title": "×のページだけ、表を確かめに行く",
+    "title": "×のページはテーブルで確認",
     "description": "仕組み：Index Only Scanと可視性マップ（説明するための図）"
   },
   {
@@ -320,7 +320,7 @@
   {
     "name": "12-preaggregation",
     "chapter": 12,
-    "title": "集計表は更新するまで古いまま",
+    "title": "集計テーブルは更新するまで古いまま",
     "description": "仕組み：事前集計（説明するための図。記録が増えても更新まで値は古いまま、画面は上位20行を読むだけ）"
   }
 ]

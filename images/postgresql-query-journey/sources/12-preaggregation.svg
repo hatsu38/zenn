@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="656" viewBox="0 0 640 656" role="img" aria-labelledby="title">
-  <title id="title">集計表は更新するまで古いまま</title>
+  <title id="title">集計テーブルは更新するまで古いまま</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
     <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
@@ -26,7 +26,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .big{font-size:56px;font-weight:700}
   </style>
   <rect width="640" height="656" fill="#f5f7f9"/>
-  <text x="24" y="48" class="h">集計表は更新するまで古いまま</text>
+  <text x="24" y="48" class="h">集計テーブルは更新するまで古いまま</text>
 
   <g id="timeline">
     <rect x="24" y="76" width="592" height="240" rx="14" class="panel"/>
@@ -42,11 +42,11 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 
   <g id="stage-values">
     <rect x="15" y="200" width="168" height="34" rx="6" class="row"/>
-    <text x="99" y="224" text-anchor="middle" class="s">集計表：3件</text>
+    <text x="99" y="224" text-anchor="middle" class="s">集計値：3件</text>
     <rect x="219" y="200" width="168" height="34" rx="6" class="row"/>
     <text x="303" y="224" text-anchor="middle" class="s">読了記録＋1件</text>
     <rect x="440" y="200" width="168" height="34" rx="6" class="row"/>
-    <text x="524" y="224" text-anchor="middle" class="s">集計表：4件</text>
+    <text x="524" y="224" text-anchor="middle" class="s">集計値：4件</text>
   </g>
 
   <g id="stale-band">
@@ -62,7 +62,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="40" y="363" class="s">画面：週間ランキング</text>
 
     <rect x="44" y="394" width="260" height="150" rx="10" class="panel"/>
-    <text x="60" y="424" class="b">集計表</text>
+    <text x="60" y="424" class="b">集計テーブル</text>
     <text x="60" y="452" class="mono">weekly_read</text>
     <text x="60" y="480" class="mono">_counts</text>
     <rect x="60" y="492" width="228" height="34" rx="4" class="row"/>

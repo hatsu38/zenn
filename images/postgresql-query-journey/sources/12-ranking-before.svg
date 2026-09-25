@@ -32,7 +32,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="24" y="108" class="b">① <tspan class="mono">JOIN</tspan>：記録に題名を付ける</text>
     <rect x="24" y="124" width="592" height="248" rx="12" class="panel"/>
     <text x="40" y="152" class="s m">本番号</text>
-    <text x="430" y="152" class="s m">本の表</text>
+    <text x="430" y="152" class="s m">booksテーブル</text>
     <rect x="40" y="162" width="130" height="26" rx="4" class="row"/>
     <text x="105" y="182" text-anchor="middle" class="s">本1</text>
     <rect x="40" y="196" width="130" height="26" rx="4" class="row"/>

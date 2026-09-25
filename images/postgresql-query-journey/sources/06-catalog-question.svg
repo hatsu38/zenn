@@ -24,7 +24,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <rect width="640" height="450" fill="#fffdf7"/>
   <text x="24" y="48" class="h">目録も、本と同じ100万件</text>
   <g id="shelf">
-    <text x="44" y="100" class="s b">表 <tspan class="mono">books</tspan>　100万冊</text>
+    <text x="44" y="100" class="s b">テーブル <tspan class="mono">books</tspan>　100万冊</text>
     <rect x="44" y="120" width="552" height="72" rx="6" fill="#f3ede2" stroke="#243b50" stroke-width="2"/>
     <rect x="58" y="128" width="12" height="56" rx="2" class="spine"/>
     <rect x="75" y="128" width="12" height="56" rx="2" class="spine"/>
