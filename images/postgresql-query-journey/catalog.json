@@ -201,7 +201,7 @@
     "name": "08-sort-vs-topn",
     "chapter": 8,
     "title": "LIMITで減るのは、持つ量と返す行",
-    "description": "比較：ORDER BYだけとLIMIT 20の四つの数（実測）"
+    "description": "比較：ORDER BYだけとLIMIT 20の三つの数（実測）"
   },
   {
     "name": "09-hash-join",
