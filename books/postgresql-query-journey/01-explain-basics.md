@@ -148,7 +148,7 @@ ROLLBACK;
 
 `NULL`と、文字が0文字の空文字列`''`は別です。`NOT NULL`だけでは、空文字列の題名は禁止されません。
 
-`generate_series`は連番を作ります。`||`で文字と番号をつなぐと、「実験用の本 1」「実験用の本 2」といった題名になります。読了記録を作る側の長い式は、本の番号と日時をばらけさせるためのものです。式を覚える必要はありません。
+`generate_series`は連番を作ります。`||`で文字と番号をつなぐと、「実験用の本 1」「実験用の本 2」といった題名になります。読了記録を作る側の長い式は、本の番号に人気の偏りを付け、日時をばらけさせるためのものです。式を覚える必要はありません。
 
 `count(*)`はレコードの数を数えます。結果が1,000,000と2,000,000になれば準備できました。
 
@@ -173,6 +173,40 @@ SET
 ```
 
 並列実行は複数のプロセスで処理を分担する仕組み、JITは実行時に処理の一部を機械語へ変換する仕組みです。最初は一つのプロセスの処理を追うため、どちらも無効にします。`work_mem`は並べ替えなどで使う作業用メモリの設定で、詳しくは後の章で扱います。
+
+:::details 本書で止めている並列実行とJIT
+二つの設定をしないまま実験すると、この本とは違う形の計画が出ることがあります。2026年9月26日、PostgreSQL 18.6の既定の設定（`max_parallel_workers_per_gather = 2`、`jit = on`）で、この後の題名検索を実行した結果です。
+
+```sql
+Gather  (cost=1000.00..13561.43 rows=1 width=30) (actual time=0.415..39.677 rows=1.00 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=1498 read=5855 dirtied=5882 written=5855
+  ->  Parallel Seq Scan on books  (cost=0.00..12561.33 rows=1 width=30) (actual time=23.375..35.797 rows=0.33 loops=3)
+        Filter: (title = '実験用の本 42'::text)
+        Rows Removed by Filter: 333333
+        Buffers: shared hit=1498 read=5855 dirtied=5882 written=5855
+Planning:
+  Buffers: shared hit=62 read=1 written=1
+Planning Time: 0.486 ms
+Execution Time: 39.765 ms
+```
+
+`Workers Launched: 2`は、手伝いのプロセスが2つ動いたことを示します。`Parallel Seq Scan`は、SQLを受け取ったプロセスと手伝いの2つ、合わせて3つでテーブルを分けて読みました。`loops=3`はその3つを表し、`rows=0.33`や`Rows Removed by Filter: 333333`は、1つのプロセス当たりの平均です。全体の件数を知るには3倍します。`Gather`は、3つのプロセスが見つけたレコードを集める処理です。
+
+序章のランキングのように見積もり（`cost`）の大きいSQLでは、出力の最後に`JIT:`の行も出ます。見積もりが既定で100000を超えると、処理の一部を機械語へ変換してから実行するためです。
+
+```sql
+JIT:
+  Functions: 37
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 1.441 ms (Deform 0.399 ms), Inlining 0.000 ms, Optimization 0.706 ms, Emission 12.385 ms, Total 14.533 ms
+```
+
+`Timing`の`Total`が、変換にかかった時間です。この時間も`Execution Time`に含まれます。
+
+本書でこの二つを止めるのは、一つのプロセスの仕事を1件ずつ追えるようにするためと、変換の時間を実行時間に混ぜないためです。自分の結果に`Gather`や`JIT:`が出たら、上の設定をし忘れていないかを確かめてください。
+:::
 
 ## 1冊の題名検索で、何件を調べるか予想する
 
