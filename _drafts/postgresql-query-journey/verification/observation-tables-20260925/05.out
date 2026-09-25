@@ -1,0 +1,81 @@
+Pager usage is off.
+SET
+SET
+SET
+block-0
+ count
+-------
+  1000
+(1 row)
+
+block-4
+CREATE EXTENSION
+ buffers_evicted | buffers_flushed | buffers_skipped
+-----------------+-----------------+-----------------
+              11 |               8 |               0
+(1 row)
+
+block-6
+                                                   QUERY PLAN
+----------------------------------------------------------------------------------------------------------------
+ Seq Scan on books_observation  (cost=0.00..20.50 rows=1 width=27) (actual time=0.124..0.324 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999
+   Buffers: shared read=8
+ Planning:
+   Buffers: shared hit=12
+ Planning Time: 0.033 ms
+ Execution Time: 0.329 ms
+(8 rows)
+
+                                                   QUERY PLAN
+----------------------------------------------------------------------------------------------------------------
+ Seq Scan on books_observation  (cost=0.00..20.50 rows=1 width=27) (actual time=0.005..0.038 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999
+   Buffers: shared hit=8
+ Planning Time: 0.013 ms
+ Execution Time: 0.041 ms
+(6 rows)
+
+                                                   QUERY PLAN
+----------------------------------------------------------------------------------------------------------------
+ Seq Scan on books_observation  (cost=0.00..20.50 rows=1 width=27) (actual time=0.005..0.037 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999
+   Buffers: shared hit=8
+ Planning Time: 0.012 ms
+ Execution Time: 0.040 ms
+(6 rows)
+
+block-10
+ shared_buffers
+----------------
+ 128MB
+(1 row)
+
+block-12
+ work_mem
+----------
+ 4MB
+(1 row)
+
+block-14
+ temp_buffers
+--------------
+ 8MB
+(1 row)
+
+block-16
+ maintenance_work_mem
+----------------------
+ 64MB
+(1 row)
+
+block-18
+DROP TABLE
+ observation_removed | books_count | title_index_kept
+---------------------+-------------+------------------
+ t                   |     1000000 | t
+(1 row)
+

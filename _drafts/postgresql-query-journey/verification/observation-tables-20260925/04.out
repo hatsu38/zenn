@@ -1,0 +1,123 @@
+Pager usage is off.
+SET
+SET
+SET
+block-0
+CREATE TABLE
+INSERT 0 1000
+ANALYZE
+ count
+-------
+  1000
+(1 row)
+
+block-2
+ pg_relation_filepath
+----------------------
+ base/17212/17223
+(1 row)
+
+block-4
+ table_size | total_size
+------------+------------
+ 64 kB      | 136 kB
+(1 row)
+
+block-6
+ block_size
+------------
+ 8192
+(1 row)
+
+block-8
+ id | ctid  |    title
+----+-------+--------------
+  1 | (0,1) | 実験用の本 1
+  2 | (0,2) | 実験用の本 2
+  3 | (0,3) | 実験用の本 3
+  4 | (0,4) | 実験用の本 4
+  5 | (0,5) | 実験用の本 5
+  6 | (0,6) | 実験用の本 6
+  7 | (0,7) | 実験用の本 7
+  8 | (0,8) | 実験用の本 8
+(8 rows)
+
+ page | count
+------+-------
+    0 |   136
+    1 |   136
+    2 |   136
+    3 |   136
+    4 |   136
+    5 |   136
+    6 |   136
+    7 |    48
+(8 rows)
+
+block-10
+ table_size | pages
+------------+-------
+ 57 MB      |  7353
+(1 row)
+
+block-12
+CREATE EXTENSION
+ level
+-------
+     2
+(1 row)
+
+block-14
+SELECT 1000
+SELECT 1000
+ short_bytes | long_bytes
+-------------+------------
+       65536 |     262144
+(1 row)
+
+    name    | page | count
+------------+------+-------
+ size_short |    0 |   185
+ size_short |    1 |   185
+ size_short |    2 |   185
+ size_short |    3 |   185
+ size_short |    4 |   185
+ size_short |    5 |    75
+(6 rows)
+
+   name    | page | count
+-----------+------+-------
+ size_long |    0 |    34
+ size_long |    1 |    34
+ size_long |    2 |    34
+ size_long |    3 |    34
+ size_long |    4 |    34
+ size_long |    5 |    34
+ size_long |    6 |    34
+ size_long |    7 |    34
+ size_long |    8 |    34
+ size_long |    9 |    34
+ size_long |   10 |    34
+ size_long |   11 |    34
+ size_long |   12 |    34
+ size_long |   13 |    34
+ size_long |   14 |    34
+ size_long |   15 |    34
+ size_long |   16 |    34
+ size_long |   17 |    34
+ size_long |   18 |    34
+ size_long |   19 |    34
+ size_long |   20 |    34
+ size_long |   21 |    34
+ size_long |   22 |    34
+ size_long |   23 |    34
+ size_long |   24 |    34
+ size_long |   25 |    34
+ size_long |   26 |    34
+ size_long |   27 |    34
+ size_long |   28 |    34
+ size_long |   29 |    14
+(30 rows)
+
+block-16
+DROP TABLE
