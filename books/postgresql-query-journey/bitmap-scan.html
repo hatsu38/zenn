@@ -105,10 +105,10 @@
 <header>
   <div class="eyebrow">POSTGRESQL / 読み方を動かして比べる</div>
   <h1>見つけてから、<br><span>ページごとに読む。</span></h1>
-  <p class="lead">Bitmap Scanは、条件に合う行の<strong>「場所」を先に集めて</strong>、同じページの行をまとめて読む方法です。Indexをたどる順番と、テーブルを読む順番を分けるのがポイントです。</p>
+  <p class="lead">Bitmap Scanは、条件に合うレコードの<strong>「場所」を先に集めて</strong>、同じページのレコードをまとめて読む方法です。Indexをたどる順番と、テーブルを読む順番を分けるのがポイントです。</p>
   <div class="intro">
-    <div><h3>行を読むには、ページを開く</h3><p>テーブルの行は「ページ」という保存単位に入っています。同じページに目的の行がいくつもあれば、まとめて取り出せます。</p></div>
-    <div><h3>Indexの順番と、保存場所は別</h3><p>価格のIndexは価格順。でも、テーブルの行が価格順に保存されているとは限りません。行を一つずつ取りに行くと、ページを行き来することがあります。</p></div>
+    <div><h3>レコードを読むには、ページを開く</h3><p>テーブルのレコードは「ページ」という保存単位に入っています。同じページに目的のレコードがいくつもあれば、まとめて取り出せます。</p></div>
+    <div><h3>Indexの順番と、保存場所は別</h3><p>価格のIndexは価格順。でも、テーブルのレコードが価格順に保存されているとは限りません。レコードを一つずつ取りに行くと、ページを行き来することがあります。</p></div>
   </div>
 </header>
 <main>
@@ -120,7 +120,7 @@
       <p class="small" style="margin:10px 0 0">説明用のSQLとテーブルです。本の実験データとは別で、実測結果ではありません。ページ番号は説明のため1から付けています。</p>
       <div class="modes" role="group" aria-label="読み方を選ぶ">
         <button data-mode="bitmap" aria-pressed="true">Bitmap Scan<small>場所を集めて、まとめ読み</small></button>
-        <button data-mode="index" aria-pressed="false">Index Scan<small>見つけた行を、そのつど読む</small></button>
+        <button data-mode="index" aria-pressed="false">Index Scan<small>見つけたレコードを、そのつど読む</small></button>
         <button data-mode="seq" aria-pressed="false">Seq Scan<small>すべてのページを順に読む</small></button>
       </div>
     </div>
@@ -137,34 +137,34 @@
       <div id="index-area">
         <div class="label"><strong>価格のB-tree Index</strong><span class="small">条件に合う部分だけを表示・価格の小さい順 →</span></div>
         <div class="index" id="index"></div>
-        <div class="flow" id="flow-top">↓ 行の場所を、メモリ上のビットマップへ</div>
+        <div class="flow" id="flow-top">↓ レコードの場所を、メモリ上のビットマップへ</div>
       </div>
       <div class="bitmap" id="bitmap-area">
         <div class="label"><strong>ビットマップ ＝ 候補の場所のメモ</strong><span class="small">1：候補として記録済み / 0：印なし</span></div>
         <div class="bitmap-grid" id="bits"></div>
-        <p class="small" id="bitmap-caption">各ページの4つの数字は、左から行1・2・3・4に対応します。実際のメモリ配置をそのまま描いた図ではありません。</p>
+        <p class="small" id="bitmap-caption">各ページの4つの数字は、左からレコード1・2・3・4に対応します。実際のメモリ配置をそのまま描いた図ではありません。</p>
       </div>
       <div class="flow" id="flow-bottom">↓ 候補を集め終えたら、ページ番号順に読む</div>
-      <div class="label"><strong>テーブル本体（Heap）</strong><span class="small">1つの箱 ＝ 1ページ / 1段 ＝ 本1冊の行</span></div>
+      <div class="label"><strong>テーブル本体（Heap）</strong><span class="small">1つの箱 ＝ 1ページ / 1段 ＝ 本1冊のレコード</span></div>
       <div class="pages" id="pages"></div>
-      <p class="legend">★ 黄色：条件に合う行　✓ 緑：取り出した行　緑の枠：いま読んでいるページ</p>
+      <p class="legend">★ 黄色：条件に合うレコード　✓ 緑：取り出したレコード　緑の枠：いま読んでいるページ</p>
       <div class="results">
         <div><span class="small">テーブルのページを訪れた順番</span><p id="route">まだ読んでいません</p></div>
-        <div><span class="small">取り出した本の価格（円）</span><p id="returned">0 / 6 行</p></div>
+        <div><span class="small">取り出した本の価格（円）</span><p id="returned">0 / 6 レコード</p></div>
       </div>
-      <div class="note small">この図は読む順番を比べます。ボタンの回数は処理時間ではありません。同じページを再訪しても、キャッシュにあればディスクから読み直す必要はありません。Index側のページアクセスや、更新された行の扱いは省略しています。</div>
+      <div class="note small">この図は読む順番を比べます。ボタンの回数は処理時間ではありません。同じページを再訪しても、キャッシュにあればディスクから読み直す必要はありません。Index側のページアクセスや、更新されたレコードの扱いは省略しています。</div>
     </div>
     <noscript><p class="note">図を操作するにはJavaScriptを有効にしてください。仕組みは以下の説明でも読めます。</p></noscript>
   </section>
 
   <section aria-labelledby="two-steps">
-    <h2 id="two-steps">EXPLAINに2行出るのは、役割が違うから</h2>
+    <h2 id="two-steps">EXPLAINに2件出るのは、役割が違うから</h2>
     <div class="steps">
-      <div class="step"><span class="number">先に / Bitmap Index Scan</span><h3>Indexで候補の場所を集める</h3><p>価格のIndexから「ページ1の行1」「ページ4の行2」などの位置を見つけ、ビットマップに印を付けます。この段階では、テーブルから本の全情報を取り出していません。</p><p>同じページの候補が一つのメモにまとまり、テーブルをページ順に読む準備ができます。</p></div>
-      <div class="step"><span class="number">その後 / Bitmap Heap Scan</span><h3>候補のあるページをまとめて読む</h3><p>この図ではページ1 → 4 → 6と進み、それぞれから候補の2行を取り出します。候補のないページ2・3・5・7・8は読みません。</p><p>実際には、読んだ行がそのトランザクションから見えるかも確認します。</p></div>
+      <div class="step"><span class="number">先に / Bitmap Index Scan</span><h3>Indexで候補の場所を集める</h3><p>価格のIndexから「ページ1のレコード1」「ページ4のレコード2」などの位置を見つけ、ビットマップに印を付けます。この段階では、テーブルから本の全情報を取り出していません。</p><p>同じページの候補が一つのメモにまとまり、テーブルをページ順に読む準備ができます。</p></div>
+      <div class="step"><span class="number">その後 / Bitmap Heap Scan</span><h3>候補のあるページをまとめて読む</h3><p>この図ではページ1 → 4 → 6と進み、それぞれから候補の2件を取り出します。候補のないページ2・3・5・7・8は読みません。</p><p>実際には、読んだレコードがそのトランザクションから見えるかも確認します。</p></div>
     </div>
     <p style="margin-top:22px">実行計画では、読む側が上、その材料を作る側が下に表示されます。次は<strong>形を理解するための模式例</strong>です。実機の出力ではなく、コストや時間も付けていません。</p>
-    <pre><code><span class="heap">Bitmap Heap Scan on books</span>             ← ② テーブルから行を取り出す
+    <pre><code><span class="heap">Bitmap Heap Scan on books</span>             ← ② テーブルからレコードを取り出す
   Recheck Cond: (price BETWEEN 1000 AND 1500)
   → <span class="idx">Bitmap Index Scan on books_price_idx</span> ← ① 候補の場所を集める
       Index Cond: (price BETWEEN 1000 AND 1500)</code></pre>
@@ -172,20 +172,20 @@
   </section>
 
   <section aria-labelledby="compare-title">
-    <h2 id="compare-title">「全部読む」と「1行ずつ取りに行く」の間にある選択肢</h2>
+    <h2 id="compare-title">「全部読む」と「1件ずつ取りに行く」の間にある選択肢</h2>
     <p class="small">画面が狭いときは、表を横にスクロールできます。</p>
     <div class="table-wrap" tabindex="0" role="region" aria-label="3つの読み方の比較表（横スクロール可能）">
       <table>
         <thead><tr><th scope="col">読み方</th><th scope="col">この図でテーブルを訪れる順番</th><th scope="col">得意な場面と負担</th></tr></thead>
         <tbody>
-          <tr><td>Index Scan</td><td>1 → 4 → 1 → 6 → 4 → 6</td><td>少数の行をすぐ取り出したいとき。保存場所が散らばっていると、ページを行き来しやすい。</td></tr>
+          <tr><td>Index Scan</td><td>1 → 4 → 1 → 6 → 4 → 6</td><td>少数のレコードをすぐ取り出したいとき。保存場所が散らばっていると、ページを行き来しやすい。</td></tr>
           <tr><td>Bitmap Scan</td><td>1 → 4 → 6</td><td>候補をページごとにまとめる効果があるとき。ただし、先にビットマップを作る時間とメモリが必要。</td></tr>
-          <tr><td>Seq Scan</td><td>1 → 2 → 3 → 4 → 5 → 6 → 7 → 8</td><td>テーブルの広い範囲を読むとき。Indexを調べずに順に読むが、条件に合わない行も調べる。</td></tr>
+          <tr><td>Seq Scan</td><td>1 → 2 → 3 → 4 → 5 → 6 → 7 → 8</td><td>テーブルの広い範囲を読むとき。Indexを調べずに順に読むが、条件に合わないレコードも調べる。</td></tr>
         </tbody>
       </table>
     </div>
     <p style="margin-top:18px">Bitmap Scanなら、候補のないページを飛ばし、候補のあるページはまとめて読めます。一方、ほぼ全ページに候補があれば、メモを作る手間に見合わないこともあります。</p>
-    <p>どれが選ばれるかは、件数だけでは決まりません。行の散らばり方、キャッシュの見積もり、<code>LIMIT</code>なども関わります。この小さな例と同じテーブルを実際に作っても、Bitmap Scanが選ばれるとは限りません。</p>
+    <p>どれが選ばれるかは、件数だけでは決まりません。レコードの散らばり方、キャッシュの見積もり、<code>LIMIT</code>なども関わります。この小さな例と同じテーブルを実際に作っても、Bitmap Scanが選ばれるとは限りません。</p>
   </section>
 
   <section aria-labelledby="further-title">
@@ -193,18 +193,18 @@
     <details><summary>「ビットマップ」という専用のIndexを作るの？</summary><p>この例で用意するのは価格のB-tree Indexです。ビットマップは、クエリの実行中にメモリ上で作る候補位置の情報です。「Bitmap Index Scan」は、Indexを使ってビットマップを作る処理の名前です。</p></details>
     <details><summary>価格順のまま返ってくる？</summary><p>テーブルをページ順に読むので、元のIndexの価格順は失われます。価格順が必要なら<code>ORDER BY price</code>を指定します。Bitmap Scanを使う計画では、そのためのSortが別途必要になります。そもそも、<code>ORDER BY</code>のないSQLに結果の順番の保証はありません。</p></details>
     <details><summary>複数のIndexの候補も組み合わせられる</summary><p>価格と著者にそれぞれIndexがあれば、候補位置の集合を組み合わせる方法もあります。<code>BitmapAnd</code>は両方に共通する候補、<code>BitmapOr</code>はどちらかにある候補をまとめます。使えるIndexが複数あっても、必ずこの方法を選ぶわけではありません。</p></details>
-    <details><summary>Recheck Condは、何を確かめる条件？</summary><p>Indexから得た候補を、テーブルの行で再確認するときの条件です。たとえばメモリが足りず「行の場所」から「候補のあるページ」へと記録を粗くした場合、そのページ内の行を調べ直します。この粗い記録を<code>lossy</code>と呼びます。上の図は、行の場所まで記録できる場合だけを扱っています。</p><p><code>Recheck Cond</code>が表示されているだけで、lossyになったとは判断できません。実測の<code>Heap Blocks: exact=… lossy=…</code>や<code>Rows Removed by Index Recheck</code>を確認します。</p></details>
+    <details><summary>Recheck Condは、何を確かめる条件？</summary><p>Indexから得た候補を、テーブルのレコードで再確認するときの条件です。たとえばメモリが足りず「レコードの場所」から「候補のあるページ」へと記録を粗くした場合、そのページ内のレコードを調べ直します。この粗い記録を<code>lossy</code>と呼びます。上の図は、レコードの場所まで記録できる場合だけを扱っています。</p><p><code>Recheck Cond</code>が表示されているだけで、lossyになったとは判断できません。実測の<code>Heap Blocks: exact=… lossy=…</code>や<code>Rows Removed by Index Recheck</code>を確認します。</p></details>
   </section>
 </main>
 <footer>
-  <p>読み終えたら、図でIndex ScanとBitmap Scanを切り替えてみてください。同じ6行を返しても、テーブルを訪れる順番が変わります。</p>
+  <p>読み終えたら、図でIndex ScanとBitmap Scanを切り替えてみてください。同じ6件を返しても、テーブルを訪れる順番が変わります。</p>
   <p>参考：PostgreSQL 18 公式ドキュメント。図・ページ数・価格は説明用です。</p>
   <a href="https://www.postgresql.org/docs/18/using-explain.html">Using EXPLAIN</a>
   <a href="https://www.postgresql.org/docs/18/indexes-bitmap-scans.html">Combining Multiple Indexes</a>
 </footer>
 <script>
   'use strict';
-  // ページ・行の番号は、説明用に1から付ける。
+  // ページ・レコードの番号は、説明用に1から付ける。
   const candidates = [
     { page:1, slot:1, price:1000 }, { page:4, slot:2, price:1100 },
     { page:1, slot:3, price:1200 }, { page:6, slot:1, price:1300 },
@@ -233,16 +233,16 @@
     select('index-area').hidden = mode === 'seq';
     select('bitmap-area').hidden = mode !== 'bitmap';
     select('flow-bottom').hidden = mode !== 'bitmap';
-    select('flow-top').textContent = mode === 'bitmap' ? '↓ 行の場所を、メモリ上のビットマップへ' : '↓ Indexで1行見つけるたびに、その行のあるページへ';
+    select('flow-top').textContent = mode === 'bitmap' ? '↓ レコードの場所を、メモリ上のビットマップへ' : '↓ Indexで1件見つけるたびに、そのレコードのあるページへ';
     select('index').innerHTML = candidates.map((row,i) => {
       const seen = i < (mode === 'bitmap' ? collected.length : step);
       const active = i === step-1 && step <= candidates.length;
-      return `<div class="entry ${seen?'seen':''} ${active?'active':''}"><strong>${row.price.toLocaleString()}円</strong>ページ${row.page}・行${row.slot}<br>${seen?'✓ 確認済み':'未確認'}</div>`;
+      return `<div class="entry ${seen?'seen':''} ${active?'active':''}"><strong>${row.price.toLocaleString()}円</strong>ページ${row.page}・レコード${row.slot}<br>${seen?'✓ 確認済み':'未確認'}</div>`;
     }).join('');
     select('bits').innerHTML = Array.from({length:8},(_,i) => {
       const page = i+1;
       const bits = Array.from({length:4},(_,j) => markedPositions.has(`${page}:${j+1}`));
-      return `<div class="bitpage"><span>P${page}</span><div class="bits" aria-label="ページ${page}：${bits.map((on,j)=>'行'+(j+1)+(on?'候補':'印なし')).join('、')}">${bits.map(on=>`<span aria-hidden="true" class="bit ${on?'on':''}">${on?1:0}</span>`).join('')}</div></div>`;
+      return `<div class="bitpage"><span>P${page}</span><div class="bits" aria-label="ページ${page}：${bits.map((on,j)=>'レコード'+(j+1)+(on?'候補':'印なし')).join('、')}">${bits.map(on=>`<span aria-hidden="true" class="bit ${on?'on':''}">${on?1:0}</span>`).join('')}</div></div>`;
     }).join('');
     select('pages').innerHTML = Array.from({length:8},(_,i) => {
       const page = i+1;
@@ -252,12 +252,12 @@
         const candidate = byPosition.get(key);
         const isReturned = returnedPositions.has(key);
         const price = candidate?.price ?? 2100+i*100+j*10;
-        return `<div class="row ${isReturned?'returned':candidate?'match':''}"><span>行${j+1} ${isReturned?'✓':candidate?'★':''}</span><span>${price.toLocaleString()}円</span></div>`;
+        return `<div class="row ${isReturned?'returned':candidate?'match':''}"><span>レコード${j+1} ${isReturned?'✓':candidate?'★':''}</span><span>${price.toLocaleString()}円</span></div>`;
       }).join('');
       return `<div class="page ${visits?'visited':''} ${activePage===page?'active':''}"><div class="page-head"><strong>ページ${page}</strong><span>${visits?'訪問 '+visits+'回':'未訪問'}</span></div>${rows}</div>`;
     }).join('');
     select('route').textContent = route.length ? route.join(' → ') : 'まだ読んでいません';
-    select('returned').textContent = returned.length ? returned.map(row=>row.price.toLocaleString()).join(' / ')+'（'+returned.length+'行）' : '0 / 6 行';
+    select('returned').textContent = returned.length ? returned.map(row=>row.price.toLocaleString()).join(' / ')+'（'+returned.length+'レコード）' : '0 / 6 レコード';
     select('progress').textContent = `${step} / ${totalSteps()} 手（時間の比率ではありません）`;
     select('next').disabled = done;
     select('finish').disabled = done;
@@ -269,17 +269,17 @@
       } else if (step <= candidates.length) {
         const row = candidates[step-1];
         phase = '① Bitmap Index Scan：候補の場所を記録';
-        explanation = `${row.price.toLocaleString()}円の本はページ${row.page}・行${row.slot}。その位置に印を付けました。`+(step===candidates.length?'6件の候補がそろいました。次はページ1からテーブルを読みます。':'まだテーブルから行を取り出していません。');
+        explanation = `${row.price.toLocaleString()}円の本はページ${row.page}・レコード${row.slot}。その位置に印を付けました。`+(step===candidates.length?'6件の候補がそろいました。次はページ1からテーブルを読みます。':'まだテーブルからレコードを取り出していません。');
       } else {
-        phase = done ? '完了：3ページから、6行を取り出した' : '② Bitmap Heap Scan：同じページの行をまとめて読む';
-        explanation = `ページ${activePage}を読み、候補の2行を取り出しました。`+(done?'テーブルを訪れた順番は1 → 4 → 6。候補のない5ページは読みませんでした。':'次も、ビットマップに印のあるページへ進みます。');
+        phase = done ? '完了：3ページから、6件を取り出した' : '② Bitmap Heap Scan：同じページのレコードをまとめて読む';
+        explanation = `ページ${activePage}を読み、候補の2件を取り出しました。`+(done?'テーブルを訪れた順番は1 → 4 → 6。候補のない5ページは読みませんでした。':'次も、ビットマップに印のあるページへ進みます。');
       }
     } else if (mode === 'index') {
-      phase = done ? '完了：Index順に、6行を取り出した' : 'Index Scan：見つけたら、すぐテーブルへ';
-      explanation = step===0 ? '候補位置を先に全部集めず、Indexで見つけた行をそのつどテーブルから取り出します。' : `${candidates[step-1].price.toLocaleString()}円の本をページ${activePage}から取り出しました。`+(done?'ページ1・4・6をそれぞれ再訪しています。ただし、再訪のたびにディスク読み込みが起こるとは限りません。':'次の価格の本は、別のページにあるかもしれません。');
+      phase = done ? '完了：Index順に、6件を取り出した' : 'Index Scan：見つけたら、すぐテーブルへ';
+      explanation = step===0 ? '候補位置を先に全部集めず、Indexで見つけたレコードをそのつどテーブルから取り出します。' : `${candidates[step-1].price.toLocaleString()}円の本をページ${activePage}から取り出しました。`+(done?'ページ1・4・6をそれぞれ再訪しています。ただし、再訪のたびにディスク読み込みが起こるとは限りません。':'次の価格の本は、別のページにあるかもしれません。');
     } else {
-      phase = done ? '完了：8ページを調べて、6行を取り出した' : 'Seq Scan：テーブルを先頭から順に読む';
-      explanation = step===0 ? 'Indexは使いません。各ページの行を読み、価格が条件に合うか一つずつ調べます。' : `ページ${activePage}の4行を調べ、${candidates.filter(row=>row.page===activePage).length}行が条件に合いました。`+(done?'条件に合わない行も含めて、32行すべてを調べました。':'候補がないページも読みます。');
+      phase = done ? '完了：8ページを調べて、6件を取り出した' : 'Seq Scan：テーブルを先頭から順に読む';
+      explanation = step===0 ? 'Indexは使いません。各ページのレコードを読み、価格が条件に合うか一つずつ調べます。' : `ページ${activePage}の4件を調べ、${candidates.filter(row=>row.page===activePage).length}レコードが条件に合いました。`+(done?'条件に合わないレコードも含めて、32件すべてを調べました。':'候補がないページも読みます。');
     }
     select('phase').textContent = phase;
     select('explanation').textContent = explanation;

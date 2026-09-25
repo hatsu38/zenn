@@ -9,48 +9,48 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 序章 | この本で、一緒に調べること | [SVG](sources/00-book-sketch.svg) | [PNG](00-book-sketch.png) |
 | 序章 | 記録は増えても、表示は20冊 | [SVG](sources/00-reading-service.svg) | [PNG](00-reading-service.png) |
 | 序章 | 本ごとに、記録の件数を数える | [SVG](sources/00-books-and-records.svg) | [PNG](00-books-and-records.png) |
-| 序章 | 200万件から、20行を返す | [SVG](sources/00-ranking-question.svg) | [PNG](00-ranking-question.png) |
+| 序章 | 200万件から、20件を返す | [SVG](sources/00-ranking-question.svg) | [PNG](00-ranking-question.png) |
 | 第1章 | まずは、1冊だけ探してみる | [SVG](sources/01-search-window.svg) | [PNG](01-search-window.png) |
 | 第1章 | どの段階まで進むか | [SVG](sources/01-explain-stages.svg) | [PNG](01-explain-stages.png) |
-| 第1章 | 1行のために、100万行を比べた | [SVG](sources/01-scan-and-filter.svg) | [PNG](01-scan-and-filter.png) |
-| 第1章 | Indexで場所を探し、その行だけ読む | [SVG](sources/01-index-to-row.svg) | [PNG](01-index-to-row.png) |
+| 第1章 | 1件のために、100万件を比べた | [SVG](sources/01-scan-and-filter.svg) | [PNG](01-scan-and-filter.png) |
+| 第1章 | Indexで場所を探し、そのレコードだけ読む | [SVG](sources/01-index-to-row.svg) | [PNG](01-index-to-row.png) |
 | 第2章 | 見つかったら、止めていい？ | [SVG](sources/05-growing-library.svg) | [PNG](05-growing-library.png) |
 | 第2章 | 一致した後も、最後まで比べる | [SVG](sources/05-linear-scan.svg) | [PNG](05-linear-scan.png) |
-| 第2章 | Limitが次の行を求めなくなる | [SVG](sources/05-limit-search.svg) | [PNG](05-limit-search.png) |
-| 第2章 | 位置で変わる、比べる行数 | [SVG](sources/05-limit-bands.svg) | [PNG](05-limit-bands.png) |
+| 第2章 | Limitが次のレコードを求めなくなる | [SVG](sources/05-limit-search.svg) | [PNG](05-limit-search.png) |
+| 第2章 | 位置で変わる検索件数 | [SVG](sources/05-limit-bands.svg) | [PNG](05-limit-bands.png) |
 | 第3章 | 目録も、本と同じ100万件 | [SVG](sources/06-catalog-question.svg) | [PNG](06-catalog-question.png) |
 | 第3章 | 境目を見て、開く箱を選ぶ | [SVG](sources/06-btree-path.svg) | [PNG](06-btree-path.png) |
 | 第3章 | 100万冊でも、読むのは3枚 | [SVG](sources/06-tree-levels.svg) | [PNG](06-tree-levels.png) |
 | 第3章 | 4以上8以下なら、隣の箱も開く | [SVG](sources/06-range-scan.svg) | [PNG](06-range-scan.png) |
 | 第3章 | 取りに行く順で、開く回数が変わる | [SVG](sources/06-bitmap-scan.svg) | [PNG](06-bitmap-scan.png) |
-| 第4章 | 100万行なのに、7,353回 | [SVG](sources/03-storage-question.svg) | [PNG](03-storage-question.png) |
-| 第4章 | 本5の1行も、ページ0ごと読む | [SVG](sources/03-pages-and-rows.svg) | [PNG](03-pages-and-rows.png) |
+| 第4章 | 100万件なのに、7,353回 | [SVG](sources/03-storage-question.svg) | [PNG](03-storage-question.png) |
+| 第4章 | 本5の1件も、ページ0ごと読む | [SVG](sources/03-pages-and-rows.svg) | [PNG](03-pages-and-rows.png) |
 | 第4章 | ctid = (0,1) が指す場所 | [SVG](sources/03-ctid-location.svg) | [PNG](03-ctid-location.png) |
 | 第4章 | 7,353ページか、4ページか | [SVG](sources/03-index-reference.svg) | [PNG](03-index-reference.png) |
-| 第4章 | 同じ1,000行でも、8ページと32ページ | [SVG](sources/03-row-width.svg) | [PNG](03-row-width.png) |
+| 第4章 | 同じ1,000件でも、8ページと32ページ | [SVG](sources/03-row-width.svg) | [PNG](03-row-width.png) |
 | 第5章 | 同じ検索を、もう一度 | [SVG](sources/04-repeat-observation.svg) | [PNG](04-repeat-observation.png) |
 | 第5章 | 読み込んだページを、次も使う | [SVG](sources/shared-buffer-reuse.svg) | [PNG](shared-buffer-reuse.png) |
-| 第5章 | ページは再利用、行は毎回比べる | [SVG](sources/04-two-levels.svg) | [PNG](04-two-levels.png) |
+| 第5章 | ページは再利用、毎回比べる | [SVG](sources/04-two-levels.svg) | [PNG](04-two-levels.png) |
 | 第5章 | ページの保存場所と、計算の作業場所 | [SVG](sources/04-memory-regions.svg) | [PNG](04-memory-regions.png) |
 | 第6章 | SQLを受け取る側は、いくつ？ | [SVG](sources/02-client-scene.svg) | [PNG](02-client-scene.png) |
 | 第6章 | 接続ごとにプロセスが動く | [SVG](sources/02-connections.svg) | [PNG](02-connections.png) |
 | 第6章 | SQLの文字列から、検索結果が返るまで | [SVG](sources/02-query-stages.svg) | [PNG](02-query-stages.png) |
-| 第6章 | Limitは3行で要求を止める | [SVG](sources/02-execution-tree.svg) | [PNG](02-execution-tree.png) |
+| 第6章 | Limitは3件で要求を止める | [SVG](sources/02-execution-tree.svg) | [PNG](02-execution-tree.png) |
 | 第7章 | 読み終えた順に、並べたい | [SVG](sources/07-recent-records.svg) | [PNG](07-recent-records.png) |
 | 第7章 | 4枚を、比較5回で並べる | [SVG](sources/07-merge-cards.svg) | [PNG](07-merge-cards.png) |
-| 第7章 | 200万行を調べ、4分の1を並べた | [SVG](sources/07-sort-bands.svg) | [PNG](07-sort-bands.png) |
+| 第7章 | 200万件を調べ、4分の1を並べた | [SVG](sources/07-sort-bands.svg) | [PNG](07-sort-bands.png) |
 | 第7章 | メモリに収まらないときの並べ替え | [SVG](sources/07-external-sort.svg) | [PNG](07-external-sort.png) |
 | 第8章 | 画面に欲しいのは、最新20件 | [SVG](sources/08-twenty-window.svg) | [PNG](08-twenty-window.png) |
 | 第8章 | 根の最小値と比べて、入れ替える | [SVG](sources/top-three-heap.svg) | [PNG](top-three-heap.png) |
-| 第8章 | LIMITで減るのは、持つ量と返す行 | [SVG](sources/08-sort-vs-topn.svg) | [PNG](08-sort-vs-topn.png) |
+| 第8章 | LIMITで減る保持量と出力件数 | [SVG](sources/08-sort-vs-topn.svg) | [PNG](08-sort-vs-topn.png) |
 | 第8章 | 全部読むか、3件で止まるか | [SVG](sources/08-top-n-vs-index.svg) | [PNG](08-top-n-vs-index.png) |
 | 第9章 | 本の番号だけでは、題名が分からない | [SVG](sources/09-title-lookup.svg) | [PNG](09-title-lookup.png) |
-| 第9章 | 外側の行ごとに、内側を1回たどる | [SVG](sources/09-nested-loop.svg) | [PNG](09-nested-loop.png) |
-| 第9章 | 1回1行を20回で、20行 | [SVG](sources/09-loops.svg) | [PNG](09-loops.png) |
+| 第9章 | 外側のレコードごとに、内側を1回たどる | [SVG](sources/09-nested-loop.svg) | [PNG](09-nested-loop.png) |
+| 第9章 | 1回1件を20回で、20件 | [SVG](sources/09-loops.svg) | [PNG](09-loops.png) |
 | 第9章 | 先に分類し、同じ箱の中で照合する | [SVG](sources/09-hash-join.svg) | [PNG](09-hash-join.png) |
 | 第9章 | 小さい番号の列だけを、右へ進める | [SVG](sources/09-merge-join.svg) | [PNG](09-merge-join.png) |
-| 第10章 | 計画は、1行も読まずに決まる | [SVG](sources/10-planner-choice.svg) | [PNG](10-planner-choice.png) |
-| 第10章 | 割合のメモから、行数を見積もる | [SVG](sources/10-stats-to-rows.svg) | [PNG](10-stats-to-rows.png) |
+| 第10章 | 計画は、1件も読まずに決まる | [SVG](sources/10-planner-choice.svg) | [PNG](10-planner-choice.png) |
+| 第10章 | 割合のメモから、レコード数を見積もる | [SVG](sources/10-stats-to-rows.svg) | [PNG](10-stats-to-rows.png) |
 | 第10章 | 推定のずれが、後ろの件数に効く | [SVG](sources/10-estimate-propagation.svg) | [PNG](10-estimate-propagation.png) |
 | 第11章 | 題名を直している間に、読まれたら？ | [SVG](sources/11-editing-scene.svg) | [PNG](11-editing-scene.png) |
 | 第11章 | Bが確定しても、Aは版1を読む | [SVG](sources/11-snapshots.svg) | [PNG](11-snapshots.png) |
@@ -69,7 +69,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 
 図の設計意図・用語と図の対応は [制作方針](../../books/postgresql-query-journey/ILLUSTRATION-GUIDE.md) にあります。
 
-新しく描く図と描き直す図は、[部品見本](parts/figure-parts.svg)の`<defs>`と`<style>`を写して使います。行カード・ページ枠・Indexの項目・計画のノード・量の帯・矢印・札の見た目がそろいます。見本の見た目は[PNG](parts/figure-parts.png)で確認できます。
+新しく描く図と描き直す図は、[部品見本](parts/figure-parts.svg)の`<defs>`と`<style>`を写して使います。レコードカード・ページ枠・Indexの項目・計画のノード・量の帯・矢印・札の見た目がそろいます。見本の見た目は[PNG](parts/figure-parts.png)で確認できます。
 
 ## PNGを再出力する
 

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="550" viewBox="0 0 640 550" role="img" aria-labelledby="title">
-  <title id="title">位置で変わる、比べる行数</title>
+  <title id="title">位置で変わる検索件数</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
     <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
@@ -20,7 +20,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
   </style>
   <rect width="640" height="550" fill="#f5f7f9"/>
-  <text x="24" y="48" class="h">位置で変わる、比べる行数</text>
+  <text x="24" y="48" class="h">位置で変わる検索件数</text>
   <rect x="396" y="22" width="220" height="36" rx="18" class="real"/>
   <text x="506" y="47" text-anchor="middle" class="tag">実測 2026-09-23</text>
   <text x="200" y="98" class="m">先頭</text>
@@ -30,7 +30,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="24" y="162" class="mono">LIMITなし</text>
     <rect x="200" y="112" width="416" height="36" rx="4" class="band"/>
     <circle cx="208" cy="130" r="7" fill="#fff" stroke="#176e65" stroke-width="3"/>
-    <text x="616" y="178" text-anchor="end" class="s b">1,000,000行</text>
+    <text x="616" y="178" text-anchor="end" class="s b">1,000,000件</text>
   </g>
   <g id="row-2">
     <text x="24" y="224" class="s b">本42</text>
@@ -41,7 +41,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <circle cx="208" cy="220" r="7" fill="#fff" stroke="#176e65" stroke-width="3"/>
     <path d="M218 194 V246" stroke="#243b50" stroke-width="3"/>
     <text x="240" y="228" class="s b">ここで止まった（帯のほぼ0%）</text>
-    <text x="616" y="268" text-anchor="end" class="s b">42行</text>
+    <text x="616" y="268" text-anchor="end" class="s b">42件</text>
   </g>
   <g id="row-3">
     <text x="24" y="314" class="s b">本999999</text>
@@ -49,21 +49,21 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="200" y="292" width="416" height="36" rx="4" class="band"/>
     <circle cx="604" cy="310" r="7" fill="#fff" stroke="#176e65" stroke-width="3"/>
     <path d="M614 284 V336" stroke="#243b50" stroke-width="3"/>
-    <text x="616" y="358" text-anchor="end" class="s b">999,999行（最後の1行は比べない）</text>
+    <text x="616" y="358" text-anchor="end" class="s b">999,999件（最後の1件は比べない）</text>
   </g>
   <g id="row-4">
     <text x="24" y="404" class="s b">存在しない本</text>
     <text x="24" y="432" class="mono">LIMIT 1</text>
     <rect x="200" y="382" width="416" height="36" rx="4" class="band"/>
-    <text x="616" y="448" text-anchor="end" class="s b">1,000,000行（一致なし）</text>
+    <text x="616" y="448" text-anchor="end" class="s b">1,000,000件（一致なし）</text>
   </g>
   <g id="legend">
     <rect x="24" y="478" width="40" height="20" class="band"/>
-    <text x="72" y="496" class="m">比べた行</text>
+    <text x="72" y="496" class="m">比べたレコード</text>
     <rect x="224" y="478" width="40" height="20" class="skip"/>
-    <text x="272" y="496" class="m">比べなかった行</text>
+    <text x="272" y="496" class="m">比べなかったレコード</text>
     <circle cx="44" cy="522" r="7" fill="#fff" stroke="#176e65" stroke-width="3"/>
-    <text x="72" y="530" class="m">一致した行</text>
+    <text x="72" y="530" class="m">一致したレコード</text>
     <path d="M244 510 V534" stroke="#243b50" stroke-width="3"/>
     <text x="272" y="530" class="m">止まった位置</text>
   </g>

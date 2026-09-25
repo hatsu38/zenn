@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="580" viewBox="0 0 640 580" role="img" aria-labelledby="title">
-  <title id="title">Limitは3行で要求を止める</title>
+  <title id="title">Limitは3件で要求を止める</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
     <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
@@ -26,7 +26,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .big{font-size:56px;font-weight:700}
   </style>
   <rect width="640" height="580" fill="#f5f7f9"/>
-  <text x="24" y="48" class="h"><tspan font-family="ui-monospace,Menlo,monospace">Limit</tspan>は3行で要求を止める</text>
+  <text x="24" y="48" class="h"><tspan font-family="ui-monospace,Menlo,monospace">Limit</tspan>は3件で要求を止める</text>
   <g id="limit">
     <rect x="24" y="80" width="592" height="48" rx="12" class="node"/>
     <text x="44" y="112" class="mono b">Limit</text>
@@ -54,7 +54,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <path d="M132 352 V138" class="flow"/>
     <path d="M176 352 V138" class="flow"/>
     <path d="M220 352 V138" class="flow"/>
-    <text x="24" y="334" class="s b teal">行を返す</text>
+    <text x="24" y="302" class="s b teal">レコードを返す</text>
     <text x="138" y="334" class="s b teal">①</text>
     <text x="182" y="334" class="s b teal">②</text>
     <text x="226" y="334" class="s b teal">③</text>
@@ -66,7 +66,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="299" y="166" class="s brown">①</text>
     <text x="343" y="166" class="s brown">②</text>
     <text x="387" y="166" class="s brown">③</text>
-    <text x="429" y="166" class="s brown">次の行を要求</text>
+    <text x="429" y="166" class="s brown">次のレコードを要求</text>
   </g>
   <g id="fourth-request">
     <rect x="420" y="196" width="196" height="126" rx="8" class="hot"/>

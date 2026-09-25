@@ -69,7 +69,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="72" y="516" class="s">1位　本1　3件</text>
 
     <rect x="360" y="394" width="228" height="150" rx="10" class="panel"/>
-    <text x="380" y="460" class="b">上位20行</text>
+    <text x="380" y="460" class="b">上位20件</text>
     <text x="380" y="494" class="m">そのまま表示</text>
 
     <path d="M304 469 H356" class="flow"/>

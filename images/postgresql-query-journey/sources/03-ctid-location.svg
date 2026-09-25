@@ -65,6 +65,6 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <path d="M482 330 V442 H212" class="ref"/>
     <path d="M522 330 V490 H212" class="ref"/>
     <path d="M562 330 V538 H212" class="ref"/>
-    <text x="246" y="370" class="s">② 項目が行を指す</text>
+    <text x="246" y="370" class="s">② 項目がレコードを指す</text>
   </g>
 </svg>

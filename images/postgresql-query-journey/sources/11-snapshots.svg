@@ -25,7 +25,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="24" y="76" width="592" height="218" rx="14" class="panel"/>
     <text x="44" y="114" class="b">① Aが読む（Repeatable Read）</text>
     <rect x="306" y="132" width="294" height="146" rx="10" class="page"/>
-    <text x="348" y="160" class="s b">本42の行があるページ</text>
+    <text x="348" y="160" class="s b">本42を含むページ</text>
     <rect x="348" y="176" width="236" height="36" rx="4" class="row"/>
     <text x="362" y="201" class="s">版1　実験用の本 42</text>
     <circle cx="62" cy="194" r="18" fill="#243b50"/>
@@ -38,7 +38,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="44" y="346" class="b">② BがUPDATEしてCOMMIT</text>
     <text x="76" y="378" class="b">Aがもう一度読む</text>
     <rect x="306" y="364" width="294" height="146" rx="10" class="page"/>
-    <text x="348" y="392" class="s b">本42の行があるページ</text>
+    <text x="348" y="392" class="s b">本42を含むページ</text>
     <rect x="348" y="408" width="236" height="36" rx="4" class="hot"/>
     <text x="362" y="433" class="s b">版1　実験用の本 42</text>
     <rect x="348" y="458" width="236" height="36" rx="4" class="row"/>
@@ -56,7 +56,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="24" y="540" width="592" height="218" rx="14" class="panel"/>
     <text x="44" y="578" class="b">③ AがCOMMITして、新しく読む</text>
     <rect x="306" y="596" width="294" height="146" rx="10" class="page"/>
-    <text x="348" y="624" class="s b">本42の行があるページ</text>
+    <text x="348" y="624" class="s b">本42を含むページ</text>
     <rect x="348" y="640" width="236" height="36" rx="4" class="row"/>
     <text x="362" y="665" class="s">版1　実験用の本 42</text>
     <rect x="348" y="690" width="236" height="36" rx="4" class="row"/>

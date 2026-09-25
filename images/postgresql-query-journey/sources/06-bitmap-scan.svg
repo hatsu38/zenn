@@ -67,14 +67,14 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <g id="step-2">
     <rect x="24" y="408" width="592" height="336" rx="10" class="panel"/>
     <text x="44" y="440" class="s b">② 場所を集めてから、ページの順に読む</text>
-    <text x="44" y="470" class="m">ビットマップ：ページと行の位置</text>
+    <text x="44" y="470" class="m">ビットマップ：ページとレコードの位置</text>
     <g id="bitmap">
       <rect x="44" y="486" width="264" height="76" rx="6" class="hot"/>
       <text x="60" y="515" class="s b">ページ294</text>
-      <text x="60" y="547" class="s">行の位置：17, 18</text>
+      <text x="60" y="547" class="s">位置：17, 18</text>
       <rect x="328" y="486" width="264" height="76" rx="6" class="hot"/>
       <text x="344" y="515" class="s b">ページ2941</text>
-      <text x="344" y="547" class="s">行の位置：33, 34, 44</text>
+      <text x="344" y="547" class="s">位置：33, 34, 44</text>
     </g>
     <g id="pages-2">
       <rect x="118" y="596" width="172" height="64" rx="8" class="page"/>
@@ -87,7 +87,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
       <path d="M436 564 V592" class="ref"/>
       <path d="M294 628 H346" class="flow"/>
     </g>
-    <text x="44" y="694" class="m">対象ページを順に読み、記録した行を取り出す</text>
+    <text x="44" y="694" class="m">対象ページを順に読み、記録したレコードを取り出す</text>
     <text x="44" y="730" class="m">開く回数</text>
     <text x="142" y="730" class="h teal">2回</text>
   </g>
