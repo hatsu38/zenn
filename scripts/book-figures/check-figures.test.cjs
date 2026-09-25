@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { findSmallFonts, readViewBox, findDisclaimers } = require('./check-figures.cjs');
+const { findSmallFonts, readViewBox, findDisclaimers, findSentences } = require('./check-figures.cjs');
 
 test('findSmallFonts：属性とスタイルの両方から、下限より小さい値を出てきた順に返す', () => {
   const svg = '<style>text{font-size:24px}.s{font-size:18px}</style><text font-size="14">a</text><text font-size="22">b</text>';
@@ -29,4 +29,9 @@ test('findDisclaimers：既存の図にある注意書きの言い回しも拾�
   const labels = ['本42', '実測 2026-09-23', '比べない', '999,999行（最後の1行は比べない）', 'データベースの中（画面からは見えない）', 'Rows Removed by Filter なし＝捨てた行がない'];
   const svg = [...notes, ...labels].map(text => `<text>${text}</text>`).join('');
   assert.deepEqual(findDisclaimers(svg), notes);
+});
+
+test('findSentences：「。」で終わる文だけを拾う', () => {
+  const svg = '<text>行の配置は省略した。</text><text>本42</text><text x="1">1行ずつ<tspan>比べる</tspan></text>';
+  assert.deepEqual(findSentences(svg), ['行の配置は省略した。']);
 });

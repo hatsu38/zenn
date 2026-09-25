@@ -22,7 +22,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第3章 | 4以上8以下なら、隣の葉も読む | [SVG](sources/06-range-scan.svg) | [PNG](06-range-scan.png) |
 | 第3章 | 目録も大きい。それでも速い？ | [SVG](sources/06-catalog-question.svg) | [PNG](06-catalog-question.png) |
 | 第4章 | Indexをたどって、表の行へ届く | [SVG](sources/03-index-reference.svg) | [PNG](03-index-reference.png) |
-| 第4章 | 表の中にページ、ページの中に行 | [SVG](sources/03-pages-and-rows.svg) | [PNG](03-pages-and-rows.png) |
+| 第4章 | 本5の1行も、ページ0ごと読む | [SVG](sources/03-pages-and-rows.svg) | [PNG](03-pages-and-rows.png) |
 | 第4章 | 同じ1,000行でも、8ページと32ページ | [SVG](sources/03-row-width.svg) | [PNG](03-row-width.png) |
 | 第4章 | 本の一覧は、どこに保存される？ | [SVG](sources/03-storage-question.svg) | [PNG](03-storage-question.png) |
 | 第4章 | ctid = (0,1) が指す場所 | [SVG](sources/03-ctid-location.svg) | [PNG](03-ctid-location.png) |
@@ -46,8 +46,8 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第10章 | 入口の見積もりが、後ろの判断に響く | [SVG](sources/10-estimate-propagation.svg) | [PNG](10-estimate-propagation.png) |
 | 第10章 | 同じ「1種類」でも、9,000行と1,000行 | [SVG](sources/10-selectivity.svg) | [PNG](10-selectivity.png) |
 | 第10章 | Indexがあるのに、なぜ使わない？ | [SVG](sources/10-planner-choice.svg) | [PNG](10-planner-choice.png) |
-| 第11章 | 読む時点によって、見える版が変わる | [SVG](sources/11-snapshots.svg) | [PNG](11-snapshots.png) |
-| 第11章 | Indexだけで返せるかは、可視性にもよる | [SVG](sources/11-visibility-map.svg) | [PNG](11-visibility-map.png) |
+| 第11章 | Bが確定しても、Aは版1を読む | [SVG](sources/11-snapshots.svg) | [PNG](11-snapshots.png) |
+| 第11章 | ×のページだけ、表を確かめに行く | [SVG](sources/11-visibility-map.svg) | [PNG](11-visibility-map.png) |
 | 第11章 | ログの保存と、ページの書き出し | [SVG](sources/11-wal-and-pages.svg) | [PNG](11-wal-and-pages.png) |
 | 第11章 | 題名を直している間に、読まれたら？ | [SVG](sources/11-editing-scene.svg) | [PNG](11-editing-scene.png) |
 | 第12章 | 表示は軽くなる。集計の更新は必要。 | [SVG](sources/12-preaggregation.svg) | [PNG](12-preaggregation.png) |
@@ -87,13 +87,15 @@ PNGは横1280ピクセルで、高さは図ごとに異なります。共有バ�
 
 ## 約束を確かめる
 
-図が[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)4章の約束を満たしているかを確かめます。見るのは、文字の大きさ、縦横比、画像内の断り書き、PNGの書き出し、catalog.jsonへの登録、本文からの参照とキャプション・代替テキストです。
+図が[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)4章の約束を満たしているかを確かめます。SVGと本文からは、文字の大きさ、縦横比、画像内の断り書きと文（「。」で終わる文字）、PNGの書き出し、catalog.jsonへの登録、本文からの参照とキャプション・代替テキストを調べます。さらにChromiumで描画して、文字のはみ出し（すぐ下に描いた図形から）、文字どうしの重なり、矢じりと文字の接触、見出しのすぐ下の副題を測ります。
 
 ```sh
 node scripts/book-figures/check-figures.cjs 01-scan-and-filter
 ```
 
-`--all`を付けると全部の図を確かめます。描き直す前の図は約束を満たしていないので、`--all`では多くの図が✗になります。
+`--all`を付けると全部の図を確かめます。描き直す前の図は約束を満たしていないので、`--all`では多くの図が✗になります。git worktreeの中で実行するときは、Playwrightを入れた本体の`scripts/book-figures/node_modules`を`NODE_PATH`で指定します。
+
+描画の検査は、要素の座標を`getBBox`でそのまま測ります。`transform`を付けた要素は正しい位置で測れないので、原本では`transform`を使いません。矢じり以外の線と文字の交わりや、`marker-start`の矢じりは測らないため、書き出したPNGも目で確かめてください。
 
 ## 図の一覧を作り直す
 

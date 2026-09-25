@@ -1,51 +1,70 @@
-<?xml version="1.0" ?>
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1055" viewBox="0 0 640 1055" role="img" aria-labelledby="title desc">
-
-
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="826" viewBox="0 0 640 826" role="img" aria-labelledby="title">
   <title id="title">SQLの文字列から、検索結果が返るまで</title>
-  <desc id="desc">題名検索の例 ／ 矢印は処理が進む順番</desc>
-
-
   <defs>
-    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-      <path d="M0 0L8 4L0 8" fill="#277b74"/>
-    </marker>
-    <marker id="b" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-      <path d="M0 0L8 4L0 8" fill="#99631b"/>
-    </marker>
+    <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
+    <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
+    <marker id="ref" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#7d93a3"/></marker>
   </defs>
-
-
-  <style>text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50} .title{font-size:28px;font-weight:700} .bold{font-weight:700} .small{font-size:21px} .value{font-size:30px;font-weight:700} .muted{font-size:21px;fill:#566c7b} .teal{fill:#176e65;font-weight:700} .panel{fill:#fff;stroke:#cedae1;stroke-width:2} .box{fill:#ecf2f8;stroke:#a7bdcc;stroke-width:2} .memory{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2} .hot{fill:#fff0d5;stroke:#b88020;stroke-width:3} .row{fill:#dcefe8;stroke:#448b7c;stroke-width:1.5} .edge{fill:none;stroke:#9cabb5;stroke-width:2} .arrow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#a)} .request{fill:none;stroke:#99631b;stroke-width:3;stroke-dasharray:7 5;marker-end:url(#b)}</style>
-
-
-  <rect width="640" height="1055" fill="#f5f7f9"/>
-  <text x="28" y="46" class="title">SQLの文字列から、検索結果が返るまで</text>
-  <text x="28" y="83" class="muted">題名検索の例 ／ 矢印は処理が進む順番</text>
-  <rect x="25" y="115" width="590" height="96" rx="12" class="hot"/>
-  <text x="43" y="153" class="small">SELECT id, title FROM books</text>
-  <text x="43" y="185" class="small">WHERE title = '実験用の本 42';</text>
-  <path d="M320 214 L320 245" class="arrow"/>
-  <rect x="25" y="254" width="590" height="133" rx="12" class="panel"/>
-  <text x="45" y="291" class="bold">① 解析する</text>
-  <text x="45" y="332" class="small">SQLの文法、表名・列名を確認する</text>
-  <text x="45" y="367" class="small">books と title が使えるか確認</text>
-  <path d="M320 387 L320 418" class="arrow"/>
-  <rect x="25" y="427" width="590" height="133" rx="12" class="panel"/>
-  <text x="45" y="464" class="bold">② 規則に沿って書き換える</text>
-  <text x="45" y="505" class="small">ビューなどの定義を反映する</text>
-  <text x="45" y="540" class="small">今回は通常の表を直接指定</text>
-  <path d="M320 560 L320 591" class="arrow"/>
-  <rect x="25" y="600" width="590" height="133" rx="12" class="panel"/>
-  <text x="45" y="637" class="bold">③ 計画を作る（プランナ）</text>
-  <text x="45" y="678" class="small">表を順に読むか、Indexを使うかを選ぶ</text>
-  <text x="45" y="713" class="small">第3章のIndex追加後：Index Scan</text>
-  <path d="M320 733 L320 764" class="arrow"/>
-  <rect x="25" y="773" width="590" height="133" rx="12" class="panel"/>
-  <text x="45" y="810" class="bold">④ 実行する（エグゼキュータ）</text>
-  <text x="45" y="851" class="small">計画に従ってページを使い、行を返す</text>
-  <text x="45" y="886" class="small">EXPLAIN ANALYZE は、ここまで実行</text>
-  <path d="M320 907 L320 945" class="arrow"/>
-  <rect x="25" y="955" width="590" height="70" rx="12" class="hot"/>
-  <text x="45" y="998" class="small">結果：id = 42、title = 実験用の本 42</text>
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50}
+.h{font-size:30px;font-weight:700}.b{font-weight:700}.s{font-size:22px}.m{font-size:22px;fill:#566c7b}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:22px}.tag{font-size:22px;font-weight:700;fill:#fff}
+.teal{fill:#176e65}.brown{fill:#945e11}.real{fill:#176e65}.model{fill:#566c7b}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2}.node{fill:#ecf2f8;stroke:#56738a;stroke-width:2}
+.row{fill:#fff;stroke:#448b7c;stroke-width:2}.match{fill:#fff;stroke:#176e65;stroke-width:4}
+.page{fill:#f7fbf9;stroke:#6d9f94;stroke-width:2}.ipage{fill:#f4f6f8;stroke:#6b7f8e;stroke-width:2}
+.band{fill:#d5dde3;stroke:#92a7b5;stroke-width:2}.skip{fill:none;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5}
+.hot{fill:#fff0d5;stroke:#b88020;stroke-width:4}.ghost{fill:#f5f7f9;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5}
+.flow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#flow)}.req{fill:none;stroke:#945e11;stroke-width:3;stroke-dasharray:8 6;marker-end:url(#req)}
+.ref{fill:none;stroke:#7d93a3;stroke-width:2;marker-end:url(#ref)}.step{fill:#fff;stroke:#243b50;stroke-width:2.5}
+.spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
+  </style>
+  <rect width="640" height="826" fill="#f5f7f9"/>
+  <text x="24" y="48" class="h">SQLの文字列から、検索結果が返るまで</text>
+  <g id="input">
+    <rect x="24" y="72" width="592" height="108" rx="10" class="panel"/>
+    <text x="40" y="102" class="s b">受け取ったSQL</text>
+    <text x="40" y="136" class="mono">SELECT id, title FROM books</text>
+    <text x="40" y="166" class="mono">WHERE title = '実験用の本 42';</text>
+  </g>
+  <g id="backend">
+    <rect x="24" y="224" width="362" height="448" rx="12" class="panel"/>
+    <text x="40" y="254" class="m">バックエンドの中</text>
+    <rect x="40" y="268" width="214" height="48" rx="8" class="step"/>
+    <text x="56" y="300" class="s b">① 解析する</text>
+    <rect x="40" y="360" width="214" height="48" rx="8" class="ghost"/>
+    <text x="56" y="392" class="m b">② 書き換える</text>
+    <text x="264" y="392" class="m">今回は通過</text>
+    <rect x="40" y="452" width="214" height="80" rx="8" class="step"/>
+    <text x="56" y="484" class="s b">③ 計画を作る</text>
+    <text x="56" y="515" class="mono">Planning Time</text>
+    <rect x="40" y="576" width="214" height="80" rx="8" class="step"/>
+    <text x="56" y="608" class="s b">④ 実行する</text>
+    <text x="56" y="639" class="mono">Execution Time</text>
+  </g>
+  <g id="output">
+    <rect x="24" y="708" width="362" height="98" rx="10" class="panel"/>
+    <text x="40" y="740" class="s b">結果の行を画面へ</text>
+    <rect x="40" y="754" width="240" height="36" rx="4" class="row"/>
+    <text x="54" y="779" class="s">42　実験用の本 42</text>
+  </g>
+  <g id="steps">
+    <path d="M136 184 V204 H125 L147 220 L169 204 H158 V184 Z" class="step"/>
+    <path d="M136 320 V340 H125 L147 356 L169 340 H158 V320 Z" class="step"/>
+    <path d="M136 412 V432 H125 L147 448 L169 432 H158 V412 Z" class="step"/>
+    <path d="M136 536 V556 H125 L147 572 L169 556 H158 V536 Z" class="step"/>
+    <path d="M136 660 V688 H125 L147 704 L169 688 H158 V660 Z" class="step"/>
+  </g>
+  <g id="explain">
+    <path d="M500 268 H510 V532 H500" fill="none" stroke="#243b50" stroke-width="2"/>
+    <text x="520" y="498" class="mono b">EXPLAIN</text>
+    <text x="520" y="526" class="s">③まで</text>
+  </g>
+  <g id="analyze">
+    <path d="M396 268 H406 V656 H396" fill="none" stroke="#243b50" stroke-width="2"/>
+    <text x="416" y="578" class="mono b">EXPLAIN ANALYZE</text>
+    <text x="416" y="608" class="s">④まで</text>
+    <rect x="416" y="622" width="150" height="34" rx="6" class="hot"/>
+    <text x="491" y="646" text-anchor="middle" class="s b">行は出さない</text>
+  </g>
 </svg>

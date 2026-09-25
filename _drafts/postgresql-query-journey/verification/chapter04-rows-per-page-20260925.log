@@ -1,0 +1,125 @@
+-- 第4章の観察用の表と行幅実験で、ページごとに何行入っているかを ctid で数える（2026-09-25）
+-- 図 03-pages-and-rows と 03-row-width の数値の出典。最後に ROLLBACK するので何も残らない
+BEGIN;
+BEGIN
+CREATE SCHEMA book_observation;
+CREATE SCHEMA
+CREATE TABLE book_observation.books
+  (LIKE public.books INCLUDING DEFAULTS INCLUDING CONSTRAINTS);
+CREATE TABLE
+ALTER TABLE book_observation.books ADD PRIMARY KEY (id);
+ALTER TABLE
+INSERT INTO book_observation.books
+SELECT id, title FROM public.books WHERE id BETWEEN 1 AND 1000;
+INSERT 0 1000
+SET LOCAL search_path = book_observation, public;
+SET
+ANALYZE books;
+ANALYZE
+SELECT pg_relation_size('books') AS table_bytes,
+       pg_relation_size('books') / current_setting('block_size')::int AS pages;
+ table_bytes | pages 
+-------------+-------
+       65536 |     8
+(1 row)
+
+SELECT (ctid::text::point)[0]::int AS page, count(*) AS rows_in_page,
+       min(id) AS first_id, max(id) AS last_id
+FROM books GROUP BY 1 ORDER BY 1;
+ page | rows_in_page | first_id | last_id 
+------+--------------+----------+---------
+    0 |          136 |        1 |     136
+    1 |          136 |      137 |     272
+    2 |          136 |      273 |     408
+    3 |          136 |      409 |     544
+    4 |          136 |      545 |     680
+    5 |          136 |      681 |     816
+    6 |          136 |      817 |     952
+    7 |           48 |      953 |    1000
+(8 rows)
+
+SELECT id, ctid FROM books WHERE id IN (1, 5, 136, 137, 1000) ORDER BY id;
+  id  |  ctid   
+------+---------
+    1 | (0,1)
+    5 | (0,5)
+  136 | (0,136)
+  137 | (1,1)
+ 1000 | (7,48)
+(5 rows)
+
+SAVEPOINT row_width;
+SAVEPOINT
+CREATE TABLE size_short AS
+SELECT n AS id, repeat('a', 10) AS note
+FROM generate_series(1, 1000) AS n;
+SELECT 1000
+CREATE TABLE size_long AS
+SELECT n AS id, repeat('a', 200) AS note
+FROM generate_series(1, 1000) AS n;
+SELECT 1000
+SELECT pg_relation_size('size_short') AS short_bytes,
+       pg_relation_size('size_long') AS long_bytes;
+ short_bytes | long_bytes 
+-------------+------------
+       65536 |     262144
+(1 row)
+
+SELECT (ctid::text::point)[0]::int AS page, count(*) AS rows_in_page
+FROM size_short GROUP BY 1 ORDER BY 1;
+ page | rows_in_page 
+------+--------------
+    0 |          185
+    1 |          185
+    2 |          185
+    3 |          185
+    4 |          185
+    5 |           75
+(6 rows)
+
+SELECT (ctid::text::point)[0]::int AS page, count(*) AS rows_in_page
+FROM size_long GROUP BY 1 ORDER BY 1;
+ page | rows_in_page 
+------+--------------
+    0 |           34
+    1 |           34
+    2 |           34
+    3 |           34
+    4 |           34
+    5 |           34
+    6 |           34
+    7 |           34
+    8 |           34
+    9 |           34
+   10 |           34
+   11 |           34
+   12 |           34
+   13 |           34
+   14 |           34
+   15 |           34
+   16 |           34
+   17 |           34
+   18 |           34
+   19 |           34
+   20 |           34
+   21 |           34
+   22 |           34
+   23 |           34
+   24 |           34
+   25 |           34
+   26 |           34
+   27 |           34
+   28 |           34
+   29 |           14
+(30 rows)
+
+ROLLBACK TO SAVEPOINT row_width;
+ROLLBACK
+ROLLBACK;
+ROLLBACK
+SELECT count(*) AS leftover_schema FROM pg_namespace WHERE nspname = 'book_observation';
+ leftover_schema 
+-----------------
+               0
+(1 row)
+

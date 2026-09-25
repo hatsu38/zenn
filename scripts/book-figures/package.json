@@ -5,7 +5,7 @@
     "export": "node export.cjs",
     "check": "node check-figures.cjs",
     "index": "node build-index.cjs",
-    "test": "node --test check-figures.test.cjs"
+    "test": "node --test check-figures.test.cjs render-checks.test.cjs"
   },
   "devDependencies": { "playwright": "1.62.1" }
 }

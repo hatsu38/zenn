@@ -1,8 +1,10 @@
 /** 図が FIGURE-PLAN.md 4章の約束を満たしているかを確かめる。
+ *  SVG の文字列と本文から分かることはここで調べ、描画して測ることは render-checks.cjs で調べる。
  *  使い方：node scripts/book-figures/check-figures.cjs 01-scan-and-filter 05-limit-bands
  *          node scripts/book-figures/check-figures.cjs --all */
 const fs = require('node:fs');
 const path = require('node:path');
+const { inspectFigures } = require('./render-checks.cjs');
 
 const ROOT = path.resolve(__dirname, '../..');
 const IMAGE_DIR = path.join(ROOT, 'images/postgresql-query-journey');
@@ -27,6 +29,12 @@ function readViewBox(svgText) {
 function findDisclaimers(svgText) {
   const texts = [...svgText.matchAll(/<text\b[^>]*>([\s\S]*?)<\/text>/g)].map(m => m[1].replace(/<[^>]+>/g, ''));
   return texts.filter(text => DISCLAIMER_PATTERNS.some(pattern => pattern.test(text)));
+}
+
+// 画像の中の文字のうち、「。」で終わる文を返す。図の中には文を置かない約束のため。
+function findSentences(svgText) {
+  const texts = [...svgText.matchAll(/<text\b[^>]*>([\s\S]*?)<\/text>/g)].map(m => m[1].replace(/<[^>]+>/g, '').trim());
+  return texts.filter(text => text.endsWith('。'));
 }
 
 function findReference(name) {
@@ -66,6 +74,9 @@ function checkFigure(name, catalog) {
   const disclaimers = findDisclaimers(svg);
   if (disclaimers.length > 0) problems.push(`画像内に断り書き: ${disclaimers.join(' / ')}`);
 
+  const sentences = findSentences(svg);
+  if (sentences.length > 0) problems.push(`画像内に文（「。」で終わる）: ${sentences.join(' / ')}`);
+
   const pngPath = path.join(IMAGE_DIR, `${name}.png`);
   if (!fs.existsSync(pngPath)) problems.push('PNG がない（書き出していない）');
   else if (fs.statSync(pngPath).mtimeMs + 2000 < fs.statSync(svgPath).mtimeMs) problems.push('PNG が SVG より古い（書き出し忘れ）');
@@ -83,7 +94,7 @@ function checkFigure(name, catalog) {
   return problems;
 }
 
-function main() {
+async function main() {
   const args = process.argv.slice(2);
   const catalog = JSON.parse(fs.readFileSync(path.join(IMAGE_DIR, 'catalog.json'), 'utf8'));
   const names = args.includes('--all') ? catalog.map(item => item.name) : args;
@@ -92,9 +103,11 @@ function main() {
     process.exitCode = 2;
     return;
   }
+  const svgPathOf = name => path.join(IMAGE_DIR, 'sources', `${name}.svg`);
+  const rendered = await inspectFigures(names.map(svgPathOf).filter(svgPath => fs.existsSync(svgPath)));
   let failed = 0;
   for (const name of names) {
-    const problems = checkFigure(name, catalog);
+    const problems = [...checkFigure(name, catalog), ...(rendered.get(svgPathOf(name)) || [])];
     if (problems.length === 0) {
       console.log(`✓ ${name}`);
       continue;
@@ -107,5 +120,10 @@ function main() {
   process.exitCode = failed > 0 ? 1 : 0;
 }
 
-if (require.main === module) main();
-module.exports = { findSmallFonts, readViewBox, findDisclaimers };
+if (require.main === module) {
+  main().catch(error => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}
+module.exports = { findSmallFonts, readViewBox, findDisclaimers, findSentences };

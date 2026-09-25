@@ -98,14 +98,14 @@
   {
     "name": "03-pages-and-rows",
     "chapter": 4,
-    "title": "表の中にページ、ページの中に行",
-    "description": "説明用の模型 ／ 1ページ3行は実際の容量ではない"
+    "title": "本5の1行も、ページ0ごと読む",
+    "description": "仕組み：観察用の表の8ページと行（行数は実測）"
   },
   {
     "name": "03-row-width",
     "chapter": 4,
     "title": "同じ1,000行でも、8ページと32ページ",
-    "description": "固定サイズのページに、長さの違う行を入れる"
+    "description": "比較：行の長さとページ数（実測）"
   },
   {
     "name": "03-storage-question",
@@ -117,7 +117,7 @@
     "name": "04-memory-regions",
     "chapter": 5,
     "title": "ページの保存場所と、計算の作業場所",
-    "description": "基本の配置の模型 ／ 並列処理などは省略"
+    "description": "仕組み：共有バッファと処理ごとの作業領域の模型"
   },
   {
     "name": "shared-buffer-reuse",
@@ -189,7 +189,7 @@
     "name": "09-hash-join",
     "chapter": 9,
     "title": "先に分類し、同じ箱の中で照合する",
-    "description": "Hash Joinの模型 ／ 実際のハッシュ関数とは異なる"
+    "description": "仕組み：Hash Joinの模型（本8は箱2だけを見る）"
   },
   {
     "name": "09-merge-join",
@@ -207,7 +207,7 @@
     "name": "09-title-lookup",
     "chapter": 9,
     "title": "本の番号だけでは、題名が分からない",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "description": "問い：記録の本番号から題名を探す"
   },
   {
     "name": "10-estimate-propagation",
@@ -230,14 +230,14 @@
   {
     "name": "11-snapshots",
     "chapter": 11,
-    "title": "読む時点によって、見える版が変わる",
-    "description": "本文の実験順序 ／ Repeatable Readを明示して実行"
+    "title": "Bが確定しても、Aは版1を読む",
+    "description": "比較：Repeatable Readで見える版（3コマの模型）"
   },
   {
     "name": "11-visibility-map",
     "chapter": 11,
-    "title": "Indexだけで返せるかは、可視性にもよる",
-    "description": "Index Only Scanの模型 ／ ページごとに判断"
+    "title": "×のページだけ、表を確かめに行く",
+    "description": "仕組み：Index Only Scanと可視性マップの模型"
   },
   {
     "name": "11-wal-and-pages",
@@ -285,6 +285,6 @@
     "name": "02-query-stages",
     "chapter": 6,
     "title": "SQLの文字列から、検索結果が返るまで",
-    "description": "題名検索の例 ／ 矢印は処理が進む順番"
+    "description": "仕組み：バックエンドの中の4つの段"
   }
 ]
