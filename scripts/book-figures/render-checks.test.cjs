@@ -31,14 +31,17 @@ const CASES = {
 let results;
 before(async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'render-checks-'));
-  const files = Object.fromEntries(Object.entries(CASES).map(([name, body]) => {
-    const file = path.join(dir, `${name}.svg`);
-    fs.writeFileSync(file, figure(body));
-    return [name, file];
-  }));
-  const found = await inspectFigures(Object.values(files));
-  results = Object.fromEntries(Object.entries(files).map(([name, file]) => [name, found.get(file)]));
-  fs.rmSync(dir, { recursive: true, force: true });
+  try {
+    const files = Object.fromEntries(Object.entries(CASES).map(([name, body]) => {
+      const file = path.join(dir, `${name}.svg`);
+      fs.writeFileSync(file, figure(body));
+      return [name, file];
+    }));
+    const found = await inspectFigures(Object.values(files));
+    results = Object.fromEntries(Object.entries(files).map(([name, file]) => [name, found.get(file)]));
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test('inspectFigures：見出しだけの図には問題がない', () => {
