@@ -195,7 +195,7 @@
     "name": "07-external-sort",
     "chapter": 7,
     "title": "メモリに収まらないときの並べ替え",
-    "description": "外部ソートの模型 ／ まとまりの個数・容量は模式的"
+    "description": "仕組み：作業用メモリと一時ファイルを使う外部ソート（模型）"
   },
   {
     "name": "08-twenty-window",
