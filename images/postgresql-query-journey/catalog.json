@@ -72,10 +72,22 @@
     "description": "観察：4つの実測を帯で比べる"
   },
   {
+    "name": "06-catalog-question",
+    "chapter": 3,
+    "title": "目録も大きい。それでも速い？",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
     "name": "06-btree-path",
     "chapter": 3,
     "title": "8を探す：範囲を選んでから、値を探す",
     "description": "番号1〜9で説明する図 ／ 矢印は探索で進む向き"
+  },
+  {
+    "name": "06-tree-levels",
+    "chapter": 3,
+    "title": "100万冊でも、読むのは3枚",
+    "description": "仕組み：分岐100の3段の木で、各段1枚だけ読む（説明するための図）"
   },
   {
     "name": "06-range-scan",
@@ -84,16 +96,10 @@
     "description": "Indexの葉をたどる図 ／ 表への参照は省略"
   },
   {
-    "name": "06-catalog-question",
-    "chapter": 3,
-    "title": "目録も大きい。それでも速い？",
-    "description": "サービスの場面・学ぶきっかけの絵"
-  },
-  {
-    "name": "03-index-reference",
+    "name": "03-storage-question",
     "chapter": 4,
-    "title": "Indexをたどって、表の行へ届く",
-    "description": "3段のIndexの模型 ／ 矢印は参照する順番"
+    "title": "本の一覧は、どこに保存される？",
+    "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
     "name": "03-pages-and-rows",
@@ -102,16 +108,22 @@
     "description": "仕組み：観察用の表の8ページと行（行数は実測）"
   },
   {
+    "name": "03-ctid-location",
+    "chapter": 4,
+    "title": "ctid = (0,1) が指す場所",
+    "description": "ページ番号は0から、項目番号は1から数える"
+  },
+  {
+    "name": "03-index-reference",
+    "chapter": 4,
+    "title": "Indexをたどって、表の行へ届く",
+    "description": "3段のIndexの模型 ／ 矢印は参照する順番"
+  },
+  {
     "name": "03-row-width",
     "chapter": 4,
     "title": "同じ1,000行でも、8ページと32ページ",
     "description": "比較：行の長さとページ数（実測）"
-  },
-  {
-    "name": "03-storage-question",
-    "chapter": 4,
-    "title": "本の一覧は、どこに保存される？",
-    "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
     "name": "04-memory-regions",
@@ -132,10 +144,22 @@
     "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
+    "name": "02-client-scene",
+    "chapter": 6,
+    "title": "画面の向こうで、SQLが動く",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
     "name": "02-connections",
     "chapter": 6,
     "title": "接続ごとにプロセスが動く",
     "description": "PIDは今回の例 ／ 配置は共有範囲を示す模型"
+  },
+  {
+    "name": "02-query-stages",
+    "chapter": 6,
+    "title": "SQLの文字列から、検索結果が返るまで",
+    "description": "仕組み：バックエンドの中の4つの段"
   },
   {
     "name": "02-execution-tree",
@@ -144,16 +168,10 @@
     "description": "ORDER BY title LIMIT 3 の計画の模型"
   },
   {
-    "name": "02-client-scene",
-    "chapter": 6,
-    "title": "画面の向こうで、SQLが動く",
-    "description": "サービスの場面・学ぶきっかけの絵"
-  },
-  {
-    "name": "07-external-sort",
+    "name": "07-recent-records",
     "chapter": 7,
-    "title": "メモリに収まらないときの並べ替え",
-    "description": "外部ソートの模型 ／ まとまりの個数・容量は模式的"
+    "title": "読み終えた順に、並べたい",
+    "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
     "name": "07-merge-cards",
@@ -162,16 +180,22 @@
     "description": "比較の模型 ／ PostgreSQLの実装そのものではない"
   },
   {
-    "name": "07-recent-records",
+    "name": "07-sort-bands",
     "chapter": 7,
-    "title": "読み終えた順に、並べたい",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "title": "200万行を調べ、4分の1を並べた",
+    "description": "観察：Seq ScanからSortへ渡る行数と、Sortのメモリ（実測）"
   },
   {
-    "name": "08-top-n-vs-index",
+    "name": "07-external-sort",
+    "chapter": 7,
+    "title": "メモリに収まらないときの並べ替え",
+    "description": "外部ソートの模型 ／ まとまりの個数・容量は模式的"
+  },
+  {
+    "name": "08-twenty-window",
     "chapter": 8,
-    "title": "候補を絞る方法と、途中で止まる方法",
-    "description": "大きい順に3件を求める模型 ／ 本文は日時順20件"
+    "title": "画面に欲しいのは、最新20件",
+    "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
     "name": "top-three-heap",
@@ -180,10 +204,34 @@
     "description": "候補の比較・交換・除外を追う4コマ"
   },
   {
-    "name": "08-twenty-window",
+    "name": "08-sort-vs-topn",
     "chapter": 8,
-    "title": "画面に欲しいのは、最新20件",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "title": "LIMITで減るのは、持つ量と返す行",
+    "description": "比較：ORDER BYだけとLIMIT 20の三つの数（実測）"
+  },
+  {
+    "name": "08-top-n-vs-index",
+    "chapter": 8,
+    "title": "候補を絞る方法と、途中で止まる方法",
+    "description": "大きい順に3件を求める模型 ／ 本文は日時順20件"
+  },
+  {
+    "name": "09-title-lookup",
+    "chapter": 9,
+    "title": "本の番号だけでは、題名が分からない",
+    "description": "問い：記録の本番号から題名を探す"
+  },
+  {
+    "name": "09-nested-loop",
+    "chapter": 9,
+    "title": "記録を1件取り出すたびに、本を探す",
+    "description": "Nested Loopの模型 ／ キャッシュによる省略は示さない"
+  },
+  {
+    "name": "09-loops",
+    "chapter": 9,
+    "title": "1回1行を20回で、20行",
+    "description": "観察：Nested Loop の rows と loops と Buffers（実測）"
   },
   {
     "name": "09-hash-join",
@@ -198,34 +246,22 @@
     "description": "Merge Joinの模型 ／ 本の番号は一意、記録は重複あり"
   },
   {
-    "name": "09-nested-loop",
-    "chapter": 9,
-    "title": "記録を1件取り出すたびに、本を探す",
-    "description": "Nested Loopの模型 ／ キャッシュによる省略は示さない"
+    "name": "10-planner-choice",
+    "chapter": 10,
+    "title": "Indexがあるのに、なぜ使わない？",
+    "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
-    "name": "09-title-lookup",
-    "chapter": 9,
-    "title": "本の番号だけでは、題名が分からない",
-    "description": "問い：記録の本番号から題名を探す"
+    "name": "10-stats-to-rows",
+    "chapter": 10,
+    "title": "割合のメモから、行数を見積もる",
+    "description": "仕組み：ANALYZE のメモの割合から計画の rows を見積もる模型"
   },
   {
     "name": "10-estimate-propagation",
     "chapter": 10,
     "title": "入口の見積もりが、後ろの判断に響く",
     "description": "推定と実測のずれの説明例 ／ 実測ログではない"
-  },
-  {
-    "name": "10-selectivity",
-    "chapter": 10,
-    "title": "同じ「1種類」でも、9,000行と1,000行",
-    "description": "本文の生成データの分布 ／ 四角一つは1,000行"
-  },
-  {
-    "name": "10-planner-choice",
-    "chapter": 10,
-    "title": "Indexがあるのに、なぜ使わない？",
-    "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
     "name": "11-snapshots",
@@ -274,17 +310,5 @@
     "chapter": 12,
     "title": "今度は、根拠を持って選べる",
     "description": "サービスの場面・学ぶきっかけの絵"
-  },
-  {
-    "name": "03-ctid-location",
-    "chapter": 4,
-    "title": "ctid = (0,1) が指す場所",
-    "description": "ページ番号は0から、項目番号は1から数える"
-  },
-  {
-    "name": "02-query-stages",
-    "chapter": 6,
-    "title": "SQLの文字列から、検索結果が返るまで",
-    "description": "仕組み：バックエンドの中の4つの段"
   }
 ]

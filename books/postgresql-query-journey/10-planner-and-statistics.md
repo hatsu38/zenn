@@ -43,9 +43,6 @@ SELECT * FROM stats_demo WHERE category = 'rare';
 
 対象になる割合を**選択率**と呼びます。この例なら90%と10%です。
 
-![同じ「1種類」でも、9,000行と1,000行](/images/postgresql-query-journey/10-selectivity.png)
-*本文の生成データの分布。四角一つは1,000行です。*
-
 ## 全行を毎回数えず、特徴を持っておく
 
 `ANALYZE`は値の分布などを調べ、**統計情報**を作ります。統計情報は、表の特徴をまとめたメモです。
@@ -67,6 +64,11 @@ WHERE schemaname = current_schema() AND tablename = 'stats_demo';
 | `histogram_bounds` | 残りの値の分布を区切る境界 |
 
 `category`の列なら、`most_common_vals`に`popular`と`rare`、`most_common_freqs`にそれぞれの割合が入っているはずです。この割合が、推定行数を作る材料になります。
+
+図で、メモの割合から計画の`rows`ができるまでをたどってください。
+
+![1万行の表のうち、popularの9,000行とrareの1,000行を、ANALYZEが割合0.9と0.1としてメモし、10,000×0.1＝1,000がrareを探す計画のrows=1000になる](/images/postgresql-query-journey/10-stats-to-rows.png)
+*表の1万行にメモの割合0.1を掛けた1,000が、計画のrowsになります（模型。自分の出力の値と比べてください）。*
 
 すべての列で、すべての項目が埋まるわけではありません。統計は一部の行を抜き出した標本に基づくため、完全な件数表でもありません。[行数見積もりの公式例](https://www.postgresql.org/docs/18/row-estimation-examples.html)には、この情報がどう使われるかが示されています。
 
