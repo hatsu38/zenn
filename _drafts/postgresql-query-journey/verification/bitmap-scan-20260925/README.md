@@ -27,3 +27,11 @@
 - 第12章「Index の追加」で、序章の SQL そのものが Bitmap を選ぶことを見せる（A の計画）
 - 第7章の `work_mem` と同じ操作で lossy を出せる（D）。ビットマップも作業領域に収まらないと粗くなる
 - 第11章は「1ページに数ビット」の二つ目として可視性マップを Bitmap から引き取り、UPDATE の観察を `EXPLAIN (ANALYZE, WAL)` に変えて WAL を実行計画の出力として扱う
+
+## 追記（2026-09-25）: 第11章の手順に WAL オプションを足した再実行
+
+`ch11-wal-option.sql` / `ch11-wal-option-output.txt`。章と同じ手順（Index 作成 → VACUUM → 検索 → UPDATE → 検索 → VACUUM → 検索 → Index 削除）で、UPDATE と検索に `EXPLAIN (ANALYZE, BUFFERS, WAL)` を付けた。
+
+- UPDATE（本42の2行）: `Buffers: shared hit=20 dirtied=3`、`WAL: records=6 fpi=2 bytes=16786`。SELECT には WAL の行が出ない
+- Heap Fetches は 0 → 4 → **4**。章の表（2026-09-22）では 0 に戻ったが、今回は戻らなかった。原因は別の接続（pid 22521、psql）が 2026-09-24 16:00 UTC から `idle in transaction` のまま `backend_xid = 813` を持っていたこと。`VACUUM (VERBOSE)` は `2 are dead but not yet removable`、`removable cutoff: 813` と報告した。本42の新しい版の `xmin` は 826 で、813 より新しいので回収できない。章の「長く終わらないトランザクションがあると片付けられない」の実例として本文に足した
+- lab には第8章の `reading_records_order_idx` が無い状態で実行した（本の流れでは存在するので、読者の `dirtied` は Index の分だけ増えうる）。lab の設定: `wal_log_hints = off`、`data_checksums = on`。残っていた接続は他のセッションのものなので終了させていない
