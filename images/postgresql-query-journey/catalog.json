@@ -111,7 +111,7 @@
     "name": "03-ctid-location",
     "chapter": 4,
     "title": "ctid = (0,1) が指す場所",
-    "description": "ページ番号は0から、項目番号は1から数える"
+    "description": "仕組み：ctidのページ番号と項目番号で行を指す（模型）"
   },
   {
     "name": "03-index-reference",
