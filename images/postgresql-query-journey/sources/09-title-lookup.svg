@@ -33,13 +33,13 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     </g>
     <g id="record-2">
       <rect x="80" y="172" width="360" height="40" rx="4" class="panel"/>
-      <path d="M232 172 V212" fill="none" stroke="#cedae1" stroke-width="2"/>
+      <path d="M232 172 V212" class="panel"/>
       <text x="102" y="200" class="s">本番号 1</text>
       <text x="254" y="200" class="s">題名 ？</text>
     </g>
     <g id="record-3">
       <rect x="80" y="220" width="360" height="40" rx="4" class="panel"/>
-      <path d="M232 220 V260" fill="none" stroke="#cedae1" stroke-width="2"/>
+      <path d="M232 220 V260" class="panel"/>
       <text x="102" y="248" class="s">本番号 2</text>
       <text x="254" y="248" class="s">題名 ？</text>
     </g>
