@@ -59,7 +59,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="24" y="392" class="b">② 記録の本8を照合する</text>
     <rect x="437" y="362" width="150" height="44" rx="6" class="row"/>
     <text x="512" y="392" text-anchor="middle">記録：本8</text>
-    <rect x="24" y="462" width="592" height="178" rx="12" class="panel"/>
+    <rect x="24" y="462" width="592" height="178" rx="10" class="work"/>
     <rect x="40" y="488" width="176" height="136" rx="10" class="ghost"/>
     <text x="54" y="516" class="m">箱0</text>
     <rect x="52" y="530" width="44" height="44" rx="4" class="ghost"/>
