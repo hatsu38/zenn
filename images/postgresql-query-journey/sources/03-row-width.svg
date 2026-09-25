@@ -21,10 +21,10 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </style>
   <rect width="640" height="600" fill="#f5f7f9"/>
   <text x="24" y="48" class="h">同じ1,000行でも、8ページと32ページ</text>
+  <rect x="548" y="80" width="68" height="36" rx="18" class="real"/>
+  <text x="582" y="105" text-anchor="middle" class="tag">実測</text>
   <g id="short">
     <text x="24" y="105" class="b">短い行（10文字）</text>
-    <rect x="548" y="80" width="68" height="36" rx="18" class="real"/>
-    <text x="582" y="105" text-anchor="middle" class="tag">実測</text>
     <rect x="24" y="124" width="33" height="56" rx="4" class="page"/>
     <rect x="61.2" y="124" width="33" height="56" rx="4" class="page"/>
     <rect x="98.4" y="124" width="33" height="56" rx="4" class="page"/>
@@ -33,7 +33,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="210" y="124" width="33" height="56" rx="4" class="page"/>
     <rect x="247.2" y="124" width="33" height="56" rx="4" class="ghost"/>
     <rect x="284.4" y="124" width="33" height="56" rx="4" class="ghost"/>
-    <g fill="none" stroke="#448b7c" stroke-width="2" stroke-linecap="round">
+    <g class="row" stroke-linecap="round">
       <path d="M32 140H49M32 152H49M32 164H49"/>
       <path d="M69.2 140H86.2M69.2 152H86.2M69.2 164H86.2"/>
       <path d="M106.4 140H123.4M106.4 152H123.4M106.4 164H123.4"/>
@@ -81,7 +81,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="507.6" y="427" width="33" height="56" rx="4" class="page"/>
     <rect x="544.8" y="427" width="33" height="56" rx="4" class="ghost"/>
     <rect x="582" y="427" width="33" height="56" rx="4" class="ghost"/>
-    <g fill="none" stroke="#448b7c" stroke-width="2" stroke-linecap="round">
+    <g class="row" stroke-linecap="round">
       <path d="M32 377H49M32 389H49M32 401H49"/>
       <path d="M69.2 377H86.2M69.2 389H86.2M69.2 401H86.2"/>
       <path d="M106.4 377H123.4M106.4 389H123.4M106.4 401H123.4"/>
