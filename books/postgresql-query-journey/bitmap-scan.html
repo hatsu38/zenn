@@ -115,9 +115,9 @@
   <section class="lab" aria-labelledby="lab-title">
     <div class="lab-head">
       <h2 id="lab-title">1,000〜1,500円の本、どう読む？</h2>
-      <p>8ページに本が4冊ずつ入った模型です。条件に合う6冊は、ページ1・4・6に散らばっています。</p>
+      <p>8ページに本が4冊ずつ入った説明用の表です。条件に合う6冊は、ページ1・4・6に散らばっています。</p>
       <code class="query">SELECT * FROM books WHERE price BETWEEN 1000 AND 1500;</code>
-      <p class="small" style="margin:10px 0 0">説明用のSQLと模型です。本の実験データとは別で、実測結果ではありません。ページ番号は説明のため1から付けています。</p>
+      <p class="small" style="margin:10px 0 0">説明用のSQLと表です。本の実験データとは別で、実測結果ではありません。ページ番号は説明のため1から付けています。</p>
       <div class="modes" role="group" aria-label="読み方を選ぶ">
         <button data-mode="bitmap" aria-pressed="true">Bitmap Scan<small>場所を集めて、まとめ読み</small></button>
         <button data-mode="index" aria-pressed="false">Index Scan<small>見つけた行を、そのつど読む</small></button>
@@ -152,7 +152,7 @@
         <div><span class="small">表のページを訪れた順番</span><p id="route">まだ読んでいません</p></div>
         <div><span class="small">取り出した本の価格（円）</span><p id="returned">0 / 6 行</p></div>
       </div>
-      <div class="note small">この模型は読む順番を比べます。ボタンの回数は処理時間ではありません。同じページを再訪しても、キャッシュにあればディスクから読み直す必要はありません。Index側のページアクセスや、更新された行の扱いは省略しています。</div>
+      <div class="note small">この図は読む順番を比べます。ボタンの回数は処理時間ではありません。同じページを再訪しても、キャッシュにあればディスクから読み直す必要はありません。Index側のページアクセスや、更新された行の扱いは省略しています。</div>
     </div>
     <noscript><p class="note">図を操作するにはJavaScriptを有効にしてください。仕組みは以下の説明でも読めます。</p></noscript>
   </section>
@@ -161,7 +161,7 @@
     <h2 id="two-steps">EXPLAINに2行出るのは、役割が違うから</h2>
     <div class="steps">
       <div class="step"><span class="number">先に / Bitmap Index Scan</span><h3>Indexで候補の場所を集める</h3><p>価格のIndexから「ページ1の行1」「ページ4の行2」などの位置を見つけ、ビットマップに印を付けます。この段階では、表から本の全情報を取り出していません。</p><p>同じページの候補が一つのメモにまとまり、表をページ順に読む準備ができます。</p></div>
-      <div class="step"><span class="number">その後 / Bitmap Heap Scan</span><h3>候補のあるページをまとめて読む</h3><p>この模型ではページ1 → 4 → 6と進み、それぞれから候補の2行を取り出します。候補のないページ2・3・5・7・8は読みません。</p><p>実際には、読んだ行がそのトランザクションから見えるかも確認します。</p></div>
+      <div class="step"><span class="number">その後 / Bitmap Heap Scan</span><h3>候補のあるページをまとめて読む</h3><p>この図ではページ1 → 4 → 6と進み、それぞれから候補の2行を取り出します。候補のないページ2・3・5・7・8は読みません。</p><p>実際には、読んだ行がそのトランザクションから見えるかも確認します。</p></div>
     </div>
     <p style="margin-top:22px">実行計画では、読む側が上、その材料を作る側が下に表示されます。次は<strong>形を理解するための模式例</strong>です。実機の出力ではなく、コストや時間も付けていません。</p>
     <pre><code><span class="heap">Bitmap Heap Scan on books</span>             ← ② 表から行を取り出す
@@ -176,7 +176,7 @@
     <p class="small">画面が狭いときは、表を横にスクロールできます。</p>
     <div class="table-wrap" tabindex="0" role="region" aria-label="3つの読み方の比較表（横スクロール可能）">
       <table>
-        <thead><tr><th scope="col">読み方</th><th scope="col">この模型で表を訪れる順番</th><th scope="col">得意な場面と負担</th></tr></thead>
+        <thead><tr><th scope="col">読み方</th><th scope="col">この図で表を訪れる順番</th><th scope="col">得意な場面と負担</th></tr></thead>
         <tbody>
           <tr><td>Index Scan</td><td>1 → 4 → 1 → 6 → 4 → 6</td><td>少数の行をすぐ取り出したいとき。保存場所が散らばっていると、ページを行き来しやすい。</td></tr>
           <tr><td>Bitmap Scan</td><td>1 → 4 → 6</td><td>候補をページごとにまとめる効果があるとき。ただし、先にビットマップを作る時間とメモリが必要。</td></tr>
@@ -185,7 +185,7 @@
       </table>
     </div>
     <p style="margin-top:18px">Bitmap Scanなら、候補のないページを飛ばし、候補のあるページはまとめて読めます。一方、ほぼ全ページに候補があれば、メモを作る手間に見合わないこともあります。</p>
-    <p>どれが選ばれるかは、件数だけでは決まりません。行の散らばり方、キャッシュの見積もり、<code>LIMIT</code>なども関わります。この小さな模型と同じ表を実際に作っても、Bitmap Scanが選ばれるとは限りません。</p>
+    <p>どれが選ばれるかは、件数だけでは決まりません。行の散らばり方、キャッシュの見積もり、<code>LIMIT</code>なども関わります。この小さな例と同じ表を実際に作っても、Bitmap Scanが選ばれるとは限りません。</p>
   </section>
 
   <section aria-labelledby="further-title">
@@ -193,12 +193,12 @@
     <details><summary>「ビットマップ」という専用のIndexを作るの？</summary><p>この例で用意するのは価格のB-tree Indexです。ビットマップは、クエリの実行中にメモリ上で作る候補位置の情報です。「Bitmap Index Scan」は、Indexを使ってビットマップを作る処理の名前です。</p></details>
     <details><summary>価格順のまま返ってくる？</summary><p>表をページ順に読むので、元のIndexの価格順は失われます。価格順が必要なら<code>ORDER BY price</code>を指定します。Bitmap Scanを使う計画では、そのためのSortが別途必要になります。そもそも、<code>ORDER BY</code>のないSQLに結果の順番の保証はありません。</p></details>
     <details><summary>複数のIndexの候補も組み合わせられる</summary><p>価格と著者にそれぞれIndexがあれば、候補位置の集合を組み合わせる方法もあります。<code>BitmapAnd</code>は両方に共通する候補、<code>BitmapOr</code>はどちらかにある候補をまとめます。使えるIndexが複数あっても、必ずこの方法を選ぶわけではありません。</p></details>
-    <details><summary>Recheck Condは、何を確かめる条件？</summary><p>Indexから得た候補を、表の行で再確認するときの条件です。たとえばメモリが足りず「行の場所」から「候補のあるページ」へと記録を粗くした場合、そのページ内の行を調べ直します。この粗い記録を<code>lossy</code>と呼びます。上の模型は、行の場所まで記録できる場合だけを扱っています。</p><p><code>Recheck Cond</code>が表示されているだけで、lossyになったとは判断できません。実測の<code>Heap Blocks: exact=… lossy=…</code>や<code>Rows Removed by Index Recheck</code>を確認します。</p></details>
+    <details><summary>Recheck Condは、何を確かめる条件？</summary><p>Indexから得た候補を、表の行で再確認するときの条件です。たとえばメモリが足りず「行の場所」から「候補のあるページ」へと記録を粗くした場合、そのページ内の行を調べ直します。この粗い記録を<code>lossy</code>と呼びます。上の図は、行の場所まで記録できる場合だけを扱っています。</p><p><code>Recheck Cond</code>が表示されているだけで、lossyになったとは判断できません。実測の<code>Heap Blocks: exact=… lossy=…</code>や<code>Rows Removed by Index Recheck</code>を確認します。</p></details>
   </section>
 </main>
 <footer>
   <p>読み終えたら、図でIndex ScanとBitmap Scanを切り替えてみてください。同じ6行を返しても、表を訪れる順番が変わります。</p>
-  <p>参考：PostgreSQL 18 公式ドキュメント。図・ページ数・価格は説明用の模型です。</p>
+  <p>参考：PostgreSQL 18 公式ドキュメント。図・ページ数・価格は説明用です。</p>
   <a href="https://www.postgresql.org/docs/18/using-explain.html">Using EXPLAIN</a>
   <a href="https://www.postgresql.org/docs/18/indexes-bitmap-scans.html">Combining Multiple Indexes</a>
 </footer>

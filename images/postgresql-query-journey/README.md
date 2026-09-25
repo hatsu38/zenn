@@ -66,7 +66,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 
 色と文字の指定はSVG内の`style`にあります。フォントはHiragino Sans、Noto Sans JP、sans-serifの順です。今回のPNGはmacOSのHiragino Sansで出力しました。他のOSではNoto Sans JPをインストールしてから出力し、折り返しやはみ出しを確認してください。フォントは同梱していません。
 
-図の設計意図・用語と模型の対応は [制作方針](../../books/postgresql-query-journey/ILLUSTRATION-GUIDE.md) にあります。
+図の設計意図・用語と図の対応は [制作方針](../../books/postgresql-query-journey/ILLUSTRATION-GUIDE.md) にあります。
 
 新しく描く図と描き直す図は、[部品見本](parts/figure-parts.svg)の`<defs>`と`<style>`を写して使います。行カード・ページ枠・Indexの項目・計画のノード・量の帯・矢印・札の見た目がそろいます。見本の見た目は[PNG](parts/figure-parts.png)で確認できます。
 
@@ -117,6 +117,6 @@ node scripts/book-figures/build-index.cjs
 *帯の長さで、除外した行と返した1行の差を見てください（件数は実測）。*
 ```
 
-本文で見る目的を示し、図の後で変化と理由を説明します。実測値ではない図には模型と明記し（第3章では「模型」を使わず「説明するための図」と書く）、数値や構造の正確さを確認してから掲載します。
+本文で見る目的を示し、図の後で変化と理由を説明します。実測値ではない図にはキャプションで「説明するための図」と明記し（「模型」の語は使わない）、数値や構造の正確さを確認してから掲載します。
 
 新構成用の独立コピーです。ファイル名の先頭番号は元の章番号を保持し、所属はcatalog.jsonと本文で管理します。
