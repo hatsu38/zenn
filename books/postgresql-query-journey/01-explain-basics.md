@@ -334,7 +334,13 @@ docker compose exec -T db psql -X -U postgres -d reading_map \
 
 本に載せた出力の元ログは `results/chapter01-million-2026-09-23.txt`、測定条件は `results/README.md` にあります。自分の結果と見比べてみてください。
 
-中断するときは、ターミナルで`docker compose stop`を実行します。再開するときは、`docker compose up -d --wait`の後、先ほどのpsql接続コマンドで接続し直します。データは残るので、表の作成SQLを再実行する必要はありません。
+中断するときは、ターミナルで`docker compose stop`を実行します。再開するときは、`docker compose up -d --wait`の後、次のコマンドで接続し直します。
+
+```bash
+docker compose exec db psql -X -U postgres -d reading_map
+```
+
+データは残るので、表の作成SQLを再実行する必要はありません。
 
 ## 第2章へ
 
