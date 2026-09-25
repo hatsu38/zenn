@@ -46,10 +46,10 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <g id="row-memory">
     <text x="24" y="302" class="s b">持つ</text>
     <text x="24" y="332" class="mono">quicksort</text>
-    <rect x="24" y="352" width="280" height="36" rx="4" class="band"/>
+    <rect x="24" y="352" width="280" height="36" rx="4" class="val"/>
     <text x="38" y="377" class="s b">27,913kB</text>
     <text x="336" y="332" class="mono">top-N heapsort</text>
-    <rect x="336" y="352" width="2" height="36" rx="1" class="band"/>
+    <rect x="336" y="352" width="2" height="36" rx="1" class="val"/>
     <rect x="350" y="348" width="92" height="44" rx="6" class="hot"/>
     <text x="396" y="379" text-anchor="middle" class="b">26kB</text>
   </g>
