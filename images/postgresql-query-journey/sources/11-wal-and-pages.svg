@@ -21,6 +21,9 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .work{fill:#fff;stroke:#56738a;stroke-width:2;stroke-dasharray:8 5}.val{fill:#dcefe8;stroke:#448b7c;stroke-width:2}.buffer{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2}
 .route{fill:#f4f6f8;stroke:#243b50;stroke-width:3}.leader{fill:none;stroke:#56738a;stroke-width:2}
 .storage{fill:#ece7f5;stroke:#735f9f;stroke-width:2}.file{fill:#fff;stroke:#735f9f;stroke-width:2}
+  .cmp{fill:#dfe5ea}
+.swap{fill:#dcefe8;stroke:#243b50;stroke-width:4}
+.big{font-size:56px;font-weight:700}
   </style>
   <rect width="640" height="814" fill="#f5f7f9"/>
   <text x="24" y="48" class="h">ログの保存と、ページの書き出し</text>
