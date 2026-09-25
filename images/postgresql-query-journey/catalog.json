@@ -92,8 +92,8 @@
   {
     "name": "06-range-scan",
     "chapter": 3,
-    "title": "4以上8以下なら、隣の葉も読む",
-    "description": "Indexの葉をたどる図 ／ 表への参照は省略"
+    "title": "4以上8以下なら、隣の箱も開く",
+    "description": "仕組み：範囲の検索で隣の箱へ進み、表から5行を取り出す（説明するための図）"
   },
   {
     "name": "03-storage-question",
