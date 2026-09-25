@@ -14,8 +14,8 @@
   {
     "name": "00-books-and-records",
     "chapter": 0,
-    "title": "本の冊数と、読了記録の件数",
-    "description": "サンプルの2冊・3件で考える"
+    "title": "本ごとに、記録の件数を数える",
+    "description": "仕組み：booksとreading_recordsの対応と、本ごとの件数（模型）"
   },
   {
     "name": "00-ranking-question",
