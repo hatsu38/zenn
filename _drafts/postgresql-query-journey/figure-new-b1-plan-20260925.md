@@ -139,7 +139,7 @@ path.write_text(text, encoding='utf-8')
 
 **問い:** `LIMIT 20` を付けると、Sort に入る行・持つ量・返す行のどれが変わるか。
 
-**数値と出典:** 左の列は第7章（`books/postgresql-query-journey/07-sort.md` の88〜97行目・115行目：調べた2,000,000行、Sort に入った499,998行、`quicksort  Memory: 27913kB`、返した499,998行、`work_mem` 64MB）。右の列は第8章（`books/postgresql-query-journey/08-top-n-heap.md` の66〜72行目：対象週499,998行が Sort に入る、`top-N heapsort  Memory: 26kB`、返すのは20行、`work_mem` 4MB）。右の列の「調べる2,000,000行」は、同じ表と同じ期間の条件の Seq Scan であることから（第8章18行目「読了記録は200万件」、66行目）。
+**数値と出典:** 左の列は第7章（`books/postgresql-query-journey/07-sort.md` の88〜97行目・115行目：調べた2,000,000行、Sort に入った499,998行、`quicksort  Memory: 27913kB`、返した499,998行、`work_mem` 64MB）。右の列は第8章（`books/postgresql-query-journey/08-top-n-heap.md` の66〜72行目：対象週499,998行が Sort に入る、`top-N heapsort  Memory: 26kB`、返すのは20行、`work_mem` 4MB）。（「調べる」の行は置かないので、Seq Scan の2,000,000行はこの図では使わない。）
 
 **描く（比較の型。2列を同じ配置にする）:**
 - 見出し：`LIMITで減るのは、持つ量と返す行`
