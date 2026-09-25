@@ -1,0 +1,122 @@
+Pager usage is off.
+SET
+SET
+SET
+SET
+                                                         version                                                          
+--------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+               Table "public.books"
+ Column |  Type  | Collation | Nullable | Default 
+--------+--------+-----------+----------+---------
+ id     | bigint |           | not null | 
+ title  | text   |           | not null | 
+Indexes:
+    "books_pkey" PRIMARY KEY, btree (id)
+    "books_title_idx" btree (title)
+
+BEGIN
+CREATE SCHEMA
+SET
+CREATE TABLE
+INSERT 0 1000000
+ANALYZE
+  books  | distinct_titles 
+---------+-----------------
+ 1000000 |         1000000
+(1 row)
+
+ n_distinct 
+------------
+         -1
+(1 row)
+
+=== A: 題名に約束なし・題名のIndexなし（第1章と同じ） ===
+                                               QUERY PLAN                                               
+--------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.008..45.761 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999999
+   Buffers: shared hit=7353
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.032 ms
+ Execution Time: 45.776 ms
+(8 rows)
+
+=== B: 主キー（一意）の番号で探す。ただしIndexを使わせない ===
+SET
+SET
+SET
+                                               QUERY PLAN                                               
+--------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.009..37.444 rows=1.00 loops=1)
+   Filter: (id = 42)
+   Rows Removed by Filter: 999999
+   Buffers: shared hit=7353
+ Planning:
+   Buffers: shared hit=5
+ Planning Time: 0.067 ms
+ Execution Time: 37.459 ms
+(8 rows)
+
+=== C: 題名に一意の約束（UNIQUE）を付ける。Indexはまだ使わせない ===
+ALTER TABLE
+              Table "uq_check.books"
+ Column |  Type  | Collation | Nullable | Default 
+--------+--------+-----------+----------+---------
+ id     | bigint |           | not null | 
+ title  | text   |           | not null | 
+Indexes:
+    "books_pkey" PRIMARY KEY, btree (id)
+    "books_title_key" UNIQUE CONSTRAINT, btree (title)
+
+                                               QUERY PLAN                                               
+--------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.021..75.701 rows=1.00 loops=1)
+   Filter: (title = '実験用の本 42'::text)
+   Rows Removed by Filter: 999999
+   Buffers: shared hit=7353
+ Planning:
+   Buffers: shared hit=4 read=1
+ Planning Time: 0.132 ms
+ Execution Time: 75.714 ms
+(8 rows)
+
+=== D: 一意の約束のまま、Indexを使ってよいことにする（LIMITなし） ===
+SET
+SET
+SET
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_title_key on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.151..0.152 rows=1.00 loops=1)
+   Index Cond: (title = '実験用の本 42'::text)
+   Index Searches: 1
+   Buffers: shared hit=1 read=3
+ Planning Time: 0.069 ms
+ Execution Time: 0.179 ms
+(6 rows)
+
+=== E: 約束を外し、一意でないふつうのIndexにする（LIMITなし） ===
+ALTER TABLE
+CREATE INDEX
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_title_idx on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.137..0.139 rows=1.00 loops=1)
+   Index Cond: (title = '実験用の本 42'::text)
+   Index Searches: 1
+   Buffers: shared hit=1 read=3
+ Planning:
+   Buffers: shared hit=4 read=1
+ Planning Time: 0.250 ms
+ Execution Time: 0.159 ms
+(8 rows)
+
+ROLLBACK
+ leftover_schemas 
+------------------
+                0
+(1 row)
+
