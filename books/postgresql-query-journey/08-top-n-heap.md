@@ -6,6 +6,10 @@ title: "第8章：上位20件だけを選ぶには"
 
 上位20件だけが必要なとき、すべての順位を確定する必要はあるのでしょうか。少数の候補を保つヒープを具体例で追い、top-N heapsortの出力と対応させます。さらに、Indexの順序を利用する取得方法と比較します。調べる件数、候補として保持する件数、返す件数を分け、LIMITが減らす処理を説明できるようになります。
 
+:::message
+日時Indexがない状態から始め、章の途中で作成します。読み直しでは第1章末の再開手順を使い、作成前と作成後を区別します。
+:::
+
 ## 20件しか表示しないのに
 
 最近の記録の画面に入るのは20件だけです。第7章のSortは対象週の499,998行をすべて並べていましたが、画面に出ない行の順位まで決める必要があるでしょうか。
@@ -15,7 +19,7 @@ title: "第8章：上位20件だけを選ぶには"
 
 この章で選ぶのは日時順の記録です。本ごとの読了数を比べる人気ランキングとは、並べる基準が違います。
 
-まず、前章と同じ週の検索に`LIMIT 20`を付けます。読了記録は200万件で、日時用のIndexはまだありません。
+まず、前章と同じ週の検索に`LIMIT 20`を付けます。読了記録は200万件で、日時用のIndexはまだありません。読む行数、候補として持つ行数、返す行数のどれが減るか、予想してから実行してください。
 
 ```sql
 SET max_parallel_workers_per_gather = 0;
@@ -30,7 +34,7 @@ ORDER BY finished_at DESC, book_id ASC
 LIMIT 20;
 ```
 
-先に予想してください。減るのは、読む行数、候補として持つ行数、返す行数のどれでしょう。
+予想と出力を比べる前に、小さなカードの例で候補の残し方を考えます。
 
 ## 上位3枚を残すゲーム
 
@@ -63,13 +67,24 @@ LIMIT 20;
 
 実行計画に`top-N heapsort`が出ていたら、PostgreSQLは上の3枚のゲームと同じく、上位`k`件の候補だけをヒープに保ちながら並べています。小さいメモリ表示でも、子のScanが多くの行を返していないか確認してください。
 
-日時用のIndexを作る前に確認したとき、Sortの行は次のとおりでした。条件は、PostgreSQL 18.6、読了記録200万件、対象週499,998行、`work_mem`は4MBです。
+2026年9月25日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件、並列実行とJITは無効です。 `work_mem`は4MBです。
 
 ```sql
-Sort Method: top-N heapsort  Memory: 26kB
+Limit  (cost=54092.78..54092.83 rows=20 width=16) (actual time=125.644..125.648 rows=20.00 loops=1)
+  Buffers: shared hit=9545 read=1266
+  ->  Sort  (cost=54092.78..55340.61 rows=499134 width=16) (actual time=125.639..125.641 rows=20.00 loops=1)
+        Sort Key: finished_at DESC, book_id
+        Sort Method: top-N heapsort  Memory: 26kB
+        Buffers: shared hit=9545 read=1266
+        ->  Seq Scan on reading_records  (cost=0.00..40811.00 rows=499134 width=16) (actual time=0.026..92.883 rows=499998.00 loops=1)
+              Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+              Rows Removed by Filter: 1500002
+              Buffers: shared hit=9545 read=1266
+Planning Time: 0.111 ms
+Execution Time: 125.690 ms
 ```
 
-ソートへ入ったのは499,998行、上で返すのは20行でした。26kBは、20行の候補を保つのに見合う小ささです。調べた行数は499,998行のままなので、この値だけを見て「20行しか調べなかった」とは読めません。
+Seq Scanは、返した499,998行と除外した1,500,002行を合わせて200万行を調べました。そのうちソートへ入ったのは499,998行、上で返すのは20行でした。26kBは、20行の候補を保つのに見合う小ささです。調べた行数は499,998行のままなので、この値だけを見て「20行しか調べなかった」とは読めません。
 
 図で、第7章の`ORDER BY`だけの実行とこの章の実行を、三つの数で比べてください。
 
@@ -98,7 +113,25 @@ ORDER BY finished_at DESC, book_id ASC
 LIMIT 20;
 ```
 
-Sortが残っているか、どのIndexを使ったか、何行読んだかを比べます。この結果は本書に載せていないので、自分の出力で確かめる課題です。
+同日のIndex作成後の実行結果です。
+
+```sql
+Limit  (cost=0.43..2.87 rows=20 width=16) (actual time=0.010..0.055 rows=20.00 loops=1)
+  Buffers: shared hit=21 read=2
+  ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..60903.81 rows=498993 width=16) (actual time=0.009..0.052 rows=20.00 loops=1)
+        Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+        Heap Fetches: 20
+        Index Searches: 1
+        Buffers: shared hit=21 read=2
+Planning:
+  Buffers: shared hit=11 read=4
+Planning Time: 0.128 ms
+Execution Time: 0.083 ms
+```
+
+Sortが消え、`reading_records_order_idx`の`Index Only Scan`が20行を返して止まっています。`cost`側の`rows=498993`は最後まで読んだ場合の見積もりで、今回読み出した行数ではありません。実際の行数は`actual`側の`rows=20`です。
+
+ここでは`Heap Fetches: 20`もあります。20行を返すために表の行も確認しました。Index Only Scanでも表への確認がありうる理由は、第11章で確かめます。
 
 上位3件を選ぶ小さな例で、入力の順序が分からない場合と、大きい順に取り出せる場合を並べてみます。保持する候補の数だけでなく、何件を確認するかに注目してください。
 
@@ -124,7 +157,21 @@ WHERE finished_at >= timestamp '2026-09-14'
 ORDER BY finished_at DESC, book_id ASC;
 ```
 
-`LIMIT 20`を付けたときと、計画、行数、BUFFERSを比べましょう。
+:::details LIMITを外した実行結果
+```sql
+Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..60903.81 rows=498993 width=16) (actual time=0.006..391.229 rows=499998.00 loops=1)
+  Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+  Heap Fetches: 499998
+  Index Searches: 1
+  Buffers: shared hit=499275 read=2641 written=1750
+Planning:
+  Buffers: shared hit=4
+Planning Time: 0.023 ms
+Execution Time: 406.659 ms
+```
+:::
+
+同じIndex Only Scanでも、今度は499,998行を返し、`Heap Fetches`も499,998です。前の20行で終われた計画との違いを、時間だけでなく行数で確認できます。
 
 課題です。「最近の20件」に効いた日時のIndexで、「今週よく読まれた20冊」もすぐ決まるでしょうか。
 

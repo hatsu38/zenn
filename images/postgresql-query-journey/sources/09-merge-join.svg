@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="760" viewBox="0 0 640 760" role="img" aria-labelledby="title">
-  <title id="title">小さい番号の列だけを、右へ進める</title>
+  <title id="title">同じ番号の組を、漏らさず返す</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
     <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
@@ -26,7 +26,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .big{font-size:56px;font-weight:700}
   </style>
   <rect width="640" height="760" fill="#f5f7f9"/>
-  <text x="24" y="48" class="h">小さい番号の列だけを、右へ進める</text>
+  <text x="24" y="48" class="h">同じ番号の組を、漏らさず返す</text>
 
   <g id="panel-0">
     <rect x="24" y="76" width="290" height="324" rx="14" class="panel"/>
@@ -75,7 +75,9 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="522" y="282" text-anchor="middle" class="b">3</text>
     <rect x="552" y="252" width="44" height="44" rx="6" class="val"/>
     <text x="574" y="282" text-anchor="middle" class="b">4</text>
-    <text x="444" y="330" text-anchor="middle" class="b teal">✓</text>
+    <text x="418" y="330" text-anchor="middle" class="b teal">✓</text>
+    <text x="470" y="330" text-anchor="middle" class="b teal">✓</text>
+    <text x="342" y="372" class="s b">本1を保ち、2組返す</text>
   </g>
 
   <g id="panel-2">
@@ -83,7 +85,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="40" y="485" class="h">②</text>
     <text x="40" y="534" class="b">本</text>
     <text x="220" y="494" text-anchor="middle" class="s">▼</text>
-    <rect x="94" y="504" width="44" height="44" rx="6" class="hot"/>
+    <rect x="94" y="504" width="44" height="44" rx="6" class="val"/>
     <text x="116" y="534" text-anchor="middle" class="b">1</text>
     <rect x="146" y="504" width="44" height="44" rx="6" class="hot"/>
     <text x="168" y="534" text-anchor="middle" class="b">2</text>
@@ -101,8 +103,8 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="220" y="618" text-anchor="middle" class="b">3</text>
     <rect x="250" y="588" width="44" height="44" rx="6" class="val"/>
     <text x="272" y="618" text-anchor="middle" class="b">4</text>
-    <text x="116" y="666" text-anchor="middle" class="b">＜</text>
     <text x="168" y="666" text-anchor="middle" class="b">＜</text>
+    <text x="40" y="712" class="s b">本2を通過し、本3へ</text>
   </g>
 
   <g id="panel-3">
@@ -130,6 +132,6 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="574" y="618" text-anchor="middle" class="b">4</text>
     <text x="522" y="666" text-anchor="middle" class="b teal">✓</text>
     <text x="574" y="666" text-anchor="middle" class="b teal">✓</text>
-    <text x="342" y="712" class="s b">小さい番号へは戻らない</text>
+    <text x="342" y="712" class="s b">合わせて4組を返す</text>
   </g>
 </svg>

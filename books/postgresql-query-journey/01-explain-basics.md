@@ -29,7 +29,14 @@ SELECT id, title FROM books WHERE title = '実験用の本 42';
 
 ## SQLを入力する場所を作る
 
-実験用リポジトリ [`postgresql-structures-lab`](https://github.com/hatsu38/postgresql-structures-lab) の `compose.yaml` を使います。Docker Desktopなどを起動し、リポジトリのディレクトリで次のコマンドを実行してください。
+実験用リポジトリ [`postgresql-structures-lab`](https://github.com/hatsu38/postgresql-structures-lab) の `compose.yaml` を使います。GitとDocker Desktopなどを用意し、Dockerを起動します。まだ取得していなければ、ターミナルで次を実行してください。
+
+```bash
+git clone https://github.com/hatsu38/postgresql-structures-lab.git
+cd postgresql-structures-lab
+```
+
+以降の`docker compose`コマンドは、このディレクトリで実行します。まずDBを起動します。
 
 ```bash
 docker compose up -d --wait
@@ -71,6 +78,7 @@ SELECT version();
 同じSQLを、リポジトリの `sql/01/00-setup.sql` にも置いてあります。ファイルから実行した場合は、ここで再び入力する必要はありません。
 
 ```sql
+BEGIN;
 CREATE TABLE books (
   id bigint PRIMARY KEY,
   title text NOT NULL
@@ -90,11 +98,13 @@ ANALYZE books;
 ANALYZE reading_records;
 SELECT count(*) FROM books;
 SELECT count(*) FROM reading_records;
+COMMIT;
 ```
 
 準備の実行結果です。二つの`count`が、本の冊数と読了記録の件数に対応します。
 
 ```sql
+BEGIN
 CREATE TABLE
 CREATE TABLE
 INSERT 0 1000000
@@ -110,7 +120,16 @@ ANALYZE
 ---------
  2000000
 (1 row)
+COMMIT
 ```
+
+準備を`BEGIN`から`COMMIT`までのひとまとまりにしたので、途中で失敗した場合は、次を入力して今回の準備を取り消せます。
+
+```sql
+ROLLBACK;
+```
+
+エラーの原因を直してから、準備を`BEGIN`からやり直します。すでに準備が完了したDBには、同じCREATE TABLEを重ねて実行しません。「既に存在する」というエラーなら、まず表の件数を確認します。第3章以降から戻った場合の手順は、章末の「途中から実験を再開する」にまとめています。
 
 `CREATE TABLE`に出てくる語の意味は次のとおりです。
 
@@ -120,7 +139,9 @@ ANALYZE
 | `text` | 文字列を入れる型 |
 | `timestamp` | 日時を入れる型 |
 | `PRIMARY KEY` | 同じ番号の本を重複させない約束 |
-| `NOT NULL` | 空欄を許さない約束 |
+| `NOT NULL` | 値がないことを表す`NULL`を許さない約束 |
+
+`NULL`と、文字が0文字の空文字列`''`は別です。`NOT NULL`だけでは、空文字列の題名は禁止されません。
 
 `generate_series`は連番を作ります。`||`で文字と番号をつなぐと、「実験用の本 1」「実験用の本 2」といった題名になります。読了記録を作る側の長い式は、本の番号と日時をばらけさせるためのものです。式を覚える必要はありません。
 
@@ -156,6 +177,8 @@ SET
 SELECT id, title FROM books WHERE title = '実験用の本 42';
 ```
 
+実行結果です。
+
 ```sql
  id |     title
 ----+---------------
@@ -184,6 +207,8 @@ EXPLAIN
 SELECT id, title FROM books WHERE title = '実験用の本 42';
 ```
 
+実行結果です。
+
 ```sql
 Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30)
   Filter: (title = '実験用の本 42'::text)
@@ -194,6 +219,8 @@ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30)
 **EXPLAINだけでは、このSELECTによる検索は実行されません。** 表示される行数やコストは実行前の見積もりなので、「実際に何行調べたか」「何秒かかったか」を知るには、もう一段階必要です。
 
 出力に`Seq Scan on books`があれば、「booksを順に読んで調べる計画」です。表を先頭から順に読んでいく処理を**逐次走査**（Seq Scan）と呼びます。`Filter`は、読んだ行に当てる条件です。
+
+`cost`の二つの値は、前が最初の行を返すまで、後ろがすべての行を返すまでの処理量の見積もりです。ミリ秒ではなく、候補の計画を比べるための値です。
 
 | 表示 | まず読む意味 |
 | --- | --- |
@@ -299,7 +326,7 @@ Execution Time: 0.026 ms
 
 `Index Scan`は、**Index**という目録を使って行を探す方法です。主キーを作ったとき、番号用のIndexも作られています。番号の検索で100万行を調べずに済んだのは、番号を重複させない約束があるからではなく、このIndexを使えたからです[^pk-seqscan]。題名用のIndexはまだありません。
 
-[^pk-seqscan]: 2026年9月25日、PostgreSQL 18.6で、同じ100万冊の表を別に作って確かめました。Indexを使わないようにする設定（第12章で使う`enable_indexscan`など）で`WHERE id = 42`を実行すると、Seq Scanになり、`Rows Removed by Filter: 999999`でした。
+[^pk-seqscan]: 2026年9月25日、PostgreSQL 18.6で、同じ100万冊の表を別に作って確かめました。Indexを使わないようにする設定（第3章で使う`enable_indexscan`など）で`WHERE id = 42`を実行すると、Seq Scanになり、`Rows Removed by Filter: 999999`でした。
 
 Indexを使う場合は、まず行の場所を探し、その場所の行を読みます。
 
@@ -317,6 +344,8 @@ Indexを使う場合は、まず行の場所を探し、その場所の行を読
 EXPLAIN (ANALYZE, BUFFERS)
 SELECT id, title FROM books WHERE title = '存在しない本';
 ```
+
+実行結果です。
 
 ```sql
 Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=40.821..40.821 rows=0.00 loops=1)
@@ -339,7 +368,7 @@ docker compose exec -T db psql -X -U postgres -d reading_map \
   -a -f /lab/sql/01/01-observe.sql > results/local-chapter01.txt
 ```
 
-本に載せた出力の元ログは `results/chapter01-million-2026-09-23.txt`、測定条件は `results/README.md` にあります。自分の結果と見比べてみてください。
+本に載せた出力の[元ログ](https://github.com/hatsu38/postgresql-structures-lab/blob/main/results/chapter01-million-2026-09-23.txt)と[測定条件](https://github.com/hatsu38/postgresql-structures-lab/blob/main/results/README.md)も公開しています。自分の結果と見比べてみてください。
 
 中断するときは、ターミナルで`docker compose stop`を実行します。再開するときは、`docker compose up -d --wait`の後、次のコマンドで接続し直します。
 
@@ -352,3 +381,98 @@ docker compose exec db psql -X -U postgres -d reading_map
 ## 第2章へ
 
 1冊を返すために、100万行を調べていました。1冊見つかったところで止めれば、調べる量を減らせるでしょうか。次章では同じ100万冊に`LIMIT 1`を試します。
+
+## 途中から実験を再開する
+
+接続を閉じると、`SET`で指定した値と一時ビューは失われます。未完了のトランザクションも取り消されます。一方、COMMIT済みの表やIndexは残ります。再接続は、実験用リポジトリのディレクトリから行います。
+
+```bash
+docker compose exec db psql -X -U postgres -d reading_map
+```
+
+再接続後の共通設定です。実験の途中で設定を変えたまま読み直すときも、新しい接続から始めると区別しやすくなります。
+
+```sql
+\set ON_ERROR_STOP on
+\pset pager off
+SET max_parallel_workers_per_gather = 0;
+SET jit = off;
+SET work_mem = '4MB';
+```
+
+章ごとに必要な状態は次のとおりです。表の件数は、基本データの本100万冊・記録200万件を維持します。
+
+| 再開する章 | 開始時に必要な状態 | 章末に残るもの |
+| --- | --- | --- |
+| 第1〜2章 | 基本データあり、題名Indexなし | 基本データ |
+| 第3章 | 題名Indexなし | `books_title_idx` |
+| 第4〜5章 | 題名Indexあり。観察用の表は章の冒頭から同じ接続で作る | ROLLBACKで観察用の表は消える |
+| 第6章 | 題名Indexあり。接続A・Bは同じDBへつなぐ | 表・Indexの変更なし |
+| 第7章 | 日時Indexなし | `work_mem`を4MBへ戻す |
+| 第8章 | 日時Indexなし | `reading_records_order_idx` |
+| 第9章 | 日時Indexあり | 実験用の設定はROLLBACKで戻す |
+| 第10章 | 基本データあり。実験表は冒頭から同じ接続で作る | ROLLBACKで`stats_demo`は消える |
+| 第11章 | 日時Indexあり、A・Bの以前のトランザクションは終了 | 題名を復元し、可視性実験用Indexを削除する |
+| 第12章 | 日時Indexあり。一時ビューはその接続で作る | 章末で集計表とそのIndexを削除。一時ビューは切断で消える |
+
+以下は**この本の実験用DBで、章を読み直すときだけ**使う準備です。初回に順番どおり読む場合は不要です。作業中のトランザクションを終えてから実行します。
+
+:::details 第1〜3章へ戻り、題名Indexなしからやり直す
+表のデータは残し、第3章で作ったIndexだけを削除します。
+
+```sql
+DROP INDEX IF EXISTS public.books_title_idx;
+ANALYZE public.books;
+```
+
+第1章のデータ準備は繰り返さず、件数を確認して検索の節から進めます。
+:::
+
+:::details 第4〜6章から始めるために題名Indexを用意する
+第3章と同じ定義のIndexを用意します。同じ名前のIndexを自分で別の定義へ変更していないことが前提です。
+
+```sql
+CREATE INDEX IF NOT EXISTS books_title_idx ON public.books (title);
+ANALYZE public.books;
+```
+
+第4・5章は、観察用スキーマを作るBEGINから章末のROLLBACKまで、同じ接続で進めます。
+:::
+
+:::details 第7〜8章へ戻り、日時Indexなしからやり直す
+第8章と第11章で作った実験用Indexを削除します。記録の行は削除しません。
+
+```sql
+DROP INDEX IF EXISTS public.reading_records_order_idx;
+DROP INDEX IF EXISTS public.reading_records_visibility_idx;
+ANALYZE public.reading_records;
+```
+
+第7章のメモリの設定から、または第8章の最初のSQLから再開します。
+:::
+
+:::details 第9章以降から始めるために日時Indexを用意する
+第8章と同じ定義のIndexを用意します。
+
+```sql
+CREATE INDEX IF NOT EXISTS reading_records_order_idx
+ON public.reading_records (finished_at DESC, book_id ASC);
+ANALYZE public.reading_records;
+```
+
+第11章を途中からやり直す場合は、A・Bのトランザクションを終了し、残った可視性実験用Indexを削除してから章の冒頭へ戻ります。
+
+```sql
+DROP INDEX IF EXISTS public.reading_records_visibility_idx;
+```
+:::
+
+:::details 第12章をやり直す
+新しい接続を開くと、一時ビューを作り直せます。事前集計表だけは残るので、この本で作った表を削除してから始めます。表に付いたIndexも一緒に削除されます。
+
+```sql
+DROP TABLE IF EXISTS public.weekly_read_counts;
+```
+
+これまでの観察でキャッシュ、統計、可視性マップなどの状態は変わっています。これらの準備で、初回と同じ時間まで再現されるわけではありません。比較する実験どうしで条件をそろえ、方法・行数・アクセス量を確かめます。
+:::

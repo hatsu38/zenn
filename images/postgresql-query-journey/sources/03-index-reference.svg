@@ -27,7 +27,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <text x="527" y="47" text-anchor="middle" class="tag">ページ数は実測</text>
   <g id="seq-scan">
     <text x="24" y="104" class="mono b">Seq Scan</text>
-    <text x="616" y="104" text-anchor="end" class="mono">shared hit=7353</text>
+    <text x="616" y="104" text-anchor="end" class="mono">hit 4657 + read 2696</text>
   </g>
   <g id="seq-table">
     <text x="24" y="144" class="s">表 <tspan class="mono">books</tspan></text>

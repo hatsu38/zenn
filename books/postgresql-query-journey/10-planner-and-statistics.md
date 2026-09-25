@@ -6,6 +6,10 @@ title: "第10章：PostgreSQLは、なぜその計画を選んだのか"
 
 PostgreSQLは実行前に行数や処理量を見積もり、処理方法を選びます。条件の広さやデータの偏りを変え、統計情報、推定行数、実際の計画を対応させます。costを実時間と区別し、推定のずれが後続の処理へ及ぼす影響を考えます。期待と違う計画を見たとき、何を確かめてから改善を試すかを組み立てます。
 
+:::message
+小さな実験表をBEGINから同じ接続で作り、最後のROLLBACKで取り消します。再接続した場合は第1章末の共通設定から始めます。
+:::
+
 ## 20件と50万件で、方法が変わったのはなぜ？
 
 第9章では、同じ二つの表を結合するSQLで、外側が20件ならNested Loop、1週間分の約50万件ならHash Joinが選ばれました。計画は実行する前に作られます。つまりPostgreSQLは、記録を実際に取り出す前から、件数の違いを見込んでいたことになります。
@@ -39,7 +43,31 @@ EXPLAIN (ANALYZE, BUFFERS)
 SELECT * FROM stats_demo WHERE category = 'rare';
 ```
 
-`popular`は9,000行、`rare`は1,000行です。「どちらも1種類を探す」ことと、「同じ行数を探す」ことは違います。この章の実験結果は本書に載せていないので、自分の出力で、計画の`rows`と`actual rows`、選ばれた方法を比べてください。
+2026年9月25日、PostgreSQL 18.6での実行結果です。まず`popular`の計画です。
+
+```sql
+Seq Scan on stats_demo  (cost=0.00..189.00 rows=9000 width=11) (actual time=0.006..0.682 rows=9000.00 loops=1)
+  Filter: (category = 'popular'::text)
+  Rows Removed by Filter: 1000
+  Buffers: shared hit=64
+Planning:
+  Buffers: shared hit=8 read=1
+Planning Time: 0.078 ms
+Execution Time: 0.970 ms
+```
+
+続いて`rare`の計画です。
+
+```sql
+Index Scan using stats_demo_category_idx on stats_demo  (cost=0.29..35.78 rows=1000 width=11) (actual time=0.023..0.106 rows=1000.00 loops=1)
+  Index Cond: (category = 'rare'::text)
+  Index Searches: 1
+  Buffers: shared hit=7 read=3
+Planning Time: 0.017 ms
+Execution Time: 0.141 ms
+```
+
+`popular`は推定も実際も9,000行でSeq Scan、`rare`は推定も実際も1,000行でIndex Scanでした。「どちらも1種類を探す」ことと、「同じ行数を探す」ことは違います。
 
 対象になる割合を**選択率**と呼びます。この例なら90%と10%です。
 
@@ -54,6 +82,14 @@ SELECT attname, n_distinct, most_common_vals, most_common_freqs,
        histogram_bounds
 FROM pg_stats
 WHERE schemaname = current_schema() AND tablename = 'stats_demo';
+```
+
+実行結果から、`category`の行を抜粋します。
+
+```sql
+ attname  | n_distinct | most_common_vals | most_common_freqs | histogram_bounds
+----------+------------+------------------+-------------------+------------------
+ category |          2 | {popular,rare}   | {0.9,0.1}         |
 ```
 
 | 項目 | ざっくり何を表す？ |
@@ -86,7 +122,39 @@ SELECT * FROM stats_demo WHERE category = 'rare';
 ROLLBACK;
 ```
 
-`rare`は9,000行へ増えます。統計更新前後で、推定と実測の差がどう変わったかを見てください。今回は未コミットの実験表を自分の接続で使い、最後に取り消しています。
+UPDATE後、ANALYZEする前の実行結果です。
+
+```sql
+Index Scan using stats_demo_category_idx on stats_demo  (cost=0.29..51.55 rows=1672 width=11) (actual time=0.013..0.722 rows=9000.00 loops=1)
+  Index Cond: (category = 'rare'::text)
+  Index Searches: 1
+  Buffers: shared hit=60
+Planning Time: 0.077 ms
+Execution Time: 0.996 ms
+```
+
+続いて、ANALYZE後の実行結果です。
+
+```sql
+Seq Scan on stats_demo  (cost=0.00..232.00 rows=9000 width=9) (actual time=0.143..0.799 rows=9000.00 loops=1)
+  Filter: (category = 'rare'::text)
+  Rows Removed by Filter: 1000
+  Buffers: shared hit=107
+Planning:
+  Buffers: shared hit=11
+Planning Time: 0.106 ms
+Execution Time: 1.066 ms
+```
+
+| 状態 | 推定rows | 実際のrows | 方法 |
+| --- | ---: | ---: | --- |
+| 更新前 | 1,000 | 1,000 | Index Scan |
+| UPDATE後・ANALYZE前 | 1,672 | 9,000 | Index Scan |
+| ANALYZE後 | 9,000 | 9,000 | Seq Scan |
+
+更新前の統計には`rare`の割合が0.1と残っています。ただし、ANALYZE前の推定も1,000のままではなく1,672でした。推定は値の割合だけで決まらず、[現在の表の大きさに合わせた補正](https://www.postgresql.org/docs/18/planner-stats.html)も使うためです。見るべき点は、実際には9,000行になったことを古い分布が十分に表せていないことです。
+
+ANALYZE後は推定が9,000行になり、選ばれる方法も変わりました。この小さな表では実行時間が必ず短くなるとは限りません。統計を更新した効果は、まず推定と実測のずれで確かめます。最後のROLLBACKで、実験表と更新をまとめて取り消しています。
 
 未コミットの表は、ほかのプロセスであるautovacuum（VACUUMやANALYZEを自動で実行する仕組み。第11章で扱います）から見えないので、実験中に統計が勝手に更新されません。通常の表では自動の更新が途中で入ることがあります。推定が変わった理由を後で区別できるよう、`ANALYZE`の有無と時刻を記録しておきます。
 
