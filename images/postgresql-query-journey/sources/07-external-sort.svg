@@ -9,7 +9,7 @@
 text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50}
 .h{font-size:30px;font-weight:700}.b{font-weight:700}.s{font-size:22px}.m{font-size:22px;fill:#566c7b}
 .mono{font-family:ui-monospace,Menlo,monospace;font-size:22px}.tag{font-size:22px;font-weight:700;fill:#fff}
-.teal{fill:#176e65}.brown{fill:#945e11}.real{fill:#176e65}.model{fill:#566c7b}
+.teal{fill:#176e65}.brown{fill:#945e11}.real{fill:#176e65}
 .panel{fill:#fff;stroke:#cedae1;stroke-width:2}.node{fill:#ecf2f8;stroke:#56738a;stroke-width:2}
 .row{fill:#fff;stroke:#448b7c;stroke-width:2}.match{fill:#fff;stroke:#176e65;stroke-width:4}
 .page{fill:#f7fbf9;stroke:#6d9f94;stroke-width:2}.ipage{fill:#f4f6f8;stroke:#6b7f8e;stroke-width:2}
@@ -27,8 +27,6 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   </style>
   <rect width="640" height="690" fill="#f5f7f9"/>
   <text x="24" y="48" class="h">メモリに収まらないときの並べ替え</text>
-  <rect x="548" y="22" width="68" height="36" rx="18" class="model"/>
-  <text x="582" y="47" text-anchor="middle" class="tag">模型</text>
   <g id="sort-runs">
     <rect x="24" y="76" width="280" height="120" rx="10" class="work"/>
     <text x="40" y="106" class="s b">作業用メモリ（2枚分）</text>

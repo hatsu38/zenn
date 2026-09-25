@@ -15,7 +15,7 @@
     "name": "00-books-and-records",
     "chapter": 0,
     "title": "本ごとに、記録の件数を数える",
-    "description": "仕組み：booksとreading_recordsの対応と、本ごとの件数（模型）"
+    "description": "仕組み：booksとreading_recordsの対応と、本ごとの件数（説明するための図）"
   },
   {
     "name": "00-ranking-question",
@@ -45,7 +45,7 @@
     "name": "01-index-to-row",
     "chapter": 1,
     "title": "Indexで場所を探し、その行だけ読む",
-    "description": "仕組み：Index Scanの模型"
+    "description": "仕組み：Index Scanの経路（説明するための図）"
   },
   {
     "name": "05-growing-library",
@@ -57,13 +57,13 @@
     "name": "05-linear-scan",
     "chapter": 2,
     "title": "一致した後も、最後まで比べる",
-    "description": "仕組み：5冊の模型（LIMITなし）"
+    "description": "仕組み：5冊で比べる（LIMITなし、説明するための図）"
   },
   {
     "name": "05-limit-search",
     "chapter": 2,
     "title": "Limitが次の行を求めなくなる",
-    "description": "仕組み：LIMIT 1の模型"
+    "description": "仕組み：LIMIT 1で止まる（説明するための図）"
   },
   {
     "name": "05-limit-bands",
@@ -111,7 +111,7 @@
     "name": "03-ctid-location",
     "chapter": 4,
     "title": "ctid = (0,1) が指す場所",
-    "description": "仕組み：ctidのページ番号と項目番号で行を指す（模型）"
+    "description": "仕組み：ctidのページ番号と項目番号で行を指す（説明するための図）"
   },
   {
     "name": "03-index-reference",
@@ -135,7 +135,7 @@
     "name": "shared-buffer-reuse",
     "chapter": 5,
     "title": "読み込んだページを、次も使う",
-    "description": "仕組み：共有バッファ・OSキャッシュ・ストレージの読み込み経路（模型）"
+    "description": "仕組み：共有バッファ・OSキャッシュ・ストレージの読み込み経路（説明するための図）"
   },
   {
     "name": "04-two-levels",
@@ -147,7 +147,7 @@
     "name": "04-memory-regions",
     "chapter": 5,
     "title": "ページの保存場所と、計算の作業場所",
-    "description": "仕組み：共有バッファと処理ごとの作業領域の模型"
+    "description": "仕組み：共有バッファと処理ごとの作業領域（説明するための図）"
   },
   {
     "name": "02-client-scene",
@@ -159,7 +159,7 @@
     "name": "02-connections",
     "chapter": 6,
     "title": "接続ごとにプロセスが動く",
-    "description": "仕組み：接続ごとのバックエンドプロセスと同じDB（模型）"
+    "description": "仕組み：接続ごとのバックエンドプロセスと同じDB（説明するための図）"
   },
   {
     "name": "02-query-stages",
@@ -171,7 +171,7 @@
     "name": "02-execution-tree",
     "chapter": 6,
     "title": "Limitは3行で要求を止める",
-    "description": "仕組み：LimitとIndex Scanの要求と行の受け渡し（模型）"
+    "description": "仕組み：LimitとIndex Scanの要求と行の受け渡し（説明するための図）"
   },
   {
     "name": "07-recent-records",
@@ -183,7 +183,7 @@
     "name": "07-merge-cards",
     "chapter": 7,
     "title": "4枚を、比較5回で並べる",
-    "description": "仕組み：二組に分けて比べ、合流する比較の回数（模型）"
+    "description": "仕組み：二組に分けて比べ、合流する比較の回数（説明するための図）"
   },
   {
     "name": "07-sort-bands",
@@ -195,7 +195,7 @@
     "name": "07-external-sort",
     "chapter": 7,
     "title": "メモリに収まらないときの並べ替え",
-    "description": "仕組み：作業用メモリと一時ファイルを使う外部ソート（模型）"
+    "description": "仕組み：作業用メモリと一時ファイルを使う外部ソート（説明するための図）"
   },
   {
     "name": "08-twenty-window",
@@ -207,7 +207,7 @@
     "name": "top-three-heap",
     "chapter": 8,
     "title": "根の最小値と比べて、入れ替える",
-    "description": "仕組み：上位3枚を保つ最小ヒープの4コマ（模型）"
+    "description": "仕組み：上位3枚を保つ最小ヒープの4コマ（説明するための図）"
   },
   {
     "name": "08-sort-vs-topn",
@@ -219,7 +219,7 @@
     "name": "08-top-n-vs-index",
     "chapter": 8,
     "title": "全部読むか、3件で止まるか",
-    "description": "比較：候補を持って全部読む方法と、Indexの順で3件で止まる方法（模型）"
+    "description": "比較：候補を持って全部読む方法と、Indexの順で3件で止まる方法（説明するための図）"
   },
   {
     "name": "09-title-lookup",
@@ -231,7 +231,7 @@
     "name": "09-nested-loop",
     "chapter": 9,
     "title": "外側の行ごとに、内側を1回たどる",
-    "description": "仕組み：Nested Loopの模型（内側の回数は外側の行数と同じ）"
+    "description": "仕組み：Nested Loop（内側の回数は外側の行数と同じ。説明するための図）"
   },
   {
     "name": "09-loops",
@@ -243,13 +243,13 @@
     "name": "09-hash-join",
     "chapter": 9,
     "title": "先に分類し、同じ箱の中で照合する",
-    "description": "仕組み：Hash Joinの模型（本8は箱2だけを見る）"
+    "description": "仕組み：Hash Join（本8は箱2だけを見る。説明するための図）"
   },
   {
     "name": "09-merge-join",
     "chapter": 9,
     "title": "小さい番号の列だけを、右へ進める",
-    "description": "仕組み：Merge Joinの模型（見ている位置は右にだけ進む）"
+    "description": "仕組み：Merge Join（見ている位置は右にだけ進む。説明するための図）"
   },
   {
     "name": "10-planner-choice",
@@ -261,13 +261,13 @@
     "name": "10-stats-to-rows",
     "chapter": 10,
     "title": "割合のメモから、行数を見積もる",
-    "description": "仕組み：ANALYZE のメモの割合から計画の rows を見積もる模型"
+    "description": "仕組み：ANALYZE のメモの割合から計画の rows を見積もる（説明するための図）"
   },
   {
     "name": "10-estimate-propagation",
     "chapter": 10,
     "title": "推定のずれが、後ろの件数に効く",
-    "description": "比較：第9章の実測と、推定20のまま実際が約50万件になる模型"
+    "description": "比較：第9章の実測と、推定20のまま実際が約50万件になった場合の例"
   },
   {
     "name": "11-editing-scene",
@@ -279,19 +279,19 @@
     "name": "11-snapshots",
     "chapter": 11,
     "title": "Bが確定しても、Aは版1を読む",
-    "description": "比較：Repeatable Readで見える版（3コマの模型）"
+    "description": "比較：Repeatable Readで見える版（3コマ。説明するための図）"
   },
   {
     "name": "11-visibility-map",
     "chapter": 11,
     "title": "×のページだけ、表を確かめに行く",
-    "description": "仕組み：Index Only Scanと可視性マップの模型"
+    "description": "仕組み：Index Only Scanと可視性マップ（説明するための図）"
   },
   {
     "name": "11-wal-and-pages",
     "chapter": 11,
     "title": "ログの保存と、ページの書き出し",
-    "description": "仕組み：WALを保存してから電源断・再起動までの順序を示す模型"
+    "description": "仕組み：WALを保存してから電源断・再起動までの順序（説明するための図）"
   },
   {
     "name": "12-decision-notebook",
@@ -303,18 +303,18 @@
     "name": "12-ranking-before",
     "chapter": 12,
     "title": "題名を付けてから、上位を選ぶ",
-    "description": "6記録・3冊の模型 ／ 対象週499,998行→20冊は実測"
+    "description": "6記録・3冊の小さな例 ／ 対象週499,998行→20冊は実測"
   },
   {
     "name": "12-ranking-after",
     "chapter": 12,
     "title": "上位を選んでから、題名を付ける",
-    "description": "6記録を本ごとに数え、上位2冊だけ題名を結び付ける模型 ／ 本文では上位20冊"
+    "description": "6記録を本ごとに数え、上位2冊だけ題名を結び付ける小さな例 ／ 本文では上位20冊"
   },
   {
     "name": "12-preaggregation",
     "chapter": 12,
     "title": "集計表は更新するまで古いまま",
-    "description": "仕組み：事前集計の模型（記録が増えても更新まで値は古いまま、画面は上位20行を読むだけ）"
+    "description": "仕組み：事前集計（説明するための図。記録が増えても更新まで値は古いまま、画面は上位20行を読むだけ）"
   }
 ]
