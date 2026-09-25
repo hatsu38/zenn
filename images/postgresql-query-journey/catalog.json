@@ -116,8 +116,8 @@
   {
     "name": "03-index-reference",
     "chapter": 4,
-    "title": "Indexをたどって、表の行へ届く",
-    "description": "3段のIndexの模型 ／ 矢印は参照する順番"
+    "title": "7,353ページか、4ページか",
+    "description": "比較：Seq Scanの7,353ページとIndex Scanの4ページ（ページ数は実測）"
   },
   {
     "name": "03-row-width",

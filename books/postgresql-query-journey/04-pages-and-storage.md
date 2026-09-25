@@ -205,10 +205,10 @@ SELECT pg_size_pretty(pg_relation_size('public.books')) AS table_size,
 
 Indexを使った後は、`hit=1`と`read=3`で合計4回でした。Indexも、表と同じくページでできています。`Index Scan`は、Indexのページをたどった後に表のページも読むので、この4回にはIndexと表の両方へのアクセスが含まれます。
 
-根から葉までIndexのページをたどり、最後に表のページから目的の行を取り出す経路を、図で見てみましょう。
+表のページをすべて読むSeq Scanと、根から葉までIndexのページをたどってから表のページを読むIndex Scanを、図で比べてみましょう。
 
-![Indexの根、途中の案内板、葉をたどり、表のページから行を取り出す](/images/postgresql-query-journey/03-index-reference.png)
-*3段のIndexと表1ページを使う経路の模型。実行ログから各アクセス先を特定した図ではありません。*
+![Seq Scanは表の7,353ページをすべて読み、Index Scanは根・途中・葉のIndexの3ページと表の1ページの合わせて4ページを読む](/images/postgresql-query-journey/03-index-reference.png)
+*読むページの数（7,353と4）は実測です。下の4ページの内訳（Indexの3ページと表の1ページ）はIndexの段数から考えた模型で、実行ログで各アクセス先を確かめたものではありません。*
 
 この経路なら、Indexの3ページと表の1ページを使います。今回のIndexが3段だったことは、以下の補足のSQLで確認しています。ただし、`Buffers`には4回の内訳までは出ていません。この図は、少ないアクセスで1行に届く仕組みを示すものです。
 
