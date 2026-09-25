@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bitmap Scan｜見つけてから、ページごとに読む</title>
+  <style>
+    :root { --ink:#17344c; --muted:#536a7e; --blue:#145fba; --pale:#e8f2ff; --paper:#f4f8fc; --line:#c6d7e7; --green:#12634d; --mint:#dff4e9; --amber:#885000; --yellow:#fff0cb; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.85 'Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif; }
+    main,header,footer { max-width:1160px; margin:auto; padding:36px 32px; }
+    header { padding-top:56px; padding-bottom:22px; }
+    .eyebrow,code,.mono { font-family:'SFMono-Regular',Consolas,monospace; }
+    .eyebrow { color:var(--blue); font-size:12px; letter-spacing:.12em; }
+    h1 { margin:18px 0; font-size:clamp(32px,4.6vw,56px); line-height:1.35; letter-spacing:-.04em; }
+    h1 span { color:var(--blue); }
+    h2 { font-size:clamp(22px,2.6vw,30px); line-height:1.5; margin:0 0 18px; }
+    h3 { font-size:18px; margin:0 0 8px; }
+    p { margin:0 0 16px; }
+    .lead { max-width:800px; font-size:18px; }
+    a { color:var(--blue); text-underline-offset:4px; }
+    .intro { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin:24px 0 0; }
+    .intro>div { border-left:3px solid var(--blue); padding-left:18px; }
+    .intro p { margin-bottom:0; }
+    .small { font-size:13px; color:var(--muted); }
+    main { padding-top:12px; }
+    section { margin-bottom:48px; }
+    .lab { border:1px solid var(--line); background:white; border-radius:18px; overflow:hidden; }
+    .lab-head { padding:26px 28px 20px; border-bottom:1px solid var(--line); }
+    .lab-head h2 { margin-bottom:8px; }
+    .query { display:block; background:var(--paper); padding:12px 16px; border-radius:8px; overflow:auto; font-size:14px; white-space:pre-wrap; }
+    button { font:inherit; cursor:pointer; border:1px solid var(--line); background:white; color:var(--ink); border-radius:8px; padding:10px 16px; touch-action:manipulation; }
+    button:hover:not(:disabled) { background:var(--pale); border-color:var(--blue); }
+    button:disabled { cursor:default; opacity:.45; }
+    button:focus-visible,a:focus-visible,summary:focus-visible { outline:3px solid var(--amber); outline-offset:4px; }
+    .modes { display:flex; gap:8px; flex-wrap:wrap; margin-top:18px; }
+    .modes button[aria-pressed="true"] { background:var(--blue); color:white; border-color:var(--blue); }
+    .modes button small { display:block; font-size:12px; }
+    .controls { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:18px 28px; background:var(--paper); }
+    .controls .primary { background:var(--blue); color:white; border-color:var(--blue); }
+    #progress { margin-left:auto; font-size:13px; color:var(--muted); }
+    .status { padding:20px 28px; border-bottom:1px solid var(--line); min-height:116px; }
+    #phase { color:var(--blue); font-weight:bold; font-size:15px; }
+    #explanation { margin:5px 0 0; }
+    .stage { padding:24px 28px; }
+    .label { display:flex; flex-wrap:wrap; gap:8px 20px; justify-content:space-between; align-items:baseline; margin-bottom:12px; }
+    .label strong { font-size:16px; }
+    .index { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:8px; }
+    .entry { border:1px solid var(--line); border-top:4px solid var(--line); border-radius:6px; padding:10px 6px; text-align:center; font-size:13px; }
+    .entry strong { display:block; font-size:18px; }
+    .entry.seen { border-color:var(--blue); background:var(--pale); }
+    .entry.active { outline:2px solid var(--blue); outline-offset:2px; }
+    .flow { text-align:center; color:var(--blue); margin:16px 0; font-size:14px; }
+    .bitmap { background:var(--pale); border:1px solid var(--line); border-radius:10px; padding:16px 20px; }
+    .bitmap-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:12px; }
+    .bitpage { display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:13px; }
+    .bits { display:flex; gap:3px; }
+    .bit { display:inline-grid; place-items:center; width:22px; height:25px; background:white; color:var(--muted); border:1px solid var(--line); font:13px monospace; }
+    .bit.on { background:var(--blue); color:white; border-color:var(--blue); }
+    #bitmap-caption { margin:12px 0 0; }
+    .pages { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    .page { border:1px solid var(--line); border-radius:8px; overflow:hidden; background:white; }
+    .page-head { display:flex; justify-content:space-between; padding:8px 10px; background:var(--paper); font-size:13px; }
+    .page.active { outline:3px solid var(--green); outline-offset:2px; }
+    .page.visited .page-head { background:var(--mint); color:var(--green); }
+    .row { display:flex; justify-content:space-between; align-items:center; margin:5px; padding:4px 7px; font-size:12px; border-radius:3px; background:var(--paper); }
+    .row.match { color:var(--amber); background:var(--yellow); }
+    .row.returned { background:var(--mint); color:var(--green); font-weight:bold; }
+    .legend { margin:12px 0 18px; font-size:12px; color:var(--muted); }
+    .results { display:grid; grid-template-columns:1fr 1fr; gap:20px; border-top:1px solid var(--line); margin-top:22px; padding-top:18px; }
+    .results p { margin:0; }
+    #route,#returned { font:16px/1.8 'SFMono-Regular',Consolas,monospace; overflow-wrap:anywhere; }
+    .note { background:var(--pale); border-left:3px solid var(--blue); padding:16px 20px; margin-top:20px; }
+    .note p:last-child { margin-bottom:0; }
+    .steps { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+    .step { background:white; border:1px solid var(--line); border-radius:12px; padding:24px; }
+    .step .number { display:block; color:var(--blue); font:14px monospace; margin-bottom:8px; }
+    .step p:last-child { margin-bottom:0; }
+    pre { overflow:auto; background:#19354d; color:#edf5ff; border-radius:10px; padding:24px; font-size:14px; line-height:1.9; }
+    pre .heap { color:#8fe2bf; } pre .idx { color:#a5cfff; }
+    .table-wrap { overflow:auto; }
+    table { border-collapse:collapse; width:100%; min-width:640px; background:white; font-size:14px; }
+    th,td { padding:16px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top; }
+    th { color:var(--blue); background:var(--pale); }
+    td:first-child { white-space:nowrap; font-weight:bold; }
+    details { border-top:1px solid var(--line); padding:18px 0; }
+    summary { cursor:pointer; font-weight:bold; }
+    details p { margin:14px 0 0; }
+    footer { border-top:1px solid var(--line); font-size:13px; color:var(--muted); padding-bottom:48px; }
+    footer a { display:inline-block; margin-right:20px; }
+    [hidden] { display:none!important; }
+    @media(max-width:700px) {
+      header,main,footer { padding-left:18px; padding-right:18px; }
+      header { padding-top:30px; } .intro,.steps { grid-template-columns:1fr; }
+      .lab-head,.stage { padding:20px 16px; } .controls,.status { padding:16px; }
+      .index { grid-template-columns:repeat(3,1fr); } .pages,.bitmap-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .bitmap { padding:14px 12px; } .modes button { flex:1; font-size:13px; padding:8px; }
+      .bit { width:19px; } .results { grid-template-columns:1fr; gap:12px; }
+      #progress { width:100%; margin:0; } .lead { font-size:16px; } pre { padding:16px; font-size:12px; }
+    }
+    @media print { button,.controls { display:none; } .lab, .step { break-inside:avoid; } body { background:white; } }
+  </style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">POSTGRESQL / 読み方を動かして比べる</div>
+  <h1>見つけてから、<br><span>ページごとに読む。</span></h1>
+  <p class="lead">Bitmap Scanは、条件に合う行の<strong>「場所」を先に集めて</strong>、同じページの行をまとめて読む方法です。Indexをたどる順番と、表を読む順番を分けるのがポイントです。</p>
+  <div class="intro">
+    <div><h3>行を読むには、ページを開く</h3><p>テーブルの行は「ページ」という保存単位に入っています。同じページに目的の行がいくつもあれば、まとめて取り出せます。</p></div>
+    <div><h3>Indexの順番と、保存場所は別</h3><p>価格のIndexは価格順。でも、表の行が価格順に保存されているとは限りません。行を一つずつ取りに行くと、ページを行き来することがあります。</p></div>
+  </div>
+</header>
+<main>
+  <section class="lab" aria-labelledby="lab-title">
+    <div class="lab-head">
+      <h2 id="lab-title">1,000〜1,500円の本、どう読む？</h2>
+      <p>8ページに本が4冊ずつ入った模型です。条件に合う6冊は、ページ1・4・6に散らばっています。</p>
+      <code class="query">SELECT * FROM books WHERE price BETWEEN 1000 AND 1500;</code>
+      <p class="small" style="margin:10px 0 0">説明用のSQLと模型です。本の実験データとは別で、実測結果ではありません。ページ番号は説明のため1から付けています。</p>
+      <div class="modes" role="group" aria-label="読み方を選ぶ">
+        <button data-mode="bitmap" aria-pressed="true">Bitmap Scan<small>場所を集めて、まとめ読み</small></button>
+        <button data-mode="index" aria-pressed="false">Index Scan<small>見つけた行を、そのつど読む</small></button>
+        <button data-mode="seq" aria-pressed="false">Seq Scan<small>すべてのページを順に読む</small></button>
+      </div>
+    </div>
+    <div class="controls">
+      <button id="next" class="primary">1手進める →</button>
+      <button id="finish">最後まで進める</button>
+      <button id="reset">最初に戻す</button>
+      <span id="progress"></span>
+    </div>
+    <div class="status" role="status" aria-live="polite" aria-atomic="true">
+      <div id="phase"></div><p id="explanation"></p>
+    </div>
+    <div class="stage">
+      <div id="index-area">
+        <div class="label"><strong>価格のB-tree Index</strong><span class="small">条件に合う部分だけを表示・価格の小さい順 →</span></div>
+        <div class="index" id="index"></div>
+        <div class="flow" id="flow-top">↓ 行の場所を、メモリ上のビットマップへ</div>
+      </div>
+      <div class="bitmap" id="bitmap-area">
+        <div class="label"><strong>ビットマップ ＝ 候補の場所のメモ</strong><span class="small">1：候補として記録済み / 0：印なし</span></div>
+        <div class="bitmap-grid" id="bits"></div>
+        <p class="small" id="bitmap-caption">各ページの4つの数字は、左から行1・2・3・4に対応します。実際のメモリ配置をそのまま描いた図ではありません。</p>
+      </div>
+      <div class="flow" id="flow-bottom">↓ 候補を集め終えたら、ページ番号順に読む</div>
+      <div class="label"><strong>テーブル本体（Heap）</strong><span class="small">1つの箱 ＝ 1ページ / 1段 ＝ 本1冊の行</span></div>
+      <div class="pages" id="pages"></div>
+      <p class="legend">★ 黄色：条件に合う行　✓ 緑：取り出した行　緑の枠：いま読んでいるページ</p>
+      <div class="results">
+        <div><span class="small">表のページを訪れた順番</span><p id="route">まだ読んでいません</p></div>
+        <div><span class="small">取り出した本の価格（円）</span><p id="returned">0 / 6 行</p></div>
+      </div>
+      <div class="note small">この模型は読む順番を比べます。ボタンの回数は処理時間ではありません。同じページを再訪しても、キャッシュにあればディスクから読み直す必要はありません。Index側のページアクセスや、更新された行の扱いは省略しています。</div>
+    </div>
+    <noscript><p class="note">図を操作するにはJavaScriptを有効にしてください。仕組みは以下の説明でも読めます。</p></noscript>
+  </section>
+
+  <section aria-labelledby="two-steps">
+    <h2 id="two-steps">EXPLAINに2行出るのは、役割が違うから</h2>
+    <div class="steps">
+      <div class="step"><span class="number">先に / Bitmap Index Scan</span><h3>Indexで候補の場所を集める</h3><p>価格のIndexから「ページ1の行1」「ページ4の行2」などの位置を見つけ、ビットマップに印を付けます。この段階では、表から本の全情報を取り出していません。</p><p>同じページの候補が一つのメモにまとまり、表をページ順に読む準備ができます。</p></div>
+      <div class="step"><span class="number">その後 / Bitmap Heap Scan</span><h3>候補のあるページをまとめて読む</h3><p>この模型ではページ1 → 4 → 6と進み、それぞれから候補の2行を取り出します。候補のないページ2・3・5・7・8は読みません。</p><p>実際には、読んだ行がそのトランザクションから見えるかも確認します。</p></div>
+    </div>
+    <p style="margin-top:22px">実行計画では、読む側が上、その材料を作る側が下に表示されます。次は<strong>形を理解するための模式例</strong>です。実機の出力ではなく、コストや時間も付けていません。</p>
+    <pre><code><span class="heap">Bitmap Heap Scan on books</span>             ← ② 表から行を取り出す
+  Recheck Cond: (price BETWEEN 1000 AND 1500)
+  → <span class="idx">Bitmap Index Scan on books_price_idx</span> ← ① 候補の場所を集める
+      Index Cond: (price BETWEEN 1000 AND 1500)</code></pre>
+    <p class="small">矢印は親子関係を簡略化した表記です。実際の条件表示は <code>price &gt;= 1000</code> と <code>price &lt;= 1500</code> などに展開されます。</p>
+  </section>
+
+  <section aria-labelledby="compare-title">
+    <h2 id="compare-title">「全部読む」と「1行ずつ取りに行く」の間にある選択肢</h2>
+    <p class="small">画面が狭いときは、表を横にスクロールできます。</p>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="3つの読み方の比較表（横スクロール可能）">
+      <table>
+        <thead><tr><th scope="col">読み方</th><th scope="col">この模型で表を訪れる順番</th><th scope="col">得意な場面と負担</th></tr></thead>
+        <tbody>
+          <tr><td>Index Scan</td><td>1 → 4 → 1 → 6 → 4 → 6</td><td>少数の行をすぐ取り出したいとき。保存場所が散らばっていると、ページを行き来しやすい。</td></tr>
+          <tr><td>Bitmap Scan</td><td>1 → 4 → 6</td><td>候補をページごとにまとめる効果があるとき。ただし、先にビットマップを作る時間とメモリが必要。</td></tr>
+          <tr><td>Seq Scan</td><td>1 → 2 → 3 → 4 → 5 → 6 → 7 → 8</td><td>表の広い範囲を読むとき。Indexを調べずに順に読むが、条件に合わない行も調べる。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:18px">Bitmap Scanなら、候補のないページを飛ばし、候補のあるページはまとめて読めます。一方、ほぼ全ページに候補があれば、メモを作る手間に見合わないこともあります。</p>
+    <p>どれが選ばれるかは、件数だけでは決まりません。行の散らばり方、キャッシュの見積もり、<code>LIMIT</code>なども関わります。この小さな模型と同じ表を実際に作っても、Bitmap Scanが選ばれるとは限りません。</p>
+  </section>
+
+  <section aria-labelledby="further-title">
+    <h2 id="further-title">ここまで分かったら、もう少しだけ</h2>
+    <details><summary>「ビットマップ」という専用のIndexを作るの？</summary><p>この例で用意するのは価格のB-tree Indexです。ビットマップは、クエリの実行中にメモリ上で作る候補位置の情報です。「Bitmap Index Scan」は、Indexを使ってビットマップを作る処理の名前です。</p></details>
+    <details><summary>価格順のまま返ってくる？</summary><p>表をページ順に読むので、元のIndexの価格順は失われます。価格順が必要なら<code>ORDER BY price</code>を指定します。Bitmap Scanを使う計画では、そのためのSortが別途必要になります。そもそも、<code>ORDER BY</code>のないSQLに結果の順番の保証はありません。</p></details>
+    <details><summary>複数のIndexの候補も組み合わせられる</summary><p>価格と著者にそれぞれIndexがあれば、候補位置の集合を組み合わせる方法もあります。<code>BitmapAnd</code>は両方に共通する候補、<code>BitmapOr</code>はどちらかにある候補をまとめます。使えるIndexが複数あっても、必ずこの方法を選ぶわけではありません。</p></details>
+    <details><summary>Recheck Condは、何を確かめる条件？</summary><p>Indexから得た候補を、表の行で再確認するときの条件です。たとえばメモリが足りず「行の場所」から「候補のあるページ」へと記録を粗くした場合、そのページ内の行を調べ直します。この粗い記録を<code>lossy</code>と呼びます。上の模型は、行の場所まで記録できる場合だけを扱っています。</p><p><code>Recheck Cond</code>が表示されているだけで、lossyになったとは判断できません。実測の<code>Heap Blocks: exact=… lossy=…</code>や<code>Rows Removed by Index Recheck</code>を確認します。</p></details>
+  </section>
+</main>
+<footer>
+  <p>読み終えたら、図でIndex ScanとBitmap Scanを切り替えてみてください。同じ6行を返しても、表を訪れる順番が変わります。</p>
+  <p>参考：PostgreSQL 18 公式ドキュメント。図・ページ数・価格は説明用の模型です。</p>
+  <a href="https://www.postgresql.org/docs/18/using-explain.html">Using EXPLAIN</a>
+  <a href="https://www.postgresql.org/docs/18/indexes-bitmap-scans.html">Combining Multiple Indexes</a>
+</footer>
+<script>
+  'use strict';
+  // ページ・行の番号は、説明用に1から付ける。
+  const candidates = [
+    { page:1, slot:1, price:1000 }, { page:4, slot:2, price:1100 },
+    { page:1, slot:3, price:1200 }, { page:6, slot:1, price:1300 },
+    { page:4, slot:4, price:1400 }, { page:6, slot:3, price:1500 }
+  ];
+  const heapOrder = [...new Set(candidates.map(row => row.page))].sort((a,b) => a-b);
+  const byPosition = new Map(candidates.map(row => [`${row.page}:${row.slot}`,row]));
+  const select = id => document.getElementById(id);
+  let mode = 'bitmap';
+  let step = 0;
+  const totalSteps = () => mode === 'bitmap' ? candidates.length + heapOrder.length : mode === 'index' ? candidates.length : 8;
+
+  function render() {
+    const collected = mode === 'bitmap' ? candidates.slice(0,Math.min(step,candidates.length)) : [];
+    const route = mode === 'bitmap' ? heapOrder.slice(0,Math.max(0,step-candidates.length))
+      : mode === 'index' ? candidates.slice(0,step).map(row => row.page)
+      : Array.from({length:step},(_,i) => i+1);
+    const returned = mode === 'index' ? candidates.slice(0,step)
+      : route.flatMap(page => candidates.filter(row => row.page === page).sort((a,b) => a.slot-b.slot));
+    const returnedPositions = new Set(returned.map(row => `${row.page}:${row.slot}`));
+    const markedPositions = new Set(collected.map(row => `${row.page}:${row.slot}`));
+    const activePage = route.at(-1);
+    const done = step === totalSteps();
+
+    document.querySelectorAll('[data-mode]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.mode === mode)));
+    select('index-area').hidden = mode === 'seq';
+    select('bitmap-area').hidden = mode !== 'bitmap';
+    select('flow-bottom').hidden = mode !== 'bitmap';
+    select('flow-top').textContent = mode === 'bitmap' ? '↓ 行の場所を、メモリ上のビットマップへ' : '↓ Indexで1行見つけるたびに、その行のあるページへ';
+    select('index').innerHTML = candidates.map((row,i) => {
+      const seen = i < (mode === 'bitmap' ? collected.length : step);
+      const active = i === step-1 && step <= candidates.length;
+      return `<div class="entry ${seen?'seen':''} ${active?'active':''}"><strong>${row.price.toLocaleString()}円</strong>ページ${row.page}・行${row.slot}<br>${seen?'✓ 確認済み':'未確認'}</div>`;
+    }).join('');
+    select('bits').innerHTML = Array.from({length:8},(_,i) => {
+      const page = i+1;
+      const bits = Array.from({length:4},(_,j) => markedPositions.has(`${page}:${j+1}`));
+      return `<div class="bitpage"><span>P${page}</span><div class="bits" aria-label="ページ${page}：${bits.map((on,j)=>'行'+(j+1)+(on?'候補':'印なし')).join('、')}">${bits.map(on=>`<span aria-hidden="true" class="bit ${on?'on':''}">${on?1:0}</span>`).join('')}</div></div>`;
+    }).join('');
+    select('pages').innerHTML = Array.from({length:8},(_,i) => {
+      const page = i+1;
+      const visits = route.filter(value => value === page).length;
+      const rows = Array.from({length:4},(_,j) => {
+        const key = `${page}:${j+1}`;
+        const candidate = byPosition.get(key);
+        const isReturned = returnedPositions.has(key);
+        const price = candidate?.price ?? 2100+i*100+j*10;
+        return `<div class="row ${isReturned?'returned':candidate?'match':''}"><span>行${j+1} ${isReturned?'✓':candidate?'★':''}</span><span>${price.toLocaleString()}円</span></div>`;
+      }).join('');
+      return `<div class="page ${visits?'visited':''} ${activePage===page?'active':''}"><div class="page-head"><strong>ページ${page}</strong><span>${visits?'訪問 '+visits+'回':'未訪問'}</span></div>${rows}</div>`;
+    }).join('');
+    select('route').textContent = route.length ? route.join(' → ') : 'まだ読んでいません';
+    select('returned').textContent = returned.length ? returned.map(row=>row.price.toLocaleString()).join(' / ')+'（'+returned.length+'行）' : '0 / 6 行';
+    select('progress').textContent = `${step} / ${totalSteps()} 手（時間の比率ではありません）`;
+    select('next').disabled = done;
+    select('finish').disabled = done;
+    let phase, explanation;
+    if (mode === 'bitmap') {
+      if (step === 0) {
+        phase = '準備：まずは場所を集めよう';
+        explanation = '「1手進める」を押してください。価格のIndexを1件ずつ確認し、候補の場所に1を立てます。表はまだ読みません。';
+      } else if (step <= candidates.length) {
+        const row = candidates[step-1];
+        phase = '① Bitmap Index Scan：候補の場所を記録';
+        explanation = `${row.price.toLocaleString()}円の本はページ${row.page}・行${row.slot}。その位置に印を付けました。`+(step===candidates.length?'6件の候補がそろいました。次はページ1から表を読みます。':'まだ表から行を取り出していません。');
+      } else {
+        phase = done ? '完了：3ページから、6行を取り出した' : '② Bitmap Heap Scan：同じページの行をまとめて読む';
+        explanation = `ページ${activePage}を読み、候補の2行を取り出しました。`+(done?'表を訪れた順番は1 → 4 → 6。候補のない5ページは読みませんでした。':'次も、ビットマップに印のあるページへ進みます。');
+      }
+    } else if (mode === 'index') {
+      phase = done ? '完了：Index順に、6行を取り出した' : 'Index Scan：見つけたら、すぐ表へ';
+      explanation = step===0 ? '候補位置を先に全部集めず、Indexで見つけた行をそのつど表から取り出します。' : `${candidates[step-1].price.toLocaleString()}円の本をページ${activePage}から取り出しました。`+(done?'ページ1・4・6をそれぞれ再訪しています。ただし、再訪のたびにディスク読み込みが起こるとは限りません。':'次の価格の本は、別のページにあるかもしれません。');
+    } else {
+      phase = done ? '完了：8ページを調べて、6行を取り出した' : 'Seq Scan：表を先頭から順に読む';
+      explanation = step===0 ? 'Indexは使いません。各ページの行を読み、価格が条件に合うか一つずつ調べます。' : `ページ${activePage}の4行を調べ、${candidates.filter(row=>row.page===activePage).length}行が条件に合いました。`+(done?'条件に合わない行も含めて、32行すべてを調べました。':'候補がないページも読みます。');
+    }
+    select('phase').textContent = phase;
+    select('explanation').textContent = explanation;
+  }
+  document.querySelectorAll('[data-mode]').forEach(button => button.addEventListener('click',() => { mode=button.dataset.mode; step=0; render(); }));
+  select('next').addEventListener('click',() => { step=Math.min(step+1,totalSteps()); render(); });
+  select('finish').addEventListener('click',() => { step=totalSteps(); render(); });
+  select('reset').addEventListener('click',() => { step=0; render(); });
+  render();
+</script>
+</body>
+</html>

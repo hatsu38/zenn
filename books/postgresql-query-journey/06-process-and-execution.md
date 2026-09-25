@@ -12,8 +12,8 @@ SQLはクライアントから送られ、接続を担当するバックエン�
 
 psqlは、入力されたSQLをPostgreSQLのサーバへ送ります。SQLを受け取ってデータを処理するのはサーバ側です。この関係で、要求を送る側を**クライアント**と呼びます。Webサイトでは、サイトのプログラムがDBのクライアントになります。
 
-![画面の向こうで、SQLが動く](/images/postgresql-query-journey/02-client-scene.png)
-*学ぶきっかけを描く、説明用の場面。矢印はSQLを送る向きです。*
+![二つのターミナルのpsqlからSQLを送ると、サーバで受け取る側がいくつになるかは「？」のまま](/images/postgresql-query-journey/02-client-scene.png)
+*二つのpsqlから送ったSQLを、サーバの中で受け取るのは何か。「？」の中身を、この後で確かめます。*
 
 Dockerで動かす今回の実験でも、このクライアントとサーバの関係は同じです。
 
@@ -63,8 +63,8 @@ SELECT pg_backend_pid();
 
 通常の接続では、接続ごとにSQLを処理するプロセスが作られます。これを**バックエンドプロセス**と呼びます。
 
-![接続ごとにプロセスが動く](/images/postgresql-query-journey/02-connections.png)
-*PIDは今回の例。配置は共有範囲を示す模型です。*
+![二つのターミナルのpsqlが、それぞれ別のバックエンドプロセス（PID 952と22521）につながり、二つとも同じDBを使う](/images/postgresql-query-journey/02-connections.png)
+*接続ごとに別のバックエンドプロセスが動き、DBは一つのままです（PIDは今回の実行例。配置は模型）。*
 
 二つのバックエンドプロセスが、同じDBに接続しています。接続を増やしても、DBの複製は作られません。[公式のアーキテクチャ解説](https://www.postgresql.org/docs/18/tutorial-arch.html)でも、この接続とプロセスの関係が説明されています。
 
@@ -146,8 +146,8 @@ Limit  (cost=0.42..0.57 rows=3 width=30)
 
 実行計画は、上の処理が下の処理から行を受け取る親子の形をしているので、計画の木と呼ばれます。この二つの処理が行を受け渡す様子を図にします。左の矢印が行を返す向き、右が次の行を要求する向きです。
 
-![Index Scanが題名順に1行ずつ返し、Limitが3行で要求を止める](/images/postgresql-query-journey/02-execution-tree.png)
-*直前のIndex ScanとLimitの計画に対応する模型。実測した行数の図ではありません。*
+![Limitが次の行を3回要求し、Index Scanが題名の順に3行を返す。4回目は要求しない。出力の見積もりはLimitがrows=3、Index Scanがrows=1000000](/images/postgresql-query-journey/02-execution-tree.png)
+*①〜③の3往復の後、4回目の要求をしないことを見てください（直前の計画に対応する模型。rowsは見積もり）。*
 
 実行時は、上の`Limit`が下の`Index Scan`に次の1行を要求します。`Index Scan`は題名のIndexをたどり、表から取り出した行を返します。この受け渡しを繰り返し、`Limit`は3行を受け取ったら要求を止める計画です。
 

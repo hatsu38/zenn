@@ -129,13 +129,19 @@
     "name": "04-repeat-observation",
     "chapter": 5,
     "title": "同じ検索を、もう一度",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "description": "問い：2回目も表のファイルからページを取り寄せるか"
   },
   {
     "name": "shared-buffer-reuse",
     "chapter": 5,
-    "title": "ファイルのページを、メモリで再利用する",
-    "description": "読み込み経路の模型 ／ ページ7は説明用"
+    "title": "読み込んだページを、次も使う",
+    "description": "仕組み：共有バッファ・OSキャッシュ・ストレージの読み込み経路（模型）"
+  },
+  {
+    "name": "04-two-levels",
+    "chapter": 5,
+    "title": "ページは再利用、行は毎回比べる",
+    "description": "観察：3回の実行のページの使い方と比べた行（実測）"
   },
   {
     "name": "04-memory-regions",
@@ -146,14 +152,14 @@
   {
     "name": "02-client-scene",
     "chapter": 6,
-    "title": "画面の向こうで、SQLが動く",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "title": "SQLを受け取る側は、いくつ？",
+    "description": "問い：psqlを二つ開いたときのサーバ側"
   },
   {
     "name": "02-connections",
     "chapter": 6,
     "title": "接続ごとにプロセスが動く",
-    "description": "PIDは今回の例 ／ 配置は共有範囲を示す模型"
+    "description": "仕組み：接続ごとのバックエンドプロセスと同じDB（模型）"
   },
   {
     "name": "02-query-stages",
@@ -164,20 +170,20 @@
   {
     "name": "02-execution-tree",
     "chapter": 6,
-    "title": "Index Scanから、Limitへ行が渡る",
-    "description": "ORDER BY title LIMIT 3 の計画の模型"
+    "title": "Limitは3行で要求を止める",
+    "description": "仕組み：LimitとIndex Scanの要求と行の受け渡し（模型）"
   },
   {
     "name": "07-recent-records",
     "chapter": 7,
     "title": "読み終えた順に、並べたい",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "description": "問い：約50万件の記録を新しい順に並べる"
   },
   {
     "name": "07-merge-cards",
     "chapter": 7,
-    "title": "二つの並びを、比べながら合流する",
-    "description": "比較の模型 ／ PostgreSQLの実装そのものではない"
+    "title": "4枚を、比較5回で並べる",
+    "description": "仕組み：二組に分けて比べ、合流する比較の回数（模型）"
   },
   {
     "name": "07-sort-bands",
@@ -195,13 +201,13 @@
     "name": "08-twenty-window",
     "chapter": 8,
     "title": "画面に欲しいのは、最新20件",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "description": "問い：LIMIT 20で減るのは、読む・持つ・返すのどれか"
   },
   {
     "name": "top-three-heap",
     "chapter": 8,
-    "title": "上位3枚を保つ：入れ替えるのはどれ？",
-    "description": "候補の比較・交換・除外を追う4コマ"
+    "title": "根の最小値と比べて、入れ替える",
+    "description": "仕組み：上位3枚を保つ最小ヒープの4コマ（模型）"
   },
   {
     "name": "08-sort-vs-topn",
@@ -212,8 +218,8 @@
   {
     "name": "08-top-n-vs-index",
     "chapter": 8,
-    "title": "候補を絞る方法と、途中で止まる方法",
-    "description": "大きい順に3件を求める模型 ／ 本文は日時順20件"
+    "title": "全部読むか、3件で止まるか",
+    "description": "比較：候補を持って全部読む方法と、Indexの順で3件で止まる方法（模型）"
   },
   {
     "name": "09-title-lookup",
