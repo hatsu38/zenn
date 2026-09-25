@@ -230,7 +230,7 @@
   {
     "name": "11-snapshots",
     "chapter": 11,
-    "title": "読む時点によって、見える版が変わる",
+    "title": "Bが確定しても、Aは版1を読む",
     "description": "比較：Repeatable Readで見える版（3コマの模型）"
   },
   {

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="782" viewBox="0 0 640 782" role="img" aria-labelledby="title">
-  <title id="title">読む時点によって、見える版が変わる</title>
+  <title id="title">Bが確定しても、Aは版1を読む</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
     <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
@@ -20,7 +20,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
   </style>
   <rect width="640" height="782" fill="#f5f7f9"/>
-  <text x="24" y="48" class="h">読む時点によって、見える版が変わる</text>
+  <text x="24" y="48" class="h">Bが確定しても、Aは版1を読む</text>
   <rect x="548" y="22" width="68" height="36" rx="18" class="model"/>
   <text x="582" y="47" text-anchor="middle" class="tag">模型</text>
   <g id="panel-1">
