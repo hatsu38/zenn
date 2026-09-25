@@ -63,8 +63,8 @@ SELECT pg_backend_pid();
 
 通常の接続では、接続ごとにSQLを処理するプロセスが作られます。これを**バックエンドプロセス**と呼びます。
 
-![接続ごとにプロセスが動く](/images/postgresql-query-journey/02-connections.png)
-*PIDは今回の例。配置は共有範囲を示す模型です。*
+![二つのターミナルのpsqlが、それぞれ別のバックエンドプロセス（PID 952と22521）につながり、二つとも同じDBを使う](/images/postgresql-query-journey/02-connections.png)
+*接続ごとに別のバックエンドプロセスが動き、DBは一つのままです（PIDは今回の実行例。配置は模型）。*
 
 二つのバックエンドプロセスが、同じDBに接続しています。接続を増やしても、DBの複製は作られません。[公式のアーキテクチャ解説](https://www.postgresql.org/docs/18/tutorial-arch.html)でも、この接続とプロセスの関係が説明されています。
 

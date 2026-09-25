@@ -153,7 +153,7 @@
     "name": "02-connections",
     "chapter": 6,
     "title": "接続ごとにプロセスが動く",
-    "description": "PIDは今回の例 ／ 配置は共有範囲を示す模型"
+    "description": "仕組み：接続ごとのバックエンドプロセスと同じDB（模型）"
   },
   {
     "name": "02-query-stages",
