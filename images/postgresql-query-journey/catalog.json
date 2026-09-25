@@ -129,7 +129,7 @@
     "name": "04-repeat-observation",
     "chapter": 5,
     "title": "同じ検索を、もう一度",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "description": "問い：2回目も表のファイルからページを取り寄せるか"
   },
   {
     "name": "shared-buffer-reuse",

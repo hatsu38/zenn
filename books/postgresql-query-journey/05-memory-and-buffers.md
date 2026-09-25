@@ -12,8 +12,8 @@ title: "第5章：同じページを、毎回ストレージから読むのか"
 
 繰り返した検索で、変わった値と変わらなかった値を、観察ノートに並べるつもりで比べてみます。
 
-![同じ検索を、もう一度](/images/postgresql-query-journey/04-repeat-observation.png)
-*学ぶきっかけを描く、説明用の場面。*
+![同じ検索を3回実行するとき、1回目は表のファイルからページを取り寄せる。2回目も取り寄せるのかを、shared hit・shared read・Rows Removed by Filterの三つで観察する](/images/postgresql-query-journey/04-repeat-observation.png)
+*2回目の「？」と、観察ノートの三つの項目を見てください。値は、この後の実行で確かめます。*
 
 ## ページを保存する場所と、検索で使う場所
 
