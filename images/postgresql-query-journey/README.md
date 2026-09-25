@@ -22,16 +22,18 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第3章 | 8を探す：範囲を選んでから、値を探す | [SVG](sources/06-btree-path.svg) | [PNG](06-btree-path.png) |
 | 第3章 | 100万冊でも、読むのは3枚 | [SVG](sources/06-tree-levels.svg) | [PNG](06-tree-levels.png) |
 | 第3章 | 4以上8以下なら、隣の葉も読む | [SVG](sources/06-range-scan.svg) | [PNG](06-range-scan.png) |
-| 第4章 | Indexをたどって、表の行へ届く | [SVG](sources/03-index-reference.svg) | [PNG](03-index-reference.png) |
-| 第4章 | 本5の1行も、ページ0ごと読む | [SVG](sources/03-pages-and-rows.svg) | [PNG](03-pages-and-rows.png) |
-| 第4章 | 同じ1,000行でも、8ページと32ページ | [SVG](sources/03-row-width.svg) | [PNG](03-row-width.png) |
 | 第4章 | 本の一覧は、どこに保存される？ | [SVG](sources/03-storage-question.svg) | [PNG](03-storage-question.png) |
+| 第4章 | 本5の1行も、ページ0ごと読む | [SVG](sources/03-pages-and-rows.svg) | [PNG](03-pages-and-rows.png) |
+| 第4章 | ctid = (0,1) が指す場所 | [SVG](sources/03-ctid-location.svg) | [PNG](03-ctid-location.png) |
+| 第4章 | Indexをたどって、表の行へ届く | [SVG](sources/03-index-reference.svg) | [PNG](03-index-reference.png) |
+| 第4章 | 同じ1,000行でも、8ページと32ページ | [SVG](sources/03-row-width.svg) | [PNG](03-row-width.png) |
 | 第5章 | ページの保存場所と、計算の作業場所 | [SVG](sources/04-memory-regions.svg) | [PNG](04-memory-regions.png) |
 | 第5章 | ファイルのページを、メモリで再利用する | [SVG](sources/shared-buffer-reuse.svg) | [PNG](shared-buffer-reuse.png) |
 | 第5章 | 同じ検索を、もう一度 | [SVG](sources/04-repeat-observation.svg) | [PNG](04-repeat-observation.png) |
-| 第6章 | 接続ごとにプロセスが動く | [SVG](sources/02-connections.svg) | [PNG](02-connections.png) |
-| 第6章 | Index Scanから、Limitへ行が渡る | [SVG](sources/02-execution-tree.svg) | [PNG](02-execution-tree.png) |
 | 第6章 | 画面の向こうで、SQLが動く | [SVG](sources/02-client-scene.svg) | [PNG](02-client-scene.png) |
+| 第6章 | 接続ごとにプロセスが動く | [SVG](sources/02-connections.svg) | [PNG](02-connections.png) |
+| 第6章 | SQLの文字列から、検索結果が返るまで | [SVG](sources/02-query-stages.svg) | [PNG](02-query-stages.png) |
+| 第6章 | Index Scanから、Limitへ行が渡る | [SVG](sources/02-execution-tree.svg) | [PNG](02-execution-tree.png) |
 | 第7章 | 読み終えた順に、並べたい | [SVG](sources/07-recent-records.svg) | [PNG](07-recent-records.png) |
 | 第7章 | 二つの並びを、比べながら合流する | [SVG](sources/07-merge-cards.svg) | [PNG](07-merge-cards.png) |
 | 第7章 | 200万行を調べ、4分の1を並べた | [SVG](sources/07-sort-bands.svg) | [PNG](07-sort-bands.png) |
@@ -56,8 +58,6 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第12章 | 上位を選んでから題名を付ける | [SVG](sources/12-ranking-after.svg) | [PNG](12-ranking-after.png) |
 | 第12章 | 題名を付けてから、上位を選ぶ | [SVG](sources/12-ranking-before.svg) | [PNG](12-ranking-before.png) |
 | 第12章 | 今度は、根拠を持って選べる | [SVG](sources/12-decision-notebook.svg) | [PNG](12-decision-notebook.png) |
-| 第4章 | ctid = (0,1) が指す場所 | [SVG](sources/03-ctid-location.svg) | [PNG](03-ctid-location.png) |
-| 第6章 | SQLの文字列から、検索結果が返るまで | [SVG](sources/02-query-stages.svg) | [PNG](02-query-stages.png) |
 
 ## 編集する
 

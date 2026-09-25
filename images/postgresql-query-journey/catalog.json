@@ -96,10 +96,10 @@
     "description": "Indexの葉をたどる図 ／ 表への参照は省略"
   },
   {
-    "name": "03-index-reference",
+    "name": "03-storage-question",
     "chapter": 4,
-    "title": "Indexをたどって、表の行へ届く",
-    "description": "3段のIndexの模型 ／ 矢印は参照する順番"
+    "title": "本の一覧は、どこに保存される？",
+    "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
     "name": "03-pages-and-rows",
@@ -108,16 +108,22 @@
     "description": "仕組み：観察用の表の8ページと行（行数は実測）"
   },
   {
+    "name": "03-ctid-location",
+    "chapter": 4,
+    "title": "ctid = (0,1) が指す場所",
+    "description": "ページ番号は0から、項目番号は1から数える"
+  },
+  {
+    "name": "03-index-reference",
+    "chapter": 4,
+    "title": "Indexをたどって、表の行へ届く",
+    "description": "3段のIndexの模型 ／ 矢印は参照する順番"
+  },
+  {
     "name": "03-row-width",
     "chapter": 4,
     "title": "同じ1,000行でも、8ページと32ページ",
     "description": "比較：行の長さとページ数（実測）"
-  },
-  {
-    "name": "03-storage-question",
-    "chapter": 4,
-    "title": "本の一覧は、どこに保存される？",
-    "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
     "name": "04-memory-regions",
@@ -138,22 +144,28 @@
     "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
+    "name": "02-client-scene",
+    "chapter": 6,
+    "title": "画面の向こうで、SQLが動く",
+    "description": "サービスの場面・学ぶきっかけの絵"
+  },
+  {
     "name": "02-connections",
     "chapter": 6,
     "title": "接続ごとにプロセスが動く",
     "description": "PIDは今回の例 ／ 配置は共有範囲を示す模型"
   },
   {
+    "name": "02-query-stages",
+    "chapter": 6,
+    "title": "SQLの文字列から、検索結果が返るまで",
+    "description": "仕組み：バックエンドの中の4つの段"
+  },
+  {
     "name": "02-execution-tree",
     "chapter": 6,
     "title": "Index Scanから、Limitへ行が渡る",
     "description": "ORDER BY title LIMIT 3 の計画の模型"
-  },
-  {
-    "name": "02-client-scene",
-    "chapter": 6,
-    "title": "画面の向こうで、SQLが動く",
-    "description": "サービスの場面・学ぶきっかけの絵"
   },
   {
     "name": "07-recent-records",
@@ -298,17 +310,5 @@
     "chapter": 12,
     "title": "今度は、根拠を持って選べる",
     "description": "サービスの場面・学ぶきっかけの絵"
-  },
-  {
-    "name": "03-ctid-location",
-    "chapter": 4,
-    "title": "ctid = (0,1) が指す場所",
-    "description": "ページ番号は0から、項目番号は1から数える"
-  },
-  {
-    "name": "02-query-stages",
-    "chapter": 6,
-    "title": "SQLの文字列から、検索結果が返るまで",
-    "description": "仕組み：バックエンドの中の4つの段"
   }
 ]
