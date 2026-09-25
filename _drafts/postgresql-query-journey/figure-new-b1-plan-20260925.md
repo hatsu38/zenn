@@ -210,9 +210,9 @@ catalog.json の各章は、本文の順にする。第3章は `06-catalog-quest
 **描く（計画の木の向きどおり、親が上、子が下、行は下から上へ）:**
 - 見出し：`1回1行を20回で、20行`
 - 右上に札「実測」（`.real`）。
-- 小さな木：いちばん上に計画のノード `Nested Loop`（横に `rows=20`）。その下、左に `Limit`（`rows=20`）、右に `Memoize`、その下に `Index Scan using books_pkey`。ノード名は等幅。`Index Only Scan` は描かなくてよい（`Limit` の下に省く）。
+- 小さな木：いちばん上に計画のノード `Nested Loop`（横に実際の行数 `rows=20.00`）。その下、左に `Limit`（`rows=20.00`）、右に `Memoize`、その下に `Index Scan using books_pkey`。図に書く `rows` はどれも実際の値（`actual` の中の値）の書き方にそろえる。ノード名は等幅。`Index Only Scan` は描かなくてよい（`Limit` の下に省く）。
 - 行の流れ：子から親へ実線の青緑（`.flow`）。ラベルは1か所だけ「行を渡す」。
-- `Index Scan using books_pkey` の横に、等幅で `rows=1.00`・`loops=20`・`actual time=0.344..0.344`・`Buffers: shared hit=54 read=26` を縦に並べ、それぞれにラベル：`rows=1.00` と `actual time` に「1回あたり」、`Buffers` に「20回分の合計（54＋26＝80）」。
+- `Index Scan using books_pkey` の横に、等幅で `rows=1.00`・`loops=20`・`actual time=0.344..0.344`・`Buffers: shared hit=54 read=26` を縦に並べ、それぞれにラベル：`rows=1.00` と `actual time` に「1回当たり」（本文の表記。第9章87行目など）、`Buffers` に「20回分の合計（54＋26＝80）」。
 - 焦点の枠（`.hot`）は「1.00 × 20 ＝ 20行」の計算の札に付ける（`rows=1.00` と `loops=20` の横か下に置く）。
 
 **焦点:** 「1.00 × 20 ＝ 20行」。
@@ -228,7 +228,7 @@ import pathlib
 path = pathlib.Path('books/postgresql-query-journey/09-join.md')
 text = path.read_text(encoding='utf-8')
 anchor = '\n## 何十万回も探すなら？\n'
-block = ('図で、内側の`Index Scan`の`rows`・`loops`・`Buffers`を、1回あたりの値と20回分の合計に分けて読んでください。\n\n'
+block = ('図で、内側の`Index Scan`の`rows`・`loops`・`Buffers`を、1回当たりの値と20回分の合計に分けて読んでください。\n\n'
          '![Nested Loopの内側のIndex Scanは rows=1.00、loops=20 で、1回1行を20回返して全体で20行。Buffers の hit=54 と read=26 は20回分の合計](/images/postgresql-query-journey/09-loops.png)\n'
          '*rows=1.00 と loops=20 を掛けると20行です。Buffers の hit=54 と read=26 は、20回分の合計です（実測）。*\n')
 assert text.count(anchor) == 1
