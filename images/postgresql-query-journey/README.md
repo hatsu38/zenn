@@ -22,7 +22,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第3章 | 4以上8以下なら、隣の葉も読む | [SVG](sources/06-range-scan.svg) | [PNG](06-range-scan.png) |
 | 第3章 | 目録も大きい。それでも速い？ | [SVG](sources/06-catalog-question.svg) | [PNG](06-catalog-question.png) |
 | 第4章 | Indexをたどって、表の行へ届く | [SVG](sources/03-index-reference.svg) | [PNG](03-index-reference.png) |
-| 第4章 | 表の中にページ、ページの中に行 | [SVG](sources/03-pages-and-rows.svg) | [PNG](03-pages-and-rows.png) |
+| 第4章 | 本5の1行も、ページ0ごと読む | [SVG](sources/03-pages-and-rows.svg) | [PNG](03-pages-and-rows.png) |
 | 第4章 | 同じ1,000行でも、8ページと32ページ | [SVG](sources/03-row-width.svg) | [PNG](03-row-width.png) |
 | 第4章 | 本の一覧は、どこに保存される？ | [SVG](sources/03-storage-question.svg) | [PNG](03-storage-question.png) |
 | 第4章 | ctid = (0,1) が指す場所 | [SVG](sources/03-ctid-location.svg) | [PNG](03-ctid-location.png) |
@@ -46,8 +46,8 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第10章 | 入口の見積もりが、後ろの判断に響く | [SVG](sources/10-estimate-propagation.svg) | [PNG](10-estimate-propagation.png) |
 | 第10章 | 同じ「1種類」でも、9,000行と1,000行 | [SVG](sources/10-selectivity.svg) | [PNG](10-selectivity.png) |
 | 第10章 | Indexがあるのに、なぜ使わない？ | [SVG](sources/10-planner-choice.svg) | [PNG](10-planner-choice.png) |
-| 第11章 | 読む時点によって、見える版が変わる | [SVG](sources/11-snapshots.svg) | [PNG](11-snapshots.png) |
-| 第11章 | Indexだけで返せるかは、可視性にもよる | [SVG](sources/11-visibility-map.svg) | [PNG](11-visibility-map.png) |
+| 第11章 | Bが確定しても、Aは版1を読む | [SVG](sources/11-snapshots.svg) | [PNG](11-snapshots.png) |
+| 第11章 | ×のページだけ、表を確かめに行く | [SVG](sources/11-visibility-map.svg) | [PNG](11-visibility-map.png) |
 | 第11章 | ログの保存と、ページの書き出し | [SVG](sources/11-wal-and-pages.svg) | [PNG](11-wal-and-pages.png) |
 | 第11章 | 題名を直している間に、読まれたら？ | [SVG](sources/11-editing-scene.svg) | [PNG](11-editing-scene.png) |
 | 第12章 | 表示は軽くなる。集計の更新は必要。 | [SVG](sources/12-preaggregation.svg) | [PNG](12-preaggregation.png) |
