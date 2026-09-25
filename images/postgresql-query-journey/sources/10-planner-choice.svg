@@ -28,8 +28,8 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="204" y="164" class="mono">読んだ行　0</text>
   </g>
   <g id="branches">
-    <path d="M270 190 L155 256" class="flow"/>
-    <path d="M370 190 L485 256" class="flow"/>
+    <path d="M270 190 L155 256" class="ref"/>
+    <path d="M370 190 L485 256" class="ref"/>
     <text x="96" y="222">20件</text>
     <text x="452" y="222">500,000件</text>
   </g>
