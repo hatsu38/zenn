@@ -12,8 +12,8 @@ Indexにも100万冊分の情報があるのに、なぜ全件を調べずに探
 
 でも、Indexにも100万冊分の情報があるはずです。Indexを先頭から全部読んでいたら、あまり助けにならなそうです。
 
-![目録も大きい。それでも速い？](/images/postgresql-query-journey/06-catalog-question.png)
-*学ぶきっかけを描く、説明用の場面。目録そのものも100万冊分あります。*
+![本100万冊の棚と同じ長さで、Indexの目録にも100万件が並ぶ](/images/postgresql-query-journey/06-catalog-question.png)
+*本の棚と同じ長さで並ぶ、目録の100万件を見てください（説明するための図）。*
 
 ## 番号の範囲から、探す先を選ぶ
 

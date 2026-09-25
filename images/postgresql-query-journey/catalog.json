@@ -74,8 +74,8 @@
   {
     "name": "06-catalog-question",
     "chapter": 3,
-    "title": "目録も大きい。それでも速い？",
-    "description": "サービスの場面・学ぶきっかけの絵"
+    "title": "目録も、本と同じ100万件",
+    "description": "問い：Indexにも100万冊分の情報がある"
   },
   {
     "name": "06-btree-path",
