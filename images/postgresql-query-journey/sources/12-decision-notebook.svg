@@ -66,5 +66,5 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="56" y="555" class="s">更新の負担は？</text>
   </g>
   <rect x="24" y="624" width="592" height="60" rx="10" fill="#fff0d3" stroke="#243b50" stroke-width="2.5"/>
-  <text x="44" y="663" class="b">20冊のランキングなのに、なぜ待たされる？</text>
+  <text x="44" y="663" class="b">どの案を、何を根拠に選ぶ？</text>
 </svg>
