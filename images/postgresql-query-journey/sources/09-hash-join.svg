@@ -18,6 +18,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .flow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#flow)}.req{fill:none;stroke:#945e11;stroke-width:3;stroke-dasharray:8 6;marker-end:url(#req)}
 .ref{fill:none;stroke:#7d93a3;stroke-width:2;marker-end:url(#ref)}.step{fill:#fff;stroke:#243b50;stroke-width:2.5}
 .spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
+.work{fill:#fff;stroke:#56738a;stroke-width:2;stroke-dasharray:8 5}.val{fill:#dcefe8;stroke:#448b7c;stroke-width:2}.buffer{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2}
   </style>
   <rect width="640" height="664" fill="#f5f7f9"/>
   <text x="24" y="48" class="h">先に分類し、同じ箱の中で照合する</text>
@@ -25,32 +26,32 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <text x="582" y="47" text-anchor="middle" class="tag">模型</text>
   <g id="build">
     <text x="24" y="104" class="b">① 本を、番号の余りで箱へ分ける</text>
-    <rect x="24" y="122" width="592" height="164" rx="12" class="panel"/>
+    <rect x="24" y="122" width="592" height="164" rx="10" class="work"/>
     <text x="44" y="154" class="s b">ハッシュ表</text>
     <text x="172" y="154" class="s"><tspan class="mono">Buckets</tspan>＝箱の数</text>
-    <rect x="40" y="170" width="176" height="96" rx="10" class="node"/>
+    <rect x="40" y="170" width="176" height="96" rx="10" class="panel"/>
     <text x="54" y="198" class="s b">箱0</text>
-    <rect x="52" y="210" width="44" height="44" rx="4" class="row"/>
+    <rect x="52" y="210" width="44" height="44" rx="6" class="val"/>
     <text x="74" y="241" text-anchor="middle" class="b">3</text>
-    <rect x="106" y="210" width="44" height="44" rx="4" class="row"/>
+    <rect x="106" y="210" width="44" height="44" rx="6" class="val"/>
     <text x="128" y="241" text-anchor="middle" class="b">6</text>
-    <rect x="160" y="210" width="44" height="44" rx="4" class="row"/>
+    <rect x="160" y="210" width="44" height="44" rx="6" class="val"/>
     <text x="182" y="241" text-anchor="middle" class="b">9</text>
-    <rect x="232" y="170" width="176" height="96" rx="10" class="node"/>
+    <rect x="232" y="170" width="176" height="96" rx="10" class="panel"/>
     <text x="246" y="198" class="s b">箱1</text>
-    <rect x="244" y="210" width="44" height="44" rx="4" class="row"/>
+    <rect x="244" y="210" width="44" height="44" rx="6" class="val"/>
     <text x="266" y="241" text-anchor="middle" class="b">1</text>
-    <rect x="298" y="210" width="44" height="44" rx="4" class="row"/>
+    <rect x="298" y="210" width="44" height="44" rx="6" class="val"/>
     <text x="320" y="241" text-anchor="middle" class="b">4</text>
-    <rect x="352" y="210" width="44" height="44" rx="4" class="row"/>
+    <rect x="352" y="210" width="44" height="44" rx="6" class="val"/>
     <text x="374" y="241" text-anchor="middle" class="b">7</text>
-    <rect x="424" y="170" width="176" height="96" rx="10" class="node"/>
+    <rect x="424" y="170" width="176" height="96" rx="10" class="panel"/>
     <text x="438" y="198" class="s b">箱2</text>
-    <rect x="436" y="210" width="44" height="44" rx="4" class="row"/>
+    <rect x="436" y="210" width="44" height="44" rx="6" class="val"/>
     <text x="458" y="241" text-anchor="middle" class="b">2</text>
-    <rect x="490" y="210" width="44" height="44" rx="4" class="row"/>
+    <rect x="490" y="210" width="44" height="44" rx="6" class="val"/>
     <text x="512" y="241" text-anchor="middle" class="b">5</text>
-    <rect x="544" y="210" width="44" height="44" rx="4" class="row"/>
+    <rect x="544" y="210" width="44" height="44" rx="6" class="val"/>
     <text x="566" y="241" text-anchor="middle" class="b">8</text>
     <text x="24" y="320" class="s">本の番号 ÷ 3 の余り＝箱の番号</text>
   </g>
@@ -79,16 +80,16 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="320" y="606" text-anchor="middle" class="m">見ない</text>
     <rect x="424" y="488" width="176" height="136" rx="10" class="hot"/>
     <text x="438" y="516" class="s b">箱2</text>
-    <rect x="436" y="530" width="44" height="44" rx="4" class="row"/>
+    <rect x="436" y="530" width="44" height="44" rx="6" class="val"/>
     <text x="458" y="561" text-anchor="middle" class="b">2</text>
     <text x="458" y="606" text-anchor="middle" class="b">×</text>
-    <rect x="490" y="530" width="44" height="44" rx="4" class="row"/>
+    <rect x="490" y="530" width="44" height="44" rx="6" class="val"/>
     <text x="512" y="561" text-anchor="middle" class="b">5</text>
     <text x="512" y="606" text-anchor="middle" class="b">×</text>
-    <rect x="544" y="530" width="44" height="44" rx="4" class="match"/>
+    <rect x="544" y="530" width="44" height="44" rx="6" class="match"/>
     <text x="566" y="561" text-anchor="middle" class="b">8</text>
     <text x="566" y="606" text-anchor="middle" class="b teal">✓</text>
     <path d="M512 406 V484" class="ref"/>
-    <text x="498" y="440" text-anchor="end" class="s">余り2 → 箱2だけを見る</text>
+    <text x="498" y="440" text-anchor="end" class="s">余りが2なので、箱2だけを見る</text>
   </g>
 </svg>
