@@ -7,7 +7,7 @@ title: "第4章：テーブルの行は、どこに保存されているのか"
 SQLのテーブルは、物理的にはファイルやページに保存されています。テーブルのサイズや行の位置を観察し、行数、ページ数、バイト数を別々の量として捉えます。Indexからテーブルを参照する関係や、長い値を保存する仕組みも紹介します。同じ件数でも読み込み量が違う理由を説明するための土台を作る章です。
 
 :::message
-第3章の題名Indexを残して始めます。観察用のテーブルはこの章のBEGINから同じ接続で作り、章末のROLLBACKで片付けます。
+第3章の題名Indexを残して始めます。この章で作る`books_observation`は第5章でも使い、第5章の最後に削除します。
 :::
 
 ## 7,353回は、何を数えた回数？
@@ -23,38 +23,30 @@ SQLのテーブルは、物理的にはファイルやページに保存され�
 
 何を単位に読んでいるかを調べるため、まず1,000冊の小さな観察用のテーブルを用意します。小さなテーブルで単位を確かめてから、100万冊のテーブルに戻って7,353回と対応させます。
 
-## この章だけの小さなテーブルを用意する
+## 観察用の小さなテーブルを用意する
 
-第1章で用意し、第3章でIndexを追加した`public.books`（100万冊、題名のIndexあり）は残します。同じDBの中に、テーブルをまとめる別の区画（スキーマ）を作り、そこに1,000冊で主キーのみの通常のテーブルを作ります[^temp]。
+100万冊の`books`は残し、同じDBに1,000冊の`books_observation`を作ります。番号と題名の列、番号の主キーを持つ通常のテーブルです[^temp]。以降のSQLでは、名前で二つを区別します。
 
 [^temp]: 接続内だけで使う一時テーブルという作り方もありますが、そのページは接続ごとの領域に置かれ、共有バッファには入りません。第5章で`shared hit`を観察するため、ここでは通常のテーブルを使います。
 
-この章では、**トランザクション**を使います。トランザクションは、いくつかの操作をひとまとめにして、最後に確定する（`COMMIT`）か、全部取り消す（`ROLLBACK`）かを選べる仕組みです。`BEGIN`で開始して開いたまま観察を続け、章末の`ROLLBACK`で観察用のスキーマとテーブルを取り消します。元の`public.books`は変更しません。
-
-次の操作は、この章を試すpsqlで行います。`book_observation`はこの実験専用の名前です。同じ名前のスキーマが既にある場合は、それを削除しないでください。SQL中の`book_observation`をすべて別の名前に書き換えてから実行します。
+`books_observation`はこの本の観察用の名前です。同じ名前のテーブルが既にある場合、この本で作ったものなら第1章末の再開手順を使います。別の用途で使っているものなら削除せず、以下のSQLと以降の観察SQLで別の名前を使ってください。
 
 ```sql
-BEGIN;
-CREATE SCHEMA book_observation;
-CREATE TABLE book_observation.books
-  (LIKE public.books INCLUDING DEFAULTS INCLUDING CONSTRAINTS);
-ALTER TABLE book_observation.books ADD PRIMARY KEY (id);
-INSERT INTO book_observation.books
-SELECT id, title FROM public.books WHERE id BETWEEN 1 AND 1000;
-SET LOCAL search_path = book_observation, public;
-ANALYZE books;
-SELECT count(*) FROM books;
+CREATE TABLE books_observation (
+  id bigint PRIMARY KEY,
+  title text NOT NULL
+);
+INSERT INTO books_observation
+SELECT id, title FROM books WHERE id BETWEEN 1 AND 1000 ORDER BY id;
+ANALYZE books_observation;
+SELECT count(*) FROM books_observation;
 ```
 
-準備SQLの実行結果です。2026年9月23日に保存した実行結果から、入力SQLとpsqlのプロンプトを除いて掲載しています。
+2026年9月25日、DockerのPostgreSQL 18.6での実行結果です。
 
 ```sql
-BEGIN
-CREATE SCHEMA
 CREATE TABLE
-ALTER TABLE
 INSERT 0 1000
-SET
 ANALYZE
  count
 -------
@@ -62,20 +54,16 @@ ANALYZE
 (1 row)
 ```
 
-`INSERT 0 1000`は1,000行を追加したことを示し、最後の`count`でも観察用のテーブルに1,000行あると確認できます。`SET LOCAL search_path`によって、このトランザクション内では、`books`という名前で観察用のテーブルを参照します。
-
-:::details プロンプトの`*`について
-この時点で、psqlのプロンプトは`reading_map=*#`に変わります。`*`は、トランザクションの途中であることを示す印です。そのまま次の観察へ進んでください。章末で`ROLLBACK`すると、観察用のスキーマとテーブルが取り消され、`SET LOCAL`の設定も元に戻ります。
-:::
+`INSERT 0 1000`は1,000行を追加したことを示し、最後の`count`でも1,000行あると確認できます。`ORDER BY id`で番号順に追加しています。第1章のpsqlの設定では、各SQLの変更は実行が終わると確定するため、接続を閉じてもテーブルは残ります。
 
 ## テーブルの保存先と大きさを調べる
 
-この節の三つの出力（保存先、大きさ、`block_size`）は、以前の測定で本1,000冊の通常テーブルを観察したときの実測例です。自分の環境では、パスや容量が違うことがあります。
+この節の三つの出力（保存先、大きさ、`block_size`）は、2026年9月25日に`books_observation`を観察した実測例です。自分の環境では、パスや容量が違うことがあります。
 
 ### テーブルの保存先のパス
 
 ```sql
-SELECT pg_relation_filepath('books');
+SELECT pg_relation_filepath('books_observation');
 ```
 
 実行結果です。
@@ -83,19 +71,19 @@ SELECT pg_relation_filepath('books');
 ```sql
  pg_relation_filepath
 ----------------------
- base/16384/16385
+ base/17212/17223
 (1 row)
 ```
 
-`books`というテーブル名に対して、`base/16384/16385`というパスが返ってきました。これはPostgreSQLのデータディレクトリを基準にした相対パスです。今回ならDocker内のDBサーバ側の場所で、手元のパソコンに同じパスがあるという意味ではありません。
+`books_observation`というテーブル名に対して、`base/17212/17223`というパスが返ってきました。これはPostgreSQLのデータディレクトリを基準にした相対パスです。今回ならDocker内のDBサーバ側の場所で、手元のパソコンに同じパスがあるという意味ではありません。
 
 パスに含まれる番号は環境によって異なります。ここでは、SQLで扱っているテーブルに、実際の保存先があることを確認してください。
 
 ### テーブル本体と全体の大きさ
 
 ```sql
-SELECT pg_size_pretty(pg_relation_size('books')) AS table_size,
-       pg_size_pretty(pg_total_relation_size('books')) AS total_size;
+SELECT pg_size_pretty(pg_relation_size('books_observation')) AS table_size,
+       pg_size_pretty(pg_total_relation_size('books_observation')) AS total_size;
 ```
 
 実行結果です。
@@ -107,7 +95,7 @@ SELECT pg_size_pretty(pg_relation_size('books')) AS table_size,
 (1 row)
 ```
 
-同じ`books`を調べていますが、二つの値は違います。
+同じ`books_observation`を調べていますが、二つの値は違います。
 
 - `table_size`の64 kB：`pg_relation_size`で調べた、テーブル本体の主な格納領域の大きさ。
 - `total_size`の136 kB：`pg_total_relation_size`で調べた、Indexや補助的な領域、長い値を別に保存する領域（TOAST。後の補足で説明します）も含めた全体の大きさ。
@@ -151,7 +139,7 @@ SHOW block_size;
 
 ```sql
 SELECT id, ctid, title
-FROM books ORDER BY id LIMIT 8;
+FROM books_observation ORDER BY id LIMIT 8;
 ```
 
 実行結果です。
@@ -185,14 +173,14 @@ FROM books ORDER BY id LIMIT 8;
 
 ## 7,353回は、何の数だったのか
 
-ページが読み込みの単位だと分かったので、第3章の数字に戻ります。今度は100万冊の`public.books`の大きさを調べます。いまは`search_path`の設定で観察用の`books`が先に見つかるので、スキーマ名を付けて指定します。
+ページが読み込みの単位だと分かったので、第3章の数字に戻ります。今度は100万冊の`public.books`の大きさを調べます。`books_observation`と区別して、元のテーブルを指定します。`public`は第1章でテーブルを作った場所（スキーマ）の名前です。
 
 ```sql
 SELECT pg_size_pretty(pg_relation_size('public.books')) AS table_size,
        pg_relation_size('public.books') / current_setting('block_size')::int AS pages;
 ```
 
-2026年9月23日、DockerのPostgreSQL 18.6、本100万冊と題名のIndexがある状態での実行結果です。
+2026年9月25日、DockerのPostgreSQL 18.6、本100万冊と題名のIndexがある状態での実行結果です。
 
 ```sql
  table_size | pages
@@ -231,14 +219,14 @@ Indexを使った後は、`hit=1`と`read=3`で合計4回でした。Indexも、
 **Indexが3段だから`read=3`になるわけではありません。** 木の段数は、根から葉までにたどるページ数に関わります。hitとreadの内訳は、そのアクセス時のキャッシュの状態に左右されます。今回の出力だけでは、hitした1回が根・途中・葉・テーブルのどれだったかも分かりません。
 
 :::details Indexの段数を確かめるには
-ページの中身を調べる拡張機能`pageinspect`を使うと、B-treeの高さを表示できます。この章のトランザクションの中で作れば、観察用のテーブルを片付けるROLLBACKで一緒に取り消されます。
+ページの中身を調べる拡張機能`pageinspect`を使うと、B-treeの高さを表示できます。拡張機能は一度追加すると、このDBで引き続き使えます。
 
 ```sql
 CREATE EXTENSION IF NOT EXISTS pageinspect;
 SELECT level FROM bt_metap('public.books_title_idx');
 ```
 
-2026年9月23日の実行結果です。
+2026年9月25日の実行結果です。
 
 ```sql
  level
@@ -252,12 +240,11 @@ SELECT level FROM bt_metap('public.books_title_idx');
 
 ## 1,000行なら、大きさも同じ？
 
-次は、行の長さだけが違うテーブルを二つ作り、大きさを比べます。章の冒頭で開始したトランザクションの中に、`SAVEPOINT`で戻り先を作ります。サイズを比べた後は、その位置まで取り消して観察を続けます。
+次は、行の長さだけが違うテーブルを二つ作り、大きさを比べます。この実験で作る`size_short`と`size_long`は、比較が終わったら削除します。同じ名前のテーブルが既に別の用途で使われている場合は、名前を変えてください。
 
 `repeat('a', 10)`は、aを10回並べた文字です。今回は10文字の行と200文字の行を、それぞれ1,000行作ります。実行する前に、必要なページ数がどちらで多くなるか予想してください。
 
 ```sql
-SAVEPOINT row_width;
 CREATE TABLE size_short AS
 SELECT n AS id, repeat('a', 10) AS note
 FROM generate_series(1, 1000) AS n;
@@ -266,26 +253,20 @@ SELECT n AS id, repeat('a', 200) AS note
 FROM generate_series(1, 1000) AS n;
 SELECT pg_relation_size('size_short') AS short_bytes,
        pg_relation_size('size_long') AS long_bytes;
-ROLLBACK TO SAVEPOINT row_width;
 ```
 
-2026年9月23日に保存した実行結果です。入力SQLとpsqlのプロンプトを除いて掲載しています。
+2026年9月25日、DockerのPostgreSQL 18.6での実行結果です。
 
 ```sql
-SAVEPOINT
 SELECT 1000
 SELECT 1000
  short_bytes | long_bytes
 -------------+------------
        65536 |     262144
 (1 row)
-
-ROLLBACK
 ```
 
 二つの`SELECT 1000`は、それぞれの`CREATE TABLE ... AS SELECT`で1,000行のテーブルを作ったことを表すメッセージです。続く表には、作ったテーブル本体の大きさがバイト数で表示されています。
-
-最後の`ROLLBACK`という出力は、`ROLLBACK TO SAVEPOINT row_width`が完了したことを示します。この行幅実験で作った`size_short`と`size_long`は取り消されますが、外側のトランザクションは続いています。観察用の`books`も残るので、そのまま次へ進めます。章末の`ROLLBACK;`で、外側のトランザクションも終了します。
 
 先ほど確認した1ページ8,192バイトで割ってみます。
 
@@ -313,15 +294,21 @@ ROLLBACK
 さらに長い値は、圧縮したり、別の保存領域へ置いたりすることがあります。この仕組みをTOASTと呼びます。そのため、文字を10倍にしたらテーブル本体のサイズも必ず10倍、とは予想できません。[物理ストレージの公式解説](https://www.postgresql.org/docs/18/storage.html)から詳しくたどれます。
 :::
 
-## 観察用のテーブルを片付ける
+## 比較用のテーブルを片付け、次章へ残すものを確認する
 
-この章の観察が終わったら、同じpsqlで次を実行します。観察用スキーマの準備からここまでを、一つのトランザクションとして扱ってきました。
+行の長さを比べた二つのテーブルを削除します。
 
 ```sql
-ROLLBACK;
+DROP TABLE size_short, size_long;
 ```
 
-観察用スキーマとテーブルが取り消され、`books`という名前が指すテーブルも元の`public.books`に戻ります。100万冊の`public.books`と題名のIndexは変更していません。
+実行結果です。
+
+```sql
+DROP TABLE
+```
+
+`books_observation`は第5章でも使うので残します。100万冊の`books`と題名のIndexも、そのまま使えます。ここでpsqlを閉じても構いません。再接続するときは第1章末の共通設定を実行してから進めてください。
 
 ## 確かめる問い
 
