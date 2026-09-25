@@ -171,13 +171,19 @@
     "name": "02-query-stages",
     "chapter": 6,
     "title": "SQLの文字列から、検索結果が返るまで",
-    "description": "仕組み：バックエンドの中の4つの段"
+    "description": "仕組み：SQLが通る4つの段"
   },
   {
     "name": "02-execution-tree",
     "chapter": 6,
     "title": "Limitは3件で要求を止める",
     "description": "仕組み：LimitとIndex Scanの要求とレコードの受け渡し（説明するための図）"
+  },
+  {
+    "name": "02-ranking-plan-tree",
+    "chapter": 6,
+    "title": "20件に減るのは、最後の2段",
+    "description": "観察：ランキングの実行計画を木として読み、各段の rows を追う（実測）"
   },
   {
     "name": "07-recent-records",

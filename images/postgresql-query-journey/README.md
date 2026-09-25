@@ -2,7 +2,7 @@
 
 SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆すると次の書き出しで失われるため、修正はSVGに行ってください。
 
-序章から第12章まで、計54枚を本文へ掲載しています。序章は導入の絵2枚と技術図2枚です。第4章にはctidの図、第6章にはSQLの処理段階の図を追加しています。そのうち2026-09-25までの53枚すべてを、[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)の型で描き直しました（2026-09-25、第1〜2章の試作8枚と、横展開の段階A〜Eの45枚）。[図の一覧](index.html)からまとめて確認できます。
+序章から第12章まで、計55枚を本文へ掲載しています。序章は導入の絵2枚と技術図2枚です。第4章にはctidの図、第6章にはSQLの処理段階の図と、ランキングの計画を木にした図（2026-09-26）を追加しています。そのうち2026-09-25までの53枚すべてを、[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)の型で描き直しました（2026-09-25、第1〜2章の試作8枚と、横展開の段階A〜Eの45枚）。[図の一覧](index.html)からまとめて確認できます。
 
 | 章 | 題材 | SVG原本 | 掲載用PNG |
 | --- | --- | --- | --- |
@@ -36,6 +36,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第6章 | 接続ごとにプロセスが動く | [SVG](sources/02-connections.svg) | [PNG](02-connections.png) |
 | 第6章 | SQLの文字列から、検索結果が返るまで | [SVG](sources/02-query-stages.svg) | [PNG](02-query-stages.png) |
 | 第6章 | Limitは3件で要求を止める | [SVG](sources/02-execution-tree.svg) | [PNG](02-execution-tree.png) |
+| 第6章 | 20件に減るのは、最後の2段 | [SVG](sources/02-ranking-plan-tree.svg) | [PNG](02-ranking-plan-tree.png) |
 | 第7章 | 読み終えた順に、並べたい | [SVG](sources/07-recent-records.svg) | [PNG](07-recent-records.png) |
 | 第7章 | 4枚を、比較5回で並べる | [SVG](sources/07-merge-cards.svg) | [PNG](07-merge-cards.png) |
 | 第7章 | 200万件を調べ、4分の1を並べた | [SVG](sources/07-sort-bands.svg) | [PNG](07-sort-bands.png) |
