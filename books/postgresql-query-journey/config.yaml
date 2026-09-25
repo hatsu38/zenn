@@ -1,6 +1,6 @@
-title: "SQLの裏側で動いているデータ構造とアルゴリズム ─ PostgreSQLの実行計画を読みながら確かめる"
-summary: "SQLが何行を調べ、どのページを読み、どこでメモリを使うかを、図と実験で読み解く本です。読書記録サービスを題材に、B-tree・ヒープ・ハッシュとPostgreSQLの実行計画を結び付け、ランキングの改善を結果の正しさと更新の負担まで含めて判断します。SELECT・WHEREの基礎から始め、DockerとPostgreSQL 18で確かめます。"
-topics: ["postgresql", "sql", "アルゴリズム"]
+title: "図解 SQLの裏側で動くアルゴリズムとPostgreSQLの仕組み ─ 実行計画で確かめて理解する"
+summary: "B-tree・ソート・ハッシュといったアルゴリズムと、ページ・共有バッファといったPostgreSQLの仕組みを、実行計画と図で確かめて理解する本です。読書記録サービスのランキングSQLを題材に、何件を調べ、どのページを読み、どこでメモリを使うかを追いかけ、最後に改善案を比べます。SELECT・WHEREの基礎から始め、DockerとPostgreSQL 18で確かめます。"
+topics: ["postgresql", "sql", "アルゴリズム", "explain"]
 published: false
 price: 0
 chapters:
