@@ -2,7 +2,7 @@
 
 SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆すると次の書き出しで失われるため、修正はSVGに行ってください。
 
-序章から第12章まで、計52枚を本文へ掲載しています。序章は導入の絵2枚と技術図2枚です。第4章にはctidの図、第6章にはSQLの処理段階の図を追加しています。そのうち31枚は、[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)の型で描き直しました（2026-09-25、第1〜2章の試作8枚と、横展開の段階A〜Cの23枚）。[図の一覧](index.html)からまとめて確認できます。
+序章から第12章まで、計53枚を本文へ掲載しています。序章は導入の絵2枚と技術図2枚です。第4章にはctidの図、第6章にはSQLの処理段階の図を追加しています。そのうち42枚は、[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)の型で描き直しました（2026-09-25、第1〜2章の試作8枚と、横展開の段階A〜Dの34枚）。[図の一覧](index.html)からまとめて確認できます。
 
 | 章 | 題材 | SVG原本 | 掲載用PNG |
 | --- | --- | --- | --- |
@@ -28,20 +28,21 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第4章 | 7,353ページか、4ページか | [SVG](sources/03-index-reference.svg) | [PNG](03-index-reference.png) |
 | 第4章 | 同じ1,000行でも、8ページと32ページ | [SVG](sources/03-row-width.svg) | [PNG](03-row-width.png) |
 | 第5章 | 同じ検索を、もう一度 | [SVG](sources/04-repeat-observation.svg) | [PNG](04-repeat-observation.png) |
-| 第5章 | ファイルのページを、メモリで再利用する | [SVG](sources/shared-buffer-reuse.svg) | [PNG](shared-buffer-reuse.png) |
+| 第5章 | 読み込んだページを、次も使う | [SVG](sources/shared-buffer-reuse.svg) | [PNG](shared-buffer-reuse.png) |
+| 第5章 | ページは再利用、行は毎回比べる | [SVG](sources/04-two-levels.svg) | [PNG](04-two-levels.png) |
 | 第5章 | ページの保存場所と、計算の作業場所 | [SVG](sources/04-memory-regions.svg) | [PNG](04-memory-regions.png) |
-| 第6章 | 画面の向こうで、SQLが動く | [SVG](sources/02-client-scene.svg) | [PNG](02-client-scene.png) |
+| 第6章 | SQLを受け取る側は、いくつ？ | [SVG](sources/02-client-scene.svg) | [PNG](02-client-scene.png) |
 | 第6章 | 接続ごとにプロセスが動く | [SVG](sources/02-connections.svg) | [PNG](02-connections.png) |
 | 第6章 | SQLの文字列から、検索結果が返るまで | [SVG](sources/02-query-stages.svg) | [PNG](02-query-stages.png) |
-| 第6章 | Index Scanから、Limitへ行が渡る | [SVG](sources/02-execution-tree.svg) | [PNG](02-execution-tree.png) |
+| 第6章 | Limitは3行で要求を止める | [SVG](sources/02-execution-tree.svg) | [PNG](02-execution-tree.png) |
 | 第7章 | 読み終えた順に、並べたい | [SVG](sources/07-recent-records.svg) | [PNG](07-recent-records.png) |
-| 第7章 | 二つの並びを、比べながら合流する | [SVG](sources/07-merge-cards.svg) | [PNG](07-merge-cards.png) |
+| 第7章 | 4枚を、比較5回で並べる | [SVG](sources/07-merge-cards.svg) | [PNG](07-merge-cards.png) |
 | 第7章 | 200万行を調べ、4分の1を並べた | [SVG](sources/07-sort-bands.svg) | [PNG](07-sort-bands.png) |
 | 第7章 | メモリに収まらないときの並べ替え | [SVG](sources/07-external-sort.svg) | [PNG](07-external-sort.png) |
 | 第8章 | 画面に欲しいのは、最新20件 | [SVG](sources/08-twenty-window.svg) | [PNG](08-twenty-window.png) |
-| 第8章 | 上位3枚を保つ：入れ替えるのはどれ？ | [SVG](sources/top-three-heap.svg) | [PNG](top-three-heap.png) |
+| 第8章 | 根の最小値と比べて、入れ替える | [SVG](sources/top-three-heap.svg) | [PNG](top-three-heap.png) |
 | 第8章 | LIMITで減るのは、持つ量と返す行 | [SVG](sources/08-sort-vs-topn.svg) | [PNG](08-sort-vs-topn.png) |
-| 第8章 | 候補を絞る方法と、途中で止まる方法 | [SVG](sources/08-top-n-vs-index.svg) | [PNG](08-top-n-vs-index.png) |
+| 第8章 | 全部読むか、3件で止まるか | [SVG](sources/08-top-n-vs-index.svg) | [PNG](08-top-n-vs-index.png) |
 | 第9章 | 本の番号だけでは、題名が分からない | [SVG](sources/09-title-lookup.svg) | [PNG](09-title-lookup.png) |
 | 第9章 | 記録を1件取り出すたびに、本を探す | [SVG](sources/09-nested-loop.svg) | [PNG](09-nested-loop.png) |
 | 第9章 | 1回1行を20回で、20行 | [SVG](sources/09-loops.svg) | [PNG](09-loops.png) |
