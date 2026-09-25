@@ -88,8 +88,8 @@ Execution Time: 7.494 ms
 
 図で、内側の`Index Scan`の`rows`・`loops`・`Buffers`を、1回当たりの値と20回分の合計に分けて読んでください。
 
-![Nested Loopの内側のIndex Scanは rows=1.00、loops=20 で、1回1行を20回返して全体で20行。Buffers の hit=54 と read=26 は20回分の合計](/images/postgresql-query-journey/09-loops.png)
-*rows=1.00 と loops=20 を掛けると20行です。Buffers の hit=54 と read=26 は、20回分の合計です（実測）。*
+![Nested Loopの内側のIndex Scanはrows=1.00、loops=20で、1回1行を20回返して全体で20行。Buffersのhit=54とread=26は20回分の合計](/images/postgresql-query-journey/09-loops.png)
+*rows=1.00とloops=20を掛けると20行です。Buffersのhit=54とread=26は、20回分の合計です（実測）。*
 
 ## 何十万回も探すなら？
 

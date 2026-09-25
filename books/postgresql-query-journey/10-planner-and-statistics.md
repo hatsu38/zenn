@@ -67,8 +67,8 @@ WHERE schemaname = current_schema() AND tablename = 'stats_demo';
 
 図で、メモの割合から計画の`rows`ができるまでをたどってください。
 
-![1万行の表の popular 9,000行と rare 1,000行を ANALYZE が割合 0.9 と 0.1 としてメモし、10,000×0.1＝1,000 が rare を探す計画の rows=1000 になる](/images/postgresql-query-journey/10-stats-to-rows.png)
-*表の1万行にメモの割合0.1を掛けた1,000が、計画の rows になります（模型。自分の出力の値と比べてください）。*
+![1万行の表のうち、popularの9,000行とrareの1,000行を、ANALYZEが割合0.9と0.1としてメモし、10,000×0.1＝1,000がrareを探す計画のrows=1000になる](/images/postgresql-query-journey/10-stats-to-rows.png)
+*表の1万行にメモの割合0.1を掛けた1,000が、計画のrowsになります（模型。自分の出力の値と比べてください）。*
 
 すべての列で、すべての項目が埋まるわけではありません。統計は一部の行を抜き出した標本に基づくため、完全な件数表でもありません。[行数見積もりの公式例](https://www.postgresql.org/docs/18/row-estimation-examples.html)には、この情報がどう使われるかが示されています。
 
