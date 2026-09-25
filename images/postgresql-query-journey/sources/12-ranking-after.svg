@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="700" viewBox="0 0 640 700" role="img" aria-labelledby="title">
-  <title id="title">上位を選んでから題名を付ける</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="812" viewBox="0 0 640 812" role="img" aria-labelledby="title">
+  <title id="title">上位を選んでから、題名を付ける</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
     <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
@@ -25,47 +25,66 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .swap{fill:#dcefe8;stroke:#243b50;stroke-width:4}
 .big{font-size:56px;font-weight:700}
   </style>
-  <rect width="640" height="700" fill="#f5f7f9"/>
-  <text x="24" y="48" class="h">上位を選んでから題名を付ける</text>
+  <rect width="640" height="732" fill="#f5f7f9"/>
+  <text x="24" y="48" class="h">上位を選んでから、題名を付ける</text>
   <rect x="548" y="22" width="68" height="36" rx="18" class="model"/>
   <text x="582" y="47" text-anchor="middle" class="tag">模型</text>
-  <g id="records">
-    <rect x="24" y="72" width="592" height="192" rx="18" class="panel"/>
-    <text x="44" y="104" class="b">① 対象週の記録：6行</text>
-    <rect x="44" y="124" width="172" height="52" rx="8" class="row"/>
-    <text x="130" y="158" text-anchor="middle" class="s">本1</text>
-    <rect x="232" y="124" width="172" height="52" rx="8" class="row"/>
-    <text x="318" y="158" text-anchor="middle" class="s">本1</text>
-    <rect x="420" y="124" width="172" height="52" rx="8" class="row"/>
-    <text x="506" y="158" text-anchor="middle" class="s">本1</text>
-    <rect x="44" y="188" width="172" height="52" rx="8" class="row"/>
-    <text x="130" y="222" text-anchor="middle" class="s">本2</text>
-    <rect x="232" y="188" width="172" height="52" rx="8" class="row"/>
-    <text x="318" y="222" text-anchor="middle" class="s">本2</text>
-    <rect x="420" y="188" width="172" height="52" rx="8" class="row"/>
-    <text x="506" y="222" text-anchor="middle" class="s">本3</text>
+
+  <g id="group-by">
+    <text x="24" y="108" class="b">① <tspan class="mono">GROUP BY</tspan>：本ごとに数える</text>
+    <rect x="24" y="124" width="592" height="248" rx="12" class="panel"/>
+    <text x="40" y="152" class="s m">本番号</text>
+    <text x="430" y="152" class="s m">件数</text>
+    <rect x="40" y="162" width="130" height="26" rx="4" class="row"/>
+    <text x="105" y="182" text-anchor="middle" class="s">本1</text>
+    <rect x="40" y="196" width="130" height="26" rx="4" class="row"/>
+    <text x="105" y="216" text-anchor="middle" class="s">本1</text>
+    <rect x="40" y="230" width="130" height="26" rx="4" class="row"/>
+    <text x="105" y="250" text-anchor="middle" class="s">本1</text>
+    <rect x="40" y="264" width="130" height="26" rx="4" class="row"/>
+    <text x="105" y="284" text-anchor="middle" class="s">本2</text>
+    <rect x="40" y="298" width="130" height="26" rx="4" class="row"/>
+    <text x="105" y="318" text-anchor="middle" class="s">本2</text>
+    <rect x="40" y="332" width="130" height="26" rx="4" class="row"/>
+    <text x="105" y="352" text-anchor="middle" class="s">本3</text>
+    <rect x="430" y="172" width="150" height="44" rx="4" class="val"/>
+    <text x="505" y="200" text-anchor="middle" class="s b">本1：3</text>
+    <rect x="430" y="244" width="150" height="44" rx="4" class="val"/>
+    <text x="505" y="272" text-anchor="middle" class="s b">本2：2</text>
+    <rect x="430" y="316" width="150" height="44" rx="4" class="val"/>
+    <text x="505" y="344" text-anchor="middle" class="s b">本3：1</text>
+    <path d="M170 175 L430 194" class="ref"/>
+    <path d="M170 209 L430 194" class="ref"/>
+    <path d="M170 243 L430 194" class="ref"/>
+    <path d="M170 277 L430 266" class="ref"/>
+    <path d="M170 311 L430 266" class="ref"/>
+    <path d="M170 345 L430 338" class="ref"/>
   </g>
-  <path d="M320 264 V292" class="flow"/>
-  <g id="grouping">
-    <rect x="24" y="292" width="592" height="196" rx="18" class="panel"/>
-    <text x="44" y="324" class="b">② 本ごとに数え、上位2冊を選ぶ</text>
-    <rect x="34" y="344" width="380" height="84" rx="14" class="hot"/>
-    <rect x="44" y="354" width="172" height="64" rx="9" class="val"/>
-    <text x="130" y="394" text-anchor="middle" class="b">本1：3</text>
-    <rect x="232" y="354" width="172" height="64" rx="9" class="val"/>
-    <text x="318" y="394" text-anchor="middle" class="b">本2：2</text>
-    <rect x="420" y="354" width="172" height="64" rx="9" class="row"/>
-    <text x="506" y="394" text-anchor="middle" class="b">本3：1</text>
-    <text x="44" y="452" class="s">上位2冊は次へ</text>
-    <text x="506" y="452" text-anchor="middle" class="b">×</text>
+
+  <g id="order-limit">
+    <text x="24" y="404" class="b">② <tspan class="mono">ORDER BY</tspan> / <tspan class="mono">LIMIT</tspan>：上位を選ぶ</text>
+    <rect x="24" y="420" width="592" height="96" rx="12" class="panel"/>
+    <rect x="40" y="440" width="170" height="56" rx="8" class="val"/>
+    <text x="125" y="474" text-anchor="middle" class="b">本1：3</text>
+    <rect x="235" y="440" width="170" height="56" rx="8" class="val"/>
+    <text x="320" y="474" text-anchor="middle" class="b">本2：2</text>
+    <rect x="430" y="440" width="170" height="56" rx="8" class="panel"/>
+    <text x="515" y="474" text-anchor="middle" class="b">本3：1　×</text>
   </g>
-  <path d="M224 428 V516" class="flow"/>
-  <g id="titles">
-    <rect x="24" y="516" width="592" height="160" rx="18" class="panel"/>
-    <text x="44" y="548" class="b">③ 上位2冊だけに題名を付ける</text>
-    <rect x="44" y="568" width="256" height="56" rx="10" class="match"/>
-    <text x="172" y="604" text-anchor="middle" class="b">本1・星・3件</text>
-    <rect x="312" y="568" width="256" height="56" rx="10" class="match"/>
-    <text x="440" y="604" text-anchor="middle" class="b">本2・海・2件</text>
+
+  <g id="join">
+    <text x="24" y="548" class="b">③ <tspan class="mono">JOIN</tspan>：上位だけに題名を付ける</text>
+    <rect x="24" y="564" width="592" height="148" rx="12" class="panel"/>
+    <rect x="40" y="584" width="170" height="44" rx="8" class="hot"/>
+    <text x="125" y="613" text-anchor="middle" class="b">本1：3</text>
+    <rect x="40" y="648" width="170" height="44" rx="8" class="hot"/>
+    <text x="125" y="677" text-anchor="middle" class="b">本2：2</text>
+    <text x="430" y="596" class="s m">本の表</text>
+    <rect x="430" y="604" width="150" height="40" rx="4" class="row"/>
+    <text x="505" y="631" text-anchor="middle" class="s">1　星</text>
+    <rect x="430" y="656" width="150" height="40" rx="4" class="row"/>
+    <text x="505" y="683" text-anchor="middle" class="s">2　海</text>
+    <path d="M210 606 L430 624" class="ref"/>
+    <path d="M210 670 L430 676" class="ref"/>
   </g>
 </svg>

@@ -64,20 +64,20 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
   <g id="group-by">
     <text x="24" y="404" class="b">② <tspan class="mono">GROUP BY</tspan>：本ごとに数える</text>
     <rect x="24" y="420" width="592" height="96" rx="12" class="panel"/>
-    <rect x="40" y="440" width="170" height="56" rx="8" class="box"/>
+    <rect x="40" y="440" width="170" height="56" rx="8" class="panel"/>
     <text x="125" y="474" text-anchor="middle" class="b">星：3</text>
-    <rect x="235" y="440" width="170" height="56" rx="8" class="box"/>
+    <rect x="235" y="440" width="170" height="56" rx="8" class="panel"/>
     <text x="320" y="474" text-anchor="middle" class="b">海：2</text>
-    <rect x="430" y="440" width="170" height="56" rx="8" class="box"/>
+    <rect x="430" y="440" width="170" height="56" rx="8" class="panel"/>
     <text x="515" y="474" text-anchor="middle" class="b">森：1</text>
   </g>
 
   <g id="order-limit">
     <text x="24" y="548" class="b">③ <tspan class="mono">ORDER BY</tspan> / <tspan class="mono">LIMIT</tspan>：上位を選ぶ</text>
     <rect x="24" y="564" width="592" height="96" rx="12" class="panel"/>
-    <rect x="40" y="584" width="170" height="56" rx="8" class="card"/>
+    <rect x="40" y="584" width="170" height="56" rx="8" class="val"/>
     <text x="125" y="618" text-anchor="middle" class="b">星：3</text>
-    <rect x="235" y="584" width="170" height="56" rx="8" class="card"/>
+    <rect x="235" y="584" width="170" height="56" rx="8" class="val"/>
     <text x="320" y="618" text-anchor="middle" class="b">海：2</text>
     <rect x="430" y="584" width="170" height="56" rx="8" class="panel"/>
     <text x="515" y="618" text-anchor="middle" class="b">森：1　×</text>
@@ -88,11 +88,11 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="164" y="722" text-anchor="middle" class="mono m">WHERE</text>
     <text x="394" y="722" text-anchor="middle" class="mono m">GROUP BY</text>
     <text x="539" y="722" text-anchor="middle" class="mono m">LIMIT</text>
-    <rect x="24" y="732" width="280" height="56" rx="10" class="card"/>
+    <rect x="24" y="732" width="280" height="56" rx="10" class="val"/>
     <text x="164" y="768" text-anchor="middle" class="b">499,998行</text>
     <rect x="334" y="732" width="120" height="56" rx="10" class="hot"/>
     <text x="394" y="768" text-anchor="middle" class="b">？冊</text>
-    <rect x="484" y="732" width="110" height="56" rx="10" class="card"/>
+    <rect x="484" y="732" width="110" height="56" rx="10" class="val"/>
     <text x="539" y="768" text-anchor="middle" class="b">20冊</text>
     <path d="M304 760 L334 760" class="flow"/>
     <path d="M454 760 L484 760" class="flow"/>
