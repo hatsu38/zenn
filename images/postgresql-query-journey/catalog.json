@@ -134,8 +134,8 @@
   {
     "name": "shared-buffer-reuse",
     "chapter": 5,
-    "title": "ファイルのページを、メモリで再利用する",
-    "description": "読み込み経路の模型 ／ ページ7は説明用"
+    "title": "読み込んだページを、次も使う",
+    "description": "仕組み：共有バッファ・OSキャッシュ・ストレージの読み込み経路（模型）"
   },
   {
     "name": "04-memory-regions",
