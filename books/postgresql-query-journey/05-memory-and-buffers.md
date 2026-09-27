@@ -89,7 +89,7 @@ ANALYZE
 
 前章の観察や、先ほどの件数確認で、観察用テーブルのページは共有バッファに読み込まれています。このまま検索すると1回目から`shared hit`になり、ファイルから読み込む場面を観察できません。
 
-そこで、観察の前に、このテーブルのページを共有バッファから追い出します。`pg_buffercache`は共有バッファの中身を調べる拡張機能で、PostgreSQL 18では`pg_buffercache_evict_relation`で指定したテーブルのページをまとめて追い出せます[^evict]。次の二つを実行してください。
+そこで、観察の前に、このテーブルのページを共有バッファから追い出します。`pg_buffercache`は共有バッファの中身を調べる拡張機能で、PostgreSQL 18では`pg_buffercache_evict_relation`で指定したテーブルのページをまとめて追い出せます[^evict]。この関数はPostgreSQL 18で加わったもので、17以前にはありません。17以前で試す場合は、DBを再起動すると共有バッファが空になります。次の二つを実行してください。
 
 ```sql
 CREATE EXTENSION IF NOT EXISTS pg_buffercache;
