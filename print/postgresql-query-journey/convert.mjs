@@ -15,6 +15,21 @@ const imageDir = join(repoRoot, 'images', 'postgresql-query-journey');
 const outDir = join(here, 'build', 'src');
 const zennImagePrefix = '/images/postgresql-query-journey/';
 
+// :::details は紙では畳めないので、破線の囲みにして種類のラベルを付ける（2026-09-28 のユーザー判断）。
+// 「答え」は読者に予想や課題を出した直後の枠だけに付け、長い実行結果を畳んだ枠や補足とは分ける。
+const ANSWER_DETAILS = new Set([
+  '01-explain-basics:実行したSQLと結果',
+  '11-mvcc-and-maintenance:二つの接続で確かめた結果',
+  '12-ranking-revisited:集計してから題名を付けた実行結果',
+  '12-ranking-revisited:調査メモの完成例',
+]);
+
+function detailsKind(slug, title) {
+  if (title === '考え方' || ANSWER_DETAILS.has(`${slug}:${title}`)) return { name: 'answer', label: '答え' };
+  if (/実行結果|読み出し/.test(title)) return { name: 'output', label: '実行結果' };
+  return { name: 'note', label: '補足' };
+}
+
 function readChapterSlugs() {
   const config = readFileSync(join(bookDir, 'config.yaml'), 'utf8');
   const lines = config.split('\n');
@@ -133,7 +148,12 @@ function convertChapter(slug, usedImages, edition) {
     const details = line.match(/^:::details\s+(.*)$/);
     if (details) {
       containers.push('details');
-      out.push('<div class="details">', `<p class="details-title">${inlineToHtml(details[1])}</p>`, '');
+      const kind = detailsKind(slug, details[1].trim());
+      out.push(
+        `<div class="details ${kind.name}">`,
+        `<p class="details-title"><span class="details-label">${kind.label}</span>${inlineToHtml(details[1])}</p>`,
+        '',
+      );
       continue;
     }
     if (line.trim() === ':::' && containers.length > 0) {

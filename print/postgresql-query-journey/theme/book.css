@@ -129,16 +129,29 @@ ul, ol { margin: 0 0 0.6em; padding-left: 1.6em; }
   margin: 0 0 4mm;
   break-inside: avoid;
 }
+/* :::details は破線で囲み、左上に「答え」「実行結果」「補足」のラベルを付ける */
 .details {
-  border-top: 0.75pt dashed var(--ink);
-  border-bottom: 0.75pt dashed var(--ink);
-  padding: 2mm 0 1mm;
+  border: 0.75pt dashed var(--ink);
+  padding: 2mm 3.5mm 1mm;
   margin: 0 0 4mm;
 }
 .details-title {
   font-family: var(--heading-font);
   font-weight: 700;
   font-size: 9pt;
+}
+.details-label {
+  display: inline-block;
+  margin-right: 2mm;
+  padding: 0 1.5mm;
+  font-size: 7.5pt;
+  line-height: 1.6;
+  border: 0.75pt solid var(--ink);
+}
+/* 答えは、問いの直後に目に入っても分かるよう、ラベルを黒地の白抜きにする */
+.details.answer .details-label {
+  background: var(--ink);
+  color: #fff;
 }
 
 /* 脚注。変換スクリプトが参照の位置に span.footnote として埋め込み、ページの下へ送る */
