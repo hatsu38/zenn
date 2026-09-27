@@ -83,6 +83,10 @@ CREATE INDEX
 ANALYZE
 ```
 
+`ANALYZE`は、テーブルから一部のレコードを抜き出して統計情報を作ります[^analyze-sample]。そのため、このあとの出力の見積もり（`cost`や、`actual`より前の`rows`）は、あなたの結果と少し違うことがあります。統計情報は第10章で扱います。
+
+[^analyze-sample]: 大きなテーブルでは一部を抜き出して調べるため、統計情報は実行のたびに少し変わり、EXPLAINの見積もりも少し変わりえます。[PostgreSQLの公式ドキュメントのANALYZEの説明](https://www.postgresql.org/docs/18/sql-analyze.html)の「Notes」に書かれています。
+
 同じ題名検索を、もう一度実行します。
 
 ```sql
