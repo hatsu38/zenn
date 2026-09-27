@@ -1,0 +1,61 @@
+SELECT datcollate, datlocprovider, datlocale FROM pg_database WHERE datname = current_database();
+ datcollate | datlocprovider | datlocale 
+------------+----------------+-----------
+ en_US.utf8 | c              | 
+(1 row)
+
+SET max_parallel_workers_per_gather = 0; SET jit = off; SET work_mem = '4MB';
+BEGIN;
+SET LOCAL enable_bitmapscan = off;
+SET LOCAL enable_indexscan = off;
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title >= '実験用の本 4' AND title < '実験用の本 5';
+                                                     QUERY PLAN                                                     
+--------------------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..22353.00 rows=110001 width=30) (actual time=0.031..2343.050 rows=111111.00 loops=1)
+   Filter: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
+   Rows Removed by Filter: 888889
+   Buffers: shared hit=4806 read=2547
+ Planning:
+   Buffers: shared hit=57
+ Planning Time: 0.396 ms
+ Execution Time: 2347.217 ms
+(8 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title COLLATE "C" >= '実験用の本 4' AND title COLLATE "C" < '実験用の本 5';
+                                                    QUERY PLAN                                                    
+------------------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..22353.00 rows=108911 width=30) (actual time=0.008..61.852 rows=111111.00 loops=1)
+   Filter: (((title)::text >= '実験用の本 4'::text) AND ((title)::text < '実験用の本 5'::text))
+   Rows Removed by Filter: 888889
+   Buffers: shared hit=4900 read=2453
+ Planning Time: 0.064 ms
+ Execution Time: 65.967 ms
+(6 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title >= '実験用の本 4' AND title < '実験用の本 5';
+                                                     QUERY PLAN                                                     
+--------------------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..22353.00 rows=110001 width=30) (actual time=0.015..2309.210 rows=111111.00 loops=1)
+   Filter: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
+   Rows Removed by Filter: 888889
+   Buffers: shared hit=4994 read=2359
+ Planning Time: 0.121 ms
+ Execution Time: 2313.323 ms
+(6 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title COLLATE "C" >= '実験用の本 4' AND title COLLATE "C" < '実験用の本 5';
+                                                    QUERY PLAN                                                    
+------------------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..22353.00 rows=108911 width=30) (actual time=0.008..61.243 rows=111111.00 loops=1)
+   Filter: (((title)::text >= '実験用の本 4'::text) AND ((title)::text < '実験用の本 5'::text))
+   Rows Removed by Filter: 888889
+   Buffers: shared hit=5088 read=2265
+ Planning Time: 0.067 ms
+ Execution Time: 65.339 ms
+(6 rows)
+
+ROLLBACK;
