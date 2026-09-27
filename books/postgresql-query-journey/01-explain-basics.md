@@ -34,11 +34,11 @@ docker compose exec db psql -X -U postgres -d reading_map
 接続し直したときは、「準備」の章で行った設定をもう一度入力します。
 
 ```sql
-\set ON_ERROR_STOP on
-\pset pager off
 SET max_parallel_workers_per_gather = 0;
 SET jit = off;
 SET work_mem = '4MB';
+\set ON_ERROR_STOP on
+\pset pager off
 ```
 
 

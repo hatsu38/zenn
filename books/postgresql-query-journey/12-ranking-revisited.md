@@ -273,10 +273,21 @@ SELECT count(*) AS differing_rows FROM (
 
 ## 案3：表示する前に数えておく
 
-今度は、集計結果を本当にテーブルへ保存します。ビューと違って、値を持つテーブルです。
+今度は、集計結果を本当にテーブルへ保存します。ビューと違って、値を持つテーブルです。作るのにかかった時間も見るため、先にpsqlの時間表示を有効にします。
 
 ```sql
 \timing on
+```
+
+実行結果です。
+
+```sql:実行結果
+Timing is on.
+```
+
+続けて、集計テーブルを作り、読み出します。
+
+```sql
 CREATE TABLE weekly_read_counts AS
 SELECT book_id, count(*) AS read_count
 FROM reading_records
