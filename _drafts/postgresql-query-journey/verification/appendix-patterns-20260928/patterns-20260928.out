@@ -1,0 +1,148 @@
+\pset pager off
+SET max_parallel_workers_per_gather = 0; SET jit = off; SET work_mem = '4MB';
+SELECT indexname, indexdef FROM pg_indexes WHERE tablename IN ('books','reading_records') ORDER BY 1;
+         indexname         |                                                 indexdef                                                 
+---------------------------+----------------------------------------------------------------------------------------------------------
+ books_pkey                | CREATE UNIQUE INDEX books_pkey ON public.books USING btree (id)
+ books_title_idx           | CREATE INDEX books_title_idx ON public.books USING btree (title)
+ reading_records_order_idx | CREATE INDEX reading_records_order_idx ON public.reading_records USING btree (finished_at DESC, book_id)
+(3 rows)
+
+-- P1 関数で包む
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT count(*) FROM reading_records
+WHERE date(finished_at) = date '2026-09-14';
+                                                           QUERY PLAN                                                           
+--------------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=40836.00..40836.01 rows=1 width=8) (actual time=142.223..142.224 rows=1.00 loops=1)
+   Buffers: shared read=10811
+   ->  Seq Scan on reading_records  (cost=0.00..40811.00 rows=10000 width=0) (actual time=0.156..138.612 rows=71430.00 loops=1)
+         Filter: (date(finished_at) = '2026-09-14'::date)
+         Rows Removed by Filter: 1928570
+         Buffers: shared read=10811
+ Planning:
+   Buffers: shared hit=33 read=3
+ Planning Time: 0.441 ms
+ Execution Time: 142.243 ms
+(10 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT count(*) FROM reading_records
+WHERE finished_at >= timestamp '2026-09-14'
+  AND finished_at < timestamp '2026-09-15';
+                                                                             QUERY PLAN                                                                              
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=2790.24..2790.25 rows=1 width=8) (actual time=14.761..14.761 rows=1.00 loops=1)
+   Buffers: shared read=278
+   ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..2606.93 rows=73325 width=0) (actual time=1.418..11.407 rows=71430.00 loops=1)
+         Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-15 00:00:00'::timestamp without time zone))
+         Heap Fetches: 7
+         Index Searches: 1
+         Buffers: shared read=278
+ Planning:
+   Buffers: shared hit=6 read=1
+ Planning Time: 0.127 ms
+ Execution Time: 14.784 ms
+(11 rows)
+
+-- P2 前方一致
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title LIKE '実験用の本 4200%';
+                                                 QUERY PLAN                                                 
+------------------------------------------------------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..19853.00 rows=100 width=30) (actual time=1.151..73.120 rows=111.00 loops=1)
+   Filter: (title ~~ '実験用の本 4200%'::text)
+   Rows Removed by Filter: 999889
+   Buffers: shared hit=1 read=7352
+ Planning:
+   Buffers: shared hit=31 read=4
+ Planning Time: 0.749 ms
+ Execution Time: 73.143 ms
+(8 rows)
+
+BEGIN;
+CREATE INDEX books_title_pattern_idx ON books (title text_pattern_ops);
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title LIKE '実験用の本 4200%';
+                                                              QUERY PLAN                                                               
+---------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using books_title_pattern_idx on books  (cost=0.42..8.45 rows=100 width=30) (actual time=0.070..0.154 rows=111.00 loops=1)
+   Index Cond: ((title ~>=~ '実験用の本 4200'::text) AND (title ~<~ '実験用の本 4201'::text))
+   Filter: (title ~~ '実験用の本 4200%'::text)
+   Index Searches: 1
+   Buffers: shared hit=18 read=7
+ Planning:
+   Buffers: shared hit=53 read=1
+ Planning Time: 0.303 ms
+ Execution Time: 0.172 ms
+(9 rows)
+
+ROLLBACK;
+-- P4 複合Indexの列の順番
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT book_id, finished_at FROM reading_records WHERE book_id = 42;
+                                                     QUERY PLAN                                                     
+--------------------------------------------------------------------------------------------------------------------
+ Seq Scan on reading_records  (cost=0.00..35811.00 rows=24 width=16) (actual time=64.554..64.555 rows=1.00 loops=1)
+   Filter: (book_id = 42)
+   Rows Removed by Filter: 1999999
+   Buffers: shared hit=95 read=10716
+ Planning:
+   Buffers: shared hit=8
+ Planning Time: 0.091 ms
+ Execution Time: 64.573 ms
+(8 rows)
+
+BEGIN;
+CREATE INDEX reading_records_book_first_idx ON reading_records (book_id, finished_at);
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT book_id, finished_at FROM reading_records WHERE book_id = 42;
+                                                                        QUERY PLAN                                                                        
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+ Index Only Scan using reading_records_book_first_idx on reading_records  (cost=0.43..8.85 rows=24 width=16) (actual time=0.061..0.062 rows=1.00 loops=1)
+   Index Cond: (book_id = 42)
+   Heap Fetches: 0
+   Index Searches: 1
+   Buffers: shared hit=4 read=3
+ Planning:
+   Buffers: shared hit=7 read=1
+ Planning Time: 0.151 ms
+ Execution Time: 0.076 ms
+(9 rows)
+
+ROLLBACK;
+-- P6 大きな OFFSET
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT book_id, finished_at FROM reading_records
+ORDER BY finished_at DESC, book_id ASC
+LIMIT 20 OFFSET 100000;
+                                                                                QUERY PLAN                                                                                
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=3039.23..3039.84 rows=20 width=16) (actual time=18.797..18.802 rows=20.00 loops=1)
+   Buffers: shared hit=3 read=385
+   ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..60776.43 rows=2000000 width=16) (actual time=0.867..15.084 rows=100020.00 loops=1)
+         Heap Fetches: 9
+         Index Searches: 1
+         Buffers: shared hit=3 read=385
+ Planning:
+   Buffers: shared hit=31
+ Planning Time: 0.121 ms
+ Execution Time: 18.820 ms
+(10 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT book_id, finished_at FROM reading_records
+ORDER BY finished_at DESC, book_id ASC
+LIMIT 20;
+                                                                             QUERY PLAN                                                                              
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.43..1.04 rows=20 width=16) (actual time=0.010..0.014 rows=20.00 loops=1)
+   Buffers: shared hit=4
+   ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..60776.43 rows=2000000 width=16) (actual time=0.010..0.012 rows=20.00 loops=1)
+         Heap Fetches: 0
+         Index Searches: 1
+         Buffers: shared hit=4
+ Planning Time: 0.055 ms
+ Execution Time: 0.022 ms
+(8 rows)
+

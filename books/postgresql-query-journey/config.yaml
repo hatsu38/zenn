@@ -18,4 +18,5 @@ chapters:
   - 10-planner-and-statistics
   - 11-mvcc-and-maintenance
   - 12-ranking-revisited
+  - 98-appendix-slow-sql
   - 99-afterword

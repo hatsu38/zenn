@@ -1,0 +1,45 @@
+\pset pager off
+SET max_parallel_workers_per_gather = 0; SET jit = off; SET work_mem = '4MB';
+SELECT count(DISTINCT date(finished_at)) AS days FROM reading_records;
+ days 
+------
+   28
+(1 row)
+
+BEGIN;
+CREATE INDEX reading_records_day_book_idx ON reading_records ((date(finished_at)), book_id);
+ANALYZE reading_records;
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT count(*) FROM reading_records WHERE book_id = 42;
+                                                                          QUERY PLAN                                                                           
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=132.90..132.91 rows=1 width=8) (actual time=0.781..0.781 rows=1.00 loops=1)
+   Buffers: shared hit=35 read=59
+   ->  Index Only Scan using reading_records_day_book_idx on reading_records  (cost=0.43..132.84 rows=23 width=0) (actual time=0.174..0.777 rows=1.00 loops=1)
+         Index Cond: (book_id = 42)
+         Heap Fetches: 0
+         Index Searches: 29
+         Buffers: shared hit=35 read=59
+ Planning:
+   Buffers: shared hit=19 read=1
+ Planning Time: 0.200 ms
+ Execution Time: 0.842 ms
+(11 rows)
+
+ROLLBACK;
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT count(*) FROM reading_records WHERE book_id = 42;
+                                                       QUERY PLAN                                                        
+-------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=35811.06..35811.07 rows=1 width=8) (actual time=62.494..62.495 rows=1.00 loops=1)
+   Buffers: shared hit=915 read=9896
+   ->  Seq Scan on reading_records  (cost=0.00..35811.00 rows=24 width=0) (actual time=62.488..62.489 rows=1.00 loops=1)
+         Filter: (book_id = 42)
+         Rows Removed by Filter: 1999999
+         Buffers: shared hit=915 read=9896
+ Planning:
+   Buffers: shared hit=11
+ Planning Time: 0.089 ms
+ Execution Time: 62.515 ms
+(10 rows)
+

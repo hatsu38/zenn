@@ -244,6 +244,21 @@ PostgreSQLは実行前にレコード数や処理量を見積もり、処理方�
 8. 初見の提案に対する確認手順を整理し、3領域の知識を使った短い調査メモを最終課題として書く。
 
 
+## [付録：自分の遅いSQLを調べる](98-appendix-slow-sql.md)
+
+### Summary
+
+本文のランキングで身につけた読み方を、自分の仕事のSQLに当てはめるための付録です。遅いSQLの見つけ方、ORMからSQLを取り出す方法、安全な測り方、出力の表示から疑うことと戻る章を引く表をまとめます。後半では、よくある遅い書き方をこの本のデータで比べ、PostgreSQL 18で変わった出力を紹介します。
+
+### 本文の流れ
+
+1. pg_stat_statements、log_min_duration_statement、auto_explainで遅いSQLを見つける。
+2. Rails・Django・LaravelでSQLと実行計画を取り出す。
+3. EXPLAINから始め、BEGINとROLLBACK、statement_timeoutで安全に測る。
+4. 出力の表示から、疑うこと・試すこと・戻る章を引く表。
+5. よくある遅い書き方（関数で包む、前方一致とtext_pattern_ops、複合Indexの列の順番とskip scan、大きなOFFSET、範囲の条件の伝わり方、N+1）を実行計画で比べる。
+6. PostgreSQL 18で変わった出力（BUFFERSの既定化、小数のrows、Index Searches、skip scan、io_method）。
+
 ## [おわりに](99-afterword.md)
 
 ### Summary
