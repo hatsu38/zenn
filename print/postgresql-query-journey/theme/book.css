@@ -117,7 +117,8 @@ table {
   line-height: 1.5;
   break-inside: avoid;
 }
-th, td { border: 0.5pt solid var(--rule); padding: 1mm 2mm; vertical-align: top; }
+/* 本文の両端揃えがセルに効くと字間が開くので、セルは左揃えにする */
+th, td { border: 0.5pt solid var(--rule); padding: 1mm 2mm; vertical-align: top; text-align: left; }
 th { font-family: var(--heading-font); background: var(--tint); }
 
 ul, ol { margin: 0 0 0.6em; padding-left: 1.6em; }
