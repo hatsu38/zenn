@@ -2,7 +2,7 @@
 
 SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆すると次の書き出しで失われるため、修正はSVGに行ってください。
 
-序章から第12章まで、計55枚を本文へ掲載しています。序章は導入の絵2枚と技術図2枚です。第4章にはctidの図、第6章にはSQLの処理段階の図と、ランキングの計画を木にした図（2026-09-26）を追加しています。そのうち2026-09-25までの53枚すべてを、[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)の型で描き直しました（2026-09-25、第1〜2章の試作8枚と、横展開の段階A〜Eの45枚）。[図の一覧](index.html)からまとめて確認できます。
+序章から第12章まで、計56枚を本文へ掲載しています。序章は導入の絵2枚と技術図2枚です。第4章にはctidの図、第6章にはSQLの処理段階の図と、ランキングの計画を木にした図（2026-09-26）を、第12章には3案で扱う記録の数を比べる図（2026-09-28）を追加しています。そのうち2026-09-25までの53枚すべてを、[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)の型で描き直しました（2026-09-25、第1〜2章の試作8枚と、横展開の段階A〜Eの45枚）。[図の一覧](index.html)からまとめて確認できます。
 
 | 章 | 題材 | SVG原本 | 掲載用PNG |
 | --- | --- | --- | --- |
@@ -58,6 +58,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第11章 | ×のページはテーブルで確認 | [SVG](sources/11-visibility-map.svg) | [PNG](11-visibility-map.png) |
 | 第11章 | ログの保存と、ページの書き出し | [SVG](sources/11-wal-and-pages.svg) | [PNG](11-wal-and-pages.png) |
 | 第12章 | 今度は、根拠を持って選べる | [SVG](sources/12-decision-notebook.svg) | [PNG](12-decision-notebook.png) |
+| 第12章 | 3案で、扱う記録の数 | [SVG](sources/12-plan-record-counts.svg) | [PNG](12-plan-record-counts.png) |
 | 第12章 | 題名を付けてから、上位を選ぶ | [SVG](sources/12-ranking-before.svg) | [PNG](12-ranking-before.png) |
 | 第12章 | 上位を選んでから、題名を付ける | [SVG](sources/12-ranking-after.svg) | [PNG](12-ranking-after.png) |
 | 第12章 | 集計テーブルは更新するまで古いまま | [SVG](sources/12-preaggregation.svg) | [PNG](12-preaggregation.png) |
