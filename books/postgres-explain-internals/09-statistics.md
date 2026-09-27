@@ -108,7 +108,7 @@ WHERE tablename = 'articles' AND attname = 'author_id';
 | `null_frac` | NULL の割合 |
 | `avg_width` | 1 行あたりの平均バイト数 |
 | `n_distinct` | このカラムに出現する **異なる値の数** |
-| `most_common_vals` | **最頻値（MCV）**の配列。「よく出る値トップ N」 |
+| `most_common_vals` | **最頻値（MCV）**&#8203;の配列。「よく出る値トップ N」 |
 | `most_common_freqs` | 各 MCV の出現頻度 |
 | `histogram_bounds` | **ヒストグラム** の境界値の配列 |
 | `correlation` | カラムの値と物理順序の相関係数（-1 から 1） |

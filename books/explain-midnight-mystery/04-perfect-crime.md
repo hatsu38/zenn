@@ -155,7 +155,7 @@ T100 が UPDATE すると
 - PostgreSQL の UPDATE は上書きではなく**追記**: 古い行に `xmax`（享年）を刻んで残し、新しい行を追加する。これが **MVCC**。読み手と書き手が互いを待たない設計の代償が **dead tuple**
 - 行の可視性判定に必要な `xmin` / `xmax` は**ヒープタプルだけ**が持つ。インデックスには無い → 本来はヒープ訪問が必須
 - **visibility map** がその抜け道: ヒープページごとの all-visible ビット（テーブル 87MB に対して地図は約 3KB）。ビットが 1 のページはヒープを開かずに可視と断定できる
-- `Heap Fetches: 0` が Index Only Scan の本領。**大きな値なら「名前だけ」**で、実態は Index Scan と変わらない
+- `Heap Fetches: 0` が Index Only Scan の本領。**大きな値なら「名前だけ」**&#8203;で、実態は Index Scan と変わらない
 - ビットは **VACUUM だけが立て、INSERT / UPDATE / DELETE が倒す**。大量更新の直後は Index Only Scan が効かなくなる
 - 補足: インデックスのキー以外のカラムも返したいなら `CREATE INDEX ... INCLUDE (col)` の**カバリングインデックス**で Index Only Scan 化できる（詰めすぎると肥大化に跳ね返る）
 
