@@ -5,6 +5,7 @@ published: false
 price: 0
 chapters:
   - 00-prologue
+  - 00-setup
   - 01-explain-basics
   - 02-linear-search
   - 03-btree-index
