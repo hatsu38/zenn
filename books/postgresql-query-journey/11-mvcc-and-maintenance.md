@@ -55,19 +55,19 @@ Aのトランザクション中の検索と、その後の検索で違いが見�
 
 Aの最初のSELECT：
 
-```sql
+```sql:実行結果
 実験用の本 42
 ```
 
 BのCOMMIT後、Aの同じトランザクション内のSELECT：
 
-```sql
+```sql:実行結果
 実験用の本 42
 ```
 
 A自身もCOMMITした後のSELECT：
 
-```sql
+```sql:実行結果
 改訂版の本 42
 ```
 
@@ -172,7 +172,7 @@ WHERE state = 'idle in transaction';
 
 先ほどの`UPDATE`の実行結果に戻ります。`WAL`オプションを付けたので、`Buffers`の次に`WAL:`の行が出ています。2026年9月26日の実行結果です。本の順に進め、第8章の`reading_records_order_idx`が残っている状態で採取しました。Indexの数が違うと、更新するIndexの数も変わるため、WALやBuffersの数値も変わりえます。
 
-```sql
+```sql:実行結果
 Update on reading_records  (cost=4.61..97.52 rows=0 width=0) (actual time=0.095..0.096 rows=0.00 loops=1)
   Buffers: shared hit=16 read=2 dirtied=2
   WAL: records=4 bytes=304

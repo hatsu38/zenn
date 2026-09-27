@@ -41,7 +41,7 @@ SELECT version();
 
 `SELECT version();`の実行結果は次のとおりです。
 
-```sql
+```sql:実行結果
                                                          version
 --------------------------------------------------------------------------------------------------------------------------
  PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
@@ -89,7 +89,7 @@ COMMIT;
 
 準備の実行結果です。二つの`count`が、本の冊数と読了記録の件数に対応します。
 
-```sql
+```sql:実行結果
 BEGIN
 CREATE TABLE
 CREATE TABLE
@@ -147,7 +147,7 @@ SET work_mem = '4MB';
 
 実行結果は、三つの設定が完了したことを示します。
 
-```sql
+```sql:実行結果
 SET
 SET
 SET
@@ -158,7 +158,7 @@ SET
 :::details 本書で止めている並列実行とJIT
 二つの設定をしないまま実験すると、この本とは違う形の計画が出ることがあります。2026年9月26日、PostgreSQL 18.6の既定の設定（`max_parallel_workers_per_gather = 2`、`jit = on`）で、第1章で行う題名検索を実行した結果です。
 
-```sql
+```sql:実行結果
 Gather  (cost=1000.00..13561.43 rows=1 width=30) (actual time=0.415..39.677 rows=1.00 loops=1)
   Workers Planned: 2
   Workers Launched: 2
@@ -177,7 +177,7 @@ Execution Time: 39.765 ms
 
 序章のランキングのように見積もり（`cost`）の大きいSQLでは、出力の最後に`JIT:`の行も出ます。見積もりが既定で100000を超えると、処理の一部を機械語へ変換してから実行するためです。
 
-```sql
+```sql:実行結果
 JIT:
   Functions: 37
   Options: Inlining false, Optimization false, Expressions true, Deforming true

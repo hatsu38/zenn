@@ -44,7 +44,7 @@ SELECT count(*) FROM books_observation;
 
 2026年9月25日、DockerのPostgreSQL 18.6での実行結果です。
 
-```sql
+```sql:実行結果
 CREATE TABLE
 INSERT 0 1000
 ANALYZE
@@ -68,7 +68,7 @@ SELECT pg_relation_filepath('books_observation');
 
 実行結果です。
 
-```sql
+```sql:実行結果
  pg_relation_filepath
 ----------------------
  base/17212/17223
@@ -88,7 +88,7 @@ SELECT pg_size_pretty(pg_relation_size('books_observation')) AS table_size,
 
 実行結果です。
 
-```sql
+```sql:実行結果
  table_size | total_size
 ------------+------------
  64 kB      | 136 kB
@@ -110,10 +110,11 @@ SHOW block_size;
 
 実行結果です。
 
-```sql
+```sql:実行結果
  block_size
 ------------
  8192
+(1 row)
 ```
 
 `block_size`は1ページの大きさで、単位はバイトです。この環境では8,192バイト、つまり8 kBでした。先ほどのテーブル本体は64 kBなので、**64 ÷ 8 = 8ページ**分の大きさです。ここでのkBは1,024バイトとして計算します。
@@ -144,7 +145,7 @@ FROM books_observation ORDER BY id LIMIT 8;
 
 実行結果です。
 
-```sql
+```sql:実行結果
  id | ctid  |    title
 ----+-------+--------------
   1 | (0,1) | 実験用の本 1
@@ -182,7 +183,7 @@ SELECT pg_size_pretty(pg_relation_size('public.books')) AS table_size,
 
 2026年9月25日、DockerのPostgreSQL 18.6、本100万冊と題名のIndexがある状態での実行結果です。
 
-```sql
+```sql:実行結果
  table_size | pages
 ------------+-------
  57 MB      |  7353
@@ -228,7 +229,7 @@ SELECT level FROM bt_metap('public.books_title_idx');
 
 2026年9月25日の実行結果です。
 
-```sql
+```sql:実行結果
  level
 -------
      2
@@ -257,7 +258,7 @@ SELECT pg_relation_size('size_short') AS short_bytes,
 
 2026年9月25日、DockerのPostgreSQL 18.6での実行結果です。
 
-```sql
+```sql:実行結果
 SELECT 1000
 SELECT 1000
  short_bytes | long_bytes
@@ -311,7 +312,7 @@ DROP TABLE size_short, size_long;
 
 実行結果です。
 
-```sql
+```sql:実行結果
 DROP TABLE
 ```
 

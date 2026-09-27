@@ -51,7 +51,7 @@ SELECT count(*) FROM books_observation;
 
 実行結果です。
 
-```sql
+```sql:実行結果
  count
 -------
   1000
@@ -74,7 +74,7 @@ SELECT count(*) FROM books_observation;
 
 準備の実行結果です。
 
-```sql
+```sql:実行結果
 CREATE TABLE
 INSERT 0 1000
 ANALYZE
@@ -98,7 +98,7 @@ SELECT * FROM pg_buffercache_evict_relation('books_observation');
 
 2026年9月25日、DockerのPostgreSQL 18.6で、第4章の観察を終えた後、接続し直して実行した結果です。
 
-```sql
+```sql:実行結果
 CREATE EXTENSION
  buffers_evicted | buffers_flushed | buffers_skipped
 -----------------+-----------------+-----------------
@@ -121,7 +121,7 @@ SELECT id, title FROM books_observation WHERE title = '実験用の本 42';
 
 追い出した直後の、1回目の実行結果です。
 
-```sql
+```sql:実行結果
 Seq Scan on books_observation  (cost=0.00..20.50 rows=1 width=27) (actual time=0.124..0.324 rows=1.00 loops=1)
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999
@@ -135,7 +135,7 @@ Execution Time: 0.329 ms
 :::details 2回目と3回目の実行結果
 2回目です。
 
-```sql
+```sql:実行結果
 Seq Scan on books_observation  (cost=0.00..20.50 rows=1 width=27) (actual time=0.005..0.038 rows=1.00 loops=1)
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999
@@ -146,7 +146,7 @@ Execution Time: 0.041 ms
 
 3回目です。
 
-```sql
+```sql:実行結果
 Seq Scan on books_observation  (cost=0.00..20.50 rows=1 width=27) (actual time=0.005..0.037 rows=1.00 loops=1)
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999
@@ -220,7 +220,7 @@ SHOW shared_buffers;
 
 実行結果です。
 
-```sql
+```sql:実行結果
  shared_buffers
 ----------------
  128MB
@@ -235,7 +235,7 @@ SHOW work_mem;
 
 実行結果です。
 
-```sql
+```sql:実行結果
  work_mem
 ----------
  4MB
@@ -259,7 +259,7 @@ SHOW temp_buffers;
 
 実行結果です。
 
-```sql
+```sql:実行結果
  temp_buffers
 --------------
  8MB
@@ -274,7 +274,7 @@ SHOW maintenance_work_mem;
 
 実行結果です。
 
-```sql
+```sql:実行結果
  maintenance_work_mem
 ----------------------
  64MB
@@ -294,7 +294,7 @@ DROP TABLE books_observation;
 
 実行結果です。
 
-```sql
+```sql:実行結果
 DROP TABLE
 ```
 

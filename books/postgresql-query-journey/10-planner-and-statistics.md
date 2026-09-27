@@ -45,7 +45,7 @@ SELECT * FROM stats_demo WHERE category = 'rare';
 
 2026年9月25日、PostgreSQL 18.6での実行結果です。まず`popular`の計画です。
 
-```sql
+```sql:実行結果
 Seq Scan on stats_demo  (cost=0.00..189.00 rows=9000 width=11) (actual time=0.006..0.682 rows=9000.00 loops=1)
   Filter: (category = 'popular'::text)
   Rows Removed by Filter: 1000
@@ -58,7 +58,7 @@ Execution Time: 0.970 ms
 
 続いて`rare`の計画です。
 
-```sql
+```sql:実行結果
 Index Scan using stats_demo_category_idx on stats_demo  (cost=0.29..35.78 rows=1000 width=11) (actual time=0.023..0.106 rows=1000.00 loops=1)
   Index Cond: (category = 'rare'::text)
   Index Searches: 1
@@ -86,7 +86,7 @@ WHERE schemaname = current_schema() AND tablename = 'stats_demo';
 
 実行結果から、`category`についての統計情報を抜粋します。
 
-```sql
+```sql:実行結果
  attname  | n_distinct | most_common_vals | most_common_freqs | histogram_bounds
 ----------+------------+------------------+-------------------+------------------
  category |          2 | {popular,rare}   | {0.9,0.1}         |
@@ -124,7 +124,7 @@ ROLLBACK;
 
 UPDATE後、ANALYZEする前の実行結果です。
 
-```sql
+```sql:実行結果
 Index Scan using stats_demo_category_idx on stats_demo  (cost=0.29..51.55 rows=1672 width=11) (actual time=0.013..0.722 rows=9000.00 loops=1)
   Index Cond: (category = 'rare'::text)
   Index Searches: 1
@@ -135,7 +135,7 @@ Execution Time: 0.996 ms
 
 続いて、ANALYZE後の実行結果です。
 
-```sql
+```sql:実行結果
 Seq Scan on stats_demo  (cost=0.00..232.00 rows=9000 width=9) (actual time=0.143..0.799 rows=9000.00 loops=1)
   Filter: (category = 'rare'::text)
   Rows Removed by Filter: 1000

@@ -69,7 +69,7 @@ LIMIT 20;
 
 2026年9月25日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件、並列実行とJITは無効です。 `work_mem`は4MBです。
 
-```sql
+```sql:実行結果
 Limit  (cost=54092.78..54092.83 rows=20 width=16) (actual time=125.644..125.648 rows=20.00 loops=1)
   Buffers: shared hit=9545 read=1266
   ->  Sort  (cost=54092.78..55340.61 rows=499134 width=16) (actual time=125.639..125.641 rows=20.00 loops=1)
@@ -115,7 +115,7 @@ LIMIT 20;
 
 同日のIndex作成後の実行結果です。
 
-```sql
+```sql:実行結果
 Limit  (cost=0.43..2.87 rows=20 width=16) (actual time=0.010..0.055 rows=20.00 loops=1)
   Buffers: shared hit=21 read=2
   ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..60903.81 rows=498993 width=16) (actual time=0.009..0.052 rows=20.00 loops=1)
@@ -158,7 +158,7 @@ ORDER BY finished_at DESC, book_id ASC;
 ```
 
 :::details LIMITを外した実行結果
-```sql
+```sql:実行結果
 Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..60903.81 rows=498993 width=16) (actual time=0.006..391.229 rows=499998.00 loops=1)
   Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
   Heap Fetches: 499998

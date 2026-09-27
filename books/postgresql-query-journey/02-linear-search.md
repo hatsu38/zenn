@@ -38,7 +38,7 @@ SET synchronize_seqscans = off;
 
 設定の実行結果です。
 
-```sql
+```sql:実行結果
 SET
 SET
 SET
@@ -59,7 +59,7 @@ SELECT count(*) FROM books;
 
 実行結果です。
 
-```sql
+```sql:実行結果
   count
 ---------
  1000000
@@ -75,7 +75,7 @@ SELECT id, title FROM books WHERE title = '実験用の本 42';
 
 2026年9月23日、DockerのPostgreSQL 18.6での実行結果です。本100万冊、主キーのIndexのみの状態で、以下のLIMIT付き検索まで順に実行しました。
 
-```sql
+```sql:実行結果
 Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.009..36.378 rows=1.00 loops=1)
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999999
@@ -114,7 +114,7 @@ LIMIT 1;
 
 今回の実行結果です。
 
-```sql
+```sql:実行結果
 Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.008..0.008 rows=1.00 loops=1)
   Buffers: shared hit=2
   ->  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.007..0.007 rows=1.00 loops=1)
@@ -161,7 +161,7 @@ LIMIT 1;
 
 今度は`Rows Removed by Filter`の値に注目してください。
 
-```sql
+```sql:実行結果
 Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=39.306..39.307 rows=1.00 loops=1)
   Buffers: shared hit=5746 read=1607 written=94
   ->  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=39.305..39.306 rows=1.00 loops=1)
@@ -185,7 +185,7 @@ LIMIT 1;
 
 実行結果です。
 
-```sql
+```sql:実行結果
 Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=35.350..35.350 rows=0.00 loops=1)
   Buffers: shared hit=5841 read=1512 written=94
   ->  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=35.348..35.348 rows=0.00 loops=1)
@@ -222,7 +222,7 @@ RESET synchronize_seqscans;
 
 実行結果です。
 
-```sql
+```sql:実行結果
 RESET
 ```
 

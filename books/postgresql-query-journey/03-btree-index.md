@@ -58,7 +58,7 @@ SELECT id, title FROM books WHERE title = '実験用の本 42';
 
 2026年9月25日、PostgreSQL 18.6の新規DBで「準備」の章のデータを用意し、第2章に続けて実行した結果です。並列実行とJITは無効です。この節と次の番号の範囲検索は、同じ通し実行から掲載しています。
 
-```sql
+```sql:実行結果
 Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.010..38.387 rows=1.00 loops=1)
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999999
@@ -78,7 +78,7 @@ ANALYZE books;
 
 実行結果です。
 
-```sql
+```sql:実行結果
 CREATE INDEX
 ANALYZE
 ```
@@ -96,7 +96,7 @@ SELECT id, title FROM books WHERE title = '実験用の本 42';
 
 Indexを作った後の実行結果です。
 
-```sql
+```sql:実行結果
 Index Scan using books_title_idx on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.053..0.054 rows=1.00 loops=1)
   Index Cond: (title = '実験用の本 42'::text)
   Index Searches: 1
@@ -150,7 +150,7 @@ SELECT id, title FROM books WHERE id BETWEEN 400000 AND 400010;
 
 実行結果です。
 
-```sql
+```sql:実行結果
 Index Scan using books_pkey on books  (cost=0.42..8.64 rows=11 width=30) (actual time=0.053..0.054 rows=11.00 loops=1)
   Index Cond: ((id >= 400000) AND (id <= 400010))
   Index Searches: 1
@@ -174,7 +174,7 @@ SELECT id, title FROM books WHERE id BETWEEN 1 AND 900000;
 
 実行結果です。
 
-```sql
+```sql:実行結果
 Seq Scan on books  (cost=0.00..22353.00 rows=901290 width=30) (actual time=0.009..67.702 rows=900000.00 loops=1)
   Filter: ((id >= 1) AND (id <= 900000))
   Rows Removed by Filter: 100000
@@ -214,7 +214,7 @@ SELECT id, title FROM books WHERE title >= '実験用の本 4' AND title < '実�
 
 実行結果です。
 
-```sql
+```sql:実行結果
 Bitmap Heap Scan on books  (cost=3311.93..12314.92 rows=110000 width=30) (actual time=11.747..25.821 rows=111111.00 loops=1)
   Recheck Cond: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
   Heap Blocks: exact=821
@@ -241,7 +241,7 @@ ORDER BY title LIMIT 8;
 
 実行結果です。
 
-```sql
+```sql:実行結果
    id   |       title
 --------+-------------------
       4 | 実験用の本 4
@@ -278,7 +278,7 @@ SELECT id, title FROM books WHERE title >= '実験用の本 4' AND title < '実�
 
 実行結果です。
 
-```sql
+```sql:実行結果
 Index Scan using books_title_idx on books  (cost=0.42..14532.64 rows=110000 width=30) (actual time=0.571..16.464 rows=111111.00 loops=1)
   Index Cond: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
   Index Searches: 1
@@ -299,7 +299,7 @@ SELECT id, title FROM books WHERE title >= '実験用の本 4' AND title < '実�
 
 実行結果です。
 
-```sql
+```sql:実行結果
 Seq Scan on books  (cost=0.00..22353.00 rows=110000 width=30) (actual time=0.039..1785.254 rows=111111.00 loops=1)
   Filter: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
   Rows Removed by Filter: 888889
@@ -317,7 +317,7 @@ RESET enable_indexscan;
 
 実行結果です。
 
-```sql
+```sql:実行結果
 RESET
 RESET
 ```
@@ -351,7 +351,7 @@ SELECT pg_size_pretty(pg_relation_size('books_title_idx'));
 
 実行結果です。
 
-```sql
+```sql:実行結果
  pg_size_pretty
 ----------------
  39 MB

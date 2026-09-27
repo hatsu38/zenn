@@ -28,7 +28,7 @@ LIMIT 20;
 
 2026年9月26日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件で、第3章の題名Indexがあり、読了記録にはまだIndexがありません。並列実行とJITは無効、`work_mem`は4MBです。
 
-```sql
+```sql:実行結果
 Limit  (cost=153548.50..153548.55 rows=20 width=38) (actual time=627.239..627.244 rows=20.00 loops=1)
   Buffers: shared hit=4288 read=13879, temp read=9046 written=10758
   ->  Sort  (cost=153548.50..154780.84 rows=492937 width=38) (actual time=627.238..627.241 rows=20.00 loops=1)
@@ -91,7 +91,7 @@ SELECT id, title FROM books ORDER BY title LIMIT 3;
 
 2026年9月23日、DockerのPostgreSQL 18.6、本100万冊で第3章の題名のIndexがある状態で採取した出力です。
 
-```sql
+```sql:実行結果
 Limit  (cost=0.42..0.57 rows=3 width=30)
   ->  Index Scan using books_title_idx on books  (cost=0.42..49666.10 rows=1000000 width=30)
 ```
@@ -109,7 +109,7 @@ SELECT id, title FROM books ORDER BY title LIMIT 3;
 
 2026年9月25日、PostgreSQL 18.6で新規DBへ本100万冊を用意し、第3章の題名Indexを作った状態での実行結果です。並列実行とJITは無効です。
 
-```sql
+```sql:実行結果
 Limit  (cost=0.42..0.57 rows=3 width=30) (actual time=0.015..0.016 rows=3.00 loops=1)
   Buffers: shared hit=2 read=2
   ->  Index Scan using books_title_idx on books  (cost=0.42..49247.50 rows=1000000 width=30) (actual time=0.014..0.015 rows=3.00 loops=1)
@@ -201,7 +201,7 @@ SELECT pg_backend_pid();
 
 2026年9月22日、PostgreSQL 18.6での実行結果です。
 
-```sql
+```sql:実行結果
  pg_backend_pid
 ----------------
             952
@@ -226,7 +226,7 @@ SELECT pg_backend_pid();
 
 接続Bでの実行結果です。
 
-```sql
+```sql:実行結果
  pg_backend_pid
 ----------------
           22521
@@ -252,7 +252,7 @@ WHERE datname = current_database();
 
 接続Bでの実行結果です。
 
-```sql
+```sql:実行結果
   pid  | state  |                query
 -------+--------+-------------------------------------
  22521 | active | SELECT pid, state, query           +
