@@ -52,7 +52,7 @@ SELECT id, title FROM books WHERE title = '実験用の本 42';
 
 実行結果です。
 
-```sql
+```sql:実行結果
  id |     title
 ----+---------------
  42 | 実験用の本 42
@@ -82,7 +82,7 @@ SELECT id, title FROM books WHERE title = '実験用の本 42';
 
 実行結果です。
 
-```sql
+```sql:実行結果
 Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30)
   Filter: (title = '実験用の本 42'::text)
 ```
@@ -132,7 +132,7 @@ SELECT id, title FROM books WHERE title = '実験用の本 42';
 
 実験用リポジトリの環境で、次の結果が出ました。2026年9月23日、PostgreSQL 18.6、本100万冊での1回の実測です。「準備」の章のデータ準備と件数確認、先ほどのSELECTに続けて実行しています。初回のディスク読み込み速度を測ったものではありません。
 
-```sql
+```sql:実行結果
 Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.036..35.994 rows=1.00 loops=1)
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999999
@@ -181,7 +181,7 @@ SELECT id, title FROM books WHERE id = 42;
 
 今回の出力です。
 
-```sql
+```sql:実行結果
 Index Scan using books_pkey on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.017..0.017 rows=1.00 loops=1)
   Index Cond: (id = 42)
   Index Searches: 1
@@ -226,7 +226,7 @@ SELECT id, title FROM books WHERE title = '存在しない本';
 
 実行結果です。
 
-```sql
+```sql:実行結果
 Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=40.821..40.821 rows=0.00 loops=1)
   Filter: (title = '存在しない本'::text)
   Rows Removed by Filter: 1000000

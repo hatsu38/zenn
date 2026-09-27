@@ -60,7 +60,7 @@ ORDER BY r.finished_at DESC, r.book_id ASC;
 - 第8章の日時順のIndexあり
 - 並列実行とJITは無効、`work_mem`は4MB
 
-```sql
+```sql:実行結果
 Nested Loop  (cost=0.85..169.89 rows=20 width=38) (actual time=1.082..3.042 rows=20.00 loops=1)
   Buffers: shared hit=50 read=34 written=13
   ->  Limit  (cost=0.43..1.04 rows=20 width=16) (actual time=0.008..0.019 rows=20.00 loops=1)
@@ -106,7 +106,7 @@ WHERE r.finished_at >= timestamp '2026-09-14'
 
 1週間分へ広げたSQLの実行結果です。条件は20件のときと同じです。
 
-```sql
+```sql:実行結果
 Hash Join  (cost=36689.43..65899.61 rows=488229 width=30) (actual time=220.657..462.415 rows=499998.00 loops=1)
   Hash Cond: (r.book_id = b.id)
   Buffers: shared hit=6482 read=2790 written=94, temp read=7404 written=7404
@@ -177,7 +177,7 @@ ROLLBACK;
 2026年9月26日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件、並列実行とJITは無効です。 `work_mem`は4MBです。
 
 :::details Merge Joinの実行結果
-```sql
+```sql:実行結果
 Merge Join  (cost=308490.01..318500.50 rows=214 width=16) (actual time=563.927..563.970 rows=141.00 loops=1)
   Merge Cond: (r.book_id = b.id)
   Buffers: shared hit=8871 read=1944, temp read=6854 written=12751
@@ -225,7 +225,7 @@ FROM reading_records GROUP BY book_id;
 
 同日の集約の実行結果です。
 
-```sql
+```sql:実行結果
 HashAggregate  (cost=40811.00..41599.81 rows=78881 width=16) (actual time=421.904..611.755 rows=736097.00 loops=1)
   Group Key: book_id
   Batches: 21  Memory Usage: 8257kB  Disk Usage: 27752kB
@@ -256,7 +256,7 @@ SHOW hash_mem_multiplier;
 
 実行結果は順に4MBと2です。
 
-```sql
+```sql:実行結果
  work_mem
 ----------
  4MB
@@ -285,7 +285,7 @@ ROLLBACK;
 ```
 
 :::details 64kBでの実行結果
-```sql
+```sql:実行結果
 Hash Join  (cost=36689.43..65899.61 rows=488229 width=30) (actual time=216.690..418.515 rows=499998.00 loops=1)
   Hash Cond: (r.book_id = b.id)
   Buffers: shared hit=6404 read=2868, temp read=7824 written=7824

@@ -52,7 +52,7 @@ SELECT count(*) FROM reading_records;
 
 2026年9月23日に、初期化した実験用DBで確認した結果です。
 
-```sql
+```sql:実行結果
   count
 ---------
  2000000
@@ -73,7 +73,7 @@ SET work_mem = '64MB';
 
 実行結果です。
 
-```sql
+```sql:実行結果
 SET
 SET
 SET
@@ -92,7 +92,7 @@ ORDER BY finished_at DESC, book_id ASC;
 
 読了記録200万件のうち、指定した1週間の記録を並べ替えます。次は、2026年9月22日にPostgreSQL 18.6で得られた実行結果です。実行計画の見出しと罫線は省いています。
 
-```sql
+```sql:実行結果
 Sort  (cost=88387.00..89643.06 rows=502425 width=16) (actual time=182.059..207.760 rows=499998.00 loops=1)
   Sort Key: finished_at DESC, book_id
   Sort Method: quicksort  Memory: 27913kB
@@ -175,7 +175,7 @@ ORDER BY finished_at DESC, book_id ASC;
 
 2026年9月25日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件、並列実行とJITは無効です。
 
-```sql
+```sql:実行結果
 Sort  (cost=122183.71..123431.54 rows=499134 width=16) (actual time=289.741..325.654 rows=499998.00 loops=1)
   Sort Key: finished_at DESC, book_id
   Sort Method: external merge  Disk: 12784kB

@@ -62,7 +62,7 @@ SELECT * FROM ranking_before;
 2026年9月26日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件、並列実行とJITは無効です。 次の計画は、第1章から第10章まで進めた後、第11章のVACUUM実験より前に採取しました。章末には、第11章の実験後に3回ずつ測った比較も載せます。
 
 :::details 基準SQLの実行結果
-```sql
+```sql:実行結果
 Limit  (cost=129354.25..129354.30 rows=20 width=38) (actual time=576.650..576.657 rows=20.00 loops=1)
   Buffers: shared hit=6592 read=2680, temp read=9038 written=10753
   ->  Sort  (cost=129354.25..130574.82 rows=488229 width=38) (actual time=576.648..576.653 rows=20.00 loops=1)
@@ -114,7 +114,7 @@ ROLLBACK;
 ```
 
 :::details Indexを使う候補を制限した実行結果
-```sql
+```sql:実行結果
 Limit  (cost=152888.24..152888.29 rows=20 width=38) (actual time=634.337..634.343 rows=20.00 loops=1)
   Buffers: shared hit=13916 read=4248, temp read=9038 written=10749
   ->  Sort  (cost=152888.24..154108.82 rows=488229 width=38) (actual time=634.336..634.340 rows=20.00 loops=1)
@@ -190,7 +190,7 @@ SELECT * FROM ranking_after;
 どこへ渡すレコードが少なくなるか予想してから、実際の計画を読みましょう。
 
 :::details 集計してから題名を付けた実行結果
-```sql
+```sql:実行結果
 Nested Loop  (cost=22604.00..22772.68 rows=20 width=38) (actual time=164.705..165.474 rows=20.00 loops=1)
   Buffers: shared hit=1973 read=26, temp read=641 written=1378
   ->  Limit  (cost=22603.58..22603.63 rows=20 width=16) (actual time=164.674..164.680 rows=20.00 loops=1)
@@ -239,7 +239,7 @@ WHERE NOT EXISTS (SELECT 1 FROM books AS b WHERE b.id = r.book_id);
 
 実行結果です。
 
-```sql
+```sql:実行結果
  records_without_book
 ----------------------
                     0
@@ -260,7 +260,7 @@ SELECT count(*) AS differing_rows FROM (
 
 実行結果です。
 
-```sql
+```sql:実行結果
  differing_rows
 ----------------
               0
@@ -295,7 +295,7 @@ ORDER BY w.read_count DESC, w.book_id ASC LIMIT 20;
 
 同日の準備の実行結果です。psqlが測った経過時間も分けて残します。
 
-```sql
+```sql:実行結果
 SELECT 255238
 Time: 195.385 ms
 CREATE INDEX
@@ -307,7 +307,7 @@ Time: 18.157 ms
 作成済みのテーブルから読み出した実行結果です。
 
 :::details 事前集計テーブルの読み出し
-```sql
+```sql:実行結果
 Limit  (cost=0.84..13.87 rows=20 width=46) (actual time=0.038..0.137 rows=20.00 loops=1)
   Buffers: shared hit=100 read=3
   ->  Nested Loop  (cost=0.84..166283.20 rows=255238 width=46) (actual time=0.037..0.134 rows=20.00 loops=1)
