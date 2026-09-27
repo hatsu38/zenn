@@ -1,0 +1,3 @@
+/* 印刷用: 外部リンクの URL は、変換スクリプトが章末の注に移している */
+a { color: inherit; text-decoration: none; }
+.footnotes a { overflow-wrap: anywhere; }
