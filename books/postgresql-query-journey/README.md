@@ -18,6 +18,7 @@
 - 10：10-planner-and-statistics.md（旧10章）
 - 11：11-mvcc-and-maintenance.md（旧11章）
 - 12：12-ranking-revisited.md（旧12章）
+- おわりに：99-afterword.md（2026-09-28に追加）
 
 ## 実験状態の引き継ぎ
 
