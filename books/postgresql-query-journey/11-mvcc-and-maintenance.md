@@ -95,6 +95,82 @@ PostgreSQLでは、更新によって新しい**レコードバージョン**が
 
 第4章では、`ctid`は更新後に変わりうるので主キーの代わりには使えない、と説明しました。更新のたびに新しいレコードバージョンが作られ、その場所が`ctid`だからです。第10章で`UPDATE`した8,000件にも、新しい版が作られました。ただし第10章の`stats_demo`は、同じトランザクションの中で作ったテーブルなので、最後の`ROLLBACK`でテーブルごと取り消されました。前からあるテーブルの`UPDATE`を`ROLLBACK`した場合は、元の版が引き続き有効で、取り消された新しい版の領域は後から回収の対象になります。
 
+### 版を、実物で見る
+
+本42の版を、実際に表示してみます。`ctid`に加えて、`xmin`と`xmax`という隠れた列を表示します。`xmin`はその版を作ったトランザクションの番号、`xmax`はその版を消した（新しい版に置き換えた）トランザクションの番号です[^xmin-xmax]。AとBのトランザクションをすべて終了してから、接続Aで実行します。最後の`ROLLBACK`で更新を取り消すので、本のデータは元に戻ります。
+
+[^xmin-xmax]: `xmin`と`xmax`は、第4章の`ctid`と同じくシステム列です。[公式ドキュメントのシステム列の説明](https://www.postgresql.org/docs/18/ddl-system-columns.html)にあります。
+
+```sql
+BEGIN;
+SELECT ctid, xmin, xmax, title FROM books WHERE id = 42;
+UPDATE books SET title = '改訂版の本 42' WHERE id = 42;
+SELECT ctid, xmin, xmax, title FROM books WHERE id = 42;
+ROLLBACK;
+SELECT ctid, xmin, xmax, title FROM books WHERE id = 42;
+```
+
+2026年9月28日、PostgreSQL 18.6での実行結果です。3つのSELECTの結果だけを載せます。番号と場所は、それまでの操作によって変わります。
+
+```sql:実行結果
+    ctid    | xmin | xmax |     title
+------------+------+------+---------------
+ (7352,130) |  948 |    0 | 実験用の本 42
+(1 row)
+
+    ctid    | xmin | xmax |     title
+------------+------+------+---------------
+ (7352,131) |  999 |    0 | 改訂版の本 42
+(1 row)
+
+    ctid    | xmin | xmax |     title
+------------+------+------+---------------
+ (7352,130) |  948 |  999 | 実験用の本 42
+(1 row)
+```
+
+`UPDATE`の後は、`ctid`が(7352,130)から(7352,131)に変わり、`xmin`も999になりました。同じ本42でも、別の場所に新しい版が書かれ、それをトランザクション999が作ったことが分かります。
+
+`ROLLBACK`の後は、元の(7352,130)の版がまた見えます。その`xmax`には999が残っています。999が作った新しい版は取り消されたので、この版を消したことにはなりません。PostgreSQLは、`xmax`の番号だけでなく、そのトランザクションが確定したか取り消されたかも確かめて、どの版を見せるかを決めています。
+
+:::details ページの中の古い版を直接見る
+同じトランザクションの中では、置き換えられた古い版はSELECTでは見えません。第4章の補足で使った`pageinspect`で、ページの中身を直接読みます。`\gset`は、SELECTの結果をpsqlの変数に入れる命令です。`:old_page`のように書くと、その値が入ります。`\gset`の後ろにSQLを続けると貼り付けたときに実行されないので、三つの枠に分けています。
+
+```sql
+CREATE EXTENSION IF NOT EXISTS pageinspect;
+BEGIN;
+SELECT (ctid::text::point)[0]::int AS old_page FROM books WHERE id = 42 \gset
+```
+
+```sql
+UPDATE books SET title = '改訂版の本 42' WHERE id = 42;
+SELECT (ctid::text::point)[0]::int AS new_page FROM books WHERE id = 42 \gset
+```
+
+```sql
+SELECT lp, t_xmin, t_xmax, t_ctid
+FROM heap_page_items(get_raw_page('books', :old_page))
+WHERE t_xmax = pg_current_xact_id()::xid
+UNION ALL
+SELECT lp, t_xmin, t_xmax, t_ctid
+FROM heap_page_items(get_raw_page('books', :new_page))
+WHERE t_xmin = pg_current_xact_id()::xid;
+ROLLBACK;
+```
+
+三つ目の枠の実行結果です（同じ日に続けて実行しました）。
+
+```sql:実行結果
+ lp  | t_xmin | t_xmax |   t_ctid
+-----+--------+--------+------------
+ 130 |    948 |   1001 | (7352,132)
+ 132 |   1001 |      0 | (7352,132)
+(2 rows)
+```
+
+`lp`はページの中の項目の番号で、`ctid`の右側の数に当たります。130番の古い版は、`t_xmax`にこのトランザクションの番号1001が入り、`t_ctid`が新しい版の場所(7352,132)を指しています。132番の新しい版は、`t_xmin`が1001です。古い版は消されずにページに残り、新しい版への道しるべを持っています。131番は、本文の実験で取り消した更新が作った版で、まだ回収されずに残っています。
+:::
+
 ## いつ古い版を片付けられる？
 
 古い版を必要とする読み手がいれば、まだ捨てられません。古い版を参照する可能性のあるトランザクションがなくなると、その領域を回収できます。長く終わらないトランザクションがあると、その間は古い版を片付けられないことがあります。
