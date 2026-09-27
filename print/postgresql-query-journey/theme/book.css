@@ -180,3 +180,69 @@ ul, ol { margin: 0 0 0.6em; padding-left: 1.6em; }
     margin-top: 3mm;
   }
 }
+
+/* 扉。書名だけのページ */
+.title-page {
+  break-before: right;
+  break-after: page;
+  padding-top: 70mm;
+  text-align: center;
+}
+.book-title {
+  font-family: var(--heading-font);
+  font-size: 24pt;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+}
+.book-subtitle {
+  font-family: var(--heading-font);
+  font-size: 13pt;
+  margin-top: 8mm;
+  text-align: center;
+}
+
+/* 目次。Vivliostyle が作る nav に、ページ番号を右に寄せて並べる */
+nav[role='doc-toc'] {
+  break-before: right;
+  break-after: page;
+}
+/* 目次の文書の頭に Vivliostyle が入れる書名の見出しは、扉と重なるので出さない */
+body:has(> nav[role='doc-toc']) > h1 { display: none; }
+nav[role='doc-toc'] h1, nav[role='doc-toc'] h2 { break-before: auto; }
+/* 扉と奥付は目次に載せない */
+nav[role='doc-toc'] li:has(> a[href^='00-title']),
+nav[role='doc-toc'] li:has(> a[href^='99-colophon']) { display: none; }
+nav[role='doc-toc'] ol { list-style: none; padding-left: 0; margin: 0; }
+nav[role='doc-toc'] ol ol { padding-left: 1.5em; font-size: 8.5pt; }
+nav[role='doc-toc'] li { margin: 1mm 0; }
+nav[role='doc-toc'] > ol > li > a { font-family: var(--heading-font); font-weight: 700; }
+nav[role='doc-toc'] a { color: inherit; text-decoration: none; }
+nav[role='doc-toc'] a::after {
+  content: target-counter(attr(href url), page);
+  float: right;
+  font-family: var(--heading-font);
+}
+
+/* 奥付。最後のページの下にまとめる */
+.colophon {
+  break-before: page;
+  padding-top: 120mm;
+  font-size: 8.5pt;
+}
+.colophon-title {
+  font-family: var(--heading-font);
+  font-weight: 700;
+  font-size: 10pt;
+  border-bottom: 0.75pt solid var(--ink);
+  padding-bottom: 2mm;
+}
+.colophon table { width: 100%; }
+.colophon th, .colophon td { border: none; border-bottom: 0.5pt solid var(--rule); background: none; }
+.colophon thead { display: none; }
+
+/* 扉と奥付のページには、ページ番号を出さない */
+.title-page, .colophon { page: no-folio; }
+@page no-folio {
+  @bottom-center { content: none; }
+}

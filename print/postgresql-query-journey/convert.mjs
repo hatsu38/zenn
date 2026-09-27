@@ -4,7 +4,7 @@
 // 使い方: [EDITION=ebook] node convert.mjs [章のスラッグ ...]
 //   引数なしなら config.yaml の全章、指定すればその章だけを変換する。
 //   EDITION=ebook なら電子版向けに、外部リンクをリンクのまま残す。
-import { readFileSync, writeFileSync, mkdirSync, copyFileSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync, rmSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -199,6 +199,10 @@ for (const slug of slugs) {
 }
 for (const fileName of usedImages) {
   copyFileSync(join(imageDir, fileName), join(outDir, 'images', fileName));
+}
+// 扉と奥付は、本の原稿ではなく紙面の部品として parts/ に置いている
+for (const name of readdirSync(join(here, 'parts'))) {
+  copyFileSync(join(here, 'parts', name), join(outDir, name));
 }
 writeFileSync(join(outDir, 'chapters.json'), JSON.stringify(slugs));
 console.log(`${slugs.length} 章、画像 ${usedImages.size} 枚を ${outDir} に書き出しました`);
