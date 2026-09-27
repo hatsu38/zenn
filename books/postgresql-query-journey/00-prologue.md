@@ -101,7 +101,7 @@ SQLで欲しいデータを取り出せても、その処理に時間がかか�
 
 大きいデータの対象週には4,999,999件の記録がありました。psqlの`\timing`による3回の経過時間は4,630.241、4,553.647、4,531.875ミリ秒です。キャッシュを空にした測定ではありません。
 
-元のSQLとログは[過去測定の記録](https://github.com/hatsu38/zenn/tree/main/_drafts/postgresql-query-journey/verification/prologue-ranking-20260921)にあります。
+元のSQLとログは、実験リポジトリの[過去測定の記録](https://github.com/hatsu38/postgresql-structures-lab/tree/main/results/prologue-ranking-20260921)にあります。
 
 後続章は通常テーブルを使います。この値を、新しい実験の改善前の数値として直接比較しないでください。同じ環境で改めて測ります。
 :::
