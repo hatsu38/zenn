@@ -1,0 +1,168 @@
+/* 紙と電子版で共通の紙面。JIS B5、本文は明朝、見出しとコードはゴシック。 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=BIZ+UDGothic:wght@400;700&display=swap');
+
+:root {
+  --text-font: 'Noto Serif JP', serif;
+  --heading-font: 'Noto Sans JP', sans-serif;
+  --code-font: 'BIZ UDGothic', monospace;
+  --ink: #000;
+  --gray: #555;
+  --rule: #999;
+  --tint: #eee;
+}
+
+@page {
+  size: JIS-B5;
+  margin: 20mm 18mm 22mm 18mm;
+  @bottom-center {
+    content: counter(page);
+    font-family: var(--heading-font);
+    font-size: 8pt;
+  }
+}
+
+html {
+  font-family: var(--text-font);
+  font-size: 9.5pt;
+  line-height: 1.75;
+  color: var(--ink);
+  text-align: justify;
+  hanging-punctuation: allow-end;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--heading-font);
+  font-weight: 700;
+  line-height: 1.4;
+  break-after: avoid;
+}
+
+/* 章ごとに右ページから始める */
+h1 {
+  break-before: right;
+  font-size: 18pt;
+  margin: 0 0 12mm;
+  padding-bottom: 3mm;
+  border-bottom: 1.5pt solid var(--ink);
+}
+
+h2 {
+  font-size: 13pt;
+  margin: 9mm 0 3mm;
+  padding-left: 3mm;
+  border-left: 3pt solid var(--ink);
+}
+
+h3 { font-size: 11pt; margin: 6mm 0 2mm; }
+h4 { font-size: 10pt; margin: 5mm 0 2mm; }
+
+p { margin: 0 0 0.6em; orphans: 2; widows: 2; }
+
+code {
+  font-family: var(--code-font);
+  font-size: 0.9em;
+}
+
+/* コード枠。変換スクリプトが1行ずつ span.line にし、行頭の空白の数を --indent に入れている。
+   折り返した続きは、その行の字下げより2文字分右から始まるので、実行計画の木の形が崩れない。 */
+.code-block { margin: 0 0 4mm; }
+.code-block > pre {
+  font-family: var(--code-font);
+  font-size: 7.5pt;
+  line-height: 1.45;
+  margin: 0;
+  padding: 2.5mm 3mm;
+  border: 0.5pt solid var(--rule);
+  text-align: left;
+}
+.code-block .line {
+  display: block;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding-left: calc((var(--indent) + 2) * 0.5em);
+  text-indent: -1em;
+}
+.code-block.output > pre { background: var(--tint); }
+.code-block > figcaption {
+  font-family: var(--heading-font);
+  font-size: 7.5pt;
+  font-weight: 700;
+  display: inline-block;
+  padding: 0.5mm 2mm;
+  background: var(--tint);
+  border: 0.5pt solid var(--rule);
+  border-bottom: none;
+}
+
+/* 図 */
+figure:not(.code-block) {
+  margin: 4mm 0 5mm;
+  text-align: center;
+  break-inside: avoid;
+}
+figure img { max-width: 100%; max-height: 95mm; }
+figure:not(.code-block) > figcaption {
+  font-family: var(--heading-font);
+  font-size: 8pt;
+  color: var(--gray);
+  text-align: left;
+  margin-top: 1.5mm;
+}
+
+/* 表 */
+table {
+  border-collapse: collapse;
+  margin: 0 0 4mm;
+  font-size: 8.5pt;
+  line-height: 1.5;
+  break-inside: avoid;
+}
+th, td { border: 0.5pt solid var(--rule); padding: 1mm 2mm; vertical-align: top; }
+th { font-family: var(--heading-font); background: var(--tint); }
+
+ul, ol { margin: 0 0 0.6em; padding-left: 1.6em; }
+
+/* Zenn の :::message は囲み記事、:::details は答えの囲みにする */
+.message {
+  border: 0.75pt solid var(--ink);
+  padding: 2.5mm 3.5mm 1mm;
+  margin: 0 0 4mm;
+  break-inside: avoid;
+}
+.details {
+  border-top: 0.75pt dashed var(--ink);
+  border-bottom: 0.75pt dashed var(--ink);
+  padding: 2mm 0 1mm;
+  margin: 0 0 4mm;
+}
+.details-title {
+  font-family: var(--heading-font);
+  font-weight: 700;
+  font-size: 9pt;
+}
+
+/* 脚注。変換スクリプトが参照の位置に span.footnote として埋め込み、ページの下へ送る */
+.footnote {
+  float: footnote;
+  font-family: var(--heading-font);
+  font-size: 7.5pt;
+  line-height: 1.5;
+  text-align: left;
+}
+.footnote::footnote-call {
+  content: counter(footnote);
+  font-size: 0.7em;
+  vertical-align: super;
+  line-height: 0;
+}
+.footnote::footnote-marker {
+  content: counter(footnote) '. ';
+}
+.footnote .url { font-family: var(--code-font); overflow-wrap: anywhere; }
+@page {
+  @footnote {
+    border-top: 0.5pt solid var(--rule);
+    padding-top: 1.5mm;
+    margin-top: 3mm;
+  }
+}
