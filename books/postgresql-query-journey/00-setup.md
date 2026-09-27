@@ -31,11 +31,24 @@ docker compose exec db psql -X -U postgres -d reading_map
 
 ここからは、入力用の`sql`枠をこのpsqlへ入力します。実行結果として示した枠は入力しません。末尾の`;`は「このSQLはここまで」という印です。ターミナルとpsqlのどちらへ入力するかに注意してください。
 
-まず、エラーが起きたら止まる設定と、結果を一度に表示する設定をします。そのうえで、バージョンを確認します。
+まず、エラーが起きたら止まる設定と、結果を一度に表示する設定をします。
 
 ```sql
 \set ON_ERROR_STOP on
 \pset pager off
+```
+
+実行結果です。`\set`は何も表示しません。
+
+```sql:実行結果
+Pager usage is off.
+```
+
+`\`で始まる行は、SQLではなくpsqlへの命令です。複数行をまとめて貼り付けると、`\`で始まる行の後ろに続くSQLが、その命令の続きとして扱われて実行されないことがあります。そのため本書では、`\`で始まる行の後ろにSQLを続けません。
+
+続けて、バージョンを確認します。
+
+```sql
 SELECT version();
 ```
 
@@ -210,11 +223,11 @@ docker compose exec db psql -X -U postgres -d reading_map
 再接続後の共通設定です。実験の途中で設定を変えたまま読み直すときも、新しい接続から始めると区別しやすくなります。
 
 ```sql
-\set ON_ERROR_STOP on
-\pset pager off
 SET max_parallel_workers_per_gather = 0;
 SET jit = off;
 SET work_mem = '4MB';
+\set ON_ERROR_STOP on
+\pset pager off
 ```
 
 章ごとに必要な状態は次のとおりです。テーブルの件数は、基本データの本100万冊・記録200万件を維持します。
