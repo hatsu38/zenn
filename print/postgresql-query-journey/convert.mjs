@@ -118,6 +118,7 @@ function convertChapter(slug, usedImages, edition) {
 
   const out = [`# ${title}`, ''];
   const containers = [];
+  let sectionSeen = false;
   let codeInfo = null;
   let codeLines = [];
 
@@ -171,10 +172,14 @@ function convertChapter(slug, usedImages, edition) {
       const captionLine = lines[i + 1]?.match(/^\*(.+)\*\s*$/);
       const caption = captionLine ? `<figcaption>${inlineToHtml(captionLine[1])}</figcaption>` : '';
       if (captionLine) i++;
-      out.push(`<figure><img src="images/${fileName}" alt="${escapeHtml(alt)}">${caption}</figure>`);
+      // 章の最初の節（##）より前にある図は、章の冒頭の文より上に来ないよう、紙面で浮かせない
+      // （theme/book.css の figure.lead）。序章の冒頭の図が当てはまる
+      const lead = sectionSeen ? '' : ' class="lead"';
+      out.push(`<figure${lead}><img src="images/${fileName}" alt="${escapeHtml(alt)}">${caption}</figure>`);
       continue;
     }
 
+    if (line.startsWith('## ')) sectionSeen = true;
     // 外部リンクを注にしてから、Zenn の脚注を埋め込む（逆にすると、注の中のリンクまで注になる）
     const unlinked = unlinkInternal(line);
     const linked = edition === 'print' ? footnoteExternalLinks(unlinked) : unlinked;
