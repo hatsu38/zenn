@@ -7,7 +7,7 @@ title: "第10章：PostgreSQLは、なぜその計画を選んだのか"
 PostgreSQLは実行前にレコード数や処理量を見積もり、処理方法を選びます。条件の広さやデータの偏りを変え、統計情報、推定レコード数、実際の計画を対応させます。costを実時間と区別し、推定のずれが後続の処理へ及ぼす影響を考えます。期待と違う計画を見たとき、何を確かめてから改善を試すかを組み立てます。
 
 :::message
-小さな実験用テーブルをBEGINから同じ接続で作り、最後のROLLBACKで取り消します。再接続した場合は「準備」の章の共通設定から始めます。
+小さな実験用テーブルをBEGINから同じ接続で作り、最後のROLLBACKで取り消します。読了記録の統計を変える実験も、BEGINとROLLBACKの間で行い、元に戻します。再接続した場合は「準備」の章の共通設定から始めます。
 :::
 
 ## 20件と50万件で、方法が変わったのはなぜ？
@@ -157,6 +157,88 @@ Execution Time: 1.066 ms
 ANALYZE後は推定が9,000件になり、選ばれる方法も変わりました。この小さなテーブルでは実行時間が必ず短くなるとは限りません。統計を更新した効果は、まず推定と実測のずれで確かめます。最後のROLLBACKで、実験用テーブルと更新をまとめて取り消しています。
 
 未コミットのテーブルは、ほかのプロセスであるautovacuum（VACUUMやANALYZEを自動で実行する仕組み。第11章で扱います）から見えないので、実験中に統計が勝手に更新されません。通常のテーブルでは自動の更新が途中で入ることがあります。推定が変わった理由を後で区別できるよう、`ANALYZE`の有無と時刻を記録しておきます。
+
+## 第9章の736,097個は、なぜ7万個台と見積もられたのか
+
+第9章で本ごとに読了記録を数えたとき、`HashAggregate`の見積もりは`rows=78881`でした。実際のグループは736,097個です。先ほどの`stats_demo`と同じように、統計情報の中身を確かめます。
+
+```sql
+SELECT count(DISTINCT book_id) AS actual_books FROM reading_records;
+SELECT n_distinct FROM pg_stats
+WHERE tablename = 'reading_records' AND attname = 'book_id';
+```
+
+2026年9月28日、PostgreSQL 18.6で、第12章まで進めた実験用DBでの実行結果です。
+
+```sql:実行結果
+ actual_books
+--------------
+       736097
+(1 row)
+
+ n_distinct
+------------
+      75797
+(1 row)
+```
+
+記録のある本は736,097冊ですが、統計情報の`n_distinct`（値の種類数の見積もり）は75,797でした。1桁少ない値です。`GROUP BY book_id`の見積もりは、この値から作られます。第9章の`rows=78881`はその日の統計から作られた値で、`ANALYZE`のたびに少し変わります（第3章）。
+
+少なくなった理由は、統計の作り方にあります。`ANALYZE`は、既定では200万件すべてを調べず、3万件を抜き出して調べます[^sample-rows]。この本の読了記録は、よく読まれる本ほど記録が多くなるように作ってあり、記録が1件か2件しかない本が大半です。そうした本の記録は、抜き出した3万件にほとんど入りません。抜き出した中に現れた本の数と、その現れ方から全体の種類数を推測するので、めったに現れない本が多いデータでは、種類数を少なく見積もりやすくなります。
+
+[^sample-rows]: 抜き出すレコード数は、統計の目標値（`default_statistics_target`、既定は100）の300倍です。[ソースコードのこの行](https://github.com/postgres/postgres/blob/REL_18_STABLE/src/backend/commands/analyze.c#L1940)で決めています。目標値を上げると、`ANALYZE`にかかる時間と統計を置く領域も増えることが、[公式ドキュメントのANALYZEの説明](https://www.postgresql.org/docs/18/sql-analyze.html)に書かれています。
+
+統計の目標値を上げると、抜き出すレコードが増えます。`book_id`の列だけ目標値を10,000に上げ、`ANALYZE`し直してから、同じ集約を実行します。統計の変更は実験の間だけにして、最後の`ROLLBACK`で元に戻します。
+
+```sql
+BEGIN;
+ALTER TABLE reading_records ALTER COLUMN book_id SET STATISTICS 10000;
+ANALYZE reading_records;
+SELECT n_distinct FROM pg_stats
+WHERE tablename = 'reading_records' AND attname = 'book_id';
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT book_id, count(*) AS read_count
+FROM reading_records GROUP BY book_id;
+ROLLBACK;
+```
+
+実行結果です。
+
+```sql:実行結果
+ n_distinct
+------------
+ -0.3680485
+(1 row)
+
+HashAggregate  (cost=143311.00..166296.97 rows=736097 width=16) (actual time=533.319..744.839 rows=736097.00 loops=1)
+  Group Key: book_id
+  Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 31440kB
+  Buffers: shared hit=9252 read=1559, temp read=3239 written=6740
+  ->  Seq Scan on reading_records  (cost=0.00..30811.00 rows=2000000 width=8) (actual time=0.131..130.200 rows=2000000.00 loops=1)
+        Buffers: shared hit=9252 read=1559
+Planning:
+  Buffers: shared hit=29
+Planning Time: 0.126 ms
+Execution Time: 774.853 ms
+```
+
+目標値が10,000なら抜き出すのは300万件なので、200万件のテーブルは全件を調べます。`n_distinct`の-0.3680485は負の値なので、先ほどの表のとおりレコード数に対する割合です。200万件×0.3680485で736,097となり、実際の種類数と一致しました。見積もりも`rows=736097`になっています。
+
+見積もりが変わると、実行のしかたも変わりました。既定の統計のままの集約と交互に2回ずつ実行して比べます（同じ日、同じ接続）。
+
+| 比べるもの | 既定の統計（75,797） | 目標値10,000（736,097） |
+| --- | --- | --- |
+| 見積もりの`rows` | 75,797 | 736,097 |
+| `Planned Partitions` | 表示なし | 8 |
+| `Batches` | 21 | 9 |
+| `Disk Usage` | 27752kB | 31440kB |
+| Execution Time（2回） | 827.775 / 837.268 ms | 760.998 / 791.414 ms |
+
+見積もりが実際に近づくと、PostgreSQLは、グループが作業用メモリに収まらないことを実行の前に見込み、最初から8つに分けて数える計画を立てました。`Batches`は21から9に減っています。ただし、この集約では一時ファイルの量は減らず、時間の差も1割に届きませんでした。見積もりのずれが、いつも大きな遅さにつながるわけではありません。影響が大きくなるのは、ずれが方法の選び方そのものを変える場面です。次の節で、その例を見ます。
+
+種類数がよく分かっている列なら、`ALTER TABLE ... ALTER COLUMN ... SET (n_distinct = ...)`で値を直接指定する方法もあります[^n-distinct]。どちらも、見積もりのずれを実行計画で見つけてから使う手段です。
+
+[^n-distinct]: [公式ドキュメントのALTER TABLEの説明](https://www.postgresql.org/docs/18/sql-altertable.html)にあります。2026年9月28日に同じ実験用DBで`n_distinct = 736097`を指定し、`ANALYZE`の後に見積もりが`rows=736097`になることを確かめました（ROLLBACKで元に戻しています）。
 
 ## 小さな見積もりの違いが、後ろへ届く
 

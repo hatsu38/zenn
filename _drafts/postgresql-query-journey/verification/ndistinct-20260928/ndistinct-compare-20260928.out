@@ -1,0 +1,75 @@
+SET max_parallel_workers_per_gather = 0; SET jit = off; SET work_mem = '4MB';
+EXPLAIN (ANALYZE, BUFFERS) SELECT book_id, count(*) AS read_count FROM reading_records GROUP BY book_id;
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=40811.00..41568.97 rows=75797 width=16) (actual time=554.915..797.873 rows=736097.00 loops=1)
+   Group Key: book_id
+   Batches: 21  Memory Usage: 8257kB  Disk Usage: 27752kB
+   Buffers: shared hit=8014 read=2797, temp read=4090 written=6730
+   ->  Seq Scan on reading_records  (cost=0.00..30811.00 rows=2000000 width=8) (actual time=0.194..134.954 rows=2000000.00 loops=1)
+         Buffers: shared hit=8014 read=2797
+ Planning:
+   Buffers: shared hit=98
+ Planning Time: 0.288 ms
+ Execution Time: 827.775 ms
+(10 rows)
+
+BEGIN;
+ALTER TABLE reading_records ALTER COLUMN book_id SET STATISTICS 10000;
+ANALYZE reading_records;
+EXPLAIN (ANALYZE, BUFFERS) SELECT book_id, count(*) AS read_count FROM reading_records GROUP BY book_id;
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=143311.00..166296.97 rows=736097 width=16) (actual time=530.820..731.493 rows=736097.00 loops=1)
+   Group Key: book_id
+   Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 31440kB
+   Buffers: shared hit=8364 read=2447, temp read=3239 written=6740
+   ->  Seq Scan on reading_records  (cost=0.00..30811.00 rows=2000000 width=8) (actual time=0.126..130.574 rows=2000000.00 loops=1)
+         Buffers: shared hit=8364 read=2447
+ Planning:
+   Buffers: shared hit=26
+ Planning Time: 0.175 ms
+ Execution Time: 760.998 ms
+(10 rows)
+
+ROLLBACK;
+EXPLAIN (ANALYZE, BUFFERS) SELECT book_id, count(*) AS read_count FROM reading_records GROUP BY book_id;
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=40811.00..41568.97 rows=75797 width=16) (actual time=553.258..808.097 rows=736097.00 loops=1)
+   Group Key: book_id
+   Batches: 21  Memory Usage: 8257kB  Disk Usage: 27752kB
+   Buffers: shared hit=8458 read=2353, temp read=4090 written=6730
+   ->  Seq Scan on reading_records  (cost=0.00..30811.00 rows=2000000 width=8) (actual time=0.128..131.736 rows=2000000.00 loops=1)
+         Buffers: shared hit=8458 read=2353
+ Planning:
+   Buffers: shared hit=13
+ Planning Time: 0.097 ms
+ Execution Time: 837.268 ms
+(10 rows)
+
+BEGIN;
+ALTER TABLE reading_records ALTER COLUMN book_id SET STATISTICS 10000;
+ANALYZE reading_records;
+EXPLAIN (ANALYZE, BUFFERS) SELECT book_id, count(*) AS read_count FROM reading_records GROUP BY book_id;
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=143311.00..166296.97 rows=736097 width=16) (actual time=536.826..761.036 rows=736097.00 loops=1)
+   Group Key: book_id
+   Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 31440kB
+   Buffers: shared hit=8808 read=2003, temp read=3239 written=6740
+   ->  Seq Scan on reading_records  (cost=0.00..30811.00 rows=2000000 width=8) (actual time=0.120..129.651 rows=2000000.00 loops=1)
+         Buffers: shared hit=8808 read=2003
+ Planning:
+   Buffers: shared hit=26
+ Planning Time: 0.176 ms
+ Execution Time: 791.414 ms
+(10 rows)
+
+ROLLBACK;
+SELECT n_distinct FROM pg_stats WHERE tablename = 'reading_records' AND attname = 'book_id';
+ n_distinct 
+------------
+      75797
+(1 row)
+
