@@ -249,7 +249,7 @@ docker compose exec -T db psql -X -U postgres -d reading_map \
   -a -f /lab/sql/01/01-observe.sql > results/local-chapter01.txt
 ```
 
-本に載せた出力の[元ログ](https://github.com/hatsu38/postgresql-structures-lab/blob/main/results/chapter01-million-2026-09-23.txt)と[測定条件](https://github.com/hatsu38/postgresql-structures-lab/blob/main/results/README.md)も公開しています。自分の結果と見比べてみてください。中断と再開の手順は、「準備」の章の最後にまとめています。
+本に載せた出力の[元ログ](https://github.com/hatsu38/postgresql-structures-lab/blob/main/results/chapter01-million-2026-09-23.txt)と[測定条件](https://github.com/hatsu38/postgresql-structures-lab/blob/main/results/README.md)も公開しています。自分の結果と見比べてみてください。中断と再開の手順は、付録「途中から実験を再開する」にまとめています。
 
 ## 第2章へ
 
