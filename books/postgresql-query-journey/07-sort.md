@@ -162,6 +162,12 @@ Execution Time: 223.929 ms
 SET work_mem = '64kB';
 ```
 
+実行結果です。
+
+```sql:実行結果
+SET
+```
+
 同じ`EXPLAIN (ANALYZE, BUFFERS)`をもう一度実行します。
 
 ```sql
@@ -217,6 +223,12 @@ MemoryとDiskは、保存場所もデータの形式も違う量なので、引�
 
 ```sql
 SET work_mem = '4MB';
+```
+
+実行結果です。
+
+```sql:実行結果
+SET
 ```
 
 課題です。Sortがすでにメモリ内で済んでいる場合、「一時ファイルをなくすためにwork_memを増やす」という説明は成り立つでしょうか。64MBのときの`Sort Method`のレコードを根拠に考えてください。
