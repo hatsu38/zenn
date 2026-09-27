@@ -1,0 +1,59 @@
+SET max_parallel_workers_per_gather = 0; SET jit = off; SET work_mem = '4MB';
+BEGIN;
+SET LOCAL enable_hashjoin = off;
+SET LOCAL enable_nestloop = off;
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT b.id, r.finished_at
+FROM books AS b JOIN reading_records AS r ON r.book_id = b.id
+WHERE b.id <= 100;
+                                                                 QUERY PLAN                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------
+ Merge Join  (cost=308490.01..318496.34 rows=206 width=16) (actual time=711.451..711.511 rows=141.00 loops=1)
+   Merge Cond: (r.book_id = b.id)
+   Buffers: shared hit=7299 read=3519, temp read=6854 written=12751
+   ->  Sort  (cost=308488.69..313488.69 rows=2000000 width=16) (actual time=711.402..711.414 rows=142.00 loops=1)
+         Sort Key: r.book_id
+         Sort Method: external merge  Disk: 50896kB
+         Buffers: shared hit=7292 read=3519, temp read=6854 written=12751
+         ->  Seq Scan on reading_records r  (cost=0.00..30811.00 rows=2000000 width=16) (actual time=0.220..159.303 rows=2000000.00 loops=1)
+               Buffers: shared hit=7292 read=3519
+   ->  Index Only Scan using books_pkey on books b  (cost=0.42..6.23 rows=103 width=8) (actual time=0.042..0.057 rows=100.00 loops=1)
+         Index Cond: (id <= 100)
+         Heap Fetches: 100
+         Index Searches: 1
+         Buffers: shared hit=7
+ Planning:
+   Buffers: shared hit=254
+ Planning Time: 0.565 ms
+ Execution Time: 715.297 ms
+(18 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT b.id, r.finished_at
+FROM books AS b JOIN reading_records AS r ON r.book_id = b.id
+WHERE b.id <= 100 AND r.book_id <= 100;
+                                                              QUERY PLAN                                                              
+--------------------------------------------------------------------------------------------------------------------------------------
+ Merge Join  (cost=35818.12..35825.09 rows=1 width=16) (actual time=65.668..65.730 rows=141.00 loops=1)
+   Merge Cond: (b.id = r.book_id)
+   Buffers: shared hit=7393 read=3425
+   ->  Index Only Scan using books_pkey on books b  (cost=0.42..6.23 rows=103 width=8) (actual time=0.004..0.026 rows=100.00 loops=1)
+         Index Cond: (id <= 100)
+         Heap Fetches: 100
+         Index Searches: 1
+         Buffers: shared hit=7
+   ->  Sort  (cost=35817.70..35818.15 rows=179 width=16) (actual time=65.651..65.660 rows=141.00 loops=1)
+         Sort Key: r.book_id
+         Sort Method: quicksort  Memory: 29kB
+         Buffers: shared hit=7386 read=3425
+         ->  Seq Scan on reading_records r  (cost=0.00..35811.00 rows=179 width=16) (actual time=1.242..65.603 rows=141.00 loops=1)
+               Filter: (book_id <= 100)
+               Rows Removed by Filter: 1999859
+               Buffers: shared hit=7386 read=3425
+ Planning:
+   Buffers: shared hit=15
+ Planning Time: 0.151 ms
+ Execution Time: 65.758 ms
+(20 rows)
+
+ROLLBACK;
