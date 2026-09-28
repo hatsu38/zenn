@@ -134,7 +134,7 @@ Seq Scan on books  (cost=0.00..19853.00 rows=100 width=30) (actual time=1.151..7
 
 前方一致に使えるのは、文字を一文字ずつ比べる並び順で作ったIndexです[^pattern-ops]。実験の間だけ作って試します。
 
-[^pattern-ops]: `text_pattern_ops`という演算子クラスを指定します。[公式ドキュメントの演算子クラスの説明](https://www.postgresql.org/docs/18/indexes-opclass.html)にあります。第3章で範囲検索の比較を`COLLATE "C"`にしたときに速くなったのも、同じ「一文字ずつ比べる並び順」を使ったためです。
+[^pattern-ops]: `text_pattern_ops`という演算子クラスを指定します。[公式ドキュメントの演算子クラスの説明](https://www.postgresql.org/docs/18/indexes-opclass.html)にあります。第5章で範囲検索の比較を`COLLATE "C"`にしたときに速くなったのも、同じ「一文字ずつ比べる並び順」を使ったためです。
 
 ```sql
 BEGIN;

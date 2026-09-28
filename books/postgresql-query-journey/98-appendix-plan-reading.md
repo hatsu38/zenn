@@ -57,7 +57,7 @@ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.036..35.
 | --- | --- | --- |
 | `Filter`、`Rows Removed by Filter` | Seq Scanなど | 読んだ後に当てた条件と、それで除いたレコード数（第1章） |
 | `Index Cond` | Index Scanなど | Indexで探す範囲を決める条件（第3章） |
-| `Recheck Cond`、`Heap Blocks: exact=… lossy=…` | Bitmap Heap Scan | ページ単位の粗い印（lossy）で集めたときに確かめ直す条件と、読んだページの数（第3章） |
+| `Recheck Cond`、`Heap Blocks: exact=… lossy=…` | Bitmap Heap Scan | ページ単位の粗い印（lossy）で集めたときに確かめ直す条件と、読んだページの数（第5章） |
 | `Heap Fetches` | Index Only Scan | 可視性マップで確かめられず、テーブルのレコードを見に行った回数（第8章、第11章） |
 | `Index Searches` | Indexを使う処理 | Indexを上からたどった回数（付録「自分の遅いSQLを調べる」のパターン3） |
 | `Sort Method: quicksort` | Sort | 作業用メモリの中で全部を並べた（第7章） |
