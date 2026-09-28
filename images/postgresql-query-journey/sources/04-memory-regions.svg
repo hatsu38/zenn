@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="710" viewBox="0 0 640 710" role="img" aria-labelledby="title">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="762" viewBox="0 0 640 762" role="img" aria-labelledby="title">
   <title id="title">ページの保存場所と、計算の作業場所</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
@@ -20,12 +20,12 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
 .work{fill:#fff;stroke:#56738a;stroke-width:2;stroke-dasharray:8 5}.val{fill:#dcefe8;stroke:#448b7c;stroke-width:2}.buffer{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2}
   </style>
-  <rect width="640" height="710" fill="#f5f7f9"/>
+  <rect width="640" height="762" fill="#f5f7f9"/>
   <text x="24" y="48" class="h">ページの保存場所と、計算の作業場所</text>
   <g id="connection-a">
-    <rect x="24" y="76" width="368" height="324" rx="12" class="panel"/>
+    <rect x="24" y="76" width="368" height="376" rx="12" class="panel"/>
     <text x="40" y="108" class="b">接続A</text>
-    <rect x="40" y="124" width="162" height="210" rx="10" class="work"/>
+    <rect x="40" y="124" width="162" height="262" rx="10" class="work"/>
     <text x="121" y="154" text-anchor="middle" class="s b">数える</text>
     <text x="75" y="200" class="s">本1</text>
     <rect x="124" y="170" width="44" height="44" rx="6" class="val"/>
@@ -35,66 +35,73 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="146" y="253" text-anchor="middle" class="b">3</text>
     <text x="75" y="304" class="s">本3</text>
     <rect x="124" y="274" width="44" height="44" rx="6" class="val"/>
-    <text x="146" y="305" text-anchor="middle" class="b">5</text>
-    <rect x="214" y="124" width="162" height="210" rx="10" class="work"/>
+    <text x="146" y="305" text-anchor="middle" class="b">6</text>
+    <text x="75" y="356" class="s">本4</text>
+    <rect x="124" y="326" width="44" height="44" rx="6" class="val"/>
+    <text x="146" y="357" text-anchor="middle" class="b">1</text>
+    <rect x="214" y="124" width="162" height="262" rx="10" class="work"/>
     <text x="295" y="154" text-anchor="middle" class="s b">並べ替え</text>
     <rect x="273" y="170" width="44" height="44" rx="6" class="val"/>
     <text x="295" y="201" text-anchor="middle" class="b">8</text>
     <rect x="273" y="222" width="44" height="44" rx="6" class="val"/>
     <text x="295" y="253" text-anchor="middle" class="b">3</text>
     <rect x="273" y="274" width="44" height="44" rx="6" class="val"/>
-    <text x="295" y="305" text-anchor="middle" class="b">5</text>
-    <rect x="122" y="350" width="172" height="34" rx="6" class="hot"/>
-    <text x="208" y="374" text-anchor="middle" class="s b">処理ごとに1つ</text>
+    <text x="295" y="305" text-anchor="middle" class="b">6</text>
+    <rect x="273" y="326" width="44" height="44" rx="6" class="val"/>
+    <text x="295" y="357" text-anchor="middle" class="b">1</text>
+    <rect x="122" y="402" width="172" height="34" rx="6" class="hot"/>
+    <text x="208" y="426" text-anchor="middle" class="s b">処理ごとに1つ</text>
   </g>
   <g id="connection-b">
-    <rect x="422" y="76" width="194" height="324" rx="12" class="panel"/>
+    <rect x="422" y="76" width="194" height="376" rx="12" class="panel"/>
     <text x="438" y="108" class="b">接続B</text>
-    <rect x="438" y="124" width="162" height="210" rx="10" class="work"/>
+    <rect x="438" y="124" width="162" height="262" rx="10" class="work"/>
     <text x="519" y="154" text-anchor="middle" class="s b">並べ替え</text>
     <rect x="497" y="170" width="44" height="44" rx="6" class="val"/>
     <text x="519" y="201" text-anchor="middle" class="b">8</text>
     <rect x="497" y="222" width="44" height="44" rx="6" class="val"/>
     <text x="519" y="253" text-anchor="middle" class="b">3</text>
     <rect x="497" y="274" width="44" height="44" rx="6" class="val"/>
-    <text x="519" y="305" text-anchor="middle" class="b">5</text>
+    <text x="519" y="305" text-anchor="middle" class="b">6</text>
+    <rect x="497" y="326" width="44" height="44" rx="6" class="val"/>
+    <text x="519" y="357" text-anchor="middle" class="b">1</text>
   </g>
   <g id="legend">
-    <rect x="24" y="426" width="44" height="22" rx="4" class="work"/>
-    <text x="80" y="444" class="mono">work_mem 4MB</text>
+    <rect x="24" y="478" width="44" height="22" rx="4" class="work"/>
+    <text x="80" y="496" class="mono">work_mem 4MB</text>
   </g>
   <g id="shared-buffers">
-    <rect x="24" y="490" width="592" height="196" rx="12" class="buffer"/>
-    <text x="44" y="530" class="b">共有バッファ</text>
-    <text x="204" y="530" class="mono">shared_buffers 128MB</text>
-    <rect x="54" y="548" width="52" height="36" rx="6" class="page"/>
-    <rect x="44" y="578" width="126" height="88" rx="8" class="page"/>
-    <rect x="58" y="592" width="98" height="16" rx="3" class="row"/>
-    <rect x="58" y="616" width="98" height="16" rx="3" class="row"/>
-    <rect x="58" y="640" width="98" height="16" rx="3" class="row"/>
-    <text x="80" y="570" text-anchor="middle" class="s b">P0</text>
-    <rect x="196" y="548" width="52" height="36" rx="6" class="page"/>
-    <rect x="186" y="578" width="126" height="88" rx="8" class="page"/>
-    <rect x="200" y="592" width="98" height="16" rx="3" class="row"/>
-    <rect x="200" y="616" width="98" height="16" rx="3" class="row"/>
-    <rect x="200" y="640" width="98" height="16" rx="3" class="row"/>
-    <text x="222" y="570" text-anchor="middle" class="s b">P1</text>
-    <rect x="338" y="548" width="52" height="36" rx="6" class="page"/>
-    <rect x="328" y="578" width="126" height="88" rx="8" class="page"/>
-    <rect x="342" y="592" width="98" height="16" rx="3" class="row"/>
-    <rect x="342" y="616" width="98" height="16" rx="3" class="row"/>
-    <rect x="342" y="640" width="98" height="16" rx="3" class="row"/>
-    <text x="364" y="570" text-anchor="middle" class="s b">P2</text>
-    <rect x="480" y="548" width="52" height="36" rx="6" class="page"/>
-    <rect x="470" y="578" width="126" height="88" rx="8" class="page"/>
-    <rect x="484" y="592" width="98" height="16" rx="3" class="row"/>
-    <rect x="484" y="616" width="98" height="16" rx="3" class="row"/>
-    <rect x="484" y="640" width="98" height="16" rx="3" class="row"/>
-    <text x="506" y="570" text-anchor="middle" class="s b">P3</text>
+    <rect x="24" y="542" width="592" height="196" rx="12" class="buffer"/>
+    <text x="44" y="582" class="b">共有バッファ</text>
+    <text x="204" y="582" class="mono">shared_buffers 128MB</text>
+    <rect x="54" y="600" width="52" height="36" rx="6" class="page"/>
+    <rect x="44" y="630" width="126" height="88" rx="8" class="page"/>
+    <rect x="58" y="644" width="98" height="16" rx="3" class="row"/>
+    <rect x="58" y="668" width="98" height="16" rx="3" class="row"/>
+    <rect x="58" y="692" width="98" height="16" rx="3" class="row"/>
+    <text x="80" y="622" text-anchor="middle" class="s b">P0</text>
+    <rect x="196" y="600" width="52" height="36" rx="6" class="page"/>
+    <rect x="186" y="630" width="126" height="88" rx="8" class="page"/>
+    <rect x="200" y="644" width="98" height="16" rx="3" class="row"/>
+    <rect x="200" y="668" width="98" height="16" rx="3" class="row"/>
+    <rect x="200" y="692" width="98" height="16" rx="3" class="row"/>
+    <text x="222" y="622" text-anchor="middle" class="s b">P1</text>
+    <rect x="338" y="600" width="52" height="36" rx="6" class="page"/>
+    <rect x="328" y="630" width="126" height="88" rx="8" class="page"/>
+    <rect x="342" y="644" width="98" height="16" rx="3" class="row"/>
+    <rect x="342" y="668" width="98" height="16" rx="3" class="row"/>
+    <rect x="342" y="692" width="98" height="16" rx="3" class="row"/>
+    <text x="364" y="622" text-anchor="middle" class="s b">P2</text>
+    <rect x="480" y="600" width="52" height="36" rx="6" class="page"/>
+    <rect x="470" y="630" width="126" height="88" rx="8" class="page"/>
+    <rect x="484" y="644" width="98" height="16" rx="3" class="row"/>
+    <rect x="484" y="668" width="98" height="16" rx="3" class="row"/>
+    <rect x="484" y="692" width="98" height="16" rx="3" class="row"/>
+    <text x="506" y="622" text-anchor="middle" class="s b">P3</text>
   </g>
   <g id="uses">
-    <path d="M300 400 V484" class="ref"/>
-    <path d="M500 400 V484" class="ref"/>
-    <text x="400" y="456" text-anchor="middle" class="s">ページを使う</text>
+    <path d="M300 452 V536" class="ref"/>
+    <path d="M500 452 V536" class="ref"/>
+    <text x="400" y="508" text-anchor="middle" class="s">ページを使う</text>
   </g>
 </svg>

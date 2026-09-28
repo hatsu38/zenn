@@ -43,9 +43,10 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第6章 | 20件に減るのは、最後の2段 | [SVG](sources/02-ranking-plan-tree.svg) | [PNG](02-ranking-plan-tree.png) |
 | 第7章 | ページの保存場所と、計算の作業場所 | [SVG](sources/04-memory-regions.svg) | [PNG](04-memory-regions.png) |
 | 第7章 | 読み終えた順に、並べたい | [SVG](sources/07-recent-records.svg) | [PNG](07-recent-records.png) |
-| 第7章 | 4枚を、比較5回で並べる | [SVG](sources/07-merge-cards.svg) | [PNG](07-merge-cards.png) |
+| 第7章 | 基準の値で分けて並べる | [SVG](sources/07-quicksort-cards.svg) | [PNG](07-quicksort-cards.png) |
 | 第7章 | 200万件を調べ、4分の1を並べた | [SVG](sources/07-sort-bands.svg) | [PNG](07-sort-bands.png) |
 | 第7章 | メモリに収まらないときの並べ替え | [SVG](sources/07-external-sort.svg) | [PNG](07-external-sort.png) |
+| 第7章 | 2枚ずつ並べて、合流する | [SVG](sources/07-merge-cards.svg) | [PNG](07-merge-cards.png) |
 | 第8章 | 画面に欲しいのは、最新20件 | [SVG](sources/08-twenty-window.svg) | [PNG](08-twenty-window.png) |
 | 第8章 | 根の最小値と比べて、入れ替える | [SVG](sources/top-three-heap.svg) | [PNG](top-three-heap.png) |
 | 第8章 | LIMITで減る保持量と出力件数 | [SVG](sources/08-sort-vs-topn.svg) | [PNG](08-sort-vs-topn.png) |
