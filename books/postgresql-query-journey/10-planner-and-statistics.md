@@ -7,7 +7,7 @@ title: "第10章：PostgreSQLは、なぜその計画を選んだのか"
 PostgreSQLは実行前にレコード数や処理量を見積もり、処理方法を選びます。条件の広さやデータの偏りを変え、統計情報、推定レコード数、実際の計画を対応させます。costを実時間と区別し、推定のずれが後続の処理へ及ぼす影響を考えます。期待と違う計画を見たとき、何を確かめてから改善を試すかを組み立てます。
 
 :::message
-小さな実験用テーブルをBEGINから同じ接続で作り、最後のROLLBACKで取り消します。再接続した場合は付録「途中から実験を再開する」の共通設定から始めます。
+再接続したら、「準備」の章の共通設定を入力してください。途中の章から始めるときの準備は、[実験用リポジトリのREADME](https://github.com/hatsu38/postgresql-structures-lab#readme)にあります。
 :::
 
 ## 20件と50万件で、方法が変わったのはなぜ？
@@ -27,7 +27,7 @@ PostgreSQLは実行前にレコード数や処理量を見積もり、処理方�
 
 ## 同じ「1種類」でも、件数は違う
 
-偏りのある小さな実験用テーブルを作ります。ランキング用のテーブルとは別で、最後に取り消します。
+偏りのある小さな実験用テーブルを作ります。ランキング用のテーブルとは別です。`BEGIN`でトランザクションを始め、「古いメモで計画を立てたら」の節の`ROLLBACK`まで同じ接続で進めて、最後にテーブルごと取り消します。
 
 ```sql
 BEGIN;
@@ -47,27 +47,19 @@ SELECT * FROM stats_demo WHERE category = 'rare';
 
 ```sql:実行結果
 Seq Scan on stats_demo  (cost=0.00..189.00 rows=9000 width=11) (actual time=0.006..0.682 rows=9000.00 loops=1)
-  Filter: (category = 'popular'::text)
-  Rows Removed by Filter: 1000
+  …
   Buffers: shared hit=64
-Planning:
-  Buffers: shared hit=8 read=1
-Planning Time: 0.078 ms
-Execution Time: 0.970 ms
+  …
 ```
 
 続いて`rare`の計画です。
 
 ```sql:実行結果
 Index Scan using stats_demo_category_idx on stats_demo  (cost=0.29..35.78 rows=1000 width=11) (actual time=0.023..0.106 rows=1000.00 loops=1)
-  Index Cond: (category = 'rare'::text)
-  Index Searches: 1
-  Buffers: shared hit=7 read=3
-Planning Time: 0.017 ms
-Execution Time: 0.141 ms
+  …
 ```
 
-`popular`は推定も実際も9,000件でSeq Scan、`rare`は推定も実際も1,000件でIndex Scanでした。「どちらも1種類を探す」ことと、「同じレコード数を探す」ことは違います。
+`popular`は推定も実際も9,000件でSeq Scan、`rare`は推定も実際も1,000件でIndex Scanでした。Seq Scanの`shared hit=64`は、このテーブルが64ページあることを示しています。「どちらも1種類を探す」ことと、「同じレコード数を探す」ことは違います。
 
 対象になる割合を**選択率**と呼びます。この例なら90%と10%です。
 
@@ -126,24 +118,16 @@ UPDATE後、ANALYZEする前の実行結果です。
 
 ```sql:実行結果
 Index Scan using stats_demo_category_idx on stats_demo  (cost=0.29..51.55 rows=1672 width=11) (actual time=0.013..0.722 rows=9000.00 loops=1)
-  Index Cond: (category = 'rare'::text)
-  Index Searches: 1
-  Buffers: shared hit=60
-Planning Time: 0.077 ms
-Execution Time: 0.996 ms
+  …
 ```
 
 続いて、ANALYZE後の実行結果です。
 
 ```sql:実行結果
 Seq Scan on stats_demo  (cost=0.00..232.00 rows=9000 width=9) (actual time=0.143..0.799 rows=9000.00 loops=1)
-  Filter: (category = 'rare'::text)
-  Rows Removed by Filter: 1000
+  …
   Buffers: shared hit=107
-Planning:
-  Buffers: shared hit=11
-Planning Time: 0.106 ms
-Execution Time: 1.066 ms
+  …
 ```
 
 | 状態 | 推定rows | 実際のrows | 方法 |
@@ -152,11 +136,15 @@ Execution Time: 1.066 ms
 | UPDATE後・ANALYZE前 | 1,672 | 9,000 | Index Scan |
 | ANALYZE後 | 9,000 | 9,000 | Seq Scan |
 
-更新前の統計には`rare`の割合が0.1と残っています。ただし、ANALYZE前の推定も1,000のままではなく1,672でした。推定は値の割合だけで決まらず、[現在のテーブルの大きさに合わせた補正](https://www.postgresql.org/docs/18/planner-stats.html)も使うためです。見るべき点は、実際には9,000件になったことを古い分布が十分に表せていないことです。
+更新前の統計には`rare`の割合が0.1と残っています。ただし、ANALYZE前の推定も1,000のままではなく1,672でした。推定は値の割合だけで決まらず、[現在のテーブルの大きさに合わせた補正](https://www.postgresql.org/docs/18/planner-stats.html)も使うためです。
+
+補正の中身は、ページ数の比です。統計を作ったとき、テーブルは64ページでした。UPDATEで8,000件の新しい版が書き足され、107ページに増えています（ANALYZE後のSeq Scanの`shared hit=107`）。プランナは、1ページ当たりのレコード数が統計を作ったときと同じだと見て、全体を10,000×107÷64で約16,700件と見込みます。その0.1が1,672件です。
+
+見るべき点は、割合0.1という古い分布のままでは、実際の9,000件を表せないことです。
 
 ANALYZE後は推定が9,000件になり、選ばれる方法も変わりました。この小さなテーブルでは実行時間が必ず短くなるとは限りません。統計を更新した効果は、まず推定と実測のずれで確かめます。最後のROLLBACKで、実験用テーブルと更新をまとめて取り消しています。
 
-未コミットのテーブルは、ほかのプロセスであるautovacuum（VACUUMやANALYZEを自動で実行する仕組み。第11章で扱います）から見えないので、実験中に統計が勝手に更新されません。通常のテーブルでは自動の更新が途中で入ることがあります。推定が変わった理由を後で区別できるよう、`ANALYZE`の有無と時刻を記録しておきます。
+未コミットのテーブルは、ほかのプロセスであるautovacuum（VACUUMやANALYZEを自動で実行する仕組み。第11章で扱います）から見えないので、実験中に統計が勝手に更新されません。通常のテーブルでは自動の更新が途中で入ることがあります。推定が変わった理由を後で区別できるよう、`ANALYZE`の有無と時刻を記録しておきます。最後に統計を作った時刻は、`pg_stat_user_tables`の`last_analyze`（手動の`ANALYZE`）と`last_autoanalyze`（autovacuumによるもの）で確かめられます。
 
 ## 第9章の736,097個は、なぜ7万個台と見積もられたのか
 
@@ -168,7 +156,7 @@ SELECT n_distinct FROM pg_stats
 WHERE tablename = 'reading_records' AND attname = 'book_id';
 ```
 
-2026年9月28日、PostgreSQL 18.6で、第12章まで進めた実験用DBでの実行結果です。
+2026年9月28日、PostgreSQL 18.6で、第12章まで進めた実験用DBでの実行結果です。第11章と第12章では読了記録を増やしも消しもしないので、記録のある本の数は、この章の時点で数えても同じです。
 
 ```sql:実行結果
  actual_books
@@ -211,15 +199,9 @@ ROLLBACK;
 (1 row)
 
 HashAggregate  (cost=143311.00..166296.97 rows=736097 width=16) (actual time=533.319..744.839 rows=736097.00 loops=1)
-  Group Key: book_id
+  …
   Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 31440kB
-  Buffers: shared hit=9252 read=1559, temp read=3239 written=6740
-  ->  Seq Scan on reading_records  (cost=0.00..30811.00 rows=2000000 width=8) (actual time=0.131..130.200 rows=2000000.00 loops=1)
-        Buffers: shared hit=9252 read=1559
-Planning:
-  Buffers: shared hit=29
-Planning Time: 0.126 ms
-Execution Time: 774.853 ms
+  …
 ```
 
 目標値が10,000なら抜き出すのは300万件なので、200万件のテーブルは全件を調べます。`n_distinct`の-0.3680485は負の値なので、先ほどの表のとおりレコード数に対する割合です。200万件×0.3680485で736,097となり、実際の種類数と一致しました。見積もりも`rows=736097`になっています。
@@ -255,7 +237,7 @@ Execution Time: 774.853 ms
 
 ## costは秒数の予言ではない
 
-第1章の`cost`は、候補を同じ基準で比較するための値でした。ページを読む回数や、レコードの条件を比較する回数に、処理ごとの重みを付けて見積もります。
+第1章の`cost`は、候補を同じ基準で比較するための値でした。ページを読む回数や、レコードの条件を比較する回数に、処理ごとの重みを付けて見積もります。既定では、ページを1枚順番に読む手間を1として、ほかの重みをそれに合わせて決めています（[プランナのコストの設定](https://www.postgresql.org/docs/18/runtime-config-query.html#RUNTIME-CONFIG-QUERY-CONSTANTS)の`seq_page_cost`）。
 
 二つの数字のうち、前は最初のレコードを返すまでの見積もり、後ろは全部返すまでの見積もりです。`LIMIT`で上位の少数だけを返す場合は、全部を返し終えるまでの見積もりだけでなく、最初のレコードをどれだけ早く返せるかも計画選びに関わります。第9章の計画では、`Index Only Scan`の`cost=0.43..60768.43`に対して、上の`Limit`は`0.43..1.04`でした。20件で止まるので、最初のレコードまでの見積もりが小さい方法が選ばれやすくなります。
 

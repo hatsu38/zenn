@@ -7,7 +7,7 @@ title: "第5章：同じページを、毎回ストレージから読むのか"
 一度使ったページは、次の検索で再利用できるのでしょうか。ページを保存するストレージと、実行中に使うメモリの関係を図で確認し、`BUFFERS`の`hit`と`read`を読みます。テーブルのページをメモリから追い出してから同じ検索を3回実行し、ページの再利用と、レコードの条件を調べる処理を区別します。
 
 :::message
-第4章で作った`books_observation`を使います。接続し直した場合は、付録「途中から実験を再開する」の共通設定を実行してください。この章の最後に観察用テーブルを削除します。
+接続し直したら、「準備」の章の共通設定を入力してください。この章から始めるときの準備は、[実験用リポジトリのREADME](https://github.com/hatsu38/postgresql-structures-lab#readme)にあります。
 :::
 
 ## 同じ検索を、もう一度
@@ -71,18 +71,6 @@ SELECT id, title FROM books WHERE id BETWEEN 1 AND 1000 ORDER BY id;
 ANALYZE books_observation;
 SELECT count(*) FROM books_observation;
 ```
-
-準備の実行結果です。
-
-```sql:実行結果
-CREATE TABLE
-INSERT 0 1000
-ANALYZE
- count
--------
-  1000
-(1 row)
-```
 :::
 
 ## 同じ検索を3回実行する
@@ -99,18 +87,19 @@ SELECT * FROM pg_buffercache_evict_relation('books_observation');
 2026年9月25日、DockerのPostgreSQL 18.6で、第4章の観察を終えた後、接続し直して実行した結果です。
 
 ```sql:実行結果
-CREATE EXTENSION
  buffers_evicted | buffers_flushed | buffers_skipped
 -----------------+-----------------+-----------------
               11 |               8 |               0
 (1 row)
 ```
 
-`buffers_evicted`の11が、共有バッファから追い出したページの数です。テーブル本体以外の付属ファイルのページも対象になるため、第4章で数えた本体の8ページとは一致しません。
+`buffers_evicted`の11が、共有バッファから追い出したページの数です。第4章で数えた本体の8ページより3ページ多いのは、テーブルに付いている別のファイルのページも追い出したからです。同じ手順で内訳を数えると、本体の8ページと、各ページの空き具合を記録する**空き領域マップ**の3ページでした[^fsm]。
 
-`buffers_flushed`の8は、追い出すときにファイルへ書き出されたページの数です。メモリ上に変更済みのページが残っていたため、書き出してから追い出しています。`buffers_skipped`は追い出せなかったページの数で、今回は0でした。作成からの経過時間や途中の操作によって、追い出す数や書き出す数は変わります。変更済みのページが既にファイルへ書き戻されていれば、`buffers_flushed`は0になります。
+`buffers_flushed`の8は、追い出すときにファイルへ書き出されたページの数です。第4章で1,000件を入れたときの変更などが、まだファイルへ書き戻されずにメモリ上に残っていました。そうした変更済みのページは、書き出してから追い出します。`buffers_skipped`は追い出せなかったページの数で、今回は0でした。作成からの経過時間や途中の操作によって、追い出す数や書き出す数は変わります。変更済みのページが既にファイルへ書き戻されていれば、`buffers_flushed`は0になります。
 
-[^evict]: スーパーユーザーだけが実行できる、開発者の検証用の関数です。「準備」の章のとおり`postgres`ユーザーで接続していれば実行できます。[pg_buffercacheの公式ドキュメント](https://www.postgresql.org/docs/18/pgbuffercache.html)には、追い出したページが別の処理によってすぐ読み戻されることもあると書かれています。本番のDBで使う道具ではありません。拡張機能はこのDBに残るため、次回以降も使えます。
+[^evict]: スーパーユーザー（すべての権限を持つユーザー）だけが実行できる、開発者の検証用の関数です。実験用リポジトリのREADMEの手順では、スーパーユーザーの`postgres`ユーザーで接続するので実行できます。[pg_buffercacheの公式ドキュメント](https://www.postgresql.org/docs/18/pgbuffercache.html)には、追い出したページが別の処理によってすぐ読み戻されることもあると書かれています。本番のDBで使う道具ではありません。拡張機能はこのDBに残るため、次回以降も使えます。
+
+[^fsm]: 内訳は、`pg_buffercache`の`relforknumber`列でページを数えて確かめました（0が本体、1が空き領域マップ）。空き領域マップは、レコードを追加するときに、空きのあるページを探すために使われます。
 
 続けて、次のSQLを3回実行します。実行する前に予想してください。1回目と2回目で、`shared hit`と`shared read`はどう変わるでしょうか。そして、`Rows Removed by Filter`は変わるでしょうか。
 
@@ -123,38 +112,36 @@ SELECT id, title FROM books_observation WHERE title = '実験用の本 42';
 
 ```sql:実行結果
 Seq Scan on books_observation  (cost=0.00..20.50 rows=1 width=27) (actual time=0.124..0.324 rows=1.00 loops=1)
-  Filter: (title = '実験用の本 42'::text)
+  …
   Rows Removed by Filter: 999
   Buffers: shared read=8
 Planning:
   Buffers: shared hit=12
-Planning Time: 0.033 ms
+…
 Execution Time: 0.329 ms
 ```
 
-:::details 2回目と3回目の実行結果
-2回目です。
+2回目の実行結果です。
 
 ```sql:実行結果
 Seq Scan on books_observation  (cost=0.00..20.50 rows=1 width=27) (actual time=0.005..0.038 rows=1.00 loops=1)
-  Filter: (title = '実験用の本 42'::text)
+  …
   Rows Removed by Filter: 999
   Buffers: shared hit=8
-Planning Time: 0.013 ms
+…
 Execution Time: 0.041 ms
 ```
 
-3回目です。
+3回目の実行結果です。
 
 ```sql:実行結果
 Seq Scan on books_observation  (cost=0.00..20.50 rows=1 width=27) (actual time=0.005..0.037 rows=1.00 loops=1)
-  Filter: (title = '実験用の本 42'::text)
+  …
   Rows Removed by Filter: 999
   Buffers: shared hit=8
-Planning Time: 0.012 ms
+…
 Execution Time: 0.040 ms
 ```
-:::
 
 3回分を表にまとめます。
 
@@ -179,7 +166,7 @@ SQLも、返る1件も、3回とも同じです。それなら前回の答えを
 
 たとえば、1回目と2回目の間に別の接続が同じ題名の本を追加したり、この本の題名を書き換えたりしているかもしれません。前回の1件を取っておいて返すと、その変更を見落とします。そのため、実行するたびにページの中のレコードを確認します。レコードの変更が他の接続からどう見えるかは、第11章で扱います。
 
-時間は0.329 msから0.041 msへ短くなっていますが、それぞれ1回だけの測定です。また、今回は追い出すときに8ページをファイルへ書き出しました。書き出した内容はOSキャッシュにも残りやすいので、1回目の`read`はOSキャッシュから読んだ可能性が高く、SSDを読む時間を測ったとは言えません。`buffers_flushed`が0で、書き出さなかった場合も同じです。それまでに読んだページが、OSキャッシュに残っていることがあります。この出力から確かに言えるのは、探す方法と調べたレコード数が同じまま、`read`が`hit`へ変わったことです。
+この出力から確かに言えるのは、探す方法と調べたレコード数が同じまま、`read`が`hit`へ変わったことです。時間も0.329 msから0.041 msへ短くなっていますが、それぞれ1回だけの測定です。また、今回は追い出すときに8ページをファイルへ書き出しました。書き出した内容はOSキャッシュにも残りやすいので、1回目の`read`はOSキャッシュから読んだ可能性が高く、SSDを読む時間を測ったとは言えません。`buffers_flushed`が0で書き出さなかった場合も同じです。それまでに読んだページが、OSキャッシュに残っていることがあります。
 
 第1〜3章の出力は測定日や間に実行したSQLが異なるため、hitとreadの変化を一続きのキャッシュ実験としては比較しません。同じ条件で続けた今回の3回を、ページの再利用の観察に使います。
 
@@ -242,7 +229,7 @@ SHOW work_mem;
 (1 row)
 ```
 
-この出力は設定値であり、いま各処理が実際に使っているメモリ量ではありません。たとえば`work_mem`の`4MB`を見ても、「この検索で4MB使った」とは読めません。この章の題名検索には並べ替えもハッシュもないので、`work_mem`が関わる処理は計画に出てきていません。
+この出力は設定値であり、いま各処理が実際に使っているメモリ量ではありません。たとえば`work_mem`の`4MB`を見ても、「この検索で4MB使った」とは読めません。この章の題名検索には、並べ替えも、ハッシュ（値から計算で置き場所を決める方法。第9章で扱います）もないので、`work_mem`が関わる処理は計画に出てきていません。
 
 いまは値を変更しません。自分の環境の設定を記録し、どちらの領域に関わる値なのかを上の表と対応させてみてください。並べ替えの途中の値が`work_mem`に収まらないときに何が起きるかは、第7章で観察します。
 
@@ -251,35 +238,7 @@ SHOW work_mem;
 :::
 
 :::details ほかの用途のメモリ設定と「一時」の意味
-一時テーブルは、接続内で一時的に使うために作るテーブルです。そのページには`temp_buffers`が関わります。Indexの作成や、不要な領域を回収するVACUUMの作業には、`maintenance_work_mem`が関わります。今回の環境での設定値は次のとおりです。
-
-```sql
-SHOW temp_buffers;
-```
-
-実行結果です。
-
-```sql:実行結果
- temp_buffers
---------------
- 8MB
-(1 row)
-```
-
-続けて、メンテナンス用の設定も確認します。
-
-```sql
-SHOW maintenance_work_mem;
-```
-
-実行結果です。
-
-```sql:実行結果
- maintenance_work_mem
-----------------------
- 64MB
-(1 row)
-```
+一時テーブルは、接続内で一時的に使うために作るテーブルです。そのページには`temp_buffers`が関わります。Indexの作成や、不要な領域を回収するVACUUMの作業には、`maintenance_work_mem`が関わります。今回の環境で`SHOW`を実行すると、`temp_buffers`は8MB、`maintenance_work_mem`は64MBでした。
 
 一時テーブルのページは、BUFFERSの`local`に現れます。一方、並べ替えの途中結果がメモリに収まらずに書き出される**一時ファイル**は、`temp read`や`temp written`に関係します。第7章でこの一時ファイルを観察します。この章の観察用のテーブルは`CREATE TABLE`で作った通常のテーブルなので、`local`ではなく`shared`に現れます。
 :::
@@ -290,12 +249,6 @@ SHOW maintenance_work_mem;
 
 ```sql
 DROP TABLE books_observation;
-```
-
-実行結果です。
-
-```sql:実行結果
-DROP TABLE
 ```
 
 100万冊の`books`と題名のIndexは残ります。`pg_buffercache`など追加した拡張機能も、このDBで引き続き使えます。

@@ -25,22 +25,7 @@ SELECT id, title FROM books WHERE title = '実験用の本 42';
 
 「本の一覧から、題名が一致する本の番号と題名を取り出して」という意味です。このSQLの`books`はテーブルの名前です。テーブルは、データを一覧として保存するものです。本書では、本1冊分のようなデータ1件を「レコード」と呼びます。番号や題名など、レコードに含まれる各項目が「列」です。SQLではレコードをrow（行）と呼ぶため、実行結果には`rows`と表示されます。`SELECT`は取り出す列、`FROM`は読むテーブル、`WHERE`は残すレコードの条件です。
 
-手元で試す場合は、[「準備」の章](00-setup)でデータを用意したうえで、実験用リポジトリのディレクトリから、**ターミナルで**psqlに接続します。準備から続けて同じpsqlで入力しているなら、接続し直す必要はありません。
-
-```bash
-docker compose exec db psql -X -U postgres -d reading_map
-```
-
-接続し直したときは、「準備」の章で行った設定をもう一度入力します。
-
-```sql
-SET max_parallel_workers_per_gather = 0;
-SET jit = off;
-SET work_mem = '4MB';
-\set ON_ERROR_STOP on
-\pset pager off
-```
-
+手元で試す場合は、[実験用リポジトリのREADME](https://github.com/hatsu38/postgresql-structures-lab#readme)の手順でデータを用意してpsqlに接続し、[「準備」の章](00-setup)の共通設定を入力してから進めます。
 
 ## 1冊の題名検索で、何件を調べるか予想する
 
@@ -87,7 +72,7 @@ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30)
   Filter: (title = '実験用の本 42'::text)
 ```
 
-psqlの画面では、この上に`QUERY PLAN`という見出しと罫線、下に`(2 rows)`という行数も表示されます。本書では、実行計画の出力からこの見出しと行数を省いて載せます。`SET`などと一緒に実行したときに、実行計画の前後に表示される`SET`や`BEGIN`などの行も省きます。
+psqlの画面では、この上に`QUERY PLAN`という見出しと罫線、下に`(2 rows)`という行数も表示されます。本書では、実行計画の出力からこの見出しと行数を省いて載せます。`SET`などと一緒に実行したときに、実行計画の前後に表示される`SET`などの応答の行も省きます。また、本文で読む行だけを抜き出して載せることもあり、省いた行の位置には`…`だけの行を置きます。
 
 今度は、本の番号と題名ではなく、処理方法が返ってきました。これが実行計画です。
 
@@ -130,7 +115,7 @@ EXPLAIN (ANALYZE, BUFFERS)
 SELECT id, title FROM books WHERE title = '実験用の本 42';
 ```
 
-実験用リポジトリの環境で、次の結果が出ました。2026年9月23日、PostgreSQL 18.6、本100万冊での1回の実測です。「準備」の章のデータ準備と件数確認、先ほどのSELECTに続けて実行しています。初回のディスク読み込み速度を測ったものではありません。
+実験用リポジトリの環境で、次の結果が出ました。2026年9月23日、PostgreSQL 18.6、本100万冊での1回の実測です。READMEの手順でデータを用意して件数を確かめ、先ほどのSELECTに続けて実行しています。初回のディスク読み込み速度を測ったものではありません。
 
 ```sql:実行結果
 Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.036..35.994 rows=1.00 loops=1)
@@ -141,7 +126,7 @@ Planning Time: 0.008 ms
 Execution Time: 36.037 ms
 ```
 
-`Buffers`の数と時間は、直前に実行した処理やマシンによって変わります。あなたの結果と一致しなくてもかまいません。`Planning:`の行や`written=`のように、本とあなたの出力で、行や項目が出たり出なかったりすることもあります。`Seq Scan`、`rows`、`Rows Removed by Filter`の値が同じなら、同じ探し方で同じレコード数を調べています。
+`Buffers`の数と時間は、直前に実行した処理やマシンによって変わります。あなたの結果と一致しなくてもかまいません。`Seq Scan`、`actual`の`rows`、`Rows Removed by Filter`の値が同じなら、同じ探し方で同じレコード数を調べています。あなたの出力には、この本の出力にない行や項目（`Planning:`の行や`written=`など）が出ることもあります。どちらも後で説明します。
 
 ### 1件を返すまでに、残り999,999件も調べていた
 
@@ -186,12 +171,11 @@ SELECT id, title FROM books WHERE id = 42;
 ```sql:実行結果
 Index Scan using books_pkey on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.017..0.017 rows=1.00 loops=1)
   Index Cond: (id = 42)
-  Index Searches: 1
+  …
   Buffers: shared hit=7
 Planning:
   Buffers: shared hit=5
-Planning Time: 0.068 ms
-Execution Time: 0.026 ms
+…
 ```
 
 題名検索の出力にはなかった`Planning:`の行があります。この下の`Buffers`は、計画を作るときのページへのアクセスです。検索を実行したときの`Buffers`とは分けて読み、このあとの表では実行時の値だけを比べます。
@@ -232,11 +216,9 @@ SELECT id, title FROM books WHERE title = '存在しない本';
 
 ```sql:実行結果
 Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=40.821..40.821 rows=0.00 loops=1)
-  Filter: (title = '存在しない本'::text)
+  …
   Rows Removed by Filter: 1000000
-  Buffers: shared hit=5206 read=2147 written=78
-Planning Time: 0.013 ms
-Execution Time: 40.832 ms
+  …
 ```
 
 今回は返したレコードが0件、除外したレコードが100万件でした。見つからなかったときも、本の一覧を最後まで調べています。
@@ -251,7 +233,7 @@ docker compose exec -T db psql -X -U postgres -d reading_map \
   -a -f /lab/sql/01/01-observe.sql > results/local-chapter01.txt
 ```
 
-本に載せた出力の[元ログ](https://github.com/hatsu38/postgresql-structures-lab/blob/main/results/chapter01-million-2026-09-23.txt)と[測定条件](https://github.com/hatsu38/postgresql-structures-lab/blob/main/results/README.md)も公開しています。自分の結果と見比べてみてください。中断と再開の手順は、付録「途中から実験を再開する」にまとめています。
+本に載せた出力の[元ログ](https://github.com/hatsu38/postgresql-structures-lab/blob/main/results/chapter01-million-2026-09-23.txt)と[測定条件](https://github.com/hatsu38/postgresql-structures-lab/blob/main/results/README.md)も公開しています。自分の結果と見比べてみてください。中断と再開の手順は、[実験用リポジトリのREADME](https://github.com/hatsu38/postgresql-structures-lab#readme)にまとめています。
 
 ## 第2章へ
 

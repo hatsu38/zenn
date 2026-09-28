@@ -7,7 +7,7 @@ title: "第2章：LIMIT 1なら、見つかったところで止まるのか"
 同じ100万冊から1冊を探すとき、見つかったところで止めれば、題名を比べるレコード数を減らせるでしょうか。LIMITの有無と検索する題名を変え、早く見つかる場合、遅く見つかる場合、見つからない場合に何件を調べるかを、実行結果で比べます。
 
 :::message
-本100万冊を使い、題名のIndexはまだ作りません。読み直しでIndexが残っている場合は、付録「途中から実験を再開する」の手順で取り除きます。
+接続し直したら、「準備」の章の共通設定を入力してください。この章から始めるときの準備は、[実験用リポジトリのREADME](https://github.com/hatsu38/postgresql-structures-lab#readme)にあります。
 :::
 
 ## 1冊見つけた後も、調べる必要はある？
@@ -27,44 +27,17 @@ title: "第2章：LIMIT 1なら、見つかったところで止まるのか"
 
 ## 比較する条件をそろえる
 
-「準備」の章で用意した100万冊をそのまま使います。題名用のIndexはまだ作りません。psqlで次を設定します。再接続したら設定し直してください。
+「準備」の章で用意した100万冊をそのまま使い、題名用のIndexはまだ作りません。共通設定に加えて、この章では次の設定をします。再接続したら、共通設定と合わせて入力し直してください。
 
 ```sql
-SET max_parallel_workers_per_gather = 0;
-SET jit = off;
-SET work_mem = '4MB';
 SET synchronize_seqscans = off;
 ```
 
-設定の実行結果です。
-
-```sql:実行結果
-SET
-SET
-SET
-SET
-```
-
-最初の三つは「準備」の章と同じです。最後の`synchronize_seqscans`は、同じテーブルを読む複数の検索が、読み始める位置を途中に合わせる機能です[^syncscan]。この章では、毎回テーブルの先頭から読ませて比べたいので無効にします。
+`synchronize_seqscans`は、大きなテーブルのSeq Scanを、先頭からではなく、同じテーブルを読む別の走査が進んでいた位置から読み始めさせる機能です[^syncscan]。途中から読み始めた走査は、最後のページまで読んだら先頭へ戻り、残りを読みます。有効のままだと、本42が何件目に見つかるかが実行のたびに変わりうるので、この章では無効にして、毎回テーブルの先頭から読ませます。
 
 これは実験の条件であり、SQLが返すレコードの順序を保証する設定ではありません。
 
 [^syncscan]: 設定の意味は[PostgreSQLの公式ドキュメント](https://www.postgresql.org/docs/18/runtime-config-compatible.html#GUC-SYNCHRONIZE-SEQSCANS)でも確認できます。
-
-冊数を確認します。
-
-```sql
-SELECT count(*) FROM books;
-```
-
-実行結果です。
-
-```sql:実行結果
-  count
----------
- 1000000
-(1 row)
-```
 
 まず、LIMITを付けない検索を同じ接続で記録します。
 
@@ -77,16 +50,12 @@ SELECT id, title FROM books WHERE title = '実験用の本 42';
 
 ```sql:実行結果
 Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.009..36.378 rows=1.00 loops=1)
-  Filter: (title = '実験用の本 42'::text)
+  …
   Rows Removed by Filter: 999999
-  Buffers: shared hit=5537 read=1816 written=97
-Planning:
-  Buffers: shared hit=12
-Planning Time: 0.083 ms
-Execution Time: 36.396 ms
+  …
 ```
 
-第1章と同じく、この走査1回で100万件に条件を当てています。`Planning`の下の`Buffers`は計画を作るときのアクセスなので、検索の実行時の値とは分けて読みます。この結果を、同じデータでLIMITを付けた場合と比べます。
+第1章と同じく、この走査1回で100万件に条件を当てています。この結果を、同じデータでLIMITを付けた場合と比べます。
 
 ## 順番に調べる場合の比較回数
 
@@ -118,10 +87,10 @@ LIMIT 1;
 Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.008..0.008 rows=1.00 loops=1)
   Buffers: shared hit=2
   ->  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.007..0.007 rows=1.00 loops=1)
-        Filter: (title = '実験用の本 42'::text)
+        …
         Rows Removed by Filter: 41
         Buffers: shared hit=2
-Planning Time: 0.055 ms
+…
 Execution Time: 0.019 ms
 ```
 
@@ -135,11 +104,15 @@ Execution Time: 0.019 ms
 
 今回は、**41＋1＝42件を確認したところで終了**しています。`LIMIT 1`で変わったのは、探し方ではありません。必要な結果がそろった時点で止まるようになった、という変化です。
 
-42件という数は、出力の41件と1件を足して分かった値です。探した本の番号の42と一致したのは、番号順に入れたレコードを先頭から読んだからで、いつも番号と同じ件数で見つかるとは限りません（第11章で本42の題名を更新すると、新しいレコードがテーブルの最後のページに書かれ、ここで見つかるまでの件数も変わります）。
+42件という数は、出力の41件と1件を足して分かった値です。探した本の番号の42と一致したのは、番号順に入れたレコードを先頭から読んだからです。いつも番号と同じ件数で見つかるとは限りません[^update42]。
+
+[^update42]: たとえば第11章で本42の題名を更新すると、新しいレコードがテーブルの最後のページに書かれ、ここで見つかるまでの件数も変わります。
 
 `Buffers: shared hit=2`は、`Limit`と`Seq Scan`の両方に出ています。出力で上にある`Limit`は、下の`Seq Scan`が読んだ結果を受け取っています。`Limit`の値には`Seq Scan`の分が含まれるので、足して4回とは数えません。
 
 実行時間は0.019 msでした。時間はキャッシュなどの状態にも左右されます。それでも、調べたレコード数が100万件から42件へ減ったことは、今回の出力から確かめられます。
+
+一方、実行前の見積もりは変わっていません。`Limit`の`cost`は、下の`Seq Scan`と同じ19853.00です。PostgreSQLは`Limit`の`cost`を、下の処理の`cost`に「必要な件数÷見積もりの`rows`」を掛けて見積もります。ここでは条件に合う本を1件（`rows=1`）と見積もったので、1÷1で、テーブルを最後まで読む見積もりのままです。42件で止まれたのは、実行してみたら先頭近くで見つかったからです。
 
 目的のレコードが見つかると、`Limit`は下の`Seq Scan`にそれ以上のレコードを求めずに済みます。そこで走査が終わります。
 
@@ -163,13 +136,11 @@ LIMIT 1;
 
 ```sql:実行結果
 Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=39.306..39.307 rows=1.00 loops=1)
-  Buffers: shared hit=5746 read=1607 written=94
+  …
   ->  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=39.305..39.306 rows=1.00 loops=1)
-        Filter: (title = '実験用の本 999999'::text)
+        …
         Rows Removed by Filter: 999998
-        Buffers: shared hit=5746 read=1607 written=94
-Planning Time: 0.038 ms
-Execution Time: 39.319 ms
+        …
 ```
 
 今回は1件を返すまでに999,998件を除外し、合わせて999,999件を調べました。`LIMIT 1`があっても、目的のレコードへたどり着くまでの確認は残っています。
@@ -187,13 +158,11 @@ LIMIT 1;
 
 ```sql:実行結果
 Limit  (cost=0.00..19853.00 rows=1 width=30) (actual time=35.350..35.350 rows=0.00 loops=1)
-  Buffers: shared hit=5841 read=1512 written=94
+  …
   ->  Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=35.348..35.348 rows=0.00 loops=1)
-        Filter: (title = '存在しない本'::text)
+        …
         Rows Removed by Filter: 1000000
-        Buffers: shared hit=5841 read=1512 written=94
-Planning Time: 0.067 ms
-Execution Time: 35.368 ms
+        …
 ```
 
 返したレコードは0件、除外したレコードは100万件です。1件も見つからないので、テーブルを最後まで調べています。
@@ -218,12 +187,6 @@ Execution Time: 35.368 ms
 
 ```sql
 RESET synchronize_seqscans;
-```
-
-実行結果です。
-
-```sql:実行結果
-RESET
 ```
 
 実験用リポジトリの`sql/02/01-observe.sql`に、この章の比較SQLをまとめています。掲載出力の元ログは`results/chapter02-million-2026-09-23.txt`です。

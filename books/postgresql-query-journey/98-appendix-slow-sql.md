@@ -12,7 +12,7 @@ title: "付録：自分の遅いSQLを調べる"
 
 - **pg_stat_statements**：SQLの形ごとに、実行回数（`calls`）、合計時間（`total_exec_time`）、平均時間（`mean_exec_time`）を記録する拡張機能です。使うには、設定の`shared_preload_libraries`に加えてサーバを再起動し、`CREATE EXTENSION`します[^pgss]。この本の実験環境では有効にしていません。
 - **log_min_duration_statement**：指定した時間より長くかかったSQLを、サーバのログに書き出す設定です[^log-min]。
-- **auto_explain**：遅かったSQLの実行計画を、自動でログに書き出す拡張機能です[^auto-explain]。本番で`EXPLAIN ANALYZE`を手で実行しなくても、そのときの計画が残ります。
+- **auto_explain**：遅かったSQLの実行計画を、自動でログに書き出す拡張機能です[^auto-explain]。本番で`EXPLAIN ANALYZE`を手で実行しなくても、そのときの計画が残ります。何ミリ秒より遅いSQLを書き出すかは`auto_explain.log_min_duration`で決めます。短くしすぎるとログが大量に出るので、利用者が遅いと感じる時間を目安に置き、ログの量を見ながら調整します。
 
 [^pgss]: [公式ドキュメントのpg_stat_statementsの説明](https://www.postgresql.org/docs/18/pgstatstatements.html)にあります。
 
@@ -64,7 +64,7 @@ ORM（オブジェクトからSQLを組み立ててくれるライブラリ）�
 
 ## よくある遅い書き方
 
-ここからは、同じ結果を返すのに仕事量が大きく変わる書き方を、この本のデータで比べます。どれも、実行計画のレコード数とページへのアクセスで違いを確かめられます。
+ここからは、同じ結果を返すのに仕事量が大きく変わる書き方を、この本のデータで比べます。どれも、実行計画のレコード数とページへのアクセスで違いを確かめられます。パターン1〜3は、Indexがあっても使えない書き方です。Indexを使えても、その後の結合や集計が残って速くならない例は、第12章の案1で見ました。
 
 ### パターン1：条件の列を関数で包む
 
@@ -79,16 +79,12 @@ WHERE date(finished_at) = date '2026-09-14';
 実行結果です。
 
 ```sql:実行結果
-Aggregate  (cost=40836.00..40836.01 rows=1 width=8) (actual time=142.223..142.224 rows=1.00 loops=1)
-  Buffers: shared read=10811
+…
   ->  Seq Scan on reading_records  (cost=0.00..40811.00 rows=10000 width=0) (actual time=0.156..138.612 rows=71430.00 loops=1)
         Filter: (date(finished_at) = '2026-09-14'::date)
         Rows Removed by Filter: 1928570
         Buffers: shared read=10811
-Planning:
-  Buffers: shared hit=33 read=3
-Planning Time: 0.441 ms
-Execution Time: 142.243 ms
+…
 ```
 
 同じ日を、範囲の条件で書きます。
@@ -103,17 +99,12 @@ WHERE finished_at >= timestamp '2026-09-14'
 実行結果です。
 
 ```sql:実行結果
-Aggregate  (cost=2790.24..2790.25 rows=1 width=8) (actual time=14.761..14.761 rows=1.00 loops=1)
-  Buffers: shared read=278
+…
   ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..2606.93 rows=73325 width=0) (actual time=1.418..11.407 rows=71430.00 loops=1)
         Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-15 00:00:00'::timestamp without time zone))
-        Heap Fetches: 7
-        Index Searches: 1
+        …
         Buffers: shared read=278
-Planning:
-  Buffers: shared hit=6 read=1
-Planning Time: 0.127 ms
-Execution Time: 14.784 ms
+…
 ```
 
 どちらも71,430件を数えています。`date(finished_at)`の書き方では、第8章の日時のIndexを使えず、200万件の記録を順に読んで1,928,570件を除外しました。Indexに並んでいるのは`finished_at`の値そのもので、`date(finished_at)`の値ではないからです。範囲で書くと、Indexから9月14日の部分だけを読み、ページへのアクセスも10,811回から278回に減りました。
@@ -136,10 +127,7 @@ Seq Scan on books  (cost=0.00..19853.00 rows=100 width=30) (actual time=1.151..7
   Filter: (title ~~ '実験用の本 4200%'::text)
   Rows Removed by Filter: 999889
   Buffers: shared hit=1 read=7352
-Planning:
-  Buffers: shared hit=31 read=4
-Planning Time: 0.749 ms
-Execution Time: 73.143 ms
+…
 ```
 
 題名のIndexがあるのに、Seq Scanで100万冊を調べました。この本の実験用DBの照合順序は`en_US.utf8`で、題名のIndexもこの並び順で作られています。この並び順では、文字列の前から何文字かが同じものが、必ず隣に並ぶとは限りません。そのため、前方一致の`LIKE`にはこのIndexを使えません。
@@ -162,15 +150,12 @@ ROLLBACK;
 Index Scan using books_title_pattern_idx on books  (cost=0.42..8.45 rows=100 width=30) (actual time=0.070..0.154 rows=111.00 loops=1)
   Index Cond: ((title ~>=~ '実験用の本 4200'::text) AND (title ~<~ '実験用の本 4201'::text))
   Filter: (title ~~ '実験用の本 4200%'::text)
-  Index Searches: 1
+  …
   Buffers: shared hit=18 read=7
-Planning:
-  Buffers: shared hit=53 read=1
-Planning Time: 0.303 ms
-Execution Time: 0.172 ms
+…
 ```
 
-`Index Cond`に、「実験用の本 4200」以上「実験用の本 4201」未満という範囲が現れました。PostgreSQLは前方一致を範囲に置き換え、Indexからその範囲の111冊だけを取り出しています。ページへのアクセスは7,353回から25回になりました。
+`Index Cond`に、「実験用の本 4200」以上「実験用の本 4201」未満という範囲が現れました。`~>=~`と`~<~`は、一文字ずつ比べたときの「以上」と「未満」を表す演算子です。前の計画の`~~`は`LIKE`のことです。PostgreSQLは前方一致を範囲に置き換え、Indexからその範囲の111冊だけを取り出しています。範囲はPostgreSQLが`LIKE`から作った条件なので、元の`LIKE`も`Filter`に残して、取り出したレコードを確かめ直しています。ページへのアクセスは7,353回から25回になりました。
 
 ### パターン3：複合Indexの列の順番
 
@@ -187,11 +172,7 @@ SELECT book_id, finished_at FROM reading_records WHERE book_id = 42;
 Seq Scan on reading_records  (cost=0.00..35811.00 rows=24 width=16) (actual time=64.554..64.555 rows=1.00 loops=1)
   Filter: (book_id = 42)
   Rows Removed by Filter: 1999999
-  Buffers: shared hit=95 read=10716
-Planning:
-  Buffers: shared hit=8
-Planning Time: 0.091 ms
-Execution Time: 64.573 ms
+…
 ```
 
 `book_id`はIndexの2番目の列なので、このIndexは日時の順に並んでいて、本42の記録は全体に散らばっています。PostgreSQLは200万件を順に読むほうを選びました。本番号を先頭にしたIndexを、実験の間だけ作って比べます。
@@ -209,13 +190,7 @@ ROLLBACK;
 ```sql:実行結果
 Index Only Scan using reading_records_book_first_idx on reading_records  (cost=0.43..8.85 rows=24 width=16) (actual time=0.061..0.062 rows=1.00 loops=1)
   Index Cond: (book_id = 42)
-  Heap Fetches: 0
-  Index Searches: 1
-  Buffers: shared hit=4 read=3
-Planning:
-  Buffers: shared hit=7 read=1
-Planning Time: 0.151 ms
-Execution Time: 0.076 ms
+…
 ```
 
 同じ2つの列を持つIndexでも、先頭の列で絞れる条件かどうかで、使えるかが変わります。複合Indexは、先頭の列の順に並べた辞書のようなものです。
@@ -236,17 +211,12 @@ ROLLBACK;
 実行結果です。
 
 ```sql:実行結果
-Aggregate  (cost=132.90..132.91 rows=1 width=8) (actual time=0.781..0.781 rows=1.00 loops=1)
-  Buffers: shared hit=35 read=59
+…
   ->  Index Only Scan using reading_records_day_book_idx on reading_records  (cost=0.43..132.84 rows=23 width=0) (actual time=0.174..0.777 rows=1.00 loops=1)
         Index Cond: (book_id = 42)
-        Heap Fetches: 0
+        …
         Index Searches: 29
-        Buffers: shared hit=35 read=59
-Planning:
-  Buffers: shared hit=19 read=1
-Planning Time: 0.200 ms
-Execution Time: 0.842 ms
+…
 ```
 
 `Index Searches: 29`は、Indexを29回探しに行ったことを表します。28日分の読了日ごとに「この日の本42」を探し直しています。Index Searchesの数は、第3章で見たときはいつも1でした。1より大きいときは、Indexを何度も探し直す読み方になっています。
@@ -266,15 +236,11 @@ LIMIT 20 OFFSET 100000;
 
 ```sql:実行結果
 Limit  (cost=3039.23..3039.84 rows=20 width=16) (actual time=18.797..18.802 rows=20.00 loops=1)
-  Buffers: shared hit=3 read=385
+  …
   ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..60776.43 rows=2000000 width=16) (actual time=0.867..15.084 rows=100020.00 loops=1)
-        Heap Fetches: 9
-        Index Searches: 1
+        …
         Buffers: shared hit=3 read=385
-Planning:
-  Buffers: shared hit=31
-Planning Time: 0.121 ms
-Execution Time: 18.820 ms
+…
 ```
 
 `Limit`が返したのは20件ですが、子の`Index Only Scan`は100,020件を読んでいます。`OFFSET`で飛ばす10万件も、Indexから読んで捨てているからです。1ページ目（`OFFSET`なし）なら、子が読むのは20件で、0.022 msでした。ページ番号が大きくなるほど、読んで捨てる件数が増えます。
@@ -293,18 +259,13 @@ LIMIT 20;
 実行結果です。
 
 ```sql:実行結果
-Limit  (cost=0.43..1.23 rows=20 width=16) (actual time=4.998..5.002 rows=20.00 loops=1)
-  Buffers: shared hit=387
+…
   ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..75768.43 rows=1899248 width=16) (actual time=4.997..4.999 rows=20.00 loops=1)
         Filter: ((finished_at < '2026-09-19 14:24:00'::timestamp without time zone) OR ((finished_at = '2026-09-19 14:24:00'::timestamp without time zone) AND (book_id > 479127)))
         Rows Removed by Filter: 100000
-        Heap Fetches: 0
-        Index Searches: 1
+        …
         Buffers: shared hit=387
-Planning:
-  Buffers: shared hit=6
-Planning Time: 0.092 ms
-Execution Time: 5.016 ms
+…
 ```
 
 条件が`Index Cond`ではなく`Filter`に入り、`Rows Removed by Filter: 100000`です。`OR`でつないだ条件は、Indexで探し始める位置を決められません。そのため、先頭から10万件を読んで条件で除いています。読むページの数は`OFFSET`のときと同じ387です。
@@ -323,19 +284,14 @@ LIMIT 20;
 実行結果です。
 
 ```sql:実行結果
-Limit  (cost=0.43..1.20 rows=20 width=16) (actual time=0.021..0.025 rows=20.00 loops=1)
-  Buffers: shared hit=4
+…
   ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..71953.53 rows=1853288 width=16) (actual time=0.020..0.022 rows=20.00 loops=1)
         Index Cond: (finished_at <= '2026-09-19 14:24:00'::timestamp without time zone)
         Filter: ((finished_at < '2026-09-19 14:24:00'::timestamp without time zone) OR (book_id > 479127))
         Rows Removed by Filter: 1
-        Heap Fetches: 0
-        Index Searches: 1
+        …
         Buffers: shared hit=4
-Planning:
-  Buffers: shared hit=20
-Planning Time: 0.165 ms
-Execution Time: 0.041 ms
+…
 ```
 
 今度は`Index Cond`で日時の位置から探し始め、除いたのは同じ日時の1件だけです。2026年9月28日に三つの書き方を5回ずつ交互に測った中央値は、次のとおりです。三つとも返す20件は同じでした。
@@ -354,7 +310,7 @@ Execution Time: 0.041 ms
 
 ### パターン6：同じSQLを何度も送る
 
-一覧の20冊それぞれについて、アプリケーションが題名を1冊ずつ問い合わせると、SQLが21回送られます。この書き方はN+1と呼ばれます。1回ずつは速いので、一つのSQLの実行計画を見ても気付けません。手順1の`pg_stat_statements`で、同じ形のSQLの`calls`が多いことから見つけます。
+一覧の20冊それぞれについて、アプリケーションが題名を1冊ずつ問い合わせると、SQLが21回送られます。この書き方はN+1と呼ばれます。1回ずつは速いので、一つのSQLの実行計画を見ても気付けません。それでも、SQLを1回送るたびに、アプリケーションとDBの間の往復と、DBがSQLを受け取って計画を作る手間がかかります。21回送れば、その手間が21回分重なります。手順1の`pg_stat_statements`で、同じ形のSQLの`calls`が多いことから見つけます。
 
 第9章の`Nested Loop`（`loops=20`）は、同じ仕事をDBの中で1回のSQLにまとめたものでした。ORMには、関連するレコードをまとめて読む機能があります。Railsの`includes`、Djangoの`select_related`、Laravelの`with`です。
 
@@ -366,6 +322,6 @@ Execution Time: 0.041 ms
 - `actual`の`rows`が、`rows=1.00`のように小数で表示されるようになりました。`loops`が複数のとき、1回当たりの平均を丸めずに示せます。
 - Indexを使う処理に、Indexを探しに行った回数`Index Searches`が表示されるようになりました（パターン3）。
 - 複合Indexの先頭の列に条件がなくても、skip scanでIndexを使えることがあります（パターン3）。
-- 非同期I/Oが加わり、設定`io_method`で方式を選べるようになりました。この本の実験環境は既定の`worker`のままです。Seq ScanやBitmap Heap Scanなどの読み込みに効くことがあると説明されていますが、この本では違いを測っていません。
+- 非同期I/O（ページの読み込みを1つずつ待たずに、先にまとめて頼んでおく方法）が加わり、設定`io_method`で方式を選べるようになりました。この本の実験環境は既定の`worker`のままです。Seq ScanやBitmap Heap Scanなどの読み込みに効くことがあると説明されていますが、この本では違いを測っていません。
 
 [^release-18]: [PostgreSQL 18のリリースノート](https://www.postgresql.org/docs/18/release-18.html)にあります。

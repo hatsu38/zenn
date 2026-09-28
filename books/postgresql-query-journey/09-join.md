@@ -7,7 +7,7 @@ title: "第9章：JOINと集計は、件数によって方法をどう変える�
 読了記録に題名を付け、本ごとに読了記録を数える処理を学びます。少数のレコードを繰り返し探す方法から始め、大量のレコードをハッシュ表で照合する方法、並んだ入力を合流させる方法へ広げます。集約では入力レコード数とグループ数を区別します。結合や集計の前にレコードを減らす案が、同じ答えを返すか、何件分の処理を減らすかを考えます。
 
 :::message
-第8章の日時Indexを残して始めます。再接続した場合は付録「途中から実験を再開する」の共通設定を実行し、`work_mem=4MB`、並列実行とJITが無効の状態にします。
+再接続したら、「準備」の章の共通設定を入力してください。途中の章から始めるときの準備は、[実験用リポジトリのREADME](https://github.com/hatsu38/postgresql-structures-lab#readme)にあります。
 :::
 
 ## 番号だけでは、何の本か分からない
@@ -175,7 +175,7 @@ Execution Time: 477.379 ms
 - 本：1、2、3、4
 - 記録：1、1、3、4
 
-先頭同士を比較し、番号が違えば小さい側を進めます。一致したら組を返します。番号順に並んだ入力をたどって結合する方法が`Merge Join`です。
+先頭同士を比較し、番号が違えば小さい側を進めます。一致したら組を返します。番号順に並んだ入力をたどって結合する方法が`Merge Join`です。並べ替えの手間がいらないので、両方の入力が結合する番号の順にすでに並んでいるとき、たとえば両方をIndexの順に読めるときに向いています。
 
 この例では、記録に1が二つあります。本1の位置を保ったまま、最初の記録1と組にし、続く記録1とも組にします。二件とも返してから次の番号へ進みます。一致するたびに両側を一つずつ進めると、二件目を取りこぼしてしまいます。
 
@@ -184,7 +184,7 @@ Execution Time: 477.379 ms
 
 この図では本の番号は一意です。両側に重複がある一般の結合では、一致する組み合わせをすべて返す必要があります。
 
-Merge Joinを観察するために、実験の間だけ、Hash JoinとNested Loopを選ばないように設定します。`SET LOCAL`の設定は、`BEGIN`で始めたトランザクションの中だけ有効です。最後に`ROLLBACK`すると元に戻ります。
+Merge Joinを観察するために、実験の間だけ、Hash JoinとNested Loopを選ばないように設定します。`SET LOCAL`の設定は、`BEGIN`で始めたトランザクション（複数の操作をひとまとまりとして扱う単位）の中だけ有効です。最後に`ROLLBACK`で取り消すと、設定も元に戻ります。
 
 ```sql
 BEGIN;
@@ -197,34 +197,26 @@ WHERE b.id <= 100;
 ROLLBACK;
 ```
 
-2026年9月26日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件、並列実行とJITは無効です。 `work_mem`は4MBです。
+2026年9月26日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件、並列実行とJITは無効、`work_mem`は4MBです。
 
-:::details Merge Joinの実行結果
 ```sql:実行結果
 Merge Join  (cost=308490.01..318500.50 rows=214 width=16) (actual time=563.927..563.970 rows=141.00 loops=1)
   Merge Cond: (r.book_id = b.id)
-  Buffers: shared hit=8871 read=1944, temp read=6854 written=12751
+  …
   ->  Sort  (cost=308488.69..313488.69 rows=2000000 width=16) (actual time=563.892..563.902 rows=142.00 loops=1)
         Sort Key: r.book_id
         Sort Method: external merge  Disk: 50896kB
-        Buffers: shared hit=8867 read=1944, temp read=6854 written=12751
+        …
         ->  Seq Scan on reading_records r  (cost=0.00..30811.00 rows=2000000 width=16) (actual time=0.165..125.741 rows=2000000.00 loops=1)
-              Buffers: shared hit=8867 read=1944
+              …
   ->  Index Only Scan using books_pkey on books b  (cost=0.42..10.30 rows=107 width=8) (actual time=0.028..0.040 rows=100.00 loops=1)
-        Index Cond: (id <= 100)
-        Heap Fetches: 100
-        Index Searches: 1
-        Buffers: shared hit=4
-Planning:
-  Buffers: shared hit=12
-Planning Time: 0.165 ms
+        …
 Execution Time: 568.076 ms
 ```
-:::
 
-本の側は主キーのIndexから番号順に100件を返しています。記録の側はSeq Scanで200万件を読み、`Sort Key: r.book_id`で並べ替えました。Sortが親へ返したのは142件ですが、その子の入力は200万件です。並べ替えの準備まで142件で済んだ、とは読めません。
+本の側は主キーのIndexから番号順に100件を返しています。記録の側はSeq Scanで200万件を読み、`Sort Key: r.book_id`で並べ替えました。並べ替えは`external merge`で、一時ファイルを使っています。Sortが親へ返したのは142件ですが、その子の入力は200万件です。並べ替えの準備まで142件で済んだ、とは読めません。
 
-結合が返したのは141件です。本100冊のうち、記録のある本だけが、その本の記録の件数だけ組になります。記録が一度もない本は組になりません。少数の結果を返すために、大きな並べ替えが追加された例です。
+結合が返したのは141件です。本100冊のうち、記録のある本だけが、その本の記録の件数だけ組になります。記録が一度もない本は組になりません。Sortから受け取った142件のうち、最後の1件は番号が100を超えた最初の記録です。Merge Joinはそれを読んで、もう組になる本がないと分かったところで止まりました。少数の結果を返すために、大きな並べ替えが追加された例です。
 
 200万件すべてを並べたのは、`WHERE b.id <= 100`が本の側だけの条件で、読了記録の`r.book_id`には自動で伝わらないためです。`b.id = 42`のような等号の条件なら、PostgreSQLは結合の条件をたどって`r.book_id = 42`も導きますが、`<=`のような範囲の条件は導きません。試しに`AND r.book_id <= 100`を足して同じ設定で実行すると、`Sort`に入るレコードは141件になり、`Sort Method`は`quicksort  Memory: 29kB`に変わりました。2026年9月28日に元のSQLと条件を足したSQLを2回ずつ測ると、元のSQLは882msと715ms、条件を足したSQLは79msと66msでした。上の出力の568msは9月26日の測定なので、この2組とは比べません。
 
@@ -254,13 +246,11 @@ FROM reading_records GROUP BY book_id;
 
 ```sql:実行結果
 HashAggregate  (cost=40811.00..41599.81 rows=78881 width=16) (actual time=421.904..611.755 rows=736097.00 loops=1)
-  Group Key: book_id
+  …
   Batches: 21  Memory Usage: 8257kB  Disk Usage: 27752kB
-  Buffers: shared hit=8961 read=1850, temp read=4090 written=6731
+  …
   ->  Seq Scan on reading_records  (cost=0.00..30811.00 rows=2000000 width=8) (actual time=0.178..102.246 rows=2000000.00 loops=1)
-        Buffers: shared hit=8961 read=1850
-Planning Time: 0.070 ms
-Execution Time: 634.511 ms
+        …
 ```
 
 入力は200万件、`HashAggregate`が返したグループは736,097個です。記録が一度もない本はグループになりません。`Memory Usage: 8257kB`に加え、`Batches: 21`と`Disk Usage`もあります。73万個余りのカウンタを一度にメモリへ置けず、一時ファイルも使っています。なお、実行前の見積もり`rows=78881`は、実際の736,097個よりかなり少なくなっています。見積もりをどう作っているかは、第10章で調べます。
@@ -274,7 +264,7 @@ Execution Time: 634.511 ms
 
 ## ハッシュ表がメモリに収まらないとき
 
-グループの数が多ければ、メモも多くなります。ハッシュ処理のメモリ上限は、`work_mem`に`hash_mem_multiplier`を掛けて計算します。ただし、出力の`Memory Usage`がこの積を上回ることはあります。この後の64kBの実験では、積は128kBですが、`Memory Usage`は1249kBでした。どこまで上回るかの内訳は、この本では確かめていません。プロセス全体の使用量を厳密に止める上限ではない、と読んでください。
+グループの数が多ければ、メモも多くなります。ハッシュ処理のメモリ上限は、`work_mem`に`hash_mem_multiplier`を掛けて計算します。ただし、出力の`Memory Usage`がこの積を上回ることはあります。プロセス全体の使用量を厳密に止める上限ではなく、目安だと読んでください。
 
 ```sql
 SHOW work_mem;
@@ -297,6 +287,8 @@ SHOW hash_mem_multiplier;
 
 先ほどの1週間分のHash Joinは、`work_mem`が4MBの状態で`Batches: 16`となり、`temp read=7404 written=7404`も出ていました。本100万件のハッシュ表を一度にメモリへ置けず、16個に分けて一時ファイルを使いながら照合したと読めます。
 
+親の値は子の値を含むので、`Hash Join`の`written=7404`には、子の`Hash`が本を書き出した`temp written=5943`が入っています。残りの1,461ブロックは、`Hash Join`自身が書いた分です。外側から届いた記録のうち、後の回で照合する記録を一時ファイルへ回しています（[PostgreSQL 18のソース](https://github.com/postgres/postgres/blob/REL_18_STABLE/src/backend/executor/nodeHashjoin.c)で確かめました）。`read=7404`は、書いた分をすべて読み戻した量です。
+
 さらに小さなメモリで比べるなら、`BEGIN`の後に`SET LOCAL work_mem = '64kB'`を実行し、同じSQLを実行してから`ROLLBACK`します。
 
 ```sql
@@ -311,29 +303,23 @@ WHERE r.finished_at >= timestamp '2026-09-14'
 ROLLBACK;
 ```
 
-:::details 64kBでの実行結果
+64kBでの実行結果です。
+
 ```sql:実行結果
 Hash Join  (cost=36689.43..65899.61 rows=488229 width=30) (actual time=216.690..418.515 rows=499998.00 loops=1)
-  Hash Cond: (r.book_id = b.id)
+  …
   Buffers: shared hit=6404 read=2868, temp read=7824 written=7824
   ->  Index Only Scan using reading_records_order_idx on reading_records r  (cost=0.43..17277.01 rows=488229 width=8) (actual time=0.007..35.118 rows=499998.00 loops=1)
-        Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
-        Heap Fetches: 0
-        Index Searches: 1
-        Buffers: shared hit=1919
+        …
   ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=216.243..216.244 rows=1000000.00 loops=1)
         Buckets: 32768  Batches: 64  Memory Usage: 1249kB
-        Buffers: shared hit=4485 read=2868, temp written=6218
-        ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.007..72.504 rows=1000000.00 loops=1)
-              Buffers: shared hit=4485 read=2868
-Planning:
-  Buffers: shared hit=12
-Planning Time: 0.160 ms
+        …
 Execution Time: 432.850 ms
 ```
-:::
 
 今回の再実行では`Batches: 64`でした。先ほどの4MBの例の16より分割が増え、`temp read/written`は7,824ブロックずつになりました。記録を読む方法は、4MBのときと同じIndex Only Scanです。ただし、設定を変えると計画全体が変わることもあるので、時間差のすべてをハッシュの分割だけの効果にはしません。
+
+`Memory Usage`は1249kBでした。`work_mem`の64kBに`hash_mem_multiplier`の2を掛けた128kBを、大きく上回っています。どこまで上回るかの内訳は、この本では確かめていません。
 
 ## 数えてから題名を付けても、同じ答えになる？
 

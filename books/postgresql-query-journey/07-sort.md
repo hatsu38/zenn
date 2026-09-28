@@ -7,7 +7,7 @@ title: "第7章：50万件のSortは、work_memに収まるのか"
 読了記録を新しい順に並べるために、どんな処理が必要でしょうか。少数の値の比較から始めて、実行計画のSortと対応させます。`work_mem`を変えて、メモリ内で終わる並べ替えと、一時ファイルを使う並べ替えを観察します。最後に、作業用メモリがどこに置かれるかを第6章の補足と対応させ、並べ替えが遅いときに何を確認すべきかを整理します。
 
 :::message
-「準備」の章で用意した読了記録200万件を使います。日時Indexはまだない状態です。第8章以降から戻った場合は、付録「途中から実験を再開する」の手順で実験用Indexを取り除きます。
+接続し直したら、「準備」の章の共通設定を入力してください。この章から始めるときの準備は、[実験用リポジトリのREADME](https://github.com/hatsu38/postgresql-structures-lab#readme)にあります。
 :::
 
 ## 新しい読了記録を上にしたい
@@ -71,15 +71,7 @@ SET jit = off;
 SET work_mem = '64MB';
 ```
 
-実行結果です。
-
-```sql:実行結果
-SET
-SET
-SET
-```
-
-この設定は、いま接続しているpsqlのセッションに適用されます。接続し直した場合は、実験前に再設定してください。
+この設定は、いまのpsqlの接続だけに効きます。接続し直した場合は、実験前に再設定してください。
 
 ```sql
 EXPLAIN (ANALYZE, BUFFERS)
@@ -98,10 +90,10 @@ Sort  (cost=88387.00..89643.06 rows=502425 width=16) (actual time=182.059..207.7
   Sort Method: quicksort  Memory: 27913kB
   Buffers: shared hit=10811
   ->  Seq Scan on reading_records  (cost=0.00..40811.00 rows=502425 width=16) (actual time=0.022..80.506 rows=499998.00 loops=1)
-        Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+        …
         Rows Removed by Filter: 1500002
         Buffers: shared hit=10811
-Planning Time: 0.083 ms
+…
 Execution Time: 223.929 ms
 ```
 
@@ -128,7 +120,7 @@ Execution Time: 223.929 ms
 
 ### 今回の並べ替えは、メモリに収まった
 
-`Sort Method: quicksort  Memory: 27913kB`から、今回はクイックソートを使い、作業に27,913kBのメモリを使ったことが分かります。約27.3MiBで、設定した`work_mem = '64MB'`の範囲に収まっています。64MBを設定したからといって、64MBすべてを使ったわけではありません。
+`Sort Method: quicksort  Memory: 27913kB`から、今回はクイックソートを使い、作業に27,913kBのメモリを使ったことが分かります。27,913kBは約27MBなので、設定した`work_mem = '64MB'`の範囲に収まっています。64MBを設定したからといって、64MBすべてを使ったわけではありません。
 
 クイックソートは、基準となる値との比較で大小のグループに分け、それぞれをさらに分けて並べる方法です。先ほどの図は、並んだグループを合流させるマージソートなので、この実行の手順をそのまま描いたものではありません。ここでは、実際に選ばれた方法を`Sort Method`で確認します。
 
@@ -162,12 +154,6 @@ Execution Time: 223.929 ms
 SET work_mem = '64kB';
 ```
 
-実行結果です。
-
-```sql:実行結果
-SET
-```
-
 同じ`EXPLAIN (ANALYZE, BUFFERS)`をもう一度実行します。
 
 ```sql
@@ -183,18 +169,16 @@ ORDER BY finished_at DESC, book_id ASC;
 
 ```sql:実行結果
 Sort  (cost=122183.71..123431.54 rows=499134 width=16) (actual time=289.741..325.654 rows=499998.00 loops=1)
-  Sort Key: finished_at DESC, book_id
+  …
   Sort Method: external merge  Disk: 12784kB
   Buffers: shared hit=9451 read=1360, temp read=6367 written=6793
   ->  Seq Scan on reading_records  (cost=0.00..40811.00 rows=499134 width=16) (actual time=0.019..115.397 rows=499998.00 loops=1)
-        Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
-        Rows Removed by Filter: 1500002
-        Buffers: shared hit=9451 read=1360
-Planning Time: 0.269 ms
-Execution Time: 341.417 ms
+…
 ```
 
 `Sort Method`が`external merge`になり、`temp read=6367 written=6793`が現れました。子のSeq Scanが渡す499,998件は変わらず、並べ替えの途中で一時ファイルを使っています。時間の増減はキャッシュや実行順にも左右されるので、まず方式と一時ファイルの有無を比べます。
+
+1回目の出力と比べると、`Sort`の`cost`と、見積もりの`rows`も違います。`cost`が大きくなったのは、一時ファイルを使う並べ替えになると見込んだためです。見積もりの`rows`（502,425と499,134）が違うのは、測った日が違い、見積もりの元になる統計情報（第10章）が同じではないためです。
 
 次の表は、上の2種類の出力の方式と使用領域を比較したものです。quicksortは9月22日、external mergeは9月25日の別の測定なので、時間差の比較には使いません。どちらもPostgreSQL 18.6、読了記録200万件、対象週499,998件で、並列実行とJITは無効です。
 
@@ -207,7 +191,7 @@ Execution Time: 341.417 ms
 
 MemoryとDiskは、保存場所もデータの形式も違う量なので、引き算して節約量とはしません。今回の出力では、`temp read=6367 written=6793`が読み書きしたブロック数に当たります。
 
-`shared`はテーブルやIndexのページに関わる値、`temp`は今回のような一時ファイルに関わる値です。第5章で見た共有バッファ（テーブルやIndexのページ）と、作業用メモリからあふれた一時ファイルが、ここでは`shared`と`temp`という別々の数字で表れます。
+`shared`はテーブルやIndexのページに関わる値、`temp`は今回のような一時ファイルに関わる値です。第5章で見た共有バッファ（テーブルやIndexのページ）と、作業用メモリからあふれた一時ファイルが、ここでは`shared`と`temp`という別々の数字で表れます。なお、一時テーブルのページは、どちらでもなく`local`に表れます（第5章の補足）。
 
 ## メモリを増やせば、いつも解決？
 
@@ -217,7 +201,7 @@ MemoryとDiskは、保存場所もデータの形式も違う量なので、引�
 
 このSortは、SQLを受け取った接続のバックエンドプロセスが、自分の作業用メモリの中で行いました。第6章の補足で見たように、各接続のプロセスがそれぞれこの領域を持ち、共有バッファは全プロセスで一つです。そのため、`work_mem`を「DB全体でここまで」とは読めません。
 
-また、並べ替え以外に時間がかかっているなら、ソート用のメモリを増やしても、その処理は減りません。
+また、並べ替え以外に時間がかかっているなら、ソート用のメモリを増やしても、その処理は減りません。第12章の最後の課題では、ランキングのSQLを`work_mem`だけ変えて測り、一時ファイルが消えても速くならない例を見ます。
 
 実験後は、後続章の基準へ戻します。
 
@@ -225,12 +209,6 @@ MemoryとDiskは、保存場所もデータの形式も違う量なので、引�
 SET work_mem = '4MB';
 ```
 
-実行結果です。
-
-```sql:実行結果
-SET
-```
-
-課題です。Sortがすでにメモリ内で済んでいる場合、「一時ファイルをなくすためにwork_memを増やす」という説明は成り立つでしょうか。64MBのときの`Sort Method`のレコードを根拠に考えてください。
+課題です。Sortがすでにメモリ内で済んでいる場合、「一時ファイルをなくすためにwork_memを増やす」という説明は成り立つでしょうか。64MBのときの`Sort Method`の表示を根拠に考えてください。
 
 この章のSortは、対象週の499,998件すべてに順位を付けました。ところが、最近の記録の画面に表示するのは新しい20件だけです。残りの約50万件の順位まで決める必要はあるのでしょうか。次章では`LIMIT 20`を付けて、並べ替えの処理がどう変わるかを調べます。
