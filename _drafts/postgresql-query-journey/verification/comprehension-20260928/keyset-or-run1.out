@@ -1,0 +1,30 @@
+                                                                               QUERY PLAN                                                                                
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=3038.83..3039.44 rows=20 width=16) (actual time=12.693..12.702 rows=20.00 loops=1)
+   Buffers: shared hit=387
+   ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..60768.43 rows=2000000 width=16) (actual time=0.025..9.074 rows=100020.00 loops=1)
+         Heap Fetches: 0
+         Index Searches: 1
+         Buffers: shared hit=387
+ Planning:
+   Buffers: shared hit=90
+ Planning Time: 0.215 ms
+ Execution Time: 12.720 ms
+(10 rows)
+
+                                                                                     QUERY PLAN                                                                                      
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.43..1.23 rows=20 width=16) (actual time=5.083..5.087 rows=20.00 loops=1)
+   Buffers: shared hit=387
+   ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..75768.43 rows=1899248 width=16) (actual time=5.082..5.084 rows=20.00 loops=1)
+         Filter: ((finished_at < '2026-09-19 14:24:00'::timestamp without time zone) OR ((finished_at = '2026-09-19 14:24:00'::timestamp without time zone) AND (book_id > 479127)))
+         Rows Removed by Filter: 100000
+         Heap Fetches: 0
+         Index Searches: 1
+         Buffers: shared hit=387
+ Planning:
+   Buffers: shared hit=6
+ Planning Time: 0.373 ms
+ Execution Time: 5.109 ms
+(12 rows)
+

@@ -1,0 +1,72 @@
+                                                           QUERY PLAN                                                            
+---------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using tmp_books_lower_title on books  (cost=0.42..8.44 rows=1 width=30) (actual time=0.108..0.108 rows=1.00 loops=1)
+   Index Cond: (lower(title) = '実験用の本 42'::text)
+   Index Searches: 1
+   Buffers: shared hit=1 read=3
+ Planning:
+   Buffers: shared hit=21 read=1
+ Planning Time: 0.607 ms
+ Execution Time: 0.196 ms
+(8 rows)
+
+                                                              QUERY PLAN                                                              
+--------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.42..1.14 rows=20 width=30) (actual time=0.082..0.086 rows=20.00 loops=1)
+   Buffers: shared hit=6 read=1
+   ->  Index Scan using books_pkey on books  (cost=0.42..17983.77 rows=501677 width=30) (actual time=0.077..0.079 rows=20.00 loops=1)
+         Index Cond: (id > 500000)
+         Index Searches: 1
+         Buffers: shared hit=6 read=1
+ Planning:
+   Buffers: shared hit=14
+ Planning Time: 0.116 ms
+ Execution Time: 0.092 ms
+(10 rows)
+
+                                                                QUERY PLAN                                                                
+------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=45811.09..45811.10 rows=4 width=16) (actual time=535.175..535.176 rows=4.00 loops=1)
+   Sort Key: (date_trunc('week'::text, finished_at))
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=1829 read=8982
+   ->  HashAggregate  (cost=45811.00..45811.05 rows=4 width=16) (actual time=535.166..535.168 rows=4.00 loops=1)
+         Group Key: date_trunc('week'::text, finished_at)
+         Batches: 1  Memory Usage: 32kB
+         Buffers: shared hit=1829 read=8982
+         ->  Seq Scan on reading_records  (cost=0.00..35811.00 rows=2000000 width=8) (actual time=0.102..333.827 rows=2000000.00 loops=1)
+               Buffers: shared hit=1829 read=8982
+ Planning:
+   Buffers: shared hit=28
+ Planning Time: 0.188 ms
+ Execution Time: 535.260 ms
+(14 rows)
+
+                                                                          QUERY PLAN                                                                          
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=533.84..534.34 rows=200 width=38) (actual time=0.164..0.166 rows=6.00 loops=1)
+   Sort Key: (count(*)) DESC
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=33 read=6
+   ->  HashAggregate  (cost=524.20..526.20 rows=200 width=38) (actual time=0.159..0.161 rows=6.00 loops=1)
+         Group Key: r.book_id, b.title
+         Batches: 1  Memory Usage: 40kB
+         Buffers: shared hit=33 read=6
+         ->  Nested Loop  (cost=0.85..522.70 rows=200 width=30) (actual time=0.094..0.146 rows=9.00 loops=1)
+               Buffers: shared hit=33 read=6
+               ->  Index Scan using tmp_books_title_pattern on books b  (cost=0.42..8.45 rows=100 width=30) (actual time=0.061..0.066 rows=11.00 loops=1)
+                     Index Cond: ((title ~>=~ '実験用の本 12345'::text) AND (title ~<~ '実験用の本 12346'::text))
+                     Filter: (title ~~ '実験用の本 12345%'::text)
+                     Index Searches: 1
+                     Buffers: shared hit=2 read=3
+               ->  Index Only Scan using tmp_rr_book_id on reading_records r  (cost=0.43..4.88 rows=26 width=8) (actual time=0.005..0.005 rows=0.82 loops=11)
+                     Index Cond: (book_id = b.id)
+                     Heap Fetches: 0
+                     Index Searches: 11
+                     Buffers: shared hit=31 read=3
+ Planning:
+   Buffers: shared hit=104 read=7
+ Planning Time: 0.662 ms
+ Execution Time: 0.197 ms
+(24 rows)
+
