@@ -32,6 +32,8 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第5章 | 同じ検索を、もう一度 | [SVG](sources/04-repeat-observation.svg) | [PNG](04-repeat-observation.png) |
 | 第5章 | 読み込んだページを、次も使う | [SVG](sources/shared-buffer-reuse.svg) | [PNG](shared-buffer-reuse.png) |
 | 第5章 | ページは再利用、毎回比べる | [SVG](sources/04-two-levels.svg) | [PNG](04-two-levels.png) |
+| 第5章 | 共有バッファがいっぱいのとき | [SVG](sources/04-buffer-full.svg) | [PNG](04-buffer-full.png) |
+| 第5章 | リングバッファで読むとき | [SVG](sources/04-ring-buffer.svg) | [PNG](04-ring-buffer.png) |
 | 第5章 | 取りに行く順で、開く回数が変わる | [SVG](sources/06-bitmap-scan.svg) | [PNG](06-bitmap-scan.png) |
 | 第6章 | SQLを受け取る側は、いくつ？ | [SVG](sources/02-client-scene.svg) | [PNG](02-client-scene.png) |
 | 第6章 | 接続ごとにプロセスが動く | [SVG](sources/02-connections.svg) | [PNG](02-connections.png) |
