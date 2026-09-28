@@ -1,0 +1,115 @@
+SELECT version();
+                                                         version                                                          
+--------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+SET max_parallel_workers_per_gather = 0;
+SET jit = off;
+SET work_mem = '4MB';
+SET lock_timeout = '3s';
+BEGIN;
+DROP INDEX reading_records_order_idx;
+SELECT indexname FROM pg_indexes WHERE tablename IN ('books','reading_records') ORDER BY 1;
+    indexname    
+-----------------
+ books_pkey
+ books_title_idx
+(2 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT b.title, r.finished_at
+FROM books AS b
+JOIN reading_records AS r ON r.book_id = b.id
+WHERE b.id IN (42, 43);
+                                                              QUERY PLAN                                                               
+---------------------------------------------------------------------------------------------------------------------------------------
+ Hash Join  (cost=12.91..36073.93 rows=4 width=30) (actual time=73.019..262.468 rows=3.00 loops=1)
+   Hash Cond: (r.book_id = b.id)
+   Buffers: shared hit=3487 read=7329
+   ->  Seq Scan on reading_records r  (cost=0.00..30811.00 rows=2000000 width=16) (actual time=0.015..138.384 rows=2000000.00 loops=1)
+         Buffers: shared hit=3482 read=7329
+   ->  Hash  (cost=12.88..12.88 rows=2 width=30) (actual time=0.006..0.007 rows=2.00 loops=1)
+         Buckets: 1024  Batches: 1  Memory Usage: 9kB
+         Buffers: shared hit=5
+         ->  Index Scan using books_pkey on books b  (cost=0.42..12.88 rows=2 width=30) (actual time=0.004..0.005 rows=2.00 loops=1)
+               Index Cond: (id = ANY ('{42,43}'::bigint[]))
+               Index Searches: 1
+               Buffers: shared hit=5
+ Planning:
+   Buffers: shared hit=163
+ Planning Time: 0.286 ms
+ Execution Time: 262.495 ms
+(16 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT b.title, r.finished_at
+FROM books AS b
+JOIN reading_records AS r ON r.book_id = b.id
+WHERE b.id IN (42, 43);
+                                                              QUERY PLAN                                                               
+---------------------------------------------------------------------------------------------------------------------------------------
+ Hash Join  (cost=12.91..36073.93 rows=4 width=30) (actual time=77.252..281.334 rows=3.00 loops=1)
+   Hash Cond: (r.book_id = b.id)
+   Buffers: shared hit=3581 read=7235
+   ->  Seq Scan on reading_records r  (cost=0.00..30811.00 rows=2000000 width=16) (actual time=0.005..160.018 rows=2000000.00 loops=1)
+         Buffers: shared hit=3576 read=7235
+   ->  Hash  (cost=12.88..12.88 rows=2 width=30) (actual time=0.008..0.010 rows=2.00 loops=1)
+         Buckets: 1024  Batches: 1  Memory Usage: 9kB
+         Buffers: shared hit=5
+         ->  Index Scan using books_pkey on books b  (cost=0.42..12.88 rows=2 width=30) (actual time=0.006..0.007 rows=2.00 loops=1)
+               Index Cond: (id = ANY ('{42,43}'::bigint[]))
+               Index Searches: 1
+               Buffers: shared hit=5
+ Planning:
+   Buffers: shared hit=10
+ Planning Time: 0.140 ms
+ Execution Time: 281.359 ms
+(16 rows)
+
+SELECT b.title, r.finished_at
+FROM books AS b
+JOIN reading_records AS r ON r.book_id = b.id
+WHERE b.id IN (42, 43);
+     title     |     finished_at     
+---------------+---------------------
+ 実験用の本 43 | 2026-08-26 09:13:09
+ 実験用の本 42 | 2026-08-29 02:29:54
+ 実験用の本 43 | 2026-09-05 10:00:29
+(3 rows)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT b.title, r.finished_at
+FROM books AS b
+JOIN reading_records AS r ON r.book_id = b.id
+WHERE b.id = 42;
+                                                          QUERY PLAN                                                          
+------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.42..35819.68 rows=24 width=30) (actual time=51.834..67.052 rows=1.00 loops=1)
+   Buffers: shared hit=3771 read=7047
+   ->  Index Scan using books_pkey on books b  (cost=0.42..8.44 rows=1 width=30) (actual time=0.014..0.019 rows=1.00 loops=1)
+         Index Cond: (id = 42)
+         Index Searches: 1
+         Buffers: shared hit=7
+   ->  Seq Scan on reading_records r  (cost=0.00..35811.00 rows=24 width=16) (actual time=51.814..67.024 rows=1.00 loops=1)
+         Filter: (book_id = 42)
+         Rows Removed by Filter: 1999999
+         Buffers: shared hit=3764 read=7047
+ Planning:
+   Buffers: shared hit=8
+ Planning Time: 0.106 ms
+ Execution Time: 67.075 ms
+(14 rows)
+
+ROLLBACK;
+SELECT indexname FROM pg_indexes WHERE tablename = 'reading_records';
+         indexname         
+---------------------------
+ reading_records_order_idx
+(1 row)
+
+SELECT pid, state FROM pg_stat_activity WHERE state LIKE 'idle in%';
+ pid | state 
+-----+-------
+(0 rows)
+

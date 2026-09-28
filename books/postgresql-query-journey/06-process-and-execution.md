@@ -4,7 +4,7 @@ title: "第6章：長い実行計画は、どこから読むのか"
 
 ## この章で分かること
 
-序章のランキングSQLに`EXPLAIN ANALYZE`を付けると、20行を超える出力が返ります。どこから読めばよいのかを、実行計画の形から確かめます。SQLの文字列が解析・計画・実行と進む流れを図で追い、小さな計画で、上の処理が下の処理にレコードを求める「計画の木」の読み方を確かめます。その読み方で、ランキングの計画をいちばん深いところから読みます。最後に、出力の`Buffers`と`Memory`を手掛かりに、共有するメモリと処理ごとの作業領域を区別します。接続ごとにSQLを処理するプロセスの観察は、章末の補足に置きます。
+序章のランキングSQLに`EXPLAIN ANALYZE`を付けると、20行を超える出力が返ります。どこから読めばよいのかを、実行計画の形から確かめます。SQLの文字列が解析・計画・実行と進む流れを図で追い、小さな計画で、上の処理が下の処理にレコードを求める「計画の木」の読み方を確かめ、子が二つある小さな計画で、親がどちらの子から動かすかを見ます。その読み方で、ランキングの計画をいちばん深いところから読みます。親の`Buffers`に子の分が含まれることも確かめます。接続ごとにSQLを処理するプロセスの観察は、章末の補足に置きます。
 
 :::message
 接続し直したら、「準備」の章の共通設定を入力してください。この章から始めるときの準備は、[実験用リポジトリのREADME](https://github.com/hatsu38/postgresql-structures-lab#readme)にあります。
@@ -26,38 +26,7 @@ ORDER BY read_count DESC, b.id ASC
 LIMIT 20;
 ```
 
-2026年9月26日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件で、第3章の題名Indexがあり、読了記録にはまだIndexがありません。並列実行とJITは無効、`work_mem`は4MBです。
-
-```sql:実行結果
-Limit  (cost=153548.50..153548.55 rows=20 width=38) (actual time=627.239..627.244 rows=20.00 loops=1)
-  Buffers: shared hit=4288 read=13879, temp read=9046 written=10758
-  ->  Sort  (cost=153548.50..154780.84 rows=492937 width=38) (actual time=627.238..627.241 rows=20.00 loops=1)
-        Sort Key: (count(*)) DESC, b.id
-        Sort Method: top-N heapsort  Memory: 27kB
-        Buffers: shared hit=4288 read=13879, temp read=9046 written=10758
-        ->  HashAggregate  (cost=128762.88..140431.62 rows=492937 width=38) (actual time=552.463..606.428 rows=255238.00 loops=1)
-              Group Key: b.id
-              Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 15584kB
-              Buffers: shared hit=4285 read=13879, temp read=9046 written=10758
-              ->  Hash Join  (cost=36689.00..89481.96 rows=492937 width=30) (actual time=168.642..459.483 rows=499998.00 loops=1)
-                    Hash Cond: (r.book_id = b.id)
-                    Buffers: shared hit=4285 read=13879, temp read=7278 written=7278
-                    ->  Seq Scan on reading_records r  (cost=0.00..40811.00 rows=492937 width=8) (actual time=0.154..101.089 rows=499998.00 loops=1)
-                          Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
-                          Rows Removed by Filter: 1500002
-                          Buffers: shared hit=2048 read=8763
-                    ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=168.081..168.082 rows=1000000.00 loops=1)
-                          Buckets: 131072  Batches: 16  Memory Usage: 4883kB
-                          Buffers: shared hit=2237 read=5116, temp written=5815
-                          ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.015..63.978 rows=1000000.00 loops=1)
-                                Buffers: shared hit=2237 read=5116
-Planning:
-  Buffers: shared hit=103 read=6
-Planning Time: 0.434 ms
-Execution Time: 628.771 ms
-```
-
-これまでの1冊を探す計画は、数行でした。今回は20行を超え、`Sort`、`HashAggregate`、`Hash Join`、`Hash`と、まだ説明していない名前が並んでいます。一つずつの名前の意味は、第7〜9章で調べます。この章では、その前に、この出力をどの順で読めばよいかを決めます。
+実行すると、20行を超える出力が返ります。これまでの1冊を探す計画は数行でしたが、今回は`Sort`、`HashAggregate`、`Hash Join`、`Hash`と、まだ説明していない名前が並びます。一つずつの名前の意味は、第7〜9章で調べます。この章では、その前に、この出力をどの順で読めばよいかを決めます。出力の全体は、読み方を確かめた後、この章の後半で読みます。
 
 ## 文字列が手順になるまで
 
@@ -127,13 +96,81 @@ Index Scanの推定は最後まで読んだ場合の100万件ですが、実際�
 
 今回の計画には、並べ替えを表す`Sort`がありません。題名のIndexから、`ORDER BY title`で求めた順にレコードを取り出せるためです。Indexで順序を得られない場合の並べ替えは、次章で扱います。
 
+## 子が二つある計画
+
+ランキングの計画に出てくる`Hash Join`は、子を二つ持つ処理です。子が二つあると、親はどちらの子から、どの順にレコードを求めるのでしょうか。ランキングに進む前に、同じ形の小さな計画で確かめます。本42と本43の読了記録を、題名を付けて取り出します。
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT b.title, r.finished_at
+FROM books AS b
+JOIN reading_records AS r ON r.book_id = b.id
+WHERE b.id IN (42, 43);
+```
+
+2026年9月28日、PostgreSQL 18.6での実行結果です。本100万冊・読了記録200万件で、読了記録にはまだIndexがありません。
+
+```sql:実行結果
+Hash Join  (cost=12.91..36073.93 rows=4 width=30) (actual time=73.019..262.468 rows=3.00 loops=1)
+  Hash Cond: (r.book_id = b.id)
+  …
+  ->  Seq Scan on reading_records r  (cost=0.00..30811.00 rows=2000000 width=16) (actual time=0.015..138.384 rows=2000000.00 loops=1)
+        …
+  ->  Hash  (cost=12.88..12.88 rows=2 width=30) (actual time=0.006..0.007 rows=2.00 loops=1)
+        …
+        ->  Index Scan using books_pkey on books b  (cost=0.42..12.88 rows=2 width=30) (actual time=0.004..0.005 rows=2.00 loops=1)
+              Index Cond: (id = ANY ('{42,43}'::bigint[]))
+              …
+…
+Execution Time: 262.495 ms
+```
+
+`Hash Join`の下に、`Seq Scan on reading_records r`と`Hash`の二つの子が、同じ深さで並んでいます。`Hash`の下には、さらに`Index Scan using books_pkey on books b`があります。
+
+`Hash Join`は、二つの子に同じように1件ずつ求めるわけではありません。読了記録の照合を始める前に、`Hash`の側を最後まで動かします。`Hash`は、下の`Index Scan`から本42と本43の2件（`rows=2.00`）を受け取り、**ハッシュ表**にまとめます。ハッシュ表は、値から計算で置き場所を決める表で、第9章で扱います。`Hash`は、このハッシュ表を1件ずつではなく、まとめて親に渡します。`Hash`の`rows`は、ハッシュ表に入れたレコードの数です。
+
+表ができてから、`Hash Join`はもう一方の子の`Seq Scan`に、読了記録を1件ずつ求めます。受け取った記録の`book_id`（`Hash Cond`の条件）でハッシュ表を引き、本42か本43の記録なら題名を付けて親へ返します。`Seq Scan`が渡した200万件（`rows=2000000.00`）のうち、表で見つかった3件が、`Hash Join`の`rows=3.00`です。
+
+出力では`Hash`が下に書かれていますが、先に動き終えるのは`Hash`の側です。子が並ぶ順番は、動く順番とは限りません。どの子をいつ動かすかは、親の処理が決めます。
+
 ## 長い計画を木として読む
 
-小さな計画で確かめた読み方を、ランキングの計画に当てはめます。手掛かりは次の三つです。
+二つの小さな計画で確かめた読み方を、ランキングの計画に当てはめます。章の最初に実行したランキングSQLの実行結果です。2026年9月26日、PostgreSQL 18.6で、本100万冊・読了記録200万件、第3章の題名Indexがあり、読了記録にはまだIndexがない状態で測りました。並列実行とJITは無効、`work_mem`は4MBです。
+
+```sql:実行結果
+Limit  (cost=153548.50..153548.55 rows=20 width=38) (actual time=627.239..627.244 rows=20.00 loops=1)
+  Buffers: shared hit=4288 read=13879, temp read=9046 written=10758
+  ->  Sort  (cost=153548.50..154780.84 rows=492937 width=38) (actual time=627.238..627.241 rows=20.00 loops=1)
+        Sort Key: (count(*)) DESC, b.id
+        Sort Method: top-N heapsort  Memory: 27kB
+        Buffers: shared hit=4288 read=13879, temp read=9046 written=10758
+        ->  HashAggregate  (cost=128762.88..140431.62 rows=492937 width=38) (actual time=552.463..606.428 rows=255238.00 loops=1)
+              Group Key: b.id
+              Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 15584kB
+              Buffers: shared hit=4285 read=13879, temp read=9046 written=10758
+              ->  Hash Join  (cost=36689.00..89481.96 rows=492937 width=30) (actual time=168.642..459.483 rows=499998.00 loops=1)
+                    Hash Cond: (r.book_id = b.id)
+                    Buffers: shared hit=4285 read=13879, temp read=7278 written=7278
+                    ->  Seq Scan on reading_records r  (cost=0.00..40811.00 rows=492937 width=8) (actual time=0.154..101.089 rows=499998.00 loops=1)
+                          Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+                          Rows Removed by Filter: 1500002
+                          Buffers: shared hit=2048 read=8763
+                    ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30) (actual time=168.081..168.082 rows=1000000.00 loops=1)
+                          Buckets: 131072  Batches: 16  Memory Usage: 4883kB
+                          Buffers: shared hit=2237 read=5116, temp written=5815
+                          ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30) (actual time=0.015..63.978 rows=1000000.00 loops=1)
+                                Buffers: shared hit=2237 read=5116
+Planning:
+  Buffers: shared hit=103 read=6
+Planning Time: 0.434 ms
+Execution Time: 628.771 ms
+```
+
+手掛かりは次の三つです。
 
 - 行頭の`->`と字下げ：字下げが一段深い処理が、すぐ上の処理の子です。子は親にレコードを渡します。
-- 同じ深さに並ぶ子：`Hash Join`の下には、`Seq Scan on reading_records r`と`Hash`の二つの子があります。一つの処理が、二つの子からレコードを受け取ることもあります。
-- `actual`の`rows`：その処理が親へ渡したレコードの数です。`Hash`だけは、1件ずつ渡す代わりに、まとめ終えたハッシュ表を親に渡します。その`rows`は、ハッシュ表に入れたレコードの数です。
+- 同じ深さに並ぶ子：一つの処理が、二つの子を持つことがあります。前の節の計画と同じく、`Hash Join`の下には`Seq Scan on reading_records r`と`Hash`の二つの子があります。
+- `actual`の`rows`：その処理が親へ渡したレコードの数です。`Hash`の`rows`は、ハッシュ表に入れたレコードの数です。
 
 レコードは下から上へ流れます。そこで、字下げのいちばん深い処理から読み始め、親へ向かって`rows`を追います。この計画でいちばん深いのは、`Hash`の下の`Seq Scan on books b`です。
 
@@ -147,7 +184,7 @@ Index Scanの推定は最後まで読んだ場合の100万件ですが、実際�
 | 6 | `Sort` | 20 | 件数の順に並べ、上位を選ぶ（第7・8章） |
 | 7 | `Limit` | 20 | 20件で止める |
 
-`Hash Join`の下の二つの子は、`Hash`の側を先に読みます。`Hash Join`は、本のハッシュ表を作り終えてから、読了記録を1件ずつ照合するからです。出力の時間にもこの順が表れています。第1章で見たとおり、`actual time`の前の数は最初の1件を返すまで、後ろの数はすべて返し終えるまでにかかった時間です。`Hash Join`が最初の1件を返すまでの168.642ミリ秒には、`Hash`が本をまとめ終えるまでの168.082ミリ秒がほぼそのまま含まれています。ハッシュ表を作り終えてから、照合を始めたということです。
+前の節の小さな計画と同じく、`Hash Join`は、本のハッシュ表を作り終えてから、読了記録を1件ずつ照合します。今回は、出力の時間にもこの順が表れています。第1章で見たとおり、`actual time`の前の数は最初の1件を返すまで、後ろの数はすべて返し終えるまでにかかった時間です。`Hash Join`が最初の1件を返すまでの168.642ミリ秒には、`Hash`が本をまとめ終えるまでの168.082ミリ秒がほぼそのまま含まれています。ハッシュ表を作り終えてから、照合を始めたということです。
 
 図で、各段の`rows`がどこで減るかを見てください。
 
@@ -156,32 +193,22 @@ Index Scanの推定は最後まで読んだ場合の100万件ですが、実際�
 
 20件に減るのは、最後の`Sort`と`Limit`です。それより前の処理は、何十万件ものレコードを受け渡しています。序章の「20冊しか返さないのに」という疑問の答えの一部が、ここに見えています。20件という結果の件数と、途中で扱うレコード数は別のものです。
 
-## 共有する領域と、処理ごとの作業領域
+出力の`Buffers`も、木の形に沿って読みます。親の`Buffers`には、子の分も含まれます。たとえば`Hash Join`の`shared hit=4285`は、二つの子の2,048と2,237を足した数で、`read=13879`も8,763と5,116の合計です。
 
-第5章では、ページを置く共有バッファと、並べ替えなどで使う作業用メモリを分けました。ランキングの出力には、その両方が現れています。
-
-| 出力の例 | 表しているもの |
-| --- | --- |
-| `Buffers: shared hit=2048 read=8763` | 共有バッファのページを使った数（第5章） |
-| `Sort Method: top-N heapsort  Memory: 27kB` | 並べ替えに使った作業用メモリ |
-| `Memory Usage: 8281kB`（HashAggregate）、`Memory Usage: 4883kB`（Hash） | 数える処理と照合の準備に使った作業用メモリ |
-| `temp read=9046 written=10758`、`Batches: 9` | 作業用メモリに収まらず、一時ファイルを使ったこと |
-
-親の`Buffers`には、子の分も含まれます。たとえば`Hash Join`の`shared hit=4285`は、二つの子の2,048と2,237を足した数で、`read=13879`も8,763と5,116の合計です。
-
-共有バッファは、ほかの接続とも共有するページの置き場所です。作業用メモリは、`Sort`や`HashAggregate`などの処理ごとに用意され、ほかの接続とは共有しません。`work_mem`は4MBなのに`HashAggregate`が8,281kBを使っています。ハッシュを使う処理では、`hash_mem_multiplier`（既定は2）を`work_mem`に掛けた8MBが目安になるためです。8,281kBは8MB（8,192kB）を少し上回っていて、この目安はぴったり止める上限ではありません（第9章）。作業用メモリがどのプロセスに置かれるかは、章末の補足で確かめます。
+出力には、`Sort`の`Memory`、`Hash`や`HashAggregate`の`Memory Usage`、`temp`や`Batches`のように、メモリの使い方を表す値も並んでいます。これは共有バッファではなく、処理ごとに使うメモリの値です。次章の最初で、この二つのメモリを分けて読みます。
 
 ## 計画の木から、次の章へ
 
 実行計画は、上の処理が下の処理にレコードを求め、下の処理が1件ずつ渡す木の形をしています。長い計画も、字下げで親子を分け、いちばん深いところから`rows`を追えば、どこで何件を扱っているかが分かります。
 
-ランキングの計画では、20件まで減るのは最後の`Sort`と`Limit`でした。その`Sort`は、25万件余りのグループから上位20件を選んでいます。並べ替えは、何件をどうやって並べる処理なのでしょうか。次章では、まず読了記録を日時順に並べる単純な`Sort`から観察します。
+ランキングの計画では、20件まで減るのは最後の`Sort`と`Limit`でした。その`Sort`は、25万件余りのグループから上位20件を選んでいます。並べ替えは、何件をどうやって並べる処理なのでしょうか。次章では、まず計画に並んでいたメモリの値を読み分け、そのうえで読了記録を日時順に並べる単純な`Sort`を観察します。
 
 ## まとめ
 
 - 長い計画は、字下げのいちばん深い処理から読み、親へ向かって`rows`を追う。
+- 子が二つあるとき、どの子をいつ動かすかは親が決める。`Hash Join`は、先に`Hash`の側でハッシュ表を作り終えてから、もう一方の子のレコードを1件ずつ照合する。
 - どの段でレコード数が大きく減るかを見る。結果が20件でも、途中の段で数十万件を受け渡していることがある。
-- 作業用メモリは、並べ替えやハッシュなどの処理ごとに使う。共有バッファとは別の領域として読む。
+- 親の`Buffers`には子の分も含まれる。
 
 ## 補足：SQLを受け取るプロセス
 
@@ -189,7 +216,7 @@ Index Scanの推定は最後まで読んだ場合の100万件ですが、実際�
 
 ### SQLは誰に届く？
 
-第5章の図では、接続Aと接続Bがそれぞれ自分の作業領域を持ち、共有バッファだけを一緒に使っていました。その接続Aと接続Bが、サーバの中で何に当たるのかを確かめます。psqlを二つ開き、接続先で動くプログラムを調べます。
+第5章では、共有バッファを複数の接続から共通に使うと書きました。その接続が、サーバの中で何に当たるのかを確かめます。psqlを二つ開き、接続先で動くプログラムを調べます。
 
 psqlは、入力されたSQLをPostgreSQLのサーバへ送ります。SQLを受け取ってデータを処理するのはサーバ側です。この関係で、要求を送る側を**クライアント**と呼びます。Webサイトでは、サイトのプログラムがDBのクライアントになります。
 
@@ -286,7 +313,7 @@ WHERE datname = current_database();
 
 ### プロセスごとの作業領域と、共有する領域
 
-第5章の図で見た二つの領域を、プロセスと対応させます。共有バッファは複数のバックエンドプロセスから使われ、作業用メモリはそれぞれのプロセスが処理ごとに持ちます。
+メモリの領域を、プロセスと対応させます。共有バッファ（第5章）は複数のバックエンドプロセスから使われます。一方、並べ替えなどの途中の値を置く作業用メモリは、それぞれのプロセスが処理ごとに持ちます。作業用メモリは、次章の最初で説明します。
 
 ただし実際には、複数のプロセスで一つのSQLを分担する計画（「準備」の章で無効にした並列実行）や、プロセスの間で共有する作業領域もあります。そのため、「一つのSQLは、いつも一つのプロセスだけが処理する」とは言い切れません。
 

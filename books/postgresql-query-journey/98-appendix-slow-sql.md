@@ -8,11 +8,11 @@ title: "付録：自分の遅いSQLを調べる"
 
 ## 手順1：遅いSQLを見つける
 
-調べる前に、どのSQLが遅いのかを見つけます。PostgreSQLには、そのための仕組みがいくつかあります。
+PostgreSQLには、遅いSQLを見つける仕組みがいくつかあります。
 
-- **pg_stat_statements**：SQLの形ごとに、実行回数（`calls`）、合計時間（`total_exec_time`）、平均時間（`mean_exec_time`）を記録する拡張機能です。使うには、設定の`shared_preload_libraries`に加えてサーバを再起動し、`CREATE EXTENSION`します[^pgss]。この本の実験環境では有効にしていません。
+- **pg_stat_statements**：SQLの形ごとに、実行回数（`calls`）、合計時間（`total_exec_time`）、平均時間（`mean_exec_time`）を記録する拡張機能です[^pgss]。1回ずつは速くても、何千回も実行されて合計が大きくなっているSQLも、`calls`から見つかります。使うには`shared_preload_libraries`に加えてサーバを再起動し、`CREATE EXTENSION`します（この本の実験環境では使っていません）。
 - **log_min_duration_statement**：指定した時間より長くかかったSQLを、サーバのログに書き出す設定です[^log-min]。
-- **auto_explain**：遅かったSQLの実行計画を、自動でログに書き出す拡張機能です[^auto-explain]。本番で`EXPLAIN ANALYZE`を手で実行しなくても、そのときの計画が残ります。何ミリ秒より遅いSQLを書き出すかは`auto_explain.log_min_duration`で決めます。短くしすぎるとログが大量に出るので、利用者が遅いと感じる時間を目安に置き、ログの量を見ながら調整します。
+- **auto_explain**：遅かったSQLの実行計画を、自動でログに書き出す拡張機能です[^auto-explain]。本番で`EXPLAIN ANALYZE`を手で実行しなくても、そのときの計画が残ります。書き出す時間の境目は`auto_explain.log_min_duration`で決めます。
 
 [^pgss]: [公式ドキュメントのpg_stat_statementsの説明](https://www.postgresql.org/docs/18/pgstatstatements.html)にあります。
 
@@ -20,36 +20,24 @@ title: "付録：自分の遅いSQLを調べる"
 
 [^auto-explain]: [公式ドキュメントのauto_explainの説明](https://www.postgresql.org/docs/18/auto-explain.html)にあります。
 
-1回ずつは速くても、何千回も実行されて合計が大きくなっているSQLもあります。`pg_stat_statements`で`calls`の多いSQLを見ると、後で扱う「同じSQLを何度も送る」書き方が見つかります。
-
 ## 手順2：アプリケーションのSQLを取り出す
 
-ORM（オブジェクトからSQLを組み立ててくれるライブラリ）を使っていると、実際に送られるSQLが見えません。主なフレームワークには、組み立てたSQLを表示する機能があります。
-
-| フレームワーク | SQLを見る | 実行計画を見る |
-| --- | --- | --- |
-| Ruby on Rails | `relation.to_sql` | `relation.explain`（`explain(:analyze)`のように指定もできる） |
-| Django | 設定の`DEBUG`を有効にして`connection.queries` | `queryset.explain(analyze=True)` |
-| Laravel | `->dumpRawSql()`、`->ddRawSql()` | 取り出したSQLをpsqlで`EXPLAIN`する |
-
-それぞれの説明は、[RailsのAPIドキュメント](https://api.rubyonrails.org/classes/ActiveRecord/Relation.html)、[DjangoのQuerySetの説明](https://docs.djangoproject.com/en/5.2/ref/models/querysets/)と[FAQ](https://docs.djangoproject.com/en/5.2/faq/models/)、[Laravelのクエリビルダの説明](https://laravel.com/docs/12.x/queries)にあります。取り出したSQLは、値が埋め込まれた形でpsqlに貼り、この本と同じように`EXPLAIN`で調べられます。
+ORM（オブジェクトからSQLを組み立ててくれるライブラリ）が組み立てたSQLは、Railsなら`relation.to_sql`、Djangoなら設定の`DEBUG`を有効にして`connection.queries`、Laravelなら`->dumpRawSql()`で表示できます。実行計画も、Railsの`relation.explain`（`explain(:analyze)`のようにも指定できる）やDjangoの`queryset.explain(analyze=True)`で見られます。それぞれの説明は、[RailsのAPIドキュメント](https://api.rubyonrails.org/classes/ActiveRecord/Relation.html)、[DjangoのQuerySetの説明](https://docs.djangoproject.com/en/5.2/ref/models/querysets/)と[FAQ](https://docs.djangoproject.com/en/5.2/faq/models/)、[Laravelのクエリビルダの説明](https://laravel.com/docs/12.x/queries)にあります。取り出したSQLは、psqlに貼って`EXPLAIN`で調べられます。
 
 ## 手順3：安全に測る
 
-`EXPLAIN ANALYZE`は、SQLを実際に実行します（第1章）。本番のDBや共有の検証環境で調べるときは、次の順で進めます。
+`EXPLAIN ANALYZE`は、SQLを実際に実行します（第1章）。本番のDBや共有の検証環境では、次の順で進めます。
 
 1. まず`ANALYZE`を付けない`EXPLAIN`で、実行せずに計画の形を見ます。
-2. `UPDATE`や`DELETE`を`EXPLAIN ANALYZE`で調べるときは、`BEGIN`の後に実行し、`ROLLBACK`で取り消します。第10章と第11章の実験と同じ形です。
-3. 時間がかかりそうなSQLには、`SET LOCAL statement_timeout = '5s';`のように上限を付けます。上限を超えたSQLは途中で止まります[^timeout]。
-4. できれば本番と同じくらいのデータを持つ検証用のDBで測ります。レコード数が違うと、選ばれる計画も変わります（第3章、第10章）。
+2. `UPDATE`や`DELETE`は、`BEGIN`の後に`EXPLAIN ANALYZE`し、`ROLLBACK`で取り消します（第10章、第11章）。
+3. 時間がかかりそうなSQLには、`SET LOCAL statement_timeout = '5s';`のように上限を付けます[^timeout]。
+4. できれば本番と同じくらいのデータで測ります。レコード数が違うと、選ばれる計画も変わります（第3章、第10章）。
 
 [^timeout]: [公式ドキュメントのstatement_timeoutの説明](https://www.postgresql.org/docs/18/runtime-config-client.html)にあります。
 
-この本では並列実行とJITを止めて測りました（「準備」の章）。本番の計画には、並列実行を表す`Gather`が現れることがあります。その下に並ぶ処理は、この本と同じく、字下げのいちばん深いところから読みます。
-
 ## 手順4：出力のどこを見るか
 
-計画を下から読み（第6章）、気になる表示があったら、次の表で疑うことと戻る章を引きます。表示そのものの意味は、付録「実行計画の読み方の早見表」にまとめました。第12章の最後の表は仕組みから引く表でしたが、こちらは出力の表示から引く表です。
+計画を下から読み（第6章。本番の計画に並列実行を表す`Gather`があっても、その下の処理を字下げの深いところから読みます）、気になる表示があったら、次の表で疑うことと戻る章を引きます。表示そのものの意味は、付録「実行計画の読み方の早見表」にまとめました。第12章の最後の表は仕組みから引く表でしたが、こちらは出力の表示から引く表です。
 
 | 出力に見えること | 疑うこと | 試すこと | 戻る章 |
 | --- | --- | --- | --- |
@@ -134,7 +122,7 @@ Seq Scan on books  (cost=0.00..19853.00 rows=100 width=30) (actual time=1.151..7
 
 前方一致に使えるのは、文字を一文字ずつ比べる並び順で作ったIndexです[^pattern-ops]。実験の間だけ作って試します。
 
-[^pattern-ops]: `text_pattern_ops`という演算子クラスを指定します。[公式ドキュメントの演算子クラスの説明](https://www.postgresql.org/docs/18/indexes-opclass.html)にあります。第3章で範囲検索の比較を`COLLATE "C"`にしたときに速くなったのも、同じ「一文字ずつ比べる並び順」を使ったためです。
+[^pattern-ops]: `text_pattern_ops`という演算子クラスを指定します。[公式ドキュメントの演算子クラスの説明](https://www.postgresql.org/docs/18/indexes-opclass.html)にあります。第5章で範囲検索の比較を`COLLATE "C"`にしたときに速くなったのも、同じ「一文字ずつ比べる並び順」を使ったためです。
 
 ```sql
 BEGIN;
@@ -232,45 +220,9 @@ ORDER BY finished_at DESC, book_id ASC
 LIMIT 20 OFFSET 100000;
 ```
 
-実行結果です。
+実行すると、`Limit`が返すのは20件なのに、子の`Index Only Scan`は`rows=100020.00`で、100,020件を読んでいました（`Buffers: shared hit=3 read=385`）。`OFFSET`で飛ばす10万件も、Indexから読んで捨てているからです。ページ番号が大きくなるほど、読んで捨てる件数が増えます。
 
-```sql:実行結果
-Limit  (cost=3039.23..3039.84 rows=20 width=16) (actual time=18.797..18.802 rows=20.00 loops=1)
-  …
-  ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..60776.43 rows=2000000 width=16) (actual time=0.867..15.084 rows=100020.00 loops=1)
-        …
-        Buffers: shared hit=3 read=385
-…
-```
-
-`Limit`が返したのは20件ですが、子の`Index Only Scan`は100,020件を読んでいます。`OFFSET`で飛ばす10万件も、Indexから読んで捨てているからです。1ページ目（`OFFSET`なし）なら、子が読むのは20件で、0.022 msでした。ページ番号が大きくなるほど、読んで捨てる件数が増えます。
-
-代わりに、前のページの最後のレコードの値から続きを探します。5,000ページ目の最後のレコードは、日時が`2026-09-19 14:24:00`、本の番号が479127でした。並び順は日時の新しい順で、同じ日時なら本の番号の小さい順なので、続きは「日時がそれより古い」か「日時が同じで本の番号が大きい」レコードです。そのまま書くと、次のようになります。
-
-```sql
-EXPLAIN (ANALYZE, BUFFERS)
-SELECT book_id, finished_at FROM reading_records
-WHERE finished_at < '2026-09-19 14:24:00'
-   OR (finished_at = '2026-09-19 14:24:00' AND book_id > 479127)
-ORDER BY finished_at DESC, book_id ASC
-LIMIT 20;
-```
-
-実行結果です。
-
-```sql:実行結果
-…
-  ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..75768.43 rows=1899248 width=16) (actual time=4.997..4.999 rows=20.00 loops=1)
-        Filter: ((finished_at < '2026-09-19 14:24:00'::timestamp without time zone) OR ((finished_at = '2026-09-19 14:24:00'::timestamp without time zone) AND (book_id > 479127)))
-        Rows Removed by Filter: 100000
-        …
-        Buffers: shared hit=387
-…
-```
-
-条件が`Index Cond`ではなく`Filter`に入り、`Rows Removed by Filter: 100000`です。`OR`でつないだ条件は、Indexで探し始める位置を決められません。そのため、先頭から10万件を読んで条件で除いています。読むページの数は`OFFSET`のときと同じ387です。
-
-Indexで探せる`finished_at <= '2026-09-19 14:24:00'`を外に出し、同じ日時の扱いだけを残りの条件にします。
+代わりに、前のページの最後のレコードの値から続きを探します。5,000ページ目の最後のレコードは、日時が`2026-09-19 14:24:00`、本の番号が479127でした。並び順は日時の新しい順で、同じ日時なら本の番号の小さい順なので、続きは「日時がそれより古い」か「日時が同じで本の番号が大きい」レコードです。これを`OR`でそのままつなぐと、条件はすべて`Filter`に入り、先頭から10万件を読んで除くことになります。`OR`でつないだ条件からは、Indexで探し始める位置を決められないためです。そこで、Indexで探せる`finished_at <=`を外に出し、同じ日時の扱いだけを残りの条件にします。
 
 ```sql
 EXPLAIN (ANALYZE, BUFFERS)
@@ -294,7 +246,7 @@ LIMIT 20;
 …
 ```
 
-今度は`Index Cond`で日時の位置から探し始め、除いたのは同じ日時の1件だけです。2026年9月28日に三つの書き方を5回ずつ交互に測った中央値は、次のとおりです。三つとも返す20件は同じでした。
+`Index Cond`で日時の位置から探し始め、除いたのは同じ日時の1件だけです。2026年9月28日に、`OR`だけでつないだ書き方も含めて三つを5回ずつ交互に測った中央値は、次のとおりです。三つとも返す20件は同じでした。
 
 | 書き方 | ページへのアクセス | 実行時間（中央値） |
 | --- | ---: | ---: |
@@ -304,15 +256,9 @@ LIMIT 20;
 
 続きから探す書き方にしても、条件がIndexで探せる形になっていなければ、読む量は減りません。書き換えた後は、条件が`Index Cond`に入ったかを計画で確かめます。
 
-### パターン5：範囲の条件は、結合の相手に伝わらない
+### パターン5：同じSQLを何度も送る
 
-第9章のMerge Joinで見たとおり、`WHERE b.id <= 100`は本の側だけの条件で、読了記録の`r.book_id`には自動では伝わりません。結合の両側で同じ範囲に絞れることが分かっているなら、`AND r.book_id <= 100`のように両側に書くと、結合の前に扱うレコード数を減らせます。
-
-### パターン6：同じSQLを何度も送る
-
-一覧の20冊それぞれについて、アプリケーションが題名を1冊ずつ問い合わせると、SQLが21回送られます。この書き方はN+1と呼ばれます。1回ずつは速いので、一つのSQLの実行計画を見ても気付けません。それでも、SQLを1回送るたびに、アプリケーションとDBの間の往復と、DBがSQLを受け取って計画を作る手間がかかります。21回送れば、その手間が21回分重なります。手順1の`pg_stat_statements`で、同じ形のSQLの`calls`が多いことから見つけます。
-
-第9章の`Nested Loop`（`loops=20`）は、同じ仕事をDBの中で1回のSQLにまとめたものでした。ORMには、関連するレコードをまとめて読む機能があります。Railsの`includes`、Djangoの`select_related`、Laravelの`with`です。
+一覧の20冊について、アプリケーションが題名を1冊ずつ問い合わせると、SQLが21回送られ、1回ずつは速くても、往復と計画を作る手間が21回分重なります（N+1と呼ばれる書き方です）。一つの計画を見ても気付けないので、手順1の`pg_stat_statements`で`calls`の多いSQLから見つけ、ORMの関連をまとめて読む機能（Railsの`includes`、Djangoの`select_related`、Laravelの`with`）で1回のSQLにまとめます。
 
 ## コラム：PostgreSQL 18で変わった出力
 

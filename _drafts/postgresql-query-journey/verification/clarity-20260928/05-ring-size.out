@@ -1,0 +1,97 @@
+SELECT version();
+                                                         version                                                          
+--------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+SET max_parallel_workers_per_gather = 0;
+SET jit = off;
+SET work_mem = '4MB';
+SHOW shared_buffers;
+ shared_buffers 
+----------------
+ 128MB
+(1 row)
+
+SHOW io_combine_limit;
+ io_combine_limit 
+------------------
+ 128kB
+(1 row)
+
+SHOW effective_io_concurrency;
+ effective_io_concurrency 
+--------------------------
+ 16
+(1 row)
+
+SHOW max_connections;
+ max_connections 
+-----------------
+ 100
+(1 row)
+
+CREATE TABLE ring_probe AS SELECT * FROM books;
+SELECT pg_relation_size('ring_probe') / 8192 AS pages;
+ pages 
+-------
+  7394
+(1 row)
+
+SELECT buffers_evicted FROM pg_buffercache_evict_relation('ring_probe');
+ buffers_evicted 
+-----------------
+            2048
+(1 row)
+
+SELECT count(*) FROM pg_buffercache b JOIN pg_class c ON b.relfilenode = pg_relation_filenode(c.oid)
+WHERE c.relname = 'ring_probe' AND b.relforknumber = 0 AND b.reldatabase = (SELECT oid FROM pg_database WHERE datname = current_database());
+ count 
+-------
+     0
+(1 row)
+
+EXPLAIN (ANALYZE, BUFFERS) SELECT count(*) FROM ring_probe;
+                                                          QUERY PLAN                                                          
+------------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=18485.00..18485.01 rows=1 width=8) (actual time=179.126..179.127 rows=1.00 loops=1)
+   Buffers: shared read=7394 dirtied=7353 written=7300
+   ->  Seq Scan on ring_probe  (cost=0.00..16266.80 rows=887280 width=0) (actual time=0.197..132.318 rows=1000000.00 loops=1)
+         Buffers: shared read=7394 dirtied=7353 written=7300
+ Planning:
+   Buffers: shared hit=5
+ Planning Time: 0.097 ms
+ Execution Time: 179.157 ms
+(8 rows)
+
+SELECT count(*) FROM pg_buffercache b JOIN pg_class c ON b.relfilenode = pg_relation_filenode(c.oid)
+WHERE c.relname = 'ring_probe' AND b.relforknumber = 0 AND b.reldatabase = (SELECT oid FROM pg_database WHERE datname = current_database());
+ count 
+-------
+    94
+(1 row)
+
+EXPLAIN (ANALYZE, BUFFERS) SELECT count(*) FROM ring_probe;
+                                                         QUERY PLAN                                                          
+-----------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=18485.00..18485.01 rows=1 width=8) (actual time=120.640..120.641 rows=1.00 loops=1)
+   Buffers: shared hit=94 read=7300
+   ->  Seq Scan on ring_probe  (cost=0.00..16266.80 rows=887280 width=0) (actual time=0.128..74.304 rows=1000000.00 loops=1)
+         Buffers: shared hit=94 read=7300
+ Planning Time: 0.025 ms
+ Execution Time: 120.662 ms
+(6 rows)
+
+SELECT count(*) FROM pg_buffercache b JOIN pg_class c ON b.relfilenode = pg_relation_filenode(c.oid)
+WHERE c.relname = 'ring_probe' AND b.relforknumber = 0 AND b.reldatabase = (SELECT oid FROM pg_database WHERE datname = current_database());
+ count 
+-------
+   188
+(1 row)
+
+DROP TABLE ring_probe;
+SELECT pid, state FROM pg_stat_activity WHERE state LIKE 'idle in%';
+ pid | state 
+-----+-------
+(0 rows)
+

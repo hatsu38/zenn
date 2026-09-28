@@ -1,0 +1,31 @@
+    ctid     | xmin | xmax 
+-------------+------+------
+ (10810,151) |  951 | 1010
+(1 row)
+
+                                         QUERY PLAN                                         
+--------------------------------------------------------------------------------------------
+ Update on reading_records (actual rows=0.00 loops=1)
+   Buffers: shared hit=7 dirtied=2
+   WAL: records=1 fpi=2 bytes=14982 buffers full=2
+   ->  Bitmap Heap Scan on reading_records (actual rows=1.00 loops=1)
+         Recheck Cond: (book_id = 42)
+         Heap Blocks: exact=1
+         Buffers: shared hit=4
+         ->  Bitmap Index Scan on reading_records_visibility_idx (actual rows=1.00 loops=1)
+               Index Cond: (book_id = 42)
+               Index Searches: 1
+               Buffers: shared hit=3
+ Planning Time: 0.025 ms
+ Execution Time: 0.149 ms
+(13 rows)
+
+    ctid     | xmin | xmax 
+-------------+------+------
+ (10810,152) | 1061 |    0
+(1 row)
+
+xid=1061 lsn1=1/F7B1C648 lsn2=1/F7B20100
+
+-- pg_waldump
+（WAL のセグメントが再利用された後だったので、この範囲は一覧できなかった。records=1 は EXPLAIN の表示による）

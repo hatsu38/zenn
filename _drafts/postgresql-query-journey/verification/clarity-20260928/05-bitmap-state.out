@@ -1,0 +1,37 @@
+-- 2026-09-28 23:41:51 JST
+PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+SET max_parallel_workers_per_gather = 0;
+SET jit = off;
+SET work_mem = '4MB';
+SELECT indexname FROM pg_indexes WHERE tablename IN ('books','reading_records') ORDER BY 1;
+         indexname         
+---------------------------
+ books_pkey
+ books_title_idx
+ reading_records_order_idx
+(3 rows)
+
+SELECT to_regclass('books_observation');
+ to_regclass 
+-------------
+ 
+(1 row)
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, title FROM books WHERE title >= '実験用の本 4' AND title < '実験用の本 5';
+                                                               QUERY PLAN                                                               
+----------------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on books  (cost=3311.94..12314.95 rows=110001 width=30) (actual time=8.497..19.304 rows=111111.00 loops=1)
+   Recheck Cond: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
+   Heap Blocks: exact=822
+   Buffers: shared hit=1372
+   ->  Bitmap Index Scan on books_title_idx  (cost=0.00..3284.44 rows=110001 width=0) (actual time=8.393..8.393 rows=111112.00 loops=1)
+         Index Cond: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
+         Index Searches: 1
+         Buffers: shared hit=550
+ Planning:
+   Buffers: shared hit=54
+ Planning Time: 0.155 ms
+ Execution Time: 23.456 ms
+(12 rows)
+

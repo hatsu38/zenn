@@ -1,0 +1,1319 @@
+                                                         version                                                          
+--------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+LOG:  begin tuple sort: nkeys = 2, workMem = 64, randomAccess = f
+LOG:  worker -1 switching to external sort with 6 tapes: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 starting quicksort of run 1: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished quicksort of run 1: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished writing run 1 to tape 1: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 starting quicksort of run 2: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished quicksort of run 2: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished writing run 2 to tape 2: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 starting quicksort of run 3: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished quicksort of run 3: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished writing run 3 to tape 3: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 starting quicksort of run 4: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished quicksort of run 4: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished writing run 4 to tape 4: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 starting quicksort of run 5: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished quicksort of run 5: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished writing run 5 to tape 5: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 starting quicksort of run 6: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished quicksort of run 6: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished writing run 6 to tape 6: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 starting quicksort of run 7: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished quicksort of run 7: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished writing run 7 to tape 1: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 starting quicksort of run 8: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished quicksort of run 8: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished writing run 8 to tape 2: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 starting quicksort of run 9: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished quicksort of run 9: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished writing run 9 to tape 3: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 starting quicksort of run 10: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished quicksort of run 10: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 finished writing run 10 to tape 4: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+LOG:  worker -1 starting quicksort of run 11: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 11: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 11 to tape 5: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 12: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 12: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 12 to tape 6: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 13: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 13: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 13 to tape 1: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 14: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 14: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 14 to tape 2: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 15: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 15: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 15 to tape 3: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 16: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 16: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 16 to tape 4: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 17: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 17: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 17 to tape 5: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 18: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 18: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 18 to tape 6: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 19: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 19: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 19 to tape 1: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 20: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 20: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 20 to tape 2: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 21: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 21: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 21 to tape 3: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 22: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 22: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 22 to tape 4: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 23: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 23: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 23 to tape 5: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 24: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 24: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 24 to tape 6: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 25: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 25: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 25 to tape 1: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 26: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 26: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished writing run 26 to tape 2: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 starting quicksort of run 27: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.01 s
+LOG:  worker -1 finished quicksort of run 27: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 27 to tape 3: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 28: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 28: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 28 to tape 4: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 29: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 29: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 29 to tape 5: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 30: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 30: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 30 to tape 6: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 31: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 31: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 31 to tape 1: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 32: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 32: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 32 to tape 2: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 33: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 33: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 33 to tape 3: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 34: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 34: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 34 to tape 4: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 35: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 35: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 35 to tape 5: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 36: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 36: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 36 to tape 6: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 37: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 37: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 37 to tape 1: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 38: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 38: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 38 to tape 2: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 39: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 39: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 39 to tape 3: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 40: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 40: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 40 to tape 4: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 41: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 41: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 41 to tape 5: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 42: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 42: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 42 to tape 6: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 43: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 43: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 43 to tape 1: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 44: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 44: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished writing run 44 to tape 2: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 starting quicksort of run 45: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.02 s
+LOG:  worker -1 finished quicksort of run 45: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 45 to tape 3: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 46: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 46: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 46 to tape 4: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 47: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 47: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 47 to tape 5: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 48: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 48: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 48 to tape 6: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 49: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 49: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 49 to tape 1: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 50: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 50: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 50 to tape 2: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 51: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 51: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 51 to tape 3: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 52: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 52: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 52 to tape 4: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 53: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 53: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 53 to tape 5: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 54: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 54: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 54 to tape 6: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 55: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 55: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 55 to tape 1: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 56: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 56: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 56 to tape 2: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 57: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 57: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 57 to tape 3: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 58: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 58: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 58 to tape 4: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 59: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 59: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 59 to tape 5: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 60: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 60: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 60 to tape 6: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 61: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 61: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 61 to tape 1: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 62: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished quicksort of run 62: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 finished writing run 62 to tape 2: CPU: user: 0.02 s, system: 0.00 s, elapsed: 0.03 s
+LOG:  worker -1 starting quicksort of run 63: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 63: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 63 to tape 3: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 64: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 64: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 64 to tape 4: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 65: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 65: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 65 to tape 5: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 66: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 66: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 66 to tape 6: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 67: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 67: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 67 to tape 1: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 68: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 68: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 68 to tape 2: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 69: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 69: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 69 to tape 3: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 70: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 70: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 70 to tape 4: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 71: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 71: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 71 to tape 5: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 72: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 72: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 72 to tape 6: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 73: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 73: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 73 to tape 1: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 74: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 74: CPU: user: 0.03 s, system: 0.00 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 74 to tape 2: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 75: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 75: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 75 to tape 3: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 76: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 76: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 76 to tape 4: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 77: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 77: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 77 to tape 5: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 78: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 78: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 78 to tape 6: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 79: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 79: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 79 to tape 1: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 80: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 finished quicksort of run 80: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 finished writing run 80 to tape 2: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.04 s
+LOG:  worker -1 starting quicksort of run 81: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 81: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 81 to tape 3: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 82: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 82: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 82 to tape 4: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 83: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 83: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 83 to tape 5: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 84: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 84: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 84 to tape 6: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 85: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 85: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 85 to tape 1: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 86: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 86: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 86 to tape 2: CPU: user: 0.03 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 87: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 87: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 87 to tape 3: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 88: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 88: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 88 to tape 4: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 89: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 89: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 89 to tape 5: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 90: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 90: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 90 to tape 6: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 91: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 91: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 91 to tape 1: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 92: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 92: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 92 to tape 2: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 93: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 93: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 93 to tape 3: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 94: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 94: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 94 to tape 4: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 95: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 95: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 95 to tape 5: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 96: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 96: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 96 to tape 6: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 97: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished quicksort of run 97: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 finished writing run 97 to tape 1: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.05 s
+LOG:  worker -1 starting quicksort of run 98: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 98: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 98 to tape 2: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 99: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 99: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 99 to tape 3: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 100: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 100: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 100 to tape 4: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 101: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 101: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 101 to tape 5: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 102: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 102: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 102 to tape 6: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 103: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 103: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 103 to tape 1: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 104: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 104: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 104 to tape 2: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 105: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 105: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 105 to tape 3: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 106: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 106: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 106 to tape 4: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 107: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 107: CPU: user: 0.04 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 107 to tape 5: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 108: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 108: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 108 to tape 6: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 109: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 109: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 109 to tape 1: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 110: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 110: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 110 to tape 2: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 111: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 111: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 111 to tape 3: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 112: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 112: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 112 to tape 4: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 113: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 113: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 113 to tape 5: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 114: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 114: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 114 to tape 6: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 115: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished quicksort of run 115: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 finished writing run 115 to tape 1: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.06 s
+LOG:  worker -1 starting quicksort of run 116: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 116: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 116 to tape 2: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 117: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 117: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 117 to tape 3: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 118: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 118: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 118 to tape 4: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 119: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 119: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 119 to tape 5: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 120: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 120: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 120 to tape 6: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 121: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 121: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 121 to tape 1: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 122: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 122: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 122 to tape 2: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 123: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 123: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 123 to tape 3: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 124: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 124: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 124 to tape 4: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 125: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 125: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 125 to tape 5: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 126: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 126: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 126 to tape 6: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 127: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 127: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 127 to tape 1: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 128: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 128: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 128 to tape 2: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 129: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 129: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 129 to tape 3: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 130: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 130: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 130 to tape 4: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 131: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 131: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 131 to tape 5: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 132: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 132: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 132 to tape 6: CPU: user: 0.05 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 133: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished quicksort of run 133: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 finished writing run 133 to tape 1: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.07 s
+LOG:  worker -1 starting quicksort of run 134: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 134: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 134 to tape 2: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 135: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 135: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 135 to tape 3: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 136: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 136: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 136 to tape 4: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 137: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 137: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 137 to tape 5: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 138: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 138: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 138 to tape 6: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 139: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 139: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 139 to tape 1: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 140: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 140: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 140 to tape 2: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 141: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 141: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 141 to tape 3: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 142: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 142: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 142 to tape 4: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 143: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 143: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 143 to tape 5: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 144: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 144: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 144 to tape 6: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 145: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 145: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 145 to tape 1: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 146: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 146: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 146 to tape 2: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 147: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 147: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 147 to tape 3: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 148: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 148: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 148 to tape 4: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 149: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 149: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 149 to tape 5: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 150: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished quicksort of run 150: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 finished writing run 150 to tape 6: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.08 s
+LOG:  worker -1 starting quicksort of run 151: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 151: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 151 to tape 1: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 152: CPU: user: 0.06 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 152: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 152 to tape 2: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 153: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 153: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 153 to tape 3: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 154: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 154: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 154 to tape 4: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 155: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 155: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 155 to tape 5: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 156: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 156: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 156 to tape 6: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 157: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 157: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 157 to tape 1: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 158: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 158: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 158 to tape 2: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 159: CPU: user: 0.07 s, system: 0.01 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 159: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 159 to tape 3: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 160: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 160: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 160 to tape 4: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 161: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 161: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 161 to tape 5: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 162: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 162: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 162 to tape 6: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 163: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 163: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 163 to tape 1: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 164: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 164: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 164 to tape 2: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 165: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 165: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 165 to tape 3: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 166: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 166: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 166 to tape 4: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 167: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 167: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 167 to tape 5: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 168: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished quicksort of run 168: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 finished writing run 168 to tape 6: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.09 s
+LOG:  worker -1 starting quicksort of run 169: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 169: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 169 to tape 1: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 170: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 170: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 170 to tape 2: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 171: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 171: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 171 to tape 3: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 172: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 172: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 172 to tape 4: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 173: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 173: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 173 to tape 5: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 174: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 174: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 174 to tape 6: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 175: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 175: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 175 to tape 1: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 176: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 176: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 176 to tape 2: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 177: CPU: user: 0.07 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 177: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 177 to tape 3: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 178: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 178: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 178 to tape 4: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 179: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 179: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 179 to tape 5: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 180: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 180: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 180 to tape 6: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 181: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 181: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 181 to tape 1: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 182: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 182: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 182 to tape 2: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 183: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 183: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 183 to tape 3: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 184: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 184: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 184 to tape 4: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 185: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished quicksort of run 185: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 finished writing run 185 to tape 5: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.10 s
+LOG:  worker -1 starting quicksort of run 186: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 186: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 186 to tape 6: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 187: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 187: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 187 to tape 1: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 188: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 188: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 188 to tape 2: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 189: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 189: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 189 to tape 3: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 190: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 190: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 190 to tape 4: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 191: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 191: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 191 to tape 5: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 192: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 192: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 192 to tape 6: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 193: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 193: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 193 to tape 1: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 194: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 194: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 194 to tape 2: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 195: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 195: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 195 to tape 3: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 196: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 196: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 196 to tape 4: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 197: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 197: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 197 to tape 5: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 198: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 198: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 198 to tape 6: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 199: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 199: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 199 to tape 1: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 200: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 200: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 200 to tape 2: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 201: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 201: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 201 to tape 3: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 202: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 202: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 202 to tape 4: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 203: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 203: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 203 to tape 5: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 204: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 204: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 204 to tape 6: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 205: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished quicksort of run 205: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 finished writing run 205 to tape 1: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.11 s
+LOG:  worker -1 starting quicksort of run 206: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 206: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 206 to tape 2: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 207: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 207: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 207 to tape 3: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 208: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 208: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 208 to tape 4: CPU: user: 0.08 s, system: 0.02 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 209: CPU: user: 0.08 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 209: CPU: user: 0.08 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 209 to tape 5: CPU: user: 0.08 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 210: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 210: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 210 to tape 6: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 211: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 211: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 211 to tape 1: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 212: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 212: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 212 to tape 2: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 213: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 213: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 213 to tape 3: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 214: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 214: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 214 to tape 4: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 215: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 215: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 215 to tape 5: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 216: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 216: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 216 to tape 6: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 217: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 217: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 217 to tape 1: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 218: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 218: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 218 to tape 2: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 219: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 219: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 219 to tape 3: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 220: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 220: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 220 to tape 4: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 221: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished quicksort of run 221: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 finished writing run 221 to tape 5: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.12 s
+LOG:  worker -1 starting quicksort of run 222: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 222: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 222 to tape 6: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 223: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 223: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 223 to tape 1: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 224: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 224: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 224 to tape 2: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 225: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 225: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 225 to tape 3: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 226: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 226: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 226 to tape 4: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 227: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 227: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 227 to tape 5: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 228: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 228: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 228 to tape 6: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 229: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 229: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 229 to tape 1: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 230: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 230: CPU: user: 0.09 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 230 to tape 2: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 231: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 231: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 231 to tape 3: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 232: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 232: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 232 to tape 4: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 233: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 233: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 233 to tape 5: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 234: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 234: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 234 to tape 6: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 235: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 235: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 235 to tape 1: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 236: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 236: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 236 to tape 2: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 237: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 237: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 237 to tape 3: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 238: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished quicksort of run 238: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 finished writing run 238 to tape 4: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.13 s
+LOG:  worker -1 starting quicksort of run 239: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 239: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 239 to tape 5: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 240: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 240: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 240 to tape 6: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 241: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 241: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 241 to tape 1: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 242: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 242: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 242 to tape 2: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 243: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 243: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 243 to tape 3: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 244: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 244: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 244 to tape 4: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 245: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 245: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 245 to tape 5: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 246: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 246: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 246 to tape 6: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 247: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 247: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 247 to tape 1: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 248: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 248: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 248 to tape 2: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 249: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 249: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 249 to tape 3: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 250: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 250: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 250 to tape 4: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 251: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 251: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 251 to tape 5: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 252: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 252: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 252 to tape 6: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 253: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 253: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 253 to tape 1: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 254: CPU: user: 0.10 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 254: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 254 to tape 2: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 255: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 255: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 255 to tape 3: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 256: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 256: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 256 to tape 4: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 257: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished quicksort of run 257: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 finished writing run 257 to tape 5: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.14 s
+LOG:  worker -1 starting quicksort of run 258: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 258: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 258 to tape 6: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 259: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 259: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 259 to tape 1: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 260: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 260: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 260 to tape 2: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 261: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 261: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 261 to tape 3: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 262: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 262: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 262 to tape 4: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 263: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 263: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 263 to tape 5: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 264: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 264: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 264 to tape 6: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 265: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 265: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 265 to tape 1: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 266: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 266: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 266 to tape 2: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 267: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 267: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 267 to tape 3: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 268: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 268: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 268 to tape 4: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 269: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 269: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 269 to tape 5: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 270: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 270: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 270 to tape 6: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 271: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 271: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 271 to tape 1: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 272: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 272: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 272 to tape 2: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 273: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished quicksort of run 273: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 finished writing run 273 to tape 3: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.15 s
+LOG:  worker -1 starting quicksort of run 274: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 274: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 274 to tape 4: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 275: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 275: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 275 to tape 5: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 276: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 276: CPU: user: 0.11 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 276 to tape 6: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 277: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 277: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 277 to tape 1: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 278: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 278: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 278 to tape 2: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 279: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 279: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 279 to tape 3: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 280: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 280: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 280 to tape 4: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 281: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 281: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 281 to tape 5: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 282: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 282: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 282 to tape 6: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 283: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 283: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 283 to tape 1: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 284: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 284: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 284 to tape 2: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 285: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 285: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 285 to tape 3: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 286: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 286: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 286 to tape 4: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 287: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 287: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 287 to tape 5: CPU: user: 0.12 s, system: 0.03 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 288: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 288: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 288 to tape 6: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 289: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 289: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 289 to tape 1: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 290: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 290: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 290 to tape 2: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 291: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.16 s
+LOG:  worker -1 finished quicksort of run 291: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.16 s
+LOG:  worker -1 finished writing run 291 to tape 3: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.16 s
+LOG:  worker -1 starting quicksort of run 292: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 292: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 292 to tape 4: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 293: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 293: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 293 to tape 5: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 294: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 294: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 294 to tape 6: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 295: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 295: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 295 to tape 1: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 296: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 296: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 296 to tape 2: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 297: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 297: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 297 to tape 3: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 298: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 298: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 298 to tape 4: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 299: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 299: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 299 to tape 5: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 300: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 300: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 300 to tape 6: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 301: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 301: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 301 to tape 1: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 302: CPU: user: 0.12 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 302: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 302 to tape 2: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 303: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 303: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 303 to tape 3: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 304: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 304: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 304 to tape 4: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 305: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 305: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 305 to tape 5: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 306: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 306: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 306 to tape 6: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 307: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 307: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 307 to tape 1: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 308: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 308: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 308 to tape 2: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 309: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 309: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 309 to tape 3: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 310: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 310: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 310 to tape 4: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 311: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished quicksort of run 311: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 finished writing run 311 to tape 5: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.17 s
+LOG:  worker -1 starting quicksort of run 312: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 312: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 312 to tape 6: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 313: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 313: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 313 to tape 1: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 314: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 314: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 314 to tape 2: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 315: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 315: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 315 to tape 3: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 316: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 316: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 316 to tape 4: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 317: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 317: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 317 to tape 5: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 318: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 318: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 318 to tape 6: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 319: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 319: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 319 to tape 1: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 320: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 320: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 320 to tape 2: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 321: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 321: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 321 to tape 3: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 322: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 322: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 322 to tape 4: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 323: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 323: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 323 to tape 5: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 324: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 324: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 324 to tape 6: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 325: CPU: user: 0.13 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 325: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 325 to tape 1: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 326: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 326: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 326 to tape 2: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 327: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 327: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 327 to tape 3: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 328: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished quicksort of run 328: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 finished writing run 328 to tape 4: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.18 s
+LOG:  worker -1 starting quicksort of run 329: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 329: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 329 to tape 5: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 330: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 330: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 330 to tape 6: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 331: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 331: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 331 to tape 1: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 332: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 332: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 332 to tape 2: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 333: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 333: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 333 to tape 3: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 334: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 334: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 334 to tape 4: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 335: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 335: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 335 to tape 5: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 336: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 336: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 336 to tape 6: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 337: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 337: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 337 to tape 1: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 338: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 338: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 338 to tape 2: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 339: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 339: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 339 to tape 3: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 340: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 340: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 340 to tape 4: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 341: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 341: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 341 to tape 5: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 342: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 342: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 342 to tape 6: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 343: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 343: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 343 to tape 1: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 344: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 344: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 344 to tape 2: CPU: user: 0.14 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 345: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 345: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 345 to tape 3: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 346: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 346: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished writing run 346 to tape 4: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 starting quicksort of run 347: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.19 s
+LOG:  worker -1 finished quicksort of run 347: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 347 to tape 5: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 348: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 348: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 348 to tape 6: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 349: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 349: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 349 to tape 1: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 350: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 350: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 350 to tape 2: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 351: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 351: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 351 to tape 3: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 352: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 352: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 352 to tape 4: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 353: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 353: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 353 to tape 5: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 354: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 354: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 354 to tape 6: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 355: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 355: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 355 to tape 1: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 356: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 356: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 356 to tape 2: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 357: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 357: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 357 to tape 3: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 358: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 358: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 358 to tape 4: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 359: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 359: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 359 to tape 5: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 360: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 360: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 360 to tape 6: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 361: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 361: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 361 to tape 1: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 362: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 362: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 362 to tape 2: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 363: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 363: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 363 to tape 3: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 364: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 364: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 364 to tape 4: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 365: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished quicksort of run 365: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 finished writing run 365 to tape 5: CPU: user: 0.15 s, system: 0.04 s, elapsed: 0.20 s
+LOG:  worker -1 starting quicksort of run 366: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 366: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 366 to tape 6: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 367: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 367: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 367 to tape 1: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 368: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 368: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 368 to tape 2: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 369: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 369: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 369 to tape 3: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 370: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 370: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 370 to tape 4: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 371: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 371: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 371 to tape 5: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 372: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 372: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 372 to tape 6: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 373: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 373: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 373 to tape 1: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 374: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 374: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 374 to tape 2: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 375: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 375: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 375 to tape 3: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 376: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 376: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 376 to tape 4: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 377: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 377: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 377 to tape 5: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 378: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 378: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 378 to tape 6: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 379: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 379: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 379 to tape 1: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 380: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 380: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 380 to tape 2: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 381: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 381: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 381 to tape 3: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 382: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 382: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 382 to tape 4: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 383: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished quicksort of run 383: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 finished writing run 383 to tape 5: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.21 s
+LOG:  worker -1 starting quicksort of run 384: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 384: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 384 to tape 6: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 385: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 385: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 385 to tape 1: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 386: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 386: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 386 to tape 2: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 387: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 387: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 387 to tape 3: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 388: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 388: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 388 to tape 4: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 389: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 389: CPU: user: 0.16 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 389 to tape 5: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 390: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 390: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 390 to tape 6: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 391: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 391: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 391 to tape 1: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 392: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 392: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 392 to tape 2: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 393: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 393: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 393 to tape 3: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 394: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 394: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 394 to tape 4: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 395: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 395: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 395 to tape 5: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 396: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 396: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 396 to tape 6: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 397: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 397: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 397 to tape 1: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 398: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 398: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 398 to tape 2: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 399: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 399: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 399 to tape 3: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 400: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished quicksort of run 400: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 finished writing run 400 to tape 4: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.22 s
+LOG:  worker -1 starting quicksort of run 401: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 401: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 401 to tape 5: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 402: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 402: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 402 to tape 6: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 403: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 403: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 403 to tape 1: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 404: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 404: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 404 to tape 2: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 405: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 405: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 405 to tape 3: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 406: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 406: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 406 to tape 4: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 407: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 407: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 407 to tape 5: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 408: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 408: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 408 to tape 6: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 409: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 409: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 409 to tape 1: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 410: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 410: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 410 to tape 2: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 411: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 411: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 411 to tape 3: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 412: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 412: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 412 to tape 4: CPU: user: 0.17 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 413: CPU: user: 0.18 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 413: CPU: user: 0.18 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 413 to tape 5: CPU: user: 0.18 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 414: CPU: user: 0.18 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 414: CPU: user: 0.18 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 414 to tape 6: CPU: user: 0.18 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 415: CPU: user: 0.18 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 415: CPU: user: 0.18 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 415 to tape 1: CPU: user: 0.18 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 416: CPU: user: 0.18 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 416: CPU: user: 0.18 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 416 to tape 2: CPU: user: 0.18 s, system: 0.04 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 417: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 417: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 417 to tape 3: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 418: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 418: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 418 to tape 4: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 419: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.23 s
+LOG:  worker -1 finished quicksort of run 419: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.23 s
+LOG:  worker -1 finished writing run 419 to tape 5: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.23 s
+LOG:  worker -1 starting quicksort of run 420: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished quicksort of run 420: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished writing run 420 to tape 6: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 starting quicksort of run 421: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished quicksort of run 421: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished writing run 421 to tape 1: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 starting quicksort of run 422: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished quicksort of run 422: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished writing run 422 to tape 2: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 starting quicksort of run 423: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished quicksort of run 423: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished writing run 423 to tape 3: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 starting quicksort of run 424: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished quicksort of run 424: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished writing run 424 to tape 4: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 starting quicksort of run 425: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished quicksort of run 425: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished writing run 425 to tape 5: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 starting quicksort of run 426: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished quicksort of run 426: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished writing run 426 to tape 6: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 starting quicksort of run 427: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished quicksort of run 427: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished writing run 427 to tape 1: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  performsort of worker -1 starting: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 starting quicksort of run 428: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished quicksort of run 428: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 finished writing run 428 to tape 2: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  worker -1 using 56 KB of memory for tape buffers
+LOG:  starting merge pass of 428 input runs on 6 tapes, 1 KB of memory for each input tape: CPU: user: 0.18 s, system: 0.05 s, elapsed: 0.24 s
+LOG:  starting merge pass of 72 input runs on 6 tapes, 1 KB of memory for each input tape: CPU: user: 0.22 s, system: 0.05 s, elapsed: 0.28 s
+LOG:  starting merge pass of 12 input runs on 6 tapes, 6 KB of memory for each input tape: CPU: user: 0.25 s, system: 0.05 s, elapsed: 0.32 s
+LOG:  starting merge pass of 2 input runs on 2 tapes, 24 KB of memory for each input tape: CPU: user: 0.28 s, system: 0.06 s, elapsed: 0.35 s
+LOG:  performsort of worker -1 done (except 2-way final merge): CPU: user: 0.28 s, system: 0.06 s, elapsed: 0.35 s
+LOG:  external sort of worker -1 ended, 1598 disk blocks used: CPU: user: 0.34 s, system: 0.06 s, elapsed: 0.42 s
+                                                                          QUERY PLAN                                                                          
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=121988.38..123233.49 rows=498041 width=16) (actual time=359.333..403.600 rows=499998.00 loops=1)
+   Sort Key: finished_at DESC, book_id
+   Sort Method: external merge  Disk: 12784kB
+   Buffers: shared hit=2736 read=8081, temp read=6367 written=6793
+   ->  Seq Scan on reading_records  (cost=0.00..40811.00 rows=498041 width=16) (actual time=0.014..115.781 rows=499998.00 loops=1)
+         Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+         Rows Removed by Filter: 1500002
+         Buffers: shared hit=2730 read=8081
+ Planning:
+   Buffers: shared hit=101
+ Planning Time: 0.320 ms
+ Execution Time: 423.031 ms
+(12 rows)
+
+ pid | state 
+-----+-------
+(0 rows)
+

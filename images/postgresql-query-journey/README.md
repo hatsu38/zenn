@@ -21,7 +21,6 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第3章 | 境目を見て、開く箱を選ぶ | [SVG](sources/06-btree-path.svg) | [PNG](06-btree-path.png) |
 | 第3章 | 100万冊でも、読むのは3枚 | [SVG](sources/06-tree-levels.svg) | [PNG](06-tree-levels.png) |
 | 第3章 | 4以上8以下なら、隣の箱も開く | [SVG](sources/06-range-scan.svg) | [PNG](06-range-scan.png) |
-| 第3章 | 取りに行く順で、開く回数が変わる | [SVG](sources/06-bitmap-scan.svg) | [PNG](06-bitmap-scan.png) |
 | 第4章 | 100万件なのに、7,353回 | [SVG](sources/03-storage-question.svg) | [PNG](03-storage-question.png) |
 | 第4章 | 本5の1件も、ページ0ごと読む | [SVG](sources/03-pages-and-rows.svg) | [PNG](03-pages-and-rows.png) |
 | 第4章 | ctid = (0,1) が指す場所 | [SVG](sources/03-ctid-location.svg) | [PNG](03-ctid-location.png) |
@@ -30,12 +29,13 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第5章 | 同じ検索を、もう一度 | [SVG](sources/04-repeat-observation.svg) | [PNG](04-repeat-observation.png) |
 | 第5章 | 読み込んだページを、次も使う | [SVG](sources/shared-buffer-reuse.svg) | [PNG](shared-buffer-reuse.png) |
 | 第5章 | ページは再利用、毎回比べる | [SVG](sources/04-two-levels.svg) | [PNG](04-two-levels.png) |
-| 第5章 | ページの保存場所と、計算の作業場所 | [SVG](sources/04-memory-regions.svg) | [PNG](04-memory-regions.png) |
+| 第5章 | 取りに行く順で、開く回数が変わる | [SVG](sources/06-bitmap-scan.svg) | [PNG](06-bitmap-scan.png) |
 | 第6章 | SQLを受け取る側は、いくつ？ | [SVG](sources/02-client-scene.svg) | [PNG](02-client-scene.png) |
 | 第6章 | 接続ごとにプロセスが動く | [SVG](sources/02-connections.svg) | [PNG](02-connections.png) |
 | 第6章 | SQLの文字列から、検索結果が返るまで | [SVG](sources/02-query-stages.svg) | [PNG](02-query-stages.png) |
 | 第6章 | Limitは3件で要求を止める | [SVG](sources/02-execution-tree.svg) | [PNG](02-execution-tree.png) |
 | 第6章 | 20件に減るのは、最後の2段 | [SVG](sources/02-ranking-plan-tree.svg) | [PNG](02-ranking-plan-tree.png) |
+| 第7章 | ページの保存場所と、計算の作業場所 | [SVG](sources/04-memory-regions.svg) | [PNG](04-memory-regions.png) |
 | 第7章 | 読み終えた順に、並べたい | [SVG](sources/07-recent-records.svg) | [PNG](07-recent-records.png) |
 | 第7章 | 4枚を、比較5回で並べる | [SVG](sources/07-merge-cards.svg) | [PNG](07-merge-cards.png) |
 | 第7章 | 200万件を調べ、4分の1を並べた | [SVG](sources/07-sort-bands.svg) | [PNG](07-sort-bands.png) |

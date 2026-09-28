@@ -1,0 +1,31 @@
+    ctid     | xmin | xmax 
+-------------+------+------
+ (10810,151) |  951 | 1061
+(1 row)
+
+                                         QUERY PLAN                                         
+--------------------------------------------------------------------------------------------
+ Update on reading_records (actual rows=0.00 loops=1)
+   Buffers: shared hit=12 dirtied=2
+   WAL: records=3 fpi=1 bytes=7594 buffers full=1
+   ->  Bitmap Heap Scan on reading_records (actual rows=1.00 loops=1)
+         Recheck Cond: (book_id = 42)
+         Heap Blocks: exact=1
+         Buffers: shared hit=4
+         ->  Bitmap Index Scan on reading_records_visibility_idx (actual rows=1.00 loops=1)
+               Index Cond: (book_id = 42)
+               Index Searches: 1
+               Buffers: shared hit=3
+ Planning Time: 0.030 ms
+ Execution Time: 0.251 ms
+(13 rows)
+
+    ctid     | xmin | xmax 
+-------------+------+------
+ (10810,153) | 1062 |    0
+(1 row)
+
+xid=1062 lsn1=1/FB18A590 lsn2=1/FB18C360
+
+-- pg_waldump
+pg_waldump: error: could not find file "0000000100000001000000FB": No such file or directory

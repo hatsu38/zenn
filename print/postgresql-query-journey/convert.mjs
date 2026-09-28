@@ -20,8 +20,6 @@ const zennImagePrefix = '/images/postgresql-query-journey/';
 const ANSWER_DETAILS = new Set([
   '01-explain-basics:実行したSQLと結果',
   '11-mvcc-and-maintenance:二つの接続で確かめた結果',
-  '12-ranking-revisited:集計してから題名を付けた実行結果',
-  '12-ranking-revisited:調査メモの完成例',
 ]);
 
 function detailsKind(slug, title) {

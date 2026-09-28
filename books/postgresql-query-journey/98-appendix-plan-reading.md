@@ -7,7 +7,7 @@ title: "付録：実行計画の読み方の早見表"
 ## 計画を読む順番
 
 1. 字下げのいちばん深い処理から読み始め、親へ向かいます。字下げが一段深い処理が、すぐ上の処理の子です（第6章）。
-2. 一つの処理の下に子が二つあるときは、処理の方法で順番が決まります。`Hash Join`は、`Hash`の側でハッシュ表を作り終えてから、もう一方の子のレコードを照合します。`Nested Loop`は、上の子の1件ごとに下の子を実行します（第6章、第9章）。
+2. 一つの処理の下に子が二つあるときは、処理の方法で順番が決まります。`Hash Join`は、`Hash`の側でハッシュ表を作り終えてから、もう一方の子のレコードを照合します。`Nested Loop`は、上の子の1件ごとに下の子を実行します（Hash Joinは第6章と第9章、Nested Loopは第9章）。
 3. 各段の`actual`の`rows`を追い、どこでレコード数が大きく減るかを見ます。結果の件数が少なくても、途中の段では多くのレコードを扱っていることがあります（第6章、第12章）。
 4. 推定の`rows`と`actual`の`rows`が大きく違う段を探します。見積もりがずれると、その上の段の方法の選び方もずれます（第10章）。
 
@@ -57,14 +57,14 @@ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.036..35.
 | --- | --- | --- |
 | `Filter`、`Rows Removed by Filter` | Seq Scanなど | 読んだ後に当てた条件と、それで除いたレコード数（第1章） |
 | `Index Cond` | Index Scanなど | Indexで探す範囲を決める条件（第3章） |
-| `Recheck Cond`、`Heap Blocks: exact=… lossy=…` | Bitmap Heap Scan | ページ単位の粗い印（lossy）で集めたときに確かめ直す条件と、読んだページの数（第3章） |
+| `Recheck Cond`、`Heap Blocks: exact=… lossy=…` | Bitmap Heap Scan | ページ単位の粗い印（lossy）で集めたときに確かめ直す条件と、読んだページの数（第5章） |
 | `Heap Fetches` | Index Only Scan | 可視性マップで確かめられず、テーブルのレコードを見に行った回数（第8章、第11章） |
 | `Index Searches` | Indexを使う処理 | Indexを上からたどった回数（付録「自分の遅いSQLを調べる」のパターン3） |
 | `Sort Method: quicksort` | Sort | 作業用メモリの中で全部を並べた（第7章） |
 | `Sort Method: top-N heapsort` | Sort（`LIMIT`付き） | 上位の候補だけを持って選んだ（第8章） |
 | `Sort Method: external merge`、`Disk` | Sort | 作業用メモリに収まらず、一時ファイルを使って並べた（第7章） |
 | `Buckets`、`Batches`、`Memory Usage` | Hash、HashAggregate | ハッシュ表の箱の数、分けた回数、使ったメモリの最大量（第9章） |
-| `Planned Partitions`、`Disk Usage` | HashAggregate | 収まらないと見込んで分けた数と、一時ファイルに置いた量（第9章） |
+| `Planned Partitions`、`Disk Usage` | HashAggregate | メモリがいっぱいになったら書き出す組の数として実行前に決めておいた数と、一時ファイルに置いた量（第9章、第10章） |
 | `WAL: records=… bytes=…` | 変更するSQL（`WAL`オプション付き） | 変更のために生成した記録の数と大きさ（第11章） |
 
 ## 最後の行

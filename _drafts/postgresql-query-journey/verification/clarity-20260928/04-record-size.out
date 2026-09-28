@@ -1,0 +1,37 @@
+                                                         version                                                          
+--------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+NOTICE:  extension "pageinspect" already exists, skipping
+     t      | lower | upper | special 
+------------+-------+-------+---------
+ size_short |   764 |   792 |    8192
+ size_long  |   160 |   304 |    8192
+(2 rows)
+
+     t      | lp | lp_off | lp_len | t_hoff 
+------------+----+--------+--------+--------
+ size_long  |  1 |   7960 |    232 |     24
+ size_long  |  2 |   7728 |    232 |     24
+ size_long  |  3 |   7496 |    232 |     24
+ size_short |  1 |   8152 |     39 |     24
+ size_short |  2 |   8112 |     39 |     24
+ size_short |  3 |   8072 |     39 |     24
+(6 rows)
+
+ id_bytes | note10_bytes | note200_bytes 
+----------+--------------+---------------
+        4 |           14 |           204
+(1 row)
+
+     t      | count 
+------------+-------
+ size_short |   185
+ size_long  |    34
+(2 rows)
+
+ pid | state 
+-----+-------
+(0 rows)
+
