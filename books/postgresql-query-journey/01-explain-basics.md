@@ -235,6 +235,12 @@ docker compose exec -T db psql -X -U postgres -d reading_map \
 
 本に載せた出力の[元ログ](https://github.com/hatsu38/postgresql-structures-lab/blob/main/results/chapter01-million-2026-09-23.txt)と[測定条件](https://github.com/hatsu38/postgresql-structures-lab/blob/main/results/README.md)も公開しています。自分の結果と見比べてみてください。中断と再開の手順は、[実験用リポジトリのREADME](https://github.com/hatsu38/postgresql-structures-lab#readme)にまとめています。
 
+## まとめ
+
+- 返したレコード数（`actual`の`rows`）と、調べたレコード数（`rows`と`Rows Removed by Filter`の和）は、別々に読む。
+- `EXPLAIN`は実行前の予定、`EXPLAIN ANALYZE`は実際に動かした結果。`ANALYZE`を付けると、`UPDATE`なども本当に実行される。
+- 同じ1件を返すSQLでも、探し方（Seq ScanかIndex Scanか）で、調べるレコード数は桁で変わる。
+
 ## 第2章へ
 
 1冊を返すために、100万件を調べていました。1冊見つかったところで止めれば、調べる量を減らせるでしょうか。次章では同じ100万冊に`LIMIT 1`を試します。
