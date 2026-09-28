@@ -198,10 +198,16 @@
     "description": "仕組み：LimitとIndex Scanの要求とレコードの受け渡し（説明するための図）"
   },
   {
+    "name": "02-hash-join-steps",
+    "chapter": 6,
+    "title": "Hash Joinが子を動かす順",
+    "description": "仕組み：Hash の側でハッシュ表を作り終えてから、Seq Scan の記録を1件ずつ照合する（説明するための図）"
+  },
+  {
     "name": "02-ranking-plan-tree",
     "chapter": 6,
     "title": "20件に減るのは、最後の2段",
-    "description": "観察：ランキングの実行計画を木として読み、各段の rows を追う（実測）"
+    "description": "観察：ランキングの実行計画を木として読み、各段の rows と、Hash Join が子を動かす順を追う（実測）"
   },
   {
     "name": "04-memory-regions",

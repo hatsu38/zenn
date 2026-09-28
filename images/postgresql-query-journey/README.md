@@ -39,6 +39,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第6章 | 接続ごとにプロセスが動く | [SVG](sources/02-connections.svg) | [PNG](02-connections.png) |
 | 第6章 | SQLの文字列から、検索結果が返るまで | [SVG](sources/02-query-stages.svg) | [PNG](02-query-stages.png) |
 | 第6章 | Limitは3件で要求を止める | [SVG](sources/02-execution-tree.svg) | [PNG](02-execution-tree.png) |
+| 第6章 | Hash Joinが子を動かす順 | [SVG](sources/02-hash-join-steps.svg) | [PNG](02-hash-join-steps.png) |
 | 第6章 | 20件に減るのは、最後の2段 | [SVG](sources/02-ranking-plan-tree.svg) | [PNG](02-ranking-plan-tree.png) |
 | 第7章 | ページの保存場所と、計算の作業場所 | [SVG](sources/04-memory-regions.svg) | [PNG](04-memory-regions.png) |
 | 第7章 | 読み終えた順に、並べたい | [SVG](sources/07-recent-records.svg) | [PNG](07-recent-records.png) |
