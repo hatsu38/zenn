@@ -7,7 +7,7 @@ title: "第3章：B-treeは、どうやって探す場所を絞るのか"
 Indexにも100万冊分の情報があるのに、なぜ全件を調べずに探せるのでしょうか。番号1〜9の図で、範囲を絞って探す仕組みを確かめます。その後、題名のIndexを作って同じ検索を比べ、探す範囲を広げると選ばれる方法がどう変わるかを観察します。最後に題名の範囲で約1割の本を探し、目録の順とテーブルの順が違うときに選ばれる三つ目の方法を見ます。
 
 :::message
-「準備」の章で用意した本100万冊を使い、題名のIndexがない状態から始めます。この章で作った`books_title_idx`は、次章以降も残します。
+接続し直したら、「準備」の章の共通設定を入力してください。この章から始めるときの準備は、[実験用リポジトリのREADME](https://github.com/hatsu38/postgresql-structures-lab#readme)にあります。
 :::
 
 ## 目録も大きいのに、どう探す？
@@ -63,7 +63,7 @@ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.010..38.
   Filter: (title = '実験用の本 42'::text)
   Rows Removed by Filter: 999999
   Buffers: shared hit=4657 read=2696 written=94
-Planning Time: 0.051 ms
+…
 Execution Time: 38.405 ms
 ```
 
@@ -74,13 +74,6 @@ Execution Time: 38.405 ms
 ```sql
 CREATE INDEX books_title_idx ON books (title);
 ANALYZE books;
-```
-
-実行結果です。
-
-```sql:実行結果
-CREATE INDEX
-ANALYZE
 ```
 
 `ANALYZE`は、テーブルから一部のレコードを抜き出して統計情報を作ります[^analyze-sample]。そのため、このあとの出力の見積もり（`cost`や、`actual`より前の`rows`）は、あなたの結果と少し違うことがあります。統計情報は第10章で扱います。
@@ -103,7 +96,7 @@ Index Scan using books_title_idx on books  (cost=0.42..8.44 rows=1 width=30) (ac
   Buffers: shared hit=1 read=3
 Planning:
   Buffers: shared hit=8 read=1
-Planning Time: 0.150 ms
+…
 Execution Time: 0.067 ms
 ```
 
@@ -153,11 +146,9 @@ SELECT id, title FROM books WHERE id BETWEEN 400000 AND 400010;
 ```sql:実行結果
 Index Scan using books_pkey on books  (cost=0.42..8.64 rows=11 width=30) (actual time=0.053..0.054 rows=11.00 loops=1)
   Index Cond: ((id >= 400000) AND (id <= 400010))
-  Index Searches: 1
+  …
   Buffers: shared hit=3 read=4
-Planning:
-  Buffers: shared hit=6
-Planning Time: 0.041 ms
+…
 Execution Time: 0.059 ms
 ```
 
@@ -176,16 +167,15 @@ SELECT id, title FROM books WHERE id BETWEEN 1 AND 900000;
 
 ```sql:実行結果
 Seq Scan on books  (cost=0.00..22353.00 rows=901290 width=30) (actual time=0.009..67.702 rows=900000.00 loops=1)
-  Filter: ((id >= 1) AND (id <= 900000))
+  …
   Rows Removed by Filter: 100000
-  Buffers: shared hit=5196 read=2157
-Planning:
-  Buffers: shared hit=2 read=2
-Planning Time: 0.748 ms
+  …
 Execution Time: 93.910 ms
 ```
 
 今度は`Seq Scan`です。90万件を返し、条件に合わない10万件を除外しています。テーブルの100万件のうち、9割が必要になる検索です。
+
+`actual time`の終わりは67.702 msですが、`Execution Time`は93.910 msで、約26 ms長くなっています。`actual time`はこの処理の中でかかった時間で、処理から出てきた90万件を受け取る側の時間は入りません。`Execution Time`にはその時間も入るので、返すレコードが多いと差が開きます。1件を返した第1章の題名検索では、35.994 msと36.037 msで、差はほとんどありませんでした。
 
 | 比較するもの | 11冊を探す | 90万冊を探す |
 | --- | --- | --- |
@@ -201,9 +191,11 @@ Execution Time: 93.910 ms
 
 今回確かめられたのは、**Indexが残っていても、探す範囲によって選ばれる方法が変わった**ことです。11冊の検索と90万冊の検索は返す件数が違うため、この時間差で二つの方法の速さを直接は比べられません。方法を選ぶ仕組みは、第10章で調べます。
 
+Indexがあっても使われない例は、ほかにもあります。条件の列を関数で包んだ場合と、前方一致の`LIKE`は、付録「自分の遅いSQLを調べる」のよくある遅い書き方で確かめます。
+
 ## 目録の順番と、棚の順番が違うとき
 
-11冊と90万冊の間には、どんな探し方があるのでしょうか。今度は題名の範囲で探します。題名が「実験用の本 4」で始まる本、つまり「実験用の本 4」以上「実験用の本 5」未満の題名を持つ本をすべて取り出します。番号でいえば4、40〜49、400〜499、4000〜4999、40000〜49999、400000〜499999の本で、合わせて111,111冊です。100万冊の約1割にあたります。
+11冊と90万冊の間には、どんな探し方があるのでしょうか。今度は題名の範囲で探します。題名が「実験用の本 4」で始まる本をすべて取り出します。このデータでは、「実験用の本 4」以上「実験用の本 5」未満の題名を持つ本と同じになるので、その範囲を条件にします。番号でいえば4、40〜49、400〜499、4000〜4999、40000〜49999、400000〜499999の本で、合わせて111,111冊です。100万冊の約1割にあたります。
 
 11冊のときは`Index Scan`、90万冊のときは`Seq Scan`でした。題名のIndexは残っています。1割ならどちらが選ばれるか、実行する前に予想してください。
 
@@ -220,10 +212,9 @@ Bitmap Heap Scan on books  (cost=3311.93..12314.92 rows=110000 width=30) (actual
   Heap Blocks: exact=821
   Buffers: shared hit=1371
   ->  Bitmap Index Scan on books_title_idx  (cost=0.00..3284.43 rows=110000 width=0) (actual time=11.680..11.680 rows=111111.00 loops=1)
-        Index Cond: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
-        Index Searches: 1
+        …
         Buffers: shared hit=550
-Planning Time: 0.092 ms
+…
 Execution Time: 29.090 ms
 ```
 
@@ -257,7 +248,7 @@ ORDER BY title LIMIT 8;
 
 題名は文字として並ぶので、「実験用の本 4」の次は「実験用の本 40」、その次は「実験用の本 400」です。番号でいえば4、40、400、4000、40000、400000と、桁が一つずつ増えていきます。この先も、400009の次に40001が来て、その次は400010に戻ります。
 
-一方、テーブルのレコードは番号の順にページへ並んでいます（レコードがどのページにあるかは、第4章で`ctid`という値を使って確かめます）。番号40001のレコードはページ294に、番号400010のレコードはページ2941にありました。目録の順に1冊ずつ取りに行くと、ページ2941とページ294を行ったり来たりして、同じページを何度も開くことになります。
+一方、テーブルのレコードは番号の順にページへ並んでいます（レコードがどのページにあるかは、第4章で`ctid`という値を使って確かめます）。番号の範囲で探すなら、たとえば400000〜400010の11冊は、すべてページ2941に固まっています。ところが題名の順では番号が飛びます。番号40001のレコードはページ294に、番号400010のレコードはページ2941にありました。目録の順に1冊ずつ取りに行くと、ページ2941とページ294を行ったり来たりして、同じページを何度も開くことになります。
 
 そこでPostgreSQLは、先に目録からレコードの場所を集め、ページごとにまとめてから、ページ番号の順にテーブルを読みます。今回の`exact`という方式では、ページ番号だけでなく、そのページの中のどのレコードを取り出すかも印で保持します。この、対象のレコード位置をまとめたものを**ビットマップ**と呼びます。
 
@@ -280,10 +271,9 @@ SELECT id, title FROM books WHERE title >= '実験用の本 4' AND title < '実�
 
 ```sql:実行結果
 Index Scan using books_title_idx on books  (cost=0.42..14532.64 rows=110000 width=30) (actual time=0.571..16.464 rows=111111.00 loops=1)
-  Index Cond: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
-  Index Searches: 1
+  …
   Buffers: shared hit=22395
-Planning Time: 0.131 ms
+…
 Execution Time: 19.673 ms
 ```
 
@@ -301,10 +291,10 @@ SELECT id, title FROM books WHERE title >= '実験用の本 4' AND title < '実�
 
 ```sql:実行結果
 Seq Scan on books  (cost=0.00..22353.00 rows=110000 width=30) (actual time=0.039..1785.254 rows=111111.00 loops=1)
-  Filter: ((title >= '実験用の本 4'::text) AND (title < '実験用の本 5'::text))
+  …
   Rows Removed by Filter: 888889
   Buffers: shared hit=2583 read=4770
-Planning Time: 0.083 ms
+…
 Execution Time: 1788.428 ms
 ```
 
@@ -313,13 +303,6 @@ Execution Time: 1788.428 ms
 ```sql
 RESET enable_bitmapscan;
 RESET enable_indexscan;
-```
-
-実行結果です。
-
-```sql:実行結果
-RESET
-RESET
 ```
 
 | 比較するもの | Seq Scan | Index Scan | Bitmap Index ScanとBitmap Heap Scan |
@@ -335,12 +318,14 @@ RESET
 
 確かめるために、同じ範囲を、文字コードの順に比べる`COLLATE "C"`を付けてSeq Scanで比べ直しました。2026年9月28日に2回ずつ測ると、`en_US.utf8`のままでは約2,300ミリ秒、`COLLATE "C"`では約65ミリ秒でした。返すレコード数も、除外したレコード数も同じです。表の1,788ミリ秒とは別の日の測定なので時間はそろいませんが、照合順序を変えるだけで30倍以上の差が出ました。照合順序は、付録で`LIKE`の前方一致にIndexが使えない理由としても出てきます。
 
+ここで比べている三つの数は、役割が違います。`cost`はPostgreSQLが方法を選ぶための実行前の見積もり、`Execution Time`はその1回に実際にかかった時間、ページへのアクセス回数は実際に読んだ量です。
+
 実行時間は、今回は`Index Scan`がいちばん短くなりました。ただし、`Index Scan`もビットマップの計画も、アクセスはすべて`hit`です。「メモリにあったから」だけでは、二つの時間差を説明しきれません。ビットマップを組み立てる処理や、実行順による状態の違いなども関わりえます。あなたの結果では、ビットマップの計画に`read`が含まれていたり、二つの時間の順が入れ替わっていたりするかもしれません。この各1回の結果だけで、どちらが速いかや原因を決めないでください。
 
 一方、実行前の`cost`はビットマップの方法が小さくなっています（今回は12314.92と14532.64）。PostgreSQLは、ページを読む処理やレコードを比べる処理などの見積もりに基づいて方法を選びます。その見積もりが、今回の実行時間の順と一致しなかった、と読みます。あなたの結果で時間の順が入れ替わっていれば、見積もりの順と一致したことになります。見積もりの仕組みは第10章で、`hit`と`read`の違いは第5章で確かめます。
 
 :::details Recheck Condという表示について
-ビットマップは、処理ごとの作業用メモリに置きます。収まらなくなると、一部のページについてレコードの位置を省き、「このページのどこか」という粗い形に切り替えることがあります。この`lossy`という方式では、ページごとに1ビットの印を持ち、テーブルを読んだ後で条件に合うレコードかを確かめ直します。その確かめ直しに使う条件が`Recheck Cond`です。今回は`Heap Blocks: exact=821`で、すべてレコードの位置まで持てていました。粗い形になったページがあると、`lossy=`の数が並びます。作業用メモリの大きさは第7章で変えて観察します。
+ビットマップは、処理ごとの作業用メモリ（`work_mem`で大きさが決まるメモリ）に置きます。収まらなくなると、一部のページについてレコードの位置を省き、「このページのどこか」という粗い形に切り替えることがあります。この`lossy`という方式では、ページごとに1ビットの印を持ち、テーブルを読んだ後で条件に合うレコードかを確かめ直します。その確かめ直しに使う条件が`Recheck Cond`で、確かめ直しが要るときに備えて、計画にはいつも表示されます。今回は`Heap Blocks: exact=821`で、すべてレコードの位置まで持てていたので、確かめ直しは起きていません。粗い形になったページがあると、`lossy=`の数が並びます。作業用メモリの大きさは第7章で変えて観察します。
 :::
 
 ## Indexにも保存容量と更新の負担がある
