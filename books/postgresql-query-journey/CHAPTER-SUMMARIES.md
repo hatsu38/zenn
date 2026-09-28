@@ -258,7 +258,7 @@ PostgreSQLは実行前にレコード数や処理量を見積もり、処理方�
 2. Rails・Django・LaravelでSQLと実行計画を取り出す。
 3. EXPLAINから始め、BEGINとROLLBACK、statement_timeoutで安全に測る。
 4. 出力の表示から、疑うこと・試すこと・戻る章を引く表。
-5. よくある遅い書き方（関数で包む、前方一致とtext_pattern_ops、複合Indexの列の順番とskip scan、大きなOFFSET、範囲の条件の伝わり方、N+1）を実行計画で比べる。
+5. よくある遅い書き方（関数で包む、前方一致とtext_pattern_ops、複合Indexの列の順番とskip scan、大きなOFFSET、N+1）を実行計画で比べる。
 6. PostgreSQL 18で変わった出力（BUFFERSの既定化、小数のrows、Index Searches、skip scan、io_method）。
 
 ## [付録：途中から実験を再開する](98-appendix-restart.md)
