@@ -351,19 +351,19 @@
     "name": "11-snapshots",
     "chapter": 11,
     "title": "Bが確定しても、Aは版1を読む",
-    "description": "比較：Repeatable Readで見える版（3コマ。説明するための図）"
+    "description": "仕組み：スナップショットの確定済みの番号と各版のxmin・xmaxを比べて、見せる版を選ぶ（4コマ。説明するための図）"
   },
   {
     "name": "11-visibility-map",
     "chapter": 11,
-    "title": "×のページはテーブルで確認",
-    "description": "仕組み：Index Only Scanと可視性マップ（説明するための図）"
+    "title": "印が消えると、テーブルを見る",
+    "description": "比較：本42の1件の、VACUUM後・UPDATE後・再びVACUUM後のIndexの項目と可視性マップの印、Heap Fetches 0→2→0（3コマ。説明するための図）"
   },
   {
     "name": "11-wal-and-pages",
     "chapter": 11,
     "title": "ログの保存と、ページの書き出し",
-    "description": "仕組み：WALを保存してから電源断・再起動までの順序（説明するための図）"
+    "description": "仕組み：チェックポイントの印、COMMITまでのWALの保存、電源断、印から後のWALでの復旧（4コマ。説明するための図）"
   },
   {
     "name": "12-decision-notebook",

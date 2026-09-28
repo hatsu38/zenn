@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="782" viewBox="0 0 640 782" role="img" aria-labelledby="title">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="830" viewBox="0 0 640 830" role="img" aria-labelledby="title">
   <title id="title">Bが確定しても、Aは版1を読む</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
@@ -18,52 +18,106 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .flow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#flow)}.req{fill:none;stroke:#945e11;stroke-width:3;stroke-dasharray:8 6;marker-end:url(#req)}
 .ref{fill:none;stroke:#7d93a3;stroke-width:2;marker-end:url(#ref)}.step{fill:#fff;stroke:#243b50;stroke-width:2.5}
 .spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
+.work{fill:#fff;stroke:#56738a;stroke-width:2;stroke-dasharray:8 5}.val{fill:#dcefe8;stroke:#448b7c;stroke-width:2}.buffer{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2}
+.route{fill:#f4f6f8;stroke:#243b50;stroke-width:3}.leader{fill:none;stroke:#56738a;stroke-width:2}
+.storage{fill:#ece7f5;stroke:#735f9f;stroke-width:2}.file{fill:#fff;stroke:#735f9f;stroke-width:2}
+  .cmp{fill:#dfe5ea}
+.swap{fill:#dcefe8;stroke:#243b50;stroke-width:4}
+.big{font-size:56px;font-weight:700}
   </style>
-  <rect width="640" height="782" fill="#f5f7f9"/>
+  <rect width="640" height="830" fill="#f5f7f9"/>
   <text x="24" y="48" class="h">Bが確定しても、Aは版1を読む</text>
   <g id="panel-1">
-    <rect x="24" y="76" width="592" height="218" rx="14" class="panel"/>
-    <text x="44" y="114" class="b">① Aが読む（Repeatable Read）</text>
-    <rect x="306" y="132" width="294" height="146" rx="10" class="page"/>
-    <text x="348" y="160" class="s b">本42を含むページ</text>
-    <rect x="348" y="176" width="236" height="36" rx="4" class="row"/>
-    <text x="362" y="201" class="s">版1　実験用の本 42</text>
-    <circle cx="62" cy="194" r="18" fill="#243b50"/>
-    <text x="62" y="202" text-anchor="middle" class="tag">A</text>
-    <text x="100" y="182" class="s">見る</text>
-    <path d="M88 194 L346 194" class="ref"/>
+    <rect x="24" y="72" width="592" height="140" rx="14" class="panel"/>
+    <text x="44" y="106" class="b">① Aが最初に読む（スナップショット）</text>
+    <text x="286" y="136" class="m">版</text>
+    <text x="372" y="136" text-anchor="middle" class="mono m">xmin</text>
+    <text x="450" y="136" text-anchor="middle" class="mono m">xmax</text>
+    <text x="500" y="136" class="m">題名</text>
+    <rect x="272" y="148" width="328" height="36" rx="4" class="hot"/>
+    <text x="286" y="173" class="s b">版1</text>
+    <text x="372" y="173" text-anchor="middle" class="mono">948</text>
+    <text x="450" y="173" text-anchor="middle" class="mono">0</text>
+    <text x="500" y="173" class="s b">元の題名</text>
+    <rect x="36" y="126" width="226" height="74" rx="8" fill="#fff" stroke="#243b50" stroke-width="2.5"/>
+    <rect x="36" y="126" width="226" height="36" rx="8" fill="#243b50"/>
+    <rect x="36" y="150" width="226" height="12" fill="#243b50"/>
+    <text x="149" y="152" text-anchor="middle" class="tag">Aのスナップショット</text>
+    <text x="149" y="189" text-anchor="middle" class="s b"><tspan class="mono b">998</tspan>まで確定済み</text>
   </g>
   <g id="panel-2">
-    <rect x="24" y="308" width="592" height="218" rx="14" class="panel"/>
-    <text x="44" y="346" class="b">② BがUPDATEしてCOMMIT</text>
-    <text x="76" y="378" class="b">Aがもう一度読む</text>
-    <rect x="306" y="364" width="294" height="146" rx="10" class="page"/>
-    <text x="348" y="392" class="s b">本42を含むページ</text>
-    <rect x="348" y="408" width="236" height="36" rx="4" class="hot"/>
-    <text x="362" y="433" class="s b">版1　実験用の本 42</text>
-    <rect x="348" y="458" width="236" height="36" rx="4" class="row"/>
-    <text x="362" y="483" class="s">版2　改訂版の本 42</text>
-    <circle cx="62" cy="426" r="18" fill="#243b50"/>
-    <text x="62" y="434" text-anchor="middle" class="tag">A</text>
-    <text x="100" y="414" class="s">見る</text>
-    <circle cx="62" cy="476" r="18" fill="#243b50"/>
-    <text x="62" y="484" text-anchor="middle" class="tag">B</text>
-    <text x="100" y="464" class="s teal">新しい版を作る</text>
-    <path d="M88 426 L346 426" class="ref"/>
-    <path d="M88 476 L345 476" class="flow"/>
+    <rect x="24" y="222" width="592" height="160" rx="14" class="panel"/>
+    <text x="44" y="256" class="b">② BがUPDATEしてCOMMIT</text>
+    <text x="286" y="286" class="m">版</text>
+    <text x="372" y="286" text-anchor="middle" class="mono m">xmin</text>
+    <text x="450" y="286" text-anchor="middle" class="mono m">xmax</text>
+    <text x="500" y="286" class="m">題名</text>
+    <rect x="272" y="296" width="328" height="36" rx="4" class="row"/>
+    <text x="286" y="321" class="s b">版1</text>
+    <text x="372" y="321" text-anchor="middle" class="mono">948</text>
+    <text x="450" y="321" text-anchor="middle" class="mono b">999</text>
+    <text x="500" y="321" class="s">元の題名</text>
+    <rect x="272" y="340" width="328" height="36" rx="4" class="hot"/>
+    <text x="286" y="365" class="s b">版2</text>
+    <text x="372" y="365" text-anchor="middle" class="mono b">999</text>
+    <text x="450" y="365" text-anchor="middle" class="mono">0</text>
+    <text x="500" y="365" class="s b">改訂版</text>
+    <circle cx="62" cy="306" r="18" fill="#243b50"/>
+    <text x="62" y="314" text-anchor="middle" class="tag">B</text>
+    <text x="92" y="314" class="s">番号<tspan class="mono b">999</tspan></text>
+    <text x="92" y="348" class="s teal">版2を作る</text>
+    <path d="M84 360 L268 360" class="flow"/>
   </g>
   <g id="panel-3">
-    <rect x="24" y="540" width="592" height="218" rx="14" class="panel"/>
-    <text x="44" y="578" class="b">③ AがCOMMITして、新しく読む</text>
-    <rect x="306" y="596" width="294" height="146" rx="10" class="page"/>
-    <text x="348" y="624" class="s b">本42を含むページ</text>
-    <rect x="348" y="640" width="236" height="36" rx="4" class="row"/>
-    <text x="362" y="665" class="s">版1　実験用の本 42</text>
-    <rect x="348" y="690" width="236" height="36" rx="4" class="row"/>
-    <text x="362" y="715" class="s">版2　改訂版の本 42</text>
-    <circle cx="62" cy="658" r="18" fill="#243b50"/>
-    <text x="62" y="666" text-anchor="middle" class="tag">A</text>
-    <text x="100" y="646" class="s">見る</text>
-    <path d="M88 658 L346 708" class="ref"/>
+    <rect x="24" y="392" width="592" height="204" rx="14" class="panel"/>
+    <text x="44" y="426" class="b">③ Aがもう一度読む（番号を比べる）</text>
+    <text x="286" y="456" class="m">版</text>
+    <text x="372" y="456" text-anchor="middle" class="mono m">xmin</text>
+    <text x="450" y="456" text-anchor="middle" class="mono m">xmax</text>
+    <text x="500" y="456" class="m">結果</text>
+    <rect x="272" y="466" width="328" height="56" rx="4" class="hot"/>
+    <text x="286" y="502" class="s b">版1</text>
+    <text x="372" y="490" text-anchor="middle" class="mono">948</text>
+    <text x="450" y="490" text-anchor="middle" class="mono">999</text>
+    <text x="372" y="515" text-anchor="middle" class="s teal">確定</text>
+    <text x="450" y="515" text-anchor="middle" class="s brown">未確定</text>
+    <text x="500" y="502" class="s b teal">見せる</text>
+    <rect x="272" y="528" width="328" height="56" rx="4" class="ghost"/>
+    <text x="286" y="564" class="s b m">版2</text>
+    <text x="372" y="552" text-anchor="middle" class="mono">999</text>
+    <text x="450" y="552" text-anchor="middle" class="mono m">0</text>
+    <text x="372" y="577" text-anchor="middle" class="s brown">未確定</text>
+    <text x="500" y="564" class="s b m">見せない</text>
+    <rect x="36" y="490" width="226" height="74" rx="8" fill="#fff" stroke="#243b50" stroke-width="2.5"/>
+    <rect x="36" y="490" width="226" height="36" rx="8" fill="#243b50"/>
+    <rect x="36" y="514" width="226" height="12" fill="#243b50"/>
+    <text x="149" y="516" text-anchor="middle" class="tag">Aのスナップショット</text>
+    <text x="149" y="553" text-anchor="middle" class="s b"><tspan class="mono b">998</tspan>まで確定済み</text>
+  </g>
+  <g id="panel-4">
+    <rect x="24" y="606" width="592" height="204" rx="14" class="panel"/>
+    <text x="44" y="640" class="b">④ AがCOMMITして、新しく読む</text>
+    <text x="286" y="670" class="m">版</text>
+    <text x="372" y="670" text-anchor="middle" class="mono m">xmin</text>
+    <text x="450" y="670" text-anchor="middle" class="mono m">xmax</text>
+    <text x="500" y="670" class="m">結果</text>
+    <rect x="272" y="680" width="328" height="56" rx="4" class="ghost"/>
+    <text x="286" y="716" class="s b m">版1</text>
+    <text x="372" y="704" text-anchor="middle" class="mono">948</text>
+    <text x="450" y="704" text-anchor="middle" class="mono">999</text>
+    <text x="372" y="729" text-anchor="middle" class="s teal">確定</text>
+    <text x="450" y="729" text-anchor="middle" class="s teal">確定</text>
+    <text x="500" y="716" class="s b m">見せない</text>
+    <rect x="272" y="742" width="328" height="56" rx="4" class="hot"/>
+    <text x="286" y="778" class="s b">版2</text>
+    <text x="372" y="766" text-anchor="middle" class="mono">999</text>
+    <text x="450" y="766" text-anchor="middle" class="mono m">0</text>
+    <text x="372" y="791" text-anchor="middle" class="s teal">確定</text>
+    <text x="500" y="778" class="s b teal">見せる</text>
+    <rect x="36" y="704" width="226" height="74" rx="8" fill="#fff" stroke="#243b50" stroke-width="2.5"/>
+    <rect x="36" y="704" width="226" height="36" rx="8" fill="#243b50"/>
+    <rect x="36" y="728" width="226" height="12" fill="#243b50"/>
+    <text x="149" y="730" text-anchor="middle" class="tag">Aのスナップショット</text>
+    <text x="149" y="767" text-anchor="middle" class="s b"><tspan class="mono b">999</tspan>まで確定済み</text>
   </g>
 </svg>

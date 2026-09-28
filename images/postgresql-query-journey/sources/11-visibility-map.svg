@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="584" viewBox="0 0 640 584" role="img" aria-labelledby="title">
-  <title id="title">×のページはテーブルで確認</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="816" viewBox="0 0 640 816" role="img" aria-labelledby="title">
+  <title id="title">印が消えると、テーブルを見る</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
     <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
@@ -18,51 +18,108 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .flow{fill:none;stroke:#277b74;stroke-width:3;marker-end:url(#flow)}.req{fill:none;stroke:#945e11;stroke-width:3;stroke-dasharray:8 6;marker-end:url(#req)}
 .ref{fill:none;stroke:#7d93a3;stroke-width:2;marker-end:url(#ref)}.step{fill:#fff;stroke:#243b50;stroke-width:2.5}
 .spine{fill:#e9f3f4;stroke:#243b50;stroke-width:1.5}
+.work{fill:#fff;stroke:#56738a;stroke-width:2;stroke-dasharray:8 5}.val{fill:#dcefe8;stroke:#448b7c;stroke-width:2}.buffer{fill:#eaf6f1;stroke:#6d9f94;stroke-width:2}
+.route{fill:#f4f6f8;stroke:#243b50;stroke-width:3}.leader{fill:none;stroke:#56738a;stroke-width:2}
+.storage{fill:#ece7f5;stroke:#735f9f;stroke-width:2}.file{fill:#fff;stroke:#735f9f;stroke-width:2}
+  .cmp{fill:#dfe5ea}
+.swap{fill:#dcefe8;stroke:#243b50;stroke-width:4}
+.big{font-size:56px;font-weight:700}
   </style>
-  <rect width="640" height="584" fill="#f5f7f9"/>
-  <text x="24" y="48" class="h">×のページはテーブルで確認</text>
-  <g id="index">
-    <rect x="24" y="76" width="592" height="108" rx="10" class="ipage"/>
-    <text x="44" y="108" class="s b"><tspan class="mono">(book_id, finished_at)</tspan>のIndex</text>
-    <rect x="44" y="124" width="136" height="36" rx="4" class="row"/>
-    <path d="M96 124 V160" class="row"/>
-    <text x="70" y="149" text-anchor="middle" class="s">42</text>
-    <text x="138" y="149" text-anchor="middle" class="s">日時1</text>
-    <text x="192" y="149" class="s m">▸ 場所</text>
-    <rect x="385" y="124" width="136" height="36" rx="4" class="row"/>
-    <path d="M437 124 V160" class="row"/>
-    <text x="411" y="149" text-anchor="middle" class="s">42</text>
-    <text x="479" y="149" text-anchor="middle" class="s">日時2</text>
-    <text x="533" y="149" class="s m">▸ 場所</text>
+  <rect width="640" height="816" fill="#f5f7f9"/>
+  <text x="24" y="48" class="h">印が消えると、テーブルを見る</text>
+  <g id="panel-1">
+    <rect x="24" y="72" width="592" height="236" rx="14" class="panel"/>
+    <text x="44" y="106" class="b">① VACUUM後</text>
+    <text x="596" y="106" text-anchor="end" class="mono b">Heap Fetches: 0</text>
+    <text x="40" y="143" class="s b">Index</text>
+    <text x="40" y="188" class="s b">可視性マップ</text>
+    <text x="40" y="274" class="s b">テーブル</text>
+    <rect x="180" y="116" width="420" height="40" rx="8" class="ipage"/>
+    <rect x="190" y="121" width="100" height="30" rx="4" class="row"/>
+    <path d="M234 121 V151" class="row"/>
+    <text x="212" y="143" text-anchor="middle" class="s">42</text>
+    <text x="262" y="143" text-anchor="middle" class="s">日時</text>
+    <text x="298" y="143" class="m">▸ 場所</text>
+    <rect x="184" y="162" width="200" height="36" rx="6" class="panel"/>
+    <text x="196" y="188" class="s">ページ10</text>
+    <text x="320" y="190" class="h teal">✓</text>
+    <rect x="396" y="162" width="200" height="36" rx="6" class="panel"/>
+    <text x="408" y="188" class="s">ページ11</text>
+    <text x="532" y="190" class="h teal">✓</text>
+    <rect x="184" y="234" width="200" height="66" rx="8" class="page"/>
+    <text x="196" y="258" class="s b">ページ10</text>
+    <rect x="194" y="266" width="180" height="28" rx="4" class="row"/>
+    <text x="204" y="288" class="s">版1</text>
+    <rect x="396" y="234" width="200" height="66" rx="8" class="page"/>
+    <text x="408" y="258" class="s b">ページ11</text>
+    <rect x="406" y="266" width="180" height="28" rx="4" class="row"/>
+    <text x="416" y="288" class="s m">ほかの記録</text>
+    <text x="192" y="224" class="s teal">テーブルを読まない</text>
   </g>
-  <g id="visibility-map">
-    <rect x="24" y="204" width="592" height="132" rx="10" class="panel"/>
-    <text x="44" y="236" class="s b">可視性マップ</text>
-    <rect x="44" y="250" width="120" height="72" rx="6" class="panel"/>
-    <text x="104" y="277" text-anchor="middle" class="s">ページ10</text>
-    <text x="104" y="311" text-anchor="middle" class="h teal">✓</text>
-    <rect x="484" y="250" width="120" height="72" rx="6" class="hot"/>
-    <text x="544" y="277" text-anchor="middle" class="s b">ページ11</text>
-    <text x="544" y="311" text-anchor="middle" class="h">×</text>
-    <text x="44" y="368" class="s"><tspan class="b teal">✓</tspan> <tspan class="m">すべて見えてよい</tspan></text>
-    <text x="530" y="368" text-anchor="end" class="s"><tspan class="b">×</tspan> <tspan class="m">確かめが要る</tspan></text>
+  <g id="panel-2">
+    <rect x="24" y="318" width="592" height="236" rx="14" class="panel"/>
+    <text x="44" y="352" class="b">② UPDATE後</text>
+    <text x="596" y="352" text-anchor="end" class="mono b">Heap Fetches: 2</text>
+    <text x="40" y="389" class="s b">Index</text>
+    <text x="40" y="434" class="s b">可視性マップ</text>
+    <text x="40" y="520" class="s b">テーブル</text>
+    <rect x="180" y="362" width="420" height="40" rx="8" class="ipage"/>
+    <rect x="190" y="367" width="100" height="30" rx="4" class="row"/>
+    <path d="M234 367 V397" class="row"/>
+    <text x="212" y="389" text-anchor="middle" class="s">42</text>
+    <text x="262" y="389" text-anchor="middle" class="s">日時</text>
+    <text x="298" y="389" class="m">▸ 場所</text>
+    <rect x="402" y="367" width="100" height="30" rx="4" class="row"/>
+    <path d="M446 367 V397" class="row"/>
+    <text x="424" y="389" text-anchor="middle" class="s">42</text>
+    <text x="474" y="389" text-anchor="middle" class="s">日時</text>
+    <text x="510" y="389" class="m">▸ 場所</text>
+    <rect x="184" y="408" width="200" height="36" rx="6" class="hot"/>
+    <text x="196" y="434" class="s">ページ10</text>
+    <text x="320" y="436" class="h">×</text>
+    <rect x="396" y="408" width="200" height="36" rx="6" class="hot"/>
+    <text x="408" y="434" class="s">ページ11</text>
+    <text x="532" y="436" class="h">×</text>
+    <rect x="184" y="480" width="200" height="66" rx="8" class="page"/>
+    <text x="196" y="504" class="s b">ページ10</text>
+    <rect x="194" y="512" width="180" height="28" rx="4" class="row"/>
+    <text x="204" y="534" class="s">版1　古い版</text>
+    <rect x="396" y="480" width="200" height="66" rx="8" class="page"/>
+    <text x="408" y="504" class="s b">ページ11</text>
+    <rect x="406" y="512" width="180" height="28" rx="4" class="row"/>
+    <text x="416" y="534" class="s">版2　新しい版</text>
+    <path d="M364 402 V510" class="ref"/>
+    <text x="352" y="470" text-anchor="end" class="s">確かめる</text>
+    <path d="M576 402 V510" class="ref"/>
+    <text x="564" y="470" text-anchor="end" class="s">確かめる</text>
   </g>
-  <g id="table">
-    <rect x="24" y="468" width="284" height="92" rx="10" class="page"/>
-    <text x="44" y="498" class="s b">ページ10</text>
-    <rect x="44" y="512" width="244" height="34" rx="4" class="row"/>
-    <text x="58" y="535" class="s">42　日時1</text>
-    <rect x="332" y="468" width="284" height="92" rx="10" class="page"/>
-    <text x="352" y="498" class="s b">ページ11</text>
-    <rect x="352" y="512" width="244" height="34" rx="4" class="row"/>
-    <text x="366" y="535" class="s">42　日時2</text>
-  </g>
-  <g id="no-heap-fetch">
-    <text x="44" y="410" class="s teal">テーブルを見ずに返す</text>
-  </g>
-  <g id="heap-fetch">
-    <path d="M544 324 V506" class="ref"/>
-    <text x="530" y="410" text-anchor="end" class="s">テーブルで確認</text>
-    <text x="530" y="444" text-anchor="end" class="s"><tspan class="mono">Heap Fetches</tspan>＝この回数</text>
+  <g id="panel-3">
+    <rect x="24" y="564" width="592" height="236" rx="14" class="panel"/>
+    <text x="44" y="598" class="b">③ 再びVACUUM後</text>
+    <text x="596" y="598" text-anchor="end" class="mono b">Heap Fetches: 0</text>
+    <text x="40" y="635" class="s b">Index</text>
+    <text x="40" y="680" class="s b">可視性マップ</text>
+    <text x="40" y="766" class="s b">テーブル</text>
+    <rect x="180" y="608" width="420" height="40" rx="8" class="ipage"/>
+    <rect x="402" y="613" width="100" height="30" rx="4" class="row"/>
+    <path d="M446 613 V643" class="row"/>
+    <text x="424" y="635" text-anchor="middle" class="s">42</text>
+    <text x="474" y="635" text-anchor="middle" class="s">日時</text>
+    <text x="510" y="635" class="m">▸ 場所</text>
+    <rect x="184" y="654" width="200" height="36" rx="6" class="panel"/>
+    <text x="196" y="680" class="s">ページ10</text>
+    <text x="320" y="682" class="h teal">✓</text>
+    <rect x="396" y="654" width="200" height="36" rx="6" class="panel"/>
+    <text x="408" y="680" class="s">ページ11</text>
+    <text x="532" y="682" class="h teal">✓</text>
+    <rect x="184" y="726" width="200" height="66" rx="8" class="page"/>
+    <text x="196" y="750" class="s b">ページ10</text>
+    <rect x="194" y="758" width="180" height="28" rx="4" class="ghost"/>
+    <text x="204" y="780" class="s m">空き</text>
+    <rect x="396" y="726" width="200" height="66" rx="8" class="page"/>
+    <text x="408" y="750" class="s b">ページ11</text>
+    <rect x="406" y="758" width="180" height="28" rx="4" class="row"/>
+    <text x="416" y="780" class="s">版2</text>
+    <text x="596" y="716" text-anchor="end" class="s teal">テーブルを読まない</text>
   </g>
 </svg>

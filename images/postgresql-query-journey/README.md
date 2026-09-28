@@ -65,7 +65,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第10章 | 推定のずれが、後ろの件数に効く | [SVG](sources/10-estimate-propagation.svg) | [PNG](10-estimate-propagation.png) |
 | 第11章 | 題名を直している間に、読まれたら？ | [SVG](sources/11-editing-scene.svg) | [PNG](11-editing-scene.png) |
 | 第11章 | Bが確定しても、Aは版1を読む | [SVG](sources/11-snapshots.svg) | [PNG](11-snapshots.png) |
-| 第11章 | ×のページはテーブルで確認 | [SVG](sources/11-visibility-map.svg) | [PNG](11-visibility-map.png) |
+| 第11章 | 印が消えると、テーブルを見る | [SVG](sources/11-visibility-map.svg) | [PNG](11-visibility-map.png) |
 | 第11章 | ログの保存と、ページの書き出し | [SVG](sources/11-wal-and-pages.svg) | [PNG](11-wal-and-pages.png) |
 | 第12章 | 今度は、根拠を持って選べる | [SVG](sources/12-decision-notebook.svg) | [PNG](12-decision-notebook.png) |
 | 第12章 | 3案で、扱う記録の数 | [SVG](sources/12-plan-record-counts.svg) | [PNG](12-plan-record-counts.png) |
