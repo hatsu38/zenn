@@ -1,0 +1,163 @@
+SELECT version();
+                                                         version                                                          
+--------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+SET max_parallel_workers_per_gather = 0;
+SET jit = off;
+SET work_mem = '4MB';
+CREATE TABLE ring_path_probe AS SELECT * FROM books;
+CREATE INDEX ring_path_probe_id_idx ON ring_path_probe (id);
+VACUUM ring_path_probe;
+SELECT pg_relation_size('ring_path_probe') / 8192 AS pages;
+ pages 
+-------
+  7391
+(1 row)
+
+SELECT buffers_evicted FROM pg_buffercache_evict_relation('ring_path_probe');
+ buffers_evicted 
+-----------------
+            2497
+(1 row)
+
+CREATE TEMP VIEW probe_cached AS
+SELECT count(*) AS cached_pages FROM pg_buffercache b
+WHERE b.relfilenode = pg_relation_filenode('ring_path_probe') AND b.relforknumber = 0
+  AND b.reldatabase = (SELECT oid FROM pg_database WHERE datname = current_database());
+SELECT * FROM probe_cached;
+ cached_pages 
+--------------
+            0
+(1 row)
+
+EXPLAIN (ANALYZE, BUFFERS, COSTS OFF) SELECT count(*) FROM ring_path_probe;
+                                      QUERY PLAN                                       
+---------------------------------------------------------------------------------------
+ Aggregate (actual time=122.081..122.081 rows=1.00 loops=1)
+   Buffers: shared read=7391
+   ->  Seq Scan on ring_path_probe (actual time=0.180..74.730 rows=1000000.00 loops=1)
+         Buffers: shared read=7391
+ Planning:
+   Buffers: shared hit=4
+ Planning Time: 0.051 ms
+ Execution Time: 122.101 ms
+(8 rows)
+
+SELECT * FROM probe_cached;
+ cached_pages 
+--------------
+           94
+(1 row)
+
+EXPLAIN (ANALYZE, BUFFERS, COSTS OFF) SELECT count(*) FROM ring_path_probe;
+                                      QUERY PLAN                                       
+---------------------------------------------------------------------------------------
+ Aggregate (actual time=121.800..121.800 rows=1.00 loops=1)
+   Buffers: shared hit=94 read=7297
+   ->  Seq Scan on ring_path_probe (actual time=0.206..75.515 rows=1000000.00 loops=1)
+         Buffers: shared hit=94 read=7297
+ Planning Time: 0.073 ms
+ Execution Time: 121.825 ms
+(6 rows)
+
+SELECT * FROM probe_cached;
+ cached_pages 
+--------------
+          188
+(1 row)
+
+SET enable_bitmapscan = off;
+SET enable_seqscan = off;
+EXPLAIN (ANALYZE, BUFFERS, COSTS OFF) SELECT count(title) FROM ring_path_probe WHERE id BETWEEN 1 AND 100000;
+                                                     QUERY PLAN                                                      
+---------------------------------------------------------------------------------------------------------------------
+ Aggregate (actual time=36.800..36.801 rows=1.00 loops=1)
+   Buffers: shared hit=5 read=1012
+   ->  Index Scan using ring_path_probe_id_idx on ring_path_probe (actual time=0.132..29.295 rows=100000.00 loops=1)
+         Index Cond: ((id >= 1) AND (id <= 100000))
+         Index Searches: 1
+         Buffers: shared hit=5 read=1012
+ Planning:
+   Buffers: shared hit=9
+ Planning Time: 0.064 ms
+ Execution Time: 36.837 ms
+(10 rows)
+
+RESET enable_bitmapscan;
+RESET enable_seqscan;
+SELECT * FROM probe_cached;
+ cached_pages 
+--------------
+          924
+(1 row)
+
+EXPLAIN (ANALYZE, BUFFERS, COSTS OFF) SELECT count(*) FROM ring_path_probe;
+                                      QUERY PLAN                                       
+---------------------------------------------------------------------------------------
+ Aggregate (actual time=120.839..120.840 rows=1.00 loops=1)
+   Buffers: shared hit=924 read=6467
+   ->  Seq Scan on ring_path_probe (actual time=0.009..74.185 rows=1000000.00 loops=1)
+         Buffers: shared hit=924 read=6467
+ Planning Time: 0.049 ms
+ Execution Time: 120.863 ms
+(6 rows)
+
+SELECT * FROM probe_cached;
+ cached_pages 
+--------------
+         1018
+(1 row)
+
+SET enable_indexscan = off;
+SET enable_seqscan = off;
+EXPLAIN (ANALYZE, BUFFERS, COSTS OFF) SELECT count(title) FROM ring_path_probe WHERE id BETWEEN 500001 AND 600000;
+                                                QUERY PLAN                                                 
+-----------------------------------------------------------------------------------------------------------
+ Aggregate (actual time=23.227..23.228 rows=1.00 loops=1)
+   Buffers: shared hit=1 read=1011
+   ->  Bitmap Heap Scan on ring_path_probe (actual time=6.838..17.675 rows=100000.00 loops=1)
+         Recheck Cond: ((id >= 500001) AND (id <= 600000))
+         Heap Blocks: exact=736
+         Buffers: shared hit=1 read=1011
+         ->  Bitmap Index Scan on ring_path_probe_id_idx (actual time=6.573..6.573 rows=100000.00 loops=1)
+               Index Cond: ((id >= 500001) AND (id <= 600000))
+               Index Searches: 1
+               Buffers: shared hit=1 read=275
+ Planning Time: 0.050 ms
+ Execution Time: 23.276 ms
+(12 rows)
+
+RESET enable_indexscan;
+RESET enable_seqscan;
+SELECT * FROM probe_cached;
+ cached_pages 
+--------------
+         1754
+(1 row)
+
+EXPLAIN (ANALYZE, BUFFERS, COSTS OFF) SELECT count(*) FROM ring_path_probe;
+                                      QUERY PLAN                                       
+---------------------------------------------------------------------------------------
+ Aggregate (actual time=122.026..122.027 rows=1.00 loops=1)
+   Buffers: shared hit=1754 read=5637
+   ->  Seq Scan on ring_path_probe (actual time=0.008..74.412 rows=1000000.00 loops=1)
+         Buffers: shared hit=1754 read=5637
+ Planning Time: 0.050 ms
+ Execution Time: 122.047 ms
+(6 rows)
+
+SELECT * FROM probe_cached;
+ cached_pages 
+--------------
+         1848
+(1 row)
+
+DROP VIEW probe_cached;
+DROP TABLE ring_path_probe;
+SELECT pid, state FROM pg_stat_activity WHERE state LIKE 'idle in%';
+ pid | state 
+-----+-------
+(0 rows)
+
