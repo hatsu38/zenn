@@ -55,7 +55,9 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第9章 | 外側のレコードごとに、内側を1回たどる | [SVG](sources/09-nested-loop.svg) | [PNG](09-nested-loop.png) |
 | 第9章 | 1回1件を20回で、20件 | [SVG](sources/09-loops.svg) | [PNG](09-loops.png) |
 | 第9章 | 先に分類し、同じ箱の中で照合する | [SVG](sources/09-hash-join.svg) | [PNG](09-hash-join.png) |
-| 第9章 | 小さい番号の列だけを、右へ進める | [SVG](sources/09-merge-join.svg) | [PNG](09-merge-join.png) |
+| 第9章 | 同じ番号の組を、漏らさず返す | [SVG](sources/09-merge-join.svg) | [PNG](09-merge-join.png) |
+| 第9章 | 組に分けて、1組ずつ照合する | [SVG](sources/09-hash-batches.svg) | [PNG](09-hash-batches.png) |
+| 第9章 | 収まらない本は、後で数える | [SVG](sources/09-hashagg-spill.svg) | [PNG](09-hashagg-spill.png) |
 | 第10章 | 計画は、1件も読まずに決まる | [SVG](sources/10-planner-choice.svg) | [PNG](10-planner-choice.png) |
 | 第10章 | 割合のメモから、レコード数を見積もる | [SVG](sources/10-stats-to-rows.svg) | [PNG](10-stats-to-rows.png) |
 | 第10章 | 推定のずれが、後ろの件数に効く | [SVG](sources/10-estimate-propagation.svg) | [PNG](10-estimate-propagation.png) |

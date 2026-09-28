@@ -300,6 +300,18 @@
     "description": "仕組み：Merge Join（見ている位置は右にだけ進む。説明するための図）"
   },
   {
+    "name": "09-hash-batches",
+    "chapter": 9,
+    "title": "組に分けて、1組ずつ照合する",
+    "description": "仕組み：Hash Join の Batches（本と記録を同じ計算で組に分け、2組目は一時ファイルから読み戻す。説明するための図）"
+  },
+  {
+    "name": "09-hashagg-spill",
+    "chapter": 9,
+    "title": "収まらない本は、後で数える",
+    "description": "仕組み：HashAggregate のあふれ（カウンタのない本の記録だけを書き出し、後で読み戻して数える。説明するための図）"
+  },
+  {
     "name": "10-planner-choice",
     "chapter": 10,
     "title": "計画は、1件も読まずに決まる",
