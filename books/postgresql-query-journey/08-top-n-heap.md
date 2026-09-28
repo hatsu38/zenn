@@ -7,7 +7,7 @@ title: "第8章：top-N heapsortは、上位20件をどう選ぶのか"
 上位20件だけが必要なとき、すべての順位を確定する必要はあるのでしょうか。少数の候補を保つヒープを具体例で追い、top-N heapsortの出力と対応させます。さらに、Indexの順序を利用する取得方法と比較します。調べる件数、候補として保持する件数、返す件数を分け、LIMITが減らす処理を説明できるようになります。
 
 :::message
-日時Indexがない状態から始め、章の途中で作成します。読み直しでは付録「途中から実験を再開する」の手順を使い、作成前と作成後を区別します。再接続した場合は付録「途中から実験を再開する」の共通設定を実行し、`work_mem=4MB`、並列実行とJITが無効の状態にします。
+接続し直したら、「準備」の章の共通設定を入力してください。この章から始めるときの準備は、[実験用リポジトリのREADME](https://github.com/hatsu38/postgresql-structures-lab#readme)にあります。
 :::
 
 ## 20件しか表示しないのに
@@ -68,17 +68,15 @@ LIMIT 20;
 
 ```sql:実行結果
 Limit  (cost=54092.78..54092.83 rows=20 width=16) (actual time=125.644..125.648 rows=20.00 loops=1)
-  Buffers: shared hit=9545 read=1266
+  …
   ->  Sort  (cost=54092.78..55340.61 rows=499134 width=16) (actual time=125.639..125.641 rows=20.00 loops=1)
-        Sort Key: finished_at DESC, book_id
+        …
         Sort Method: top-N heapsort  Memory: 26kB
-        Buffers: shared hit=9545 read=1266
+        …
         ->  Seq Scan on reading_records  (cost=0.00..40811.00 rows=499134 width=16) (actual time=0.026..92.883 rows=499998.00 loops=1)
-              Filter: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+              …
               Rows Removed by Filter: 1500002
-              Buffers: shared hit=9545 read=1266
-Planning Time: 0.111 ms
-Execution Time: 125.690 ms
+…
 ```
 
 Seq Scanは、返した499,998件と除外した1,500,002件を合わせて200万件を調べました。そのうちソートへ入ったのは499,998件、上で返すのは20件でした。26kBは、20件の候補を保つのに見合う小ささです。ソートへ入ったレコード数は499,998件のままなので、この値だけを見て「20件しか調べなかった」とは読めません。
@@ -114,21 +112,16 @@ LIMIT 20;
 
 ```sql:実行結果
 Limit  (cost=0.43..2.87 rows=20 width=16) (actual time=0.010..0.055 rows=20.00 loops=1)
-  Buffers: shared hit=21 read=2
+  …
   ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..60903.81 rows=498993 width=16) (actual time=0.009..0.052 rows=20.00 loops=1)
-        Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+        …
         Heap Fetches: 20
-        Index Searches: 1
-        Buffers: shared hit=21 read=2
-Planning:
-  Buffers: shared hit=11 read=4
-Planning Time: 0.128 ms
-Execution Time: 0.083 ms
+…
 ```
 
 Sortが消え、`reading_records_order_idx`の`Index Only Scan`が20件を返して止まっています。**Index Only Scan**は、返す列がすべてIndexに入っているときに、値をIndexから取り出して返す読み方です。`cost`側の`rows=498993`は最後まで読んだ場合の見積もりで、今回読み出したレコード数ではありません。実際のレコード数は`actual`側の`rows=20`です。
 
-ここでは`Heap Fetches: 20`もあります。20件を返すためにテーブルのレコードも確認しました。データを入れてから時間がたっていると、自動で動くVACUUM（autovacuum）が済んで、`Heap Fetches`が0に近くなることがあります。Index Only Scanでもテーブルへの確認がありうる理由と、この値が変わる理由は、第11章で確かめます。
+ここでは`Heap Fetches: 20`もあります。この`Heap`は、脚注で触れたテーブルの格納先のほうのヒープです。20件を返すために、テーブルのレコードも確認しました。データを入れてから時間がたっていると、自動で動くVACUUM（autovacuum）が済んで、`Heap Fetches`が0に近くなることがあります。Index Only Scanでもテーブルへの確認がありうる理由と、この値が変わる理由は、第11章で確かめます。
 
 上位3件を選ぶ小さな例で、入力の順序が分からない場合と、大きい順に取り出せる場合を並べてみます。保持する候補の数だけでなく、何件を確認するかに注目してください。
 
@@ -154,21 +147,23 @@ WHERE finished_at >= timestamp '2026-09-14'
 ORDER BY finished_at DESC, book_id ASC;
 ```
 
-:::details LIMITを外した実行結果
+同日の実行結果です。
+
 ```sql:実行結果
 Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..60903.81 rows=498993 width=16) (actual time=0.006..391.229 rows=499998.00 loops=1)
-  Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+  …
   Heap Fetches: 499998
-  Index Searches: 1
+  …
   Buffers: shared hit=499275 read=2641 written=1750
-Planning:
-  Buffers: shared hit=4
-Planning Time: 0.023 ms
+…
 Execution Time: 406.659 ms
 ```
-:::
 
-同じIndex Only Scanでも、今度は499,998件を返し、`Heap Fetches`も499,998です。前の20件で終われた計画との違いを、時間だけでなくレコード数で確認できます。`Heap Fetches`が0に近い場合は、テーブルへの確認が減るので、`Buffers`の数や時間も大きく減ります。
+同じIndex Only Scanでも、今度は499,998件を返し、`Heap Fetches`も499,998です。前の20件で終われた計画との違いを、時間だけでなくレコード数で確認できます。
+
+`shared hit`と`read`を合わせた501,916回は、返した499,998件とほぼ同じです。`Heap Fetches`の1件ごとに、テーブルのページを1回ずつ確かめたと読めます。`Heap Fetches`が0に近い場合は、テーブルへの確認が減るので、`Buffers`の数や時間も大きく減ります。
+
+方法が変わりうると書きましたが、今回はLIMITを外しても同じ計画が選ばれました。`cost`の後ろの値（すべてのレコードを返すまでの処理量の見積もり）で比べると、Indexを最後まで読む案の60,903.81が、全件を読んで並べ替える案より小さかったからです。第7章の並べ替えの計画では、`work_mem`が64MBでもこの値が89,643.06でした。ただし実行時間は406.659 msで、別の日に`work_mem`を64MBにして測った第7章の並べ替え（223.929 ms）より短くはなっていません。見積もりで選ばれた計画が速いとは限らないので、実測でも確かめます。
 
 課題です。「最近の20件」に効いた日時のIndexで、「今週よく読まれた20冊」もすぐ決まるでしょうか。
 
