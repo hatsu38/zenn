@@ -1,0 +1,39 @@
+    ctid     | xmin | xmax 
+-------------+------+------
+ (10810,151) |  951 | 1064
+(1 row)
+
+ on_page 
+---------
+       1
+(1 row)
+
+                                         QUERY PLAN                                         
+--------------------------------------------------------------------------------------------
+ Update on reading_records (actual rows=0.00 loops=1)
+   Buffers: shared hit=13 dirtied=1
+   WAL: records=4 fpi=1 bytes=7693 buffers full=1
+   ->  Bitmap Heap Scan on reading_records (actual rows=1.00 loops=1)
+         Recheck Cond: (book_id = 42)
+         Heap Blocks: exact=1
+         Buffers: shared hit=4
+         ->  Bitmap Index Scan on reading_records_visibility_idx (actual rows=1.00 loops=1)
+               Index Cond: (book_id = 42)
+               Index Searches: 1
+               Buffers: shared hit=3
+ Planning Time: 0.022 ms
+ Execution Time: 0.058 ms
+(13 rows)
+
+    ctid    | xmin | xmax 
+------------+------+------
+ (10812,83) | 1065 |    0
+(1 row)
+
+xid=1065 lsn1=2/20513A0 lsn2=2/20531D0
+
+-- pg_waldump
+rmgr: Heap        len (rec/tot):     54/    54, tx:       1065, lsn: 2/020513A0, prev 2/02051358, desc: LOCK xmax: 1065, off: 151, infobits: [LOCK_ONLY, EXCL_LOCK], flags: 0x00, blkref #0: rel 1663/16384/17334 blk 10810
+rmgr: Heap        len (rec/tot):     90/    90, tx:       1065, lsn: 2/020513D8, prev 2/020513A0, desc: UPDATE old_xmax: 1065, old_off: 151, old_infobits: [], flags: 0x00, new_xmax: 0, new_off: 83, blkref #0: rel 1663/16384/17334 blk 10812, blkref #1: rel 1663/16384/17334 blk 10810
+rmgr: Btree       len (rec/tot):     53/  7477, tx:       1065, lsn: 2/02051438, prev 2/020513D8, desc: INSERT_LEAF off: 259, blkref #0: rel 1663/16384/17376 blk 6290 FPW
+rmgr: Btree       len (rec/tot):     72/    72, tx:       1065, lsn: 2/02053188, prev 2/02051438, desc: INSERT_LEAF off: 57, blkref #0: rel 1663/16384/17613 blk 1
