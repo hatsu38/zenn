@@ -37,13 +37,14 @@ h1, h2, h3, h4 {
   break-after: avoid;
 }
 
-/* 章ごとに右ページから始める。図をページの上端へ浮かせたときに見出しより上に来ないよう、
+/* 章ごとに新しいページから始める。左右どちらのページからでもよい（右ページに限ると白紙が出るため。
+   2026-09-28 のユーザー判断）。図をページの上端へ浮かせたときに見出しより上に来ないよう、
    見出しも上端へ浮かせておく（浮かせたものは原稿の順にページの上から積まれる） */
 h1 {
   float: top;
   float-reference: page;
   width: 100%;
-  break-before: right;
+  break-before: page;
   font-size: 18pt;
   margin: 0 0 12mm;
   padding-bottom: 3mm;
