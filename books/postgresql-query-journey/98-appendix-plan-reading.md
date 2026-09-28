@@ -64,7 +64,7 @@ Seq Scan on books  (cost=0.00..19853.00 rows=1 width=30) (actual time=0.036..35.
 | `Sort Method: top-N heapsort` | Sort（`LIMIT`付き） | 上位の候補だけを持って選んだ（第8章） |
 | `Sort Method: external merge`、`Disk` | Sort | 作業用メモリに収まらず、一時ファイルを使って並べた（第7章） |
 | `Buckets`、`Batches`、`Memory Usage` | Hash、HashAggregate | ハッシュ表の箱の数、分けた回数、使ったメモリの最大量（第9章） |
-| `Planned Partitions`、`Disk Usage` | HashAggregate | 収まらないと見込んで分けた数と、一時ファイルに置いた量（第9章） |
+| `Planned Partitions`、`Disk Usage` | HashAggregate | メモリがいっぱいになったら書き出す組の数として実行前に決めておいた数と、一時ファイルに置いた量（第9章、第10章） |
 | `WAL: records=… bytes=…` | 変更するSQL（`WAL`オプション付き） | 変更のために生成した記録の数と大きさ（第11章） |
 
 ## 最後の行
