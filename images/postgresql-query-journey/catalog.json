@@ -135,7 +135,7 @@
     "name": "03-record-bytes",
     "chapter": 4,
     "title": "1件ごとにかかるバイト数",
-    "description": "観察：noteが10文字と200文字の1件を、管理情報・値・項目のバイト数の帯で比べる（実測）"
+    "description": "観察：noteが10文字と200文字の1件を、レコードの管理情報・値・項目のバイト数の帯で比べる（実測）"
   },
   {
     "name": "04-repeat-observation",
