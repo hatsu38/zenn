@@ -1,0 +1,29 @@
+ actual_books 
+--------------
+       736097
+(1 row)
+
+ n_distinct 
+------------
+      75797
+(1 row)
+
+ n_distinct 
+------------
+ -0.3680485
+(1 row)
+
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=143311.00..166296.97 rows=736097 width=16) (actual time=533.319..744.839 rows=736097.00 loops=1)
+   Group Key: book_id
+   Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 31440kB
+   Buffers: shared hit=9252 read=1559, temp read=3239 written=6740
+   ->  Seq Scan on reading_records  (cost=0.00..30811.00 rows=2000000 width=8) (actual time=0.131..130.200 rows=2000000.00 loops=1)
+         Buffers: shared hit=9252 read=1559
+ Planning:
+   Buffers: shared hit=29
+ Planning Time: 0.126 ms
+ Execution Time: 774.853 ms
+(10 rows)
+

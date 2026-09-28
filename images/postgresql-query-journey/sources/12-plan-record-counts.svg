@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="600" viewBox="0 0 640 600" role="img" aria-labelledby="title">
+  <title id="title">3案で、扱う記録の数</title>
+  <style>
+text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#243b50}
+.h{font-size:30px;font-weight:700}.b{font-weight:700}.s{font-size:22px}.m{font-size:22px;fill:#566c7b}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:22px}.tag{font-size:22px;font-weight:700;fill:#fff}
+.real{fill:#176e65}
+.panel{fill:#fff;stroke:#cedae1;stroke-width:2}
+.band{fill:#d5dde3;stroke:#92a7b5;stroke-width:2}.skip{fill:none;stroke:#b5c2cc;stroke-width:2;stroke-dasharray:6 5}
+.hot{fill:#fff0d5;stroke:#b88020;stroke-width:4}
+  </style>
+  <rect width="640" height="600" fill="#f5f7f9"/>
+  <text x="24" y="48" class="h">3案で、扱う記録の数</text>
+  <rect x="396" y="22" width="220" height="36" rx="18" class="real"/>
+  <text x="506" y="47" text-anchor="middle" class="tag">実測 2026-09-26</text>
+  <g id="plan-base">
+    <rect x="16" y="76" width="608" height="150" rx="10" class="panel"/>
+    <text x="32" y="110" class="b">基準SQL</text>
+    <text x="608" y="110" text-anchor="end" class="mono">629.833 ms</text>
+    <text x="32" y="152" class="s">数える</text>
+    <rect x="176" y="132" width="416" height="30" rx="4" class="band"/>
+    <text x="582" y="152" text-anchor="end" class="s b">499,998件</text>
+    <text x="32" y="202" class="s">題名を付ける</text>
+    <rect x="176" y="182" width="416" height="30" rx="4" class="band"/>
+    <text x="582" y="202" text-anchor="end" class="s b">499,998件</text>
+  </g>
+  <g id="plan-2">
+    <rect x="16" y="240" width="608" height="150" rx="10" class="panel"/>
+    <text x="32" y="274" class="b">案2：数えてから題名</text>
+    <text x="608" y="274" text-anchor="end" class="mono">194.781 ms</text>
+    <text x="32" y="316" class="s">数える</text>
+    <rect x="176" y="296" width="416" height="30" rx="4" class="band"/>
+    <text x="582" y="316" text-anchor="end" class="s b">499,998件</text>
+    <text x="32" y="366" class="s">題名を付ける</text>
+    <rect x="176" y="346" width="416" height="30" rx="4" class="skip"/>
+    <rect x="168" y="338" width="24" height="46" rx="8" class="hot"/>
+    <rect x="176" y="346" width="4" height="30" class="band"/>
+    <text x="208" y="368" class="s b">20件</text>
+  </g>
+  <g id="plan-3">
+    <rect x="16" y="404" width="608" height="150" rx="10" class="panel"/>
+    <text x="32" y="438" class="b">案3：集計テーブルを読む</text>
+    <text x="608" y="438" text-anchor="end" class="mono">0.102 ms</text>
+    <text x="32" y="480" class="s">数える</text>
+    <rect x="176" y="460" width="416" height="30" rx="4" class="skip"/>
+    <text x="208" y="482" class="s b">0件（作成時に数える）</text>
+    <text x="32" y="530" class="s">題名を付ける</text>
+    <rect x="176" y="510" width="416" height="30" rx="4" class="skip"/>
+    <rect x="176" y="510" width="4" height="30" class="band"/>
+    <text x="208" y="532" class="s b">20件</text>
+  </g>
+  <g id="legend">
+    <rect x="24" y="570" width="40" height="18" class="band"/>
+    <text x="72" y="586" class="m">表示のときに扱う記録</text>
+    <rect x="336" y="570" width="40" height="18" class="skip"/>
+    <text x="384" y="586" class="m">扱わない分</text>
+  </g>
+</svg>

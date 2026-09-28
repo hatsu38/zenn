@@ -1,0 +1,78 @@
+SET max_parallel_workers_per_gather = 0; SET jit = off; SET work_mem = '4MB';
+SELECT count(DISTINCT book_id) AS actual_books FROM reading_records;
+ actual_books 
+--------------
+       736097
+(1 row)
+
+SELECT attname, n_distinct, array_length(most_common_vals::text::bigint[], 1) AS mcv_count
+FROM pg_stats WHERE tablename = 'reading_records' AND attname = 'book_id';
+ attname | n_distinct | mcv_count 
+---------+------------+-----------
+ book_id |      75797 |       100
+(1 row)
+
+SHOW default_statistics_target;
+ default_statistics_target 
+---------------------------
+ 100
+(1 row)
+
+EXPLAIN SELECT book_id, count(*) AS read_count FROM reading_records GROUP BY book_id;
+                                  QUERY PLAN                                   
+-------------------------------------------------------------------------------
+ HashAggregate  (cost=40811.00..41568.97 rows=75797 width=16)
+   Group Key: book_id
+   ->  Seq Scan on reading_records  (cost=0.00..30811.00 rows=2000000 width=8)
+(3 rows)
+
+BEGIN;
+ALTER TABLE reading_records ALTER COLUMN book_id SET STATISTICS 10000;
+ANALYZE reading_records;
+SELECT attname, n_distinct FROM pg_stats WHERE tablename = 'reading_records' AND attname = 'book_id';
+ attname | n_distinct 
+---------+------------
+ book_id | -0.3680485
+(1 row)
+
+EXPLAIN SELECT book_id, count(*) AS read_count FROM reading_records GROUP BY book_id;
+                                  QUERY PLAN                                   
+-------------------------------------------------------------------------------
+ HashAggregate  (cost=143311.00..166296.97 rows=736097 width=16)
+   Group Key: book_id
+   Planned Partitions: 8
+   ->  Seq Scan on reading_records  (cost=0.00..30811.00 rows=2000000 width=8)
+(4 rows)
+
+ROLLBACK;
+BEGIN;
+ALTER TABLE reading_records ALTER COLUMN book_id SET (n_distinct = 736097);
+ANALYZE reading_records;
+SELECT attname, n_distinct FROM pg_stats WHERE tablename = 'reading_records' AND attname = 'book_id';
+ attname | n_distinct 
+---------+------------
+ book_id |     736097
+(1 row)
+
+EXPLAIN (ANALYZE, BUFFERS) SELECT book_id, count(*) AS read_count FROM reading_records GROUP BY book_id;
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=143311.00..166296.97 rows=736097 width=16) (actual time=523.165..723.606 rows=736097.00 loops=1)
+   Group Key: book_id
+   Planned Partitions: 8  Batches: 9  Memory Usage: 8281kB  Disk Usage: 31440kB
+   Buffers: shared hit=7920 read=2891, temp read=3239 written=6740
+   ->  Seq Scan on reading_records  (cost=0.00..30811.00 rows=2000000 width=8) (actual time=0.139..131.675 rows=2000000.00 loops=1)
+         Buffers: shared hit=7920 read=2891
+ Planning:
+   Buffers: shared hit=11
+ Planning Time: 0.067 ms
+ Execution Time: 753.142 ms
+(10 rows)
+
+ROLLBACK;
+SELECT attname, n_distinct FROM pg_stats WHERE tablename = 'reading_records' AND attname = 'book_id';
+ attname | n_distinct 
+---------+------------
+ book_id |      75797
+(1 row)
+
