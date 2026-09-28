@@ -4,7 +4,7 @@
 // 使い方: [EDITION=ebook] node convert.mjs [章のスラッグ ...]
 //   引数なしなら config.yaml の全章、指定すればその章だけを変換する。
 //   EDITION=ebook なら電子版向けに、外部リンクをリンクのまま残す。
-import { readFileSync, writeFileSync, mkdirSync, copyFileSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync, rmSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -118,6 +118,7 @@ function convertChapter(slug, usedImages, edition) {
 
   const out = [`# ${title}`, ''];
   const containers = [];
+  let sectionSeen = false;
   let codeInfo = null;
   let codeLines = [];
 
@@ -171,10 +172,14 @@ function convertChapter(slug, usedImages, edition) {
       const captionLine = lines[i + 1]?.match(/^\*(.+)\*\s*$/);
       const caption = captionLine ? `<figcaption>${inlineToHtml(captionLine[1])}</figcaption>` : '';
       if (captionLine) i++;
-      out.push(`<figure><img src="images/${fileName}" alt="${escapeHtml(alt)}">${caption}</figure>`);
+      // 章の最初の節（##）より前にある図は、章の冒頭の文より上に来ないよう、紙面で浮かせない
+      // （theme/book.css の figure.lead）。序章の冒頭の図が当てはまる
+      const lead = sectionSeen ? '' : ' class="lead"';
+      out.push(`<figure${lead}><img src="images/${fileName}" alt="${escapeHtml(alt)}">${caption}</figure>`);
       continue;
     }
 
+    if (line.startsWith('## ')) sectionSeen = true;
     // 外部リンクを注にしてから、Zenn の脚注を埋め込む（逆にすると、注の中のリンクまで注になる）
     const unlinked = unlinkInternal(line);
     const linked = edition === 'print' ? footnoteExternalLinks(unlinked) : unlinked;
@@ -199,6 +204,10 @@ for (const slug of slugs) {
 }
 for (const fileName of usedImages) {
   copyFileSync(join(imageDir, fileName), join(outDir, 'images', fileName));
+}
+// 扉と奥付は、本の原稿ではなく紙面の部品として parts/ に置いている
+for (const name of readdirSync(join(here, 'parts'))) {
+  copyFileSync(join(here, 'parts', name), join(outDir, name));
 }
 writeFileSync(join(outDir, 'chapters.json'), JSON.stringify(slugs));
 console.log(`${slugs.length} 章、画像 ${usedImages.size} 枚を ${outDir} に書き出しました`);
