@@ -126,7 +126,7 @@ Planning Time: 0.128 ms
 Execution Time: 0.083 ms
 ```
 
-Sortが消え、`reading_records_order_idx`の`Index Only Scan`が20件を返して止まっています。`cost`側の`rows=498993`は最後まで読んだ場合の見積もりで、今回読み出したレコード数ではありません。実際のレコード数は`actual`側の`rows=20`です。
+Sortが消え、`reading_records_order_idx`の`Index Only Scan`が20件を返して止まっています。**Index Only Scan**は、返す列がすべてIndexに入っているときに、値をIndexから取り出して返す読み方です。`cost`側の`rows=498993`は最後まで読んだ場合の見積もりで、今回読み出したレコード数ではありません。実際のレコード数は`actual`側の`rows=20`です。
 
 ここでは`Heap Fetches: 20`もあります。20件を返すためにテーブルのレコードも確認しました。データを入れてから時間がたっていると、自動で動くVACUUM（autovacuum）が済んで、`Heap Fetches`が0に近くなることがあります。Index Only Scanでもテーブルへの確認がありうる理由と、この値が変わる理由は、第11章で確かめます。
 
