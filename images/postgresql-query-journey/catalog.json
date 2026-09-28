@@ -194,8 +194,8 @@
   {
     "name": "02-execution-tree",
     "chapter": 6,
-    "title": "Limitは3件で要求を止める",
-    "description": "仕組み：LimitとIndex Scanの要求とレコードの受け渡し（説明するための図）"
+    "title": "Limitは3件で求めるのをやめる",
+    "description": "仕組み：LimitがIndex Scanに次の1件を求め、レコードを受け取る流れ（説明するための図）"
   },
   {
     "name": "02-hash-join-steps",

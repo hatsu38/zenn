@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="580" viewBox="0 0 640 580" role="img" aria-labelledby="title">
-  <title id="title">Limitは3件で要求を止める</title>
+  <title id="title">Limitは3件で求めるのをやめる</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
     <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
@@ -26,7 +26,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .big{font-size:56px;font-weight:700}
   </style>
   <rect width="640" height="580" fill="#f5f7f9"/>
-  <text x="24" y="48" class="h"><tspan font-family="ui-monospace,Menlo,monospace">Limit</tspan>は3件で要求を止める</text>
+  <text x="24" y="48" class="h"><tspan font-family="ui-monospace,Menlo,monospace">Limit</tspan>は3件で求めるのをやめる</text>
   <g id="limit">
     <rect x="24" y="80" width="592" height="48" rx="12" class="node"/>
     <text x="44" y="112" class="mono b">Limit</text>
@@ -48,7 +48,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="160" y="525" text-anchor="middle" class="s">③</text>
     <rect x="196" y="500" width="408" height="36" rx="4" class="ghost"/>
     <text x="212" y="525" class="m">…</text>
-    <text x="248" y="525" class="m">4件目から先は要求されない</text>
+    <text x="248" y="525" class="m">4件目から先は求められない</text>
   </g>
   <g id="returned-rows">
     <path d="M132 352 V138" class="flow"/>
@@ -66,12 +66,12 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="299" y="166" class="s brown">①</text>
     <text x="343" y="166" class="s brown">②</text>
     <text x="387" y="166" class="s brown">③</text>
-    <text x="429" y="166" class="s brown">次のレコードを要求</text>
+    <text x="429" y="166" class="s brown">次の1件を求める</text>
   </g>
   <g id="fourth-request">
     <rect x="420" y="196" width="196" height="126" rx="8" class="hot"/>
     <text x="494" y="250" class="s b brown">4回目は</text>
-    <text x="494" y="282" class="s b brown">要求しない</text>
+    <text x="494" y="282" class="s b brown">求めない</text>
     <path d="M448 206 V302" class="req"/>
     <text x="448" y="246" text-anchor="middle" class="h">×</text>
   </g>
