@@ -1,0 +1,44 @@
+              now              
+-------------------------------
+ 2026-09-28 14:58:37.430491+00
+(1 row)
+
+                                                                            QUERY PLAN                                                                            
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Hash Join  (cost=36689.43..66366.67 rows=498088 width=30)
+   Hash Cond: (r.book_id = b.id)
+   ->  Index Only Scan using reading_records_order_idx on reading_records r  (cost=0.43..17642.19 rows=498088 width=8)
+         Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+   ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30)
+         ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30)
+(6 rows)
+
+ n_distinct |   top_freq   | mcv_count 
+------------+--------------+-----------
+      75797 | 0.0101666665 |       100
+(1 row)
+
+ n_distinct | no_mcv 
+------------+--------
+         -1 | f
+(1 row)
+
+                                                                            QUERY PLAN                                                                            
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Hash Join  (cost=36689.43..66365.61 rows=249020 width=30)
+   Hash Cond: (r.book_id = b.id)
+   ->  Index Only Scan using reading_records_order_idx on reading_records r  (cost=0.43..17641.25 rows=498041 width=8)
+         Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+   ->  Hash  (cost=17353.00..17353.00 rows=1000000 width=30)
+         ->  Seq Scan on books b  (cost=0.00..17353.00 rows=1000000 width=30)
+(6 rows)
+
+ n_distinct |   top_freq   
+------------+--------------
+      75797 | 0.0101666665
+(1 row)
+
+ pid | state 
+-----+-------
+(0 rows)
+

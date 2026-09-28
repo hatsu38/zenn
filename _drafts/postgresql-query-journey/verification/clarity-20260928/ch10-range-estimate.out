@@ -1,0 +1,43 @@
+              now              
+-------------------------------
+ 2026-09-28 14:56:58.470488+00
+(1 row)
+
+     relname     | reltuples | relpages | pages_now 
+-----------------+-----------+----------+-----------
+ books           |     1e+06 |     7353 |      7353
+ reading_records |     2e+06 |    10812 |     10813
+(2 rows)
+
+   attname   | n_distinct | no_mcv | bounds 
+-------------+------------+--------+--------
+ finished_at |         -1 | t      |    101
+(1 row)
+
+ bounds_in_range 
+-----------------
+              25
+(1 row)
+
+                                                                         QUERY PLAN                                                                         
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Index Only Scan using reading_records_order_idx on reading_records r  (cost=0.43..17642.19 rows=498088 width=8)
+   Index Cond: ((finished_at >= '2026-09-14 00:00:00'::timestamp without time zone) AND (finished_at < '2026-09-21 00:00:00'::timestamp without time zone))
+(2 rows)
+
+ attname | n_distinct | no_mcv | bounds 
+---------+------------+--------+--------
+ id      |         -1 | t      |    101
+(1 row)
+
+ bounds_in_range 
+-----------------
+              90
+(1 row)
+
+                          QUERY PLAN                           
+---------------------------------------------------------------
+ Seq Scan on books  (cost=0.00..22353.00 rows=898829 width=30)
+   Filter: ((id >= 1) AND (id <= 900000))
+(2 rows)
+
