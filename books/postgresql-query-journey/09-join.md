@@ -84,6 +84,17 @@ Execution Time: 3.059 ms
 
 計画に`loops=20`があれば、その処理を20回実行しています。`actual rows`や`actual time`は、複数回実行では1回当たりの平均として表示されます。1回1件を20回返せば、全体では20件です。第7章で見たとおり親の時間は子を含むので、親子の時間をすべて足すと子の処理時間を二重に数えることになります。
 
+ただし、`loops`で割って1回当たりにする項目と、割らずに全部の回を合計する項目があります。
+
+| 項目 | `loops`が複数のときの値 |
+| --- | --- |
+| `actual time`、`actual`の`rows` | 1回当たりの平均 |
+| `Rows Removed by Filter`などの除外したレコード数 | 1回当たりの平均 |
+| `Buffers` | 全部の回の合計 |
+| `Heap Fetches`、`Index Searches`、`Heap Blocks` | 全部の回の合計 |
+
+平均の項目は`loops`を掛けると全体の量になり、合計の項目はそのまま全体の量です。どちらになるかは、[EXPLAINの出力を作るPostgreSQL 18のソース](https://github.com/postgres/postgres/blob/REL_18_STABLE/src/backend/commands/explain.c)で、`loops`で割っているかどうかから確かめました。
+
 図で、内側の`Index Scan`の`rows`・`loops`・`Buffers`を、1回当たりの値と20回分の合計に分けて読んでください。
 
 ![Nested Loopの内側のIndex Scanはrows=1.00、loops=20で、1回1件を20回返して全体で20件。Buffersのhit=46とread=34は20回分の合計](/images/postgresql-query-journey/09-loops.png)
@@ -137,11 +148,23 @@ Execution Time: 477.379 ms
 
 実際のハッシュ関数は「3で割る」より複雑ですが、置き場所を絞って照合する考え方は同じです。
 
-この掲載例は、テーブルの可視性マップが設定され、`Heap Fetches: 0`となった状態での結果です。第8章でIndexを作った直後は、Bitmap Heap Scanが選ばれたり、Index Only ScanでもHeap Fetchesが出たりします。Indexの定義が同じでもテーブルの保守状態で変わる点は、第11章で扱います。
-
 出力に戻ります。下の`Hash`は、本の一覧100万件からハッシュ表を作っています。上の`Index Only Scan`は1週間分の499,998件を返し、その各レコードをハッシュ表で照合しています。ハッシュ表を作るために読むレコード数は`Hash`の下の`rows`、照合する回数は外側の`rows`で確かめられます。
 
 `Batches: 16`と`temp`の値は、ハッシュ表が作業用メモリに収まらず一時ファイルを使ったことを示します。ハッシュのメモリ量には`work_mem`に加えて`hash_mem_multiplier`も関わります。詳しくは、この章の後半で読みます。
+
+ハッシュを使う処理には、ほかの処理にない表示が並びます。この章の後半の`HashAggregate`の分も合わせて、まとめておきます。
+
+| 表示 | 出る処理 | 読み方 |
+| --- | --- | --- |
+| `Buckets` | `Hash` | ハッシュ表の箱の数 |
+| `Batches` | `Hash`、`HashAggregate` | 何回に分けて処理したか。1なら作業用メモリに収まった |
+| `Memory Usage` | `Hash`、`HashAggregate` | 作業用メモリをいちばん多く使ったときの量 |
+| `Planned Partitions` | `HashAggregate` | 収まらないと実行前に見込み、あらかじめ分けておいた数 |
+| `Disk Usage` | `HashAggregate` | 収まらなかった分を一時ファイルに置いた量 |
+
+:::message
+この掲載例は、テーブルの可視性マップが設定され、`Heap Fetches: 0`となった状態での結果です。可視性マップは、テーブルのページごとに「すべての読み手に見えてよいか」を記録したもので、第11章で扱います。第8章でIndexを作った直後は、Bitmap Heap Scanが選ばれたり、Index Only ScanでもHeap Fetchesが出たりします。
+:::
 
 20件のときとSQLの形はほとんど同じです。変わったのは、外側から届く記録の件数でした。外側の推定は、Nested Loopの計画で`rows=20`、Hash Joinの計画で`rows=488229`です。件数の違いを実行前にどう見込んだのかは、第10章で調べます。
 
