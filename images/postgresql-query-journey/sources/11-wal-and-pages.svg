@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="814" viewBox="0 0 640 814" role="img" aria-labelledby="title">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="812" viewBox="0 0 640 812" role="img" aria-labelledby="title">
   <title id="title">ログの保存と、ページの書き出し</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
@@ -25,51 +25,92 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .swap{fill:#dcefe8;stroke:#243b50;stroke-width:4}
 .big{font-size:56px;font-weight:700}
   </style>
-  <rect width="640" height="814" fill="#f5f7f9"/>
+  <rect width="640" height="812" fill="#f5f7f9"/>
   <text x="24" y="48" class="h">ログの保存と、ページの書き出し</text>
   <g id="panel-1">
-    <rect x="24" y="76" width="592" height="230" rx="14" class="panel"/>
-    <text x="44" y="114" class="b">① COMMITまでにWALを保存</text>
-    <rect x="44" y="130" width="552" height="60" rx="10" class="buffer"/>
-    <text x="60" y="166" class="s b">共有バッファ</text>
-    <rect x="300" y="141" width="280" height="38" rx="4" class="hot"/>
-    <text x="316" y="166" class="s b">本42：改訂版</text>
-    <path d="M440 190 V216" class="flow"/>
-    <text x="460" y="207" class="s teal">保存</text>
-    <rect x="44" y="216" width="552" height="60" rx="10" class="storage"/>
-    <text x="60" y="252" class="s b">ストレージ</text>
-    <rect x="180" y="227" width="224" height="38" rx="6" class="file"/>
-    <text x="196" y="252" class="s">テーブルのファイル</text>
-    <rect x="416" y="227" width="164" height="38" rx="6" class="file"/>
-    <text x="424" y="252" class="s">WALファイル</text>
+    <rect x="24" y="72" width="592" height="176" rx="14" class="panel"/>
+    <text x="44" y="108" class="b">① チェックポイント（書き出して印を残す）</text>
+    <rect x="40" y="122" width="180" height="116" rx="10" class="buffer"/>
+    <text x="52" y="146" class="s b">メモリ</text>
+    <rect x="50" y="156" width="160" height="76" rx="4" class="row"/>
+    <text x="62" y="187" class="s">変更済みの</text>
+    <text x="62" y="217" class="s">ページ</text>
+    <rect x="330" y="122" width="270" height="116" rx="10" class="storage"/>
+    <text x="342" y="146" class="s b">ストレージ</text>
+    <rect x="340" y="156" width="230" height="36" rx="6" class="file"/>
+    <text x="352" y="181" class="s">テーブルのファイル</text>
+    <rect x="340" y="196" width="252" height="40" rx="6" class="file"/>
+    <text x="350" y="224" class="s b">WAL</text>
+    <rect x="410" y="201" width="56" height="30" rx="4" class="row"/>
+    <text x="438" y="224" text-anchor="middle" class="s">記録</text>
+    <rect x="472" y="201" width="32" height="30" rx="4" class="hot"/>
+    <text x="488" y="224" text-anchor="middle" class="s b">印</text>
+    <text x="275" y="178" text-anchor="middle" class="s teal">書き出す</text>
+    <path d="M212 194 L338 194" class="flow"/>
   </g>
   <g id="panel-2">
-    <rect x="24" y="320" width="592" height="230" rx="14" class="panel"/>
-    <text x="44" y="358" class="b">② 電源断でメモリが消える</text>
-    <rect x="44" y="374" width="552" height="60" rx="10" class="ghost"/>
-    <text x="60" y="410" class="s m">共有バッファ</text>
-    <path d="M305 389 L335 419 M335 389 L305 419" fill="none" stroke="#7d93a3" stroke-width="3" stroke-linecap="round"/>
-    <rect x="44" y="460" width="552" height="60" rx="10" class="storage"/>
-    <text x="60" y="496" class="s b">ストレージ</text>
-    <rect x="180" y="471" width="224" height="38" rx="6" class="file"/>
-    <text x="196" y="496" class="s">テーブルのファイル</text>
-    <rect x="416" y="471" width="164" height="38" rx="6" class="file"/>
-    <text x="424" y="496" class="s">WALファイル</text>
+    <rect x="24" y="256" width="592" height="176" rx="14" class="panel"/>
+    <text x="44" y="292" class="b">② UPDATEのCOMMITまでにWALを保存</text>
+    <rect x="40" y="306" width="180" height="116" rx="10" class="buffer"/>
+    <text x="52" y="330" class="s b">メモリ</text>
+    <rect x="50" y="340" width="160" height="36" rx="4" class="row"/>
+    <text x="60" y="365" class="s">本42：改訂版</text>
+    <rect x="50" y="382" width="160" height="36" rx="4" class="hot"/>
+    <text x="60" y="407" class="s b">変更の記録</text>
+    <rect x="330" y="306" width="270" height="116" rx="10" class="storage"/>
+    <text x="342" y="330" class="s b">ストレージ</text>
+    <rect x="340" y="340" width="230" height="36" rx="6" class="file"/>
+    <text x="352" y="365" class="s">テーブルのファイル</text>
+    <rect x="340" y="380" width="252" height="40" rx="6" class="file"/>
+    <text x="350" y="408" class="s b">WAL</text>
+    <rect x="410" y="385" width="56" height="30" rx="4" class="row"/>
+    <text x="438" y="408" text-anchor="middle" class="s">記録</text>
+    <rect x="472" y="385" width="32" height="30" rx="4" fill="#fff" stroke="#243b50" stroke-width="2.5"/>
+    <text x="488" y="408" text-anchor="middle" class="s b">印</text>
+    <rect x="510" y="385" width="70" height="30" rx="4" class="row"/>
+    <text x="545" y="408" text-anchor="middle" class="s">本42</text>
+    <text x="275" y="390" text-anchor="middle" class="s teal">保存</text>
+    <path d="M212 400 L338 400" class="flow"/>
   </g>
   <g id="panel-3">
-    <rect x="24" y="564" width="592" height="230" rx="14" class="panel"/>
-    <text x="44" y="602" class="b">③ 再起動でWALから再現</text>
-    <rect x="44" y="618" width="552" height="60" rx="10" class="buffer"/>
-    <text x="60" y="654" class="s b">共有バッファ</text>
-    <rect x="300" y="629" width="280" height="38" rx="4" class="row"/>
-    <text x="316" y="654" class="s">本42：改訂版</text>
-    <path d="M440 704 V678" class="flow"/>
-    <text x="460" y="700" class="s teal">再現</text>
-    <rect x="44" y="704" width="552" height="60" rx="10" class="storage"/>
-    <text x="60" y="740" class="s b">ストレージ</text>
-    <rect x="180" y="715" width="224" height="38" rx="6" class="file"/>
-    <text x="196" y="740" class="s">テーブルのファイル</text>
-    <rect x="416" y="715" width="164" height="38" rx="6" class="file"/>
-    <text x="424" y="740" class="s">WALファイル</text>
+    <rect x="24" y="440" width="592" height="176" rx="14" class="panel"/>
+    <text x="44" y="476" class="b">③ 電源断でメモリが消える</text>
+    <rect x="40" y="490" width="180" height="116" rx="10" class="ghost"/>
+    <text x="52" y="514" class="s m">メモリ</text>
+    <path d="M115 534 L145 564 M145 534 L115 564" fill="none" stroke="#7d93a3" stroke-width="3" stroke-linecap="round"/>
+    <rect x="330" y="490" width="270" height="116" rx="10" class="storage"/>
+    <text x="342" y="514" class="s b">ストレージ</text>
+    <rect x="340" y="524" width="230" height="36" rx="6" class="file"/>
+    <text x="352" y="549" class="s">テーブルのファイル</text>
+    <rect x="340" y="564" width="252" height="40" rx="6" class="file"/>
+    <text x="350" y="592" class="s b">WAL</text>
+    <rect x="410" y="569" width="56" height="30" rx="4" class="row"/>
+    <text x="438" y="592" text-anchor="middle" class="s">記録</text>
+    <rect x="472" y="569" width="32" height="30" rx="4" fill="#fff" stroke="#243b50" stroke-width="2.5"/>
+    <text x="488" y="592" text-anchor="middle" class="s b">印</text>
+    <rect x="510" y="569" width="70" height="30" rx="4" class="row"/>
+    <text x="545" y="592" text-anchor="middle" class="s">本42</text>
+  </g>
+  <g id="panel-4">
+    <rect x="24" y="624" width="592" height="176" rx="14" class="panel"/>
+    <text x="44" y="660" class="b">④ 再起動で、印から後のWALを読む</text>
+    <rect x="40" y="674" width="180" height="116" rx="10" class="buffer"/>
+    <text x="52" y="698" class="s b">メモリ</text>
+    <rect x="50" y="708" width="160" height="36" rx="4" class="row"/>
+    <text x="60" y="733" class="s">本42：改訂版</text>
+    <rect x="330" y="674" width="270" height="116" rx="10" class="storage"/>
+    <text x="342" y="698" class="s b">ストレージ</text>
+    <rect x="340" y="708" width="230" height="36" rx="6" class="file"/>
+    <text x="352" y="733" class="s">テーブルのファイル</text>
+    <rect x="340" y="748" width="252" height="40" rx="6" class="file"/>
+    <text x="350" y="776" class="s b">WAL</text>
+    <rect x="410" y="753" width="56" height="30" rx="4" class="ghost"/>
+    <text x="438" y="776" text-anchor="middle" class="s m">記録</text>
+    <rect x="472" y="753" width="32" height="30" rx="4" fill="#fff" stroke="#243b50" stroke-width="2.5"/>
+    <text x="488" y="776" text-anchor="middle" class="s b">印</text>
+    <rect x="510" y="753" width="70" height="30" rx="4" class="hot"/>
+    <text x="545" y="776" text-anchor="middle" class="s b">本42</text>
+    <text x="282" y="720" text-anchor="middle" class="s teal">再現</text>
+    <path d="M338 768 L214 730" class="flow"/>
   </g>
 </svg>

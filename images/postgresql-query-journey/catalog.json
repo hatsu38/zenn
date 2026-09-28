@@ -78,6 +78,12 @@
     "description": "仕組み：案内板の境目で開く箱を選び、箱の中で8を見つける（説明するための図）"
   },
   {
+    "name": "06-two-level-path",
+    "chapter": 3,
+    "title": "2段の案内板で、8を探す",
+    "description": "仕組み：根の案内板と途中の案内板で1段ごとに進む先を一つ選び、箱の中で8を見つける（説明するための図）"
+  },
+  {
     "name": "06-tree-levels",
     "chapter": 3,
     "title": "100万冊でも、読むのは3枚",
@@ -87,7 +93,7 @@
     "name": "06-range-scan",
     "chapter": 3,
     "title": "4以上8以下なら、隣の箱も開く",
-    "description": "仕組み：範囲の検索で隣の箱へ進み、テーブルから5件を取り出す（説明するための図）"
+    "description": "仕組み：範囲の検索で、案内板へ戻らずに隣の箱へ進み、テーブルから5件を取り出す（説明するための図）"
   },
   {
     "name": "03-storage-question",
@@ -108,6 +114,12 @@
     "description": "仕組み：ctidのページ番号と項目番号でレコードを指す（説明するための図）"
   },
   {
+    "name": "03-page-layout",
+    "chapter": 4,
+    "title": "ページの中の並び",
+    "description": "仕組み：ページの管理情報、前から並ぶ項目、空き領域、後ろから並ぶレコード（説明するための図）"
+  },
+  {
     "name": "03-index-reference",
     "chapter": 4,
     "title": "7,353ページか、4ページか",
@@ -118,6 +130,12 @@
     "chapter": 4,
     "title": "同じ1,000件でも、8ページと32ページ",
     "description": "比較：レコードの長さとページ数（実測）"
+  },
+  {
+    "name": "03-record-bytes",
+    "chapter": 4,
+    "title": "1件ごとにかかるバイト数",
+    "description": "観察：noteが10文字と200文字の1件を、管理情報・値・項目のバイト数の帯で比べる（実測）"
   },
   {
     "name": "04-repeat-observation",
@@ -136,6 +154,18 @@
     "chapter": 5,
     "title": "ページは再利用、毎回比べる",
     "description": "観察：3回の実行のページの使い方と比べたレコード（実測）"
+  },
+  {
+    "name": "04-buffer-full",
+    "chapter": 5,
+    "title": "共有バッファがいっぱいのとき",
+    "description": "仕組み：しばらく使われていないページを外して空きを作り、新しいページを読み込む（説明するための図）"
+  },
+  {
+    "name": "04-ring-buffer",
+    "chapter": 5,
+    "title": "リングバッファで読むとき",
+    "description": "仕組み：4枠の輪を使い回して10ページを読み、2回目は輪に残ったページだけが hit になる（説明するための図）"
   },
   {
     "name": "06-bitmap-scan",
@@ -168,10 +198,16 @@
     "description": "仕組み：LimitとIndex Scanの要求とレコードの受け渡し（説明するための図）"
   },
   {
+    "name": "02-hash-join-steps",
+    "chapter": 6,
+    "title": "Hash Joinが子を動かす順",
+    "description": "仕組み：Hash の側でハッシュ表を作り終えてから、Seq Scan の記録を1件ずつ照合する（説明するための図）"
+  },
+  {
     "name": "02-ranking-plan-tree",
     "chapter": 6,
     "title": "20件に減るのは、最後の2段",
-    "description": "観察：ランキングの実行計画を木として読み、各段の rows を追う（実測）"
+    "description": "観察：ランキングの実行計画を木として読み、各段の rows と、Hash Join が子を動かす順を追う（実測）"
   },
   {
     "name": "04-memory-regions",
@@ -186,10 +222,10 @@
     "description": "問い：約50万件の記録を新しい順に並べる"
   },
   {
-    "name": "07-merge-cards",
+    "name": "07-quicksort-cards",
     "chapter": 7,
-    "title": "4枚を、比較5回で並べる",
-    "description": "仕組み：二組に分けて比べ、合流する比較の回数（説明するための図）"
+    "title": "基準の値で分けて並べる",
+    "description": "仕組み：8・3・6・1を基準の値で分けて並べるクイックソートの3コマと比較の回数（説明するための図）"
   },
   {
     "name": "07-sort-bands",
@@ -204,6 +240,12 @@
     "description": "仕組み：作業用メモリと一時ファイルを使う外部ソート（説明するための図）"
   },
   {
+    "name": "07-merge-cards",
+    "chapter": 7,
+    "title": "2枚ずつ並べて、合流する",
+    "description": "仕組み：作業用メモリで2枚ずつ並べ、先頭同士を比べて合流する比較の回数（説明するための図）"
+  },
+  {
     "name": "08-twenty-window",
     "chapter": 8,
     "title": "画面に欲しいのは、最新20件",
@@ -212,8 +254,8 @@
   {
     "name": "top-three-heap",
     "chapter": 8,
-    "title": "根の最小値と比べて、入れ替える",
-    "description": "仕組み：上位3枚を保つ最小ヒープの4コマ（説明するための図）"
+    "title": "ヒープで上位3枚を残す",
+    "description": "仕組み：8・3・5で最小ヒープを作り、9を入れて2を入れない6コマ（説明するための図）"
   },
   {
     "name": "08-sort-vs-topn",
@@ -258,6 +300,18 @@
     "description": "仕組み：Merge Join（見ている位置は右にだけ進む。説明するための図）"
   },
   {
+    "name": "09-hash-batches",
+    "chapter": 9,
+    "title": "組に分けて、1組ずつ照合する",
+    "description": "仕組み：Hash Join の Batches（本と記録を同じ計算で組に分け、2組目は一時ファイルから読み戻す。説明するための図）"
+  },
+  {
+    "name": "09-hashagg-spill",
+    "chapter": 9,
+    "title": "収まらない本は、後で数える",
+    "description": "仕組み：HashAggregate のあふれ（カウンタのない本の記録だけを書き出し、後で読み戻して数える。説明するための図）"
+  },
+  {
     "name": "10-planner-choice",
     "chapter": 10,
     "title": "計画は、1件も読まずに決まる",
@@ -268,6 +322,18 @@
     "chapter": 10,
     "title": "割合のメモから、レコード数を見積もる",
     "description": "仕組み：ANALYZE のメモの割合から計画の rows を見積もる（説明するための図）"
+  },
+  {
+    "name": "10-range-estimate",
+    "chapter": 10,
+    "title": "範囲がかかる区間の割合",
+    "description": "仕組み：histogram_bounds の区間に範囲を重ねて rows を見積もる（①は説明するための図、②は第9章の1週間）"
+  },
+  {
+    "name": "10-sample-distinct",
+    "chapter": 10,
+    "title": "抜き出しに現れない本がある",
+    "description": "仕組み：ANALYZE の標本に、記録の少ない本はほとんど入らない（n_distinct。説明するための図）"
   },
   {
     "name": "10-estimate-propagation",
@@ -285,19 +351,19 @@
     "name": "11-snapshots",
     "chapter": 11,
     "title": "Bが確定しても、Aは版1を読む",
-    "description": "比較：Repeatable Readで見える版（3コマ。説明するための図）"
+    "description": "仕組み：スナップショットの確定済みの番号と各版のxmin・xmaxを比べて、見せる版を選ぶ（4コマ。説明するための図）"
   },
   {
     "name": "11-visibility-map",
     "chapter": 11,
-    "title": "×のページはテーブルで確認",
-    "description": "仕組み：Index Only Scanと可視性マップ（説明するための図）"
+    "title": "印が消えると、テーブルを見る",
+    "description": "比較：本42の1件の、VACUUM後・UPDATE後・再びVACUUM後のIndexの項目と可視性マップの印、Heap Fetches 0→2→0（3コマ。説明するための図）"
   },
   {
     "name": "11-wal-and-pages",
     "chapter": 11,
     "title": "ログの保存と、ページの書き出し",
-    "description": "仕組み：WALを保存してから電源断・再起動までの順序（説明するための図）"
+    "description": "仕組み：チェックポイントの印、COMMITまでのWALの保存、電源断、印から後のWALでの復旧（4コマ。説明するための図）"
   },
   {
     "name": "12-decision-notebook",

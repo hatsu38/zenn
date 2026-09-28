@@ -2,7 +2,7 @@
 
 SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆すると次の書き出しで失われるため、修正はSVGに行ってください。
 
-序章から第12章まで、計55枚を本文へ掲載しています。序章は導入の絵1枚と技術図2枚です。序章の冒頭にあった道のりの図（`00-book-sketch`）は、紙面の序章を短くするため2026-09-28に外しました。章の地図の表と役目が重なるためです。原本の[SVG](sources/00-book-sketch.svg)と[PNG](00-book-sketch.png)は残しています。第4章にはctidの図、第6章にはSQLの処理段階の図と、ランキングの計画を木にした図（2026-09-26）を、第12章には3案で扱う記録の数を比べる図（2026-09-28）を追加しています。そのうち2026-09-25までの53枚すべてを、[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)の型で描き直しました（2026-09-25、第1〜2章の試作8枚と、横展開の段階A〜Eの45枚）。[図の一覧](index.html)からまとめて確認できます。
+序章から第12章まで、計66枚を本文へ掲載しています。2026-09-29に、仕組みの動きを一コマずつ追う図を11枚足しました（第3〜11章）。序章は導入の絵1枚と技術図2枚です。序章の冒頭にあった道のりの図（`00-book-sketch`）は、紙面の序章を短くするため2026-09-28に外しました。章の地図の表と役目が重なるためです。原本の[SVG](sources/00-book-sketch.svg)と[PNG](00-book-sketch.png)は残しています。第4章にはctidの図、第6章にはSQLの処理段階の図と、ランキングの計画を木にした図（2026-09-26）を、第12章には3案で扱う記録の数を比べる図（2026-09-28）を追加しています。そのうち2026-09-25までの53枚すべてを、[設計書](../../books/postgresql-query-journey/FIGURE-PLAN.md)の型で描き直しました（2026-09-25、第1〜2章の試作8枚と、横展開の段階A〜Eの45枚）。[図の一覧](index.html)からまとめて確認できます。
 
 | 章 | 題材 | SVG原本 | 掲載用PNG |
 | --- | --- | --- | --- |
@@ -19,42 +19,53 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第2章 | 位置で変わる検索件数 | [SVG](sources/05-limit-bands.svg) | [PNG](05-limit-bands.png) |
 | 第3章 | 目録も、本と同じ100万件 | [SVG](sources/06-catalog-question.svg) | [PNG](06-catalog-question.png) |
 | 第3章 | 境目を見て、開く箱を選ぶ | [SVG](sources/06-btree-path.svg) | [PNG](06-btree-path.png) |
+| 第3章 | 2段の案内板で、8を探す | [SVG](sources/06-two-level-path.svg) | [PNG](06-two-level-path.png) |
 | 第3章 | 100万冊でも、読むのは3枚 | [SVG](sources/06-tree-levels.svg) | [PNG](06-tree-levels.png) |
 | 第3章 | 4以上8以下なら、隣の箱も開く | [SVG](sources/06-range-scan.svg) | [PNG](06-range-scan.png) |
 | 第4章 | 100万件なのに、7,353回 | [SVG](sources/03-storage-question.svg) | [PNG](03-storage-question.png) |
 | 第4章 | 本5の1件も、ページ0ごと読む | [SVG](sources/03-pages-and-rows.svg) | [PNG](03-pages-and-rows.png) |
 | 第4章 | ctid = (0,1) が指す場所 | [SVG](sources/03-ctid-location.svg) | [PNG](03-ctid-location.png) |
+| 第4章 | ページの中の並び | [SVG](sources/03-page-layout.svg) | [PNG](03-page-layout.png) |
 | 第4章 | 7,353ページか、4ページか | [SVG](sources/03-index-reference.svg) | [PNG](03-index-reference.png) |
 | 第4章 | 同じ1,000件でも、8ページと32ページ | [SVG](sources/03-row-width.svg) | [PNG](03-row-width.png) |
+| 第4章 | 1件ごとにかかるバイト数 | [SVG](sources/03-record-bytes.svg) | [PNG](03-record-bytes.png) |
 | 第5章 | 同じ検索を、もう一度 | [SVG](sources/04-repeat-observation.svg) | [PNG](04-repeat-observation.png) |
 | 第5章 | 読み込んだページを、次も使う | [SVG](sources/shared-buffer-reuse.svg) | [PNG](shared-buffer-reuse.png) |
 | 第5章 | ページは再利用、毎回比べる | [SVG](sources/04-two-levels.svg) | [PNG](04-two-levels.png) |
+| 第5章 | 共有バッファがいっぱいのとき | [SVG](sources/04-buffer-full.svg) | [PNG](04-buffer-full.png) |
+| 第5章 | リングバッファで読むとき | [SVG](sources/04-ring-buffer.svg) | [PNG](04-ring-buffer.png) |
 | 第5章 | 取りに行く順で、開く回数が変わる | [SVG](sources/06-bitmap-scan.svg) | [PNG](06-bitmap-scan.png) |
 | 第6章 | SQLを受け取る側は、いくつ？ | [SVG](sources/02-client-scene.svg) | [PNG](02-client-scene.png) |
 | 第6章 | 接続ごとにプロセスが動く | [SVG](sources/02-connections.svg) | [PNG](02-connections.png) |
 | 第6章 | SQLの文字列から、検索結果が返るまで | [SVG](sources/02-query-stages.svg) | [PNG](02-query-stages.png) |
 | 第6章 | Limitは3件で要求を止める | [SVG](sources/02-execution-tree.svg) | [PNG](02-execution-tree.png) |
+| 第6章 | Hash Joinが子を動かす順 | [SVG](sources/02-hash-join-steps.svg) | [PNG](02-hash-join-steps.png) |
 | 第6章 | 20件に減るのは、最後の2段 | [SVG](sources/02-ranking-plan-tree.svg) | [PNG](02-ranking-plan-tree.png) |
 | 第7章 | ページの保存場所と、計算の作業場所 | [SVG](sources/04-memory-regions.svg) | [PNG](04-memory-regions.png) |
 | 第7章 | 読み終えた順に、並べたい | [SVG](sources/07-recent-records.svg) | [PNG](07-recent-records.png) |
-| 第7章 | 4枚を、比較5回で並べる | [SVG](sources/07-merge-cards.svg) | [PNG](07-merge-cards.png) |
+| 第7章 | 基準の値で分けて並べる | [SVG](sources/07-quicksort-cards.svg) | [PNG](07-quicksort-cards.png) |
 | 第7章 | 200万件を調べ、4分の1を並べた | [SVG](sources/07-sort-bands.svg) | [PNG](07-sort-bands.png) |
 | 第7章 | メモリに収まらないときの並べ替え | [SVG](sources/07-external-sort.svg) | [PNG](07-external-sort.png) |
+| 第7章 | 2枚ずつ並べて、合流する | [SVG](sources/07-merge-cards.svg) | [PNG](07-merge-cards.png) |
 | 第8章 | 画面に欲しいのは、最新20件 | [SVG](sources/08-twenty-window.svg) | [PNG](08-twenty-window.png) |
-| 第8章 | 根の最小値と比べて、入れ替える | [SVG](sources/top-three-heap.svg) | [PNG](top-three-heap.png) |
+| 第8章 | ヒープで上位3枚を残す | [SVG](sources/top-three-heap.svg) | [PNG](top-three-heap.png) |
 | 第8章 | LIMITで減る保持量と出力件数 | [SVG](sources/08-sort-vs-topn.svg) | [PNG](08-sort-vs-topn.png) |
 | 第8章 | 全部読むか、3件で止まるか | [SVG](sources/08-top-n-vs-index.svg) | [PNG](08-top-n-vs-index.png) |
 | 第9章 | 本の番号だけでは、題名が分からない | [SVG](sources/09-title-lookup.svg) | [PNG](09-title-lookup.png) |
 | 第9章 | 外側のレコードごとに、内側を1回たどる | [SVG](sources/09-nested-loop.svg) | [PNG](09-nested-loop.png) |
 | 第9章 | 1回1件を20回で、20件 | [SVG](sources/09-loops.svg) | [PNG](09-loops.png) |
 | 第9章 | 先に分類し、同じ箱の中で照合する | [SVG](sources/09-hash-join.svg) | [PNG](09-hash-join.png) |
-| 第9章 | 小さい番号の列だけを、右へ進める | [SVG](sources/09-merge-join.svg) | [PNG](09-merge-join.png) |
+| 第9章 | 同じ番号の組を、漏らさず返す | [SVG](sources/09-merge-join.svg) | [PNG](09-merge-join.png) |
+| 第9章 | 組に分けて、1組ずつ照合する | [SVG](sources/09-hash-batches.svg) | [PNG](09-hash-batches.png) |
+| 第9章 | 収まらない本は、後で数える | [SVG](sources/09-hashagg-spill.svg) | [PNG](09-hashagg-spill.png) |
 | 第10章 | 計画は、1件も読まずに決まる | [SVG](sources/10-planner-choice.svg) | [PNG](10-planner-choice.png) |
 | 第10章 | 割合のメモから、レコード数を見積もる | [SVG](sources/10-stats-to-rows.svg) | [PNG](10-stats-to-rows.png) |
+| 第10章 | 範囲がかかる区間の割合 | [SVG](sources/10-range-estimate.svg) | [PNG](10-range-estimate.png) |
+| 第10章 | 抜き出しに現れない本がある | [SVG](sources/10-sample-distinct.svg) | [PNG](10-sample-distinct.png) |
 | 第10章 | 推定のずれが、後ろの件数に効く | [SVG](sources/10-estimate-propagation.svg) | [PNG](10-estimate-propagation.png) |
 | 第11章 | 題名を直している間に、読まれたら？ | [SVG](sources/11-editing-scene.svg) | [PNG](11-editing-scene.png) |
 | 第11章 | Bが確定しても、Aは版1を読む | [SVG](sources/11-snapshots.svg) | [PNG](11-snapshots.png) |
-| 第11章 | ×のページはテーブルで確認 | [SVG](sources/11-visibility-map.svg) | [PNG](11-visibility-map.png) |
+| 第11章 | 印が消えると、テーブルを見る | [SVG](sources/11-visibility-map.svg) | [PNG](11-visibility-map.png) |
 | 第11章 | ログの保存と、ページの書き出し | [SVG](sources/11-wal-and-pages.svg) | [PNG](11-wal-and-pages.png) |
 | 第12章 | 今度は、根拠を持って選べる | [SVG](sources/12-decision-notebook.svg) | [PNG](12-decision-notebook.png) |
 | 第12章 | 3案で、扱う記録の数 | [SVG](sources/12-plan-record-counts.svg) | [PNG](12-plan-record-counts.png) |

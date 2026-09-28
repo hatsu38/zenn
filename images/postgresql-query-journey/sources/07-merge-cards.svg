@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="706" viewBox="0 0 640 706" role="img" aria-labelledby="title">
-  <title id="title">4枚を、比較5回で並べる</title>
+  <title id="title">2枚ずつ並べて、合流する</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
     <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
@@ -26,9 +26,9 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .big{font-size:56px;font-weight:700}
   </style>
   <rect width="640" height="706" fill="#f5f7f9"/>
-  <text x="24" y="48" class="h">4枚を、比較5回で並べる</text>
+  <text x="24" y="48" class="h">2枚ずつ並べて、合流する</text>
   <g id="stage-1">
-    <text x="24" y="110" class="b">1段目　二組に分けて比べる</text>
+    <text x="24" y="110" class="b">1段目　作業用メモリで並べる</text>
     <text x="24" y="156" class="s b">入力</text>
     <rect x="140" y="126" width="44" height="44" rx="6" class="val"/>
     <text x="162" y="157" text-anchor="middle" class="b">8</text>

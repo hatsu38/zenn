@@ -30,20 +30,20 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <text x="44" y="134" class="m">目録の項目（題名の順）</text>
     <g id="index-items">
       <rect x="44" y="146" width="266" height="34" rx="4" class="ipage"/>
-      <text x="56" y="170" class="mono">400009</text>
-      <text x="150" y="170" class="m">▸ ページ2941</text>
+      <text x="56" y="170" class="mono">40000</text>
+      <text x="150" y="170" class="m">▸ ページ294</text>
       <rect x="44" y="186" width="266" height="34" rx="4" class="ipage"/>
-      <text x="56" y="210" class="mono">40001</text>
-      <text x="150" y="210" class="m">▸ ページ294</text>
-      <rect x="44" y="226" width="266" height="34" rx="4" class="ipage"/>
-      <text x="56" y="250" class="mono">400010</text>
-      <text x="150" y="250" class="m">▸ ページ2941</text>
-      <text x="169" y="292" text-anchor="middle" class="m">⋮</text>
+      <text x="56" y="210" class="mono">400000</text>
+      <text x="150" y="210" class="m">▸ ページ2941</text>
+      <text x="169" y="252" text-anchor="middle" class="m">⋮</text>
+      <rect x="44" y="266" width="266" height="34" rx="4" class="ipage"/>
+      <text x="56" y="290" class="mono">400009</text>
+      <text x="150" y="290" class="m">▸ ページ2941</text>
       <rect x="44" y="306" width="266" height="34" rx="4" class="ipage"/>
-      <text x="56" y="330" class="mono">40002</text>
+      <text x="56" y="330" class="mono">40001</text>
       <text x="150" y="330" class="m">▸ ページ294</text>
       <rect x="44" y="346" width="266" height="34" rx="4" class="ipage"/>
-      <text x="56" y="370" class="mono">400020</text>
+      <text x="56" y="370" class="mono">400010</text>
       <text x="150" y="370" class="m">▸ ページ2941</text>
     </g>
     <g id="pages-1">
@@ -53,9 +53,9 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
       <text x="506" y="340" text-anchor="middle" class="s b">ページ2941</text>
     </g>
     <g id="visits-1">
-      <path d="M312 163 C370 163 380 332 416 332" class="ref"/>
-      <path d="M312 203 C370 203 380 192 416 192" class="ref"/>
-      <path d="M312 243 C370 243 380 332 416 332" class="ref"/>
+      <path d="M312 163 C370 163 380 192 416 192" class="ref"/>
+      <path d="M312 203 C370 203 380 332 416 332" class="ref"/>
+      <path d="M312 283 C370 283 380 332 416 332" class="ref"/>
       <path d="M312 323 C370 323 380 192 416 192" class="ref"/>
       <path d="M312 363 C370 363 380 332 416 332" class="ref"/>
     </g>
@@ -71,10 +71,10 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <g id="bitmap">
       <rect x="44" y="486" width="264" height="76" rx="6" class="hot"/>
       <text x="60" y="515" class="s b">ページ294</text>
-      <text x="60" y="547" class="s">位置：17, 18</text>
+      <text x="60" y="547" class="s">位置：16, 17</text>
       <rect x="328" y="486" width="264" height="76" rx="6" class="hot"/>
       <text x="344" y="515" class="s b">ページ2941</text>
-      <text x="344" y="547" class="s">位置：33, 34, 44</text>
+      <text x="344" y="547" class="s">位置：24, 33, 34</text>
     </g>
     <g id="pages-2">
       <rect x="118" y="596" width="172" height="64" rx="8" class="page"/>
