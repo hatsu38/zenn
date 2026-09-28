@@ -324,6 +324,18 @@
     "description": "仕組み：ANALYZE のメモの割合から計画の rows を見積もる（説明するための図）"
   },
   {
+    "name": "10-range-estimate",
+    "chapter": 10,
+    "title": "範囲がかかる区間の割合",
+    "description": "仕組み：histogram_bounds の区間に範囲を重ねて rows を見積もる（①は説明するための図、②は第9章の1週間）"
+  },
+  {
+    "name": "10-sample-distinct",
+    "chapter": 10,
+    "title": "抜き出しに現れない本がある",
+    "description": "仕組み：ANALYZE の標本に、記録の少ない本はほとんど入らない（n_distinct。説明するための図）"
+  },
+  {
     "name": "10-estimate-propagation",
     "chapter": 10,
     "title": "推定のずれが、後ろの件数に効く",

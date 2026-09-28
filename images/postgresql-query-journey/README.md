@@ -60,6 +60,8 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第9章 | 収まらない本は、後で数える | [SVG](sources/09-hashagg-spill.svg) | [PNG](09-hashagg-spill.png) |
 | 第10章 | 計画は、1件も読まずに決まる | [SVG](sources/10-planner-choice.svg) | [PNG](10-planner-choice.png) |
 | 第10章 | 割合のメモから、レコード数を見積もる | [SVG](sources/10-stats-to-rows.svg) | [PNG](10-stats-to-rows.png) |
+| 第10章 | 範囲がかかる区間の割合 | [SVG](sources/10-range-estimate.svg) | [PNG](10-range-estimate.png) |
+| 第10章 | 抜き出しに現れない本がある | [SVG](sources/10-sample-distinct.svg) | [PNG](10-sample-distinct.png) |
 | 第10章 | 推定のずれが、後ろの件数に効く | [SVG](sources/10-estimate-propagation.svg) | [PNG](10-estimate-propagation.png) |
 | 第11章 | 題名を直している間に、読まれたら？ | [SVG](sources/11-editing-scene.svg) | [PNG](11-editing-scene.png) |
 | 第11章 | Bが確定しても、Aは版1を読む | [SVG](sources/11-snapshots.svg) | [PNG](11-snapshots.png) |
