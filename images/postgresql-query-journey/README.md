@@ -48,7 +48,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第7章 | メモリに収まらないときの並べ替え | [SVG](sources/07-external-sort.svg) | [PNG](07-external-sort.png) |
 | 第7章 | 2枚ずつ並べて、合流する | [SVG](sources/07-merge-cards.svg) | [PNG](07-merge-cards.png) |
 | 第8章 | 画面に欲しいのは、最新20件 | [SVG](sources/08-twenty-window.svg) | [PNG](08-twenty-window.png) |
-| 第8章 | 根の最小値と比べて、入れ替える | [SVG](sources/top-three-heap.svg) | [PNG](top-three-heap.png) |
+| 第8章 | ヒープで上位3枚を残す | [SVG](sources/top-three-heap.svg) | [PNG](top-three-heap.png) |
 | 第8章 | LIMITで減る保持量と出力件数 | [SVG](sources/08-sort-vs-topn.svg) | [PNG](08-sort-vs-topn.png) |
 | 第8章 | 全部読むか、3件で止まるか | [SVG](sources/08-top-n-vs-index.svg) | [PNG](08-top-n-vs-index.png) |
 | 第9章 | 本の番号だけでは、題名が分からない | [SVG](sources/09-title-lookup.svg) | [PNG](09-title-lookup.png) |
