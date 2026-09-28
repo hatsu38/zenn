@@ -114,6 +114,12 @@
     "description": "仕組み：ctidのページ番号と項目番号でレコードを指す（説明するための図）"
   },
   {
+    "name": "03-page-layout",
+    "chapter": 4,
+    "title": "ページの中の並び",
+    "description": "仕組み：ページの管理情報、前から並ぶ項目、空き領域、後ろから並ぶレコード（説明するための図）"
+  },
+  {
     "name": "03-index-reference",
     "chapter": 4,
     "title": "7,353ページか、4ページか",
@@ -124,6 +130,12 @@
     "chapter": 4,
     "title": "同じ1,000件でも、8ページと32ページ",
     "description": "比較：レコードの長さとページ数（実測）"
+  },
+  {
+    "name": "03-record-bytes",
+    "chapter": 4,
+    "title": "1件ごとにかかるバイト数",
+    "description": "観察：noteが10文字と200文字の1件を、管理情報・値・項目のバイト数の帯で比べる（実測）"
   },
   {
     "name": "04-repeat-observation",
