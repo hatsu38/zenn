@@ -19,6 +19,7 @@
 - 11：11-mvcc-and-maintenance.md（旧11章）
 - 12：12-ranking-revisited.md（旧12章）
 - 付録：98-appendix-slow-sql.md（2026-09-28に追加）
+- 付録：98-appendix-restart.md（2026-09-28に00-setup.mdの後半から分けた）
 - おわりに：99-afterword.md（2026-09-28に追加）
 
 ## 実験状態の引き継ぎ
