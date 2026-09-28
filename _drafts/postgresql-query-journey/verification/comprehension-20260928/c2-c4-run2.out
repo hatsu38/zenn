@@ -1,0 +1,66 @@
+NOTICE:  table "c2_rr" does not exist, skipping
+--- index 0
+                                        QUERY PLAN                                         
+-------------------------------------------------------------------------------------------
+ Insert on c2_rr (actual time=61.149..61.154 rows=0.00 loops=1)
+   Buffers: shared hit=101084 read=623 dirtied=541 written=544
+   WAL: records=100000 bytes=7100000 buffers full=268
+   ->  Limit (actual time=0.011..18.808 rows=100000.00 loops=1)
+         Buffers: shared hit=6 read=623
+         ->  Seq Scan on reading_records (actual time=0.010..8.704 rows=100000.00 loops=1)
+               Buffers: shared hit=6 read=623
+ Planning:
+   Buffers: shared hit=54
+ Planning Time: 0.185 ms
+ Execution Time: 61.248 ms
+(11 rows)
+
+--- index 1
+                                        QUERY PLAN                                         
+-------------------------------------------------------------------------------------------
+ Insert on c2_rr (actual time=184.830..184.831 rows=0.00 loops=1)
+   Buffers: shared hit=319725 read=624 dirtied=1115 written=1117
+   WAL: records=200571 bytes=16353590 buffers full=1442
+   ->  Limit (actual time=0.007..18.345 rows=100000.00 loops=1)
+         Buffers: shared hit=7 read=623
+         ->  Seq Scan on reading_records (actual time=0.004..8.338 rows=100000.00 loops=1)
+               Buffers: shared hit=7 read=623
+ Planning Time: 0.053 ms
+ Execution Time: 184.856 ms
+(9 rows)
+
+--- index 2
+                                        QUERY PLAN                                         
+-------------------------------------------------------------------------------------------
+ Insert on c2_rr (actual time=325.868..325.869 rows=0.00 loops=1)
+   Buffers: shared hit=537941 read=625 dirtied=1652 written=1653
+   WAL: records=301105 bytes=25473132 buffers full=2532
+   ->  Limit (actual time=0.006..18.702 rows=100000.00 loops=1)
+         Buffers: shared hit=6 read=623
+         ->  Seq Scan on reading_records (actual time=0.005..8.586 rows=100000.00 loops=1)
+               Buffers: shared hit=6 read=623
+ Planning Time: 0.058 ms
+ Execution Time: 325.956 ms
+(9 rows)
+
+NOTICE:  table "c4_t" does not exist, skipping
+  step  | pages 
+--------+-------
+ before |  1728
+(1 row)
+
+            step            | pages 
+----------------------------+-------
+ delete front half + VACUUM |  1728
+(1 row)
+
+             step             | pages 
+------------------------------+-------
+ delete back quarter + VACUUM |  1294
+(1 row)
+
+    step     | pages 
+-------------+-------
+ VACUUM FULL |   432
+(1 row)
+

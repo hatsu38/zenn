@@ -277,7 +277,76 @@ Planning Time: 0.121 ms
 Execution Time: 18.820 ms
 ```
 
-`Limit`が返したのは20件ですが、子の`Index Only Scan`は100,020件を読んでいます。`OFFSET`で飛ばす10万件も、Indexから読んで捨てているからです。1ページ目（`OFFSET`なし）なら、子が読むのは20件で、0.022 msでした。ページ番号が大きくなるほど、読んで捨てる件数が増えます。前のページの最後の値から続きを探す書き方にすれば、読む件数をページの件数に近づけられる可能性があります（この本では測っていません）。
+`Limit`が返したのは20件ですが、子の`Index Only Scan`は100,020件を読んでいます。`OFFSET`で飛ばす10万件も、Indexから読んで捨てているからです。1ページ目（`OFFSET`なし）なら、子が読むのは20件で、0.022 msでした。ページ番号が大きくなるほど、読んで捨てる件数が増えます。
+
+代わりに、前のページの最後のレコードの値から続きを探します。5,000ページ目の最後のレコードは、日時が`2026-09-19 14:24:00`、本の番号が479127でした。並び順は日時の新しい順で、同じ日時なら本の番号の小さい順なので、続きは「日時がそれより古い」か「日時が同じで本の番号が大きい」レコードです。そのまま書くと、次のようになります。
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT book_id, finished_at FROM reading_records
+WHERE finished_at < '2026-09-19 14:24:00'
+   OR (finished_at = '2026-09-19 14:24:00' AND book_id > 479127)
+ORDER BY finished_at DESC, book_id ASC
+LIMIT 20;
+```
+
+実行結果です。
+
+```sql:実行結果
+Limit  (cost=0.43..1.23 rows=20 width=16) (actual time=4.998..5.002 rows=20.00 loops=1)
+  Buffers: shared hit=387
+  ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..75768.43 rows=1899248 width=16) (actual time=4.997..4.999 rows=20.00 loops=1)
+        Filter: ((finished_at < '2026-09-19 14:24:00'::timestamp without time zone) OR ((finished_at = '2026-09-19 14:24:00'::timestamp without time zone) AND (book_id > 479127)))
+        Rows Removed by Filter: 100000
+        Heap Fetches: 0
+        Index Searches: 1
+        Buffers: shared hit=387
+Planning:
+  Buffers: shared hit=6
+Planning Time: 0.092 ms
+Execution Time: 5.016 ms
+```
+
+条件が`Index Cond`ではなく`Filter`に入り、`Rows Removed by Filter: 100000`です。`OR`でつないだ条件は、Indexで探し始める位置を決められません。そのため、先頭から10万件を読んで条件で除いています。読むページの数は`OFFSET`のときと同じ387です。
+
+Indexで探せる`finished_at <= '2026-09-19 14:24:00'`を外に出し、同じ日時の扱いだけを残りの条件にします。
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT book_id, finished_at FROM reading_records
+WHERE finished_at <= '2026-09-19 14:24:00'
+  AND (finished_at < '2026-09-19 14:24:00' OR book_id > 479127)
+ORDER BY finished_at DESC, book_id ASC
+LIMIT 20;
+```
+
+実行結果です。
+
+```sql:実行結果
+Limit  (cost=0.43..1.20 rows=20 width=16) (actual time=0.021..0.025 rows=20.00 loops=1)
+  Buffers: shared hit=4
+  ->  Index Only Scan using reading_records_order_idx on reading_records  (cost=0.43..71953.53 rows=1853288 width=16) (actual time=0.020..0.022 rows=20.00 loops=1)
+        Index Cond: (finished_at <= '2026-09-19 14:24:00'::timestamp without time zone)
+        Filter: ((finished_at < '2026-09-19 14:24:00'::timestamp without time zone) OR (book_id > 479127))
+        Rows Removed by Filter: 1
+        Heap Fetches: 0
+        Index Searches: 1
+        Buffers: shared hit=4
+Planning:
+  Buffers: shared hit=20
+Planning Time: 0.165 ms
+Execution Time: 0.041 ms
+```
+
+今度は`Index Cond`で日時の位置から探し始め、除いたのは同じ日時の1件だけです。2026年9月28日に三つの書き方を5回ずつ交互に測った中央値は、次のとおりです。三つとも返す20件は同じでした。
+
+| 書き方 | ページへのアクセス | 実行時間（中央値） |
+| --- | ---: | ---: |
+| `OFFSET 100000` | 387 | 13.1 ms |
+| 続きから探す（`OR`だけ） | 387 | 5.0 ms |
+| 続きから探す（`finished_at <=`を外に出す） | 4 | 0.037 ms |
+
+続きから探す書き方にしても、条件がIndexで探せる形になっていなければ、読む量は減りません。書き換えた後は、条件が`Index Cond`に入ったかを計画で確かめます。
 
 ### パターン5：範囲の条件は、結合の相手に伝わらない
 
