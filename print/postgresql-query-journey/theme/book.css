@@ -256,4 +256,32 @@ nav[role='doc-toc'] a::after {
 .title-page, .colophon { page: no-folio; }
 @page no-folio {
   @bottom-center { content: none; }
+  @top-left { content: none; }
+  @top-right { content: none; }
+}
+
+/* 柱。紙の本をめくったときに今どこかが分かるよう、左ページに章、右ページに節の名前を小さく出す
+   （2026-09-29。目次・扉・奥付のページには出さない） */
+h1 { string-set: chapter content(); }
+h2 { string-set: section content(); }
+nav[role='doc-toc'] h1, nav[role='doc-toc'] h2 { string-set: none; }
+@page :left {
+  @top-left {
+    content: string(chapter, first-except);
+    font-family: var(--heading-font);
+    font-size: 7.5pt;
+    color: var(--gray);
+    vertical-align: bottom;
+    padding-bottom: 2mm;
+  }
+}
+@page :right {
+  @top-right {
+    content: string(section);
+    font-family: var(--heading-font);
+    font-size: 7.5pt;
+    color: var(--gray);
+    vertical-align: bottom;
+    padding-bottom: 2mm;
+  }
 }
