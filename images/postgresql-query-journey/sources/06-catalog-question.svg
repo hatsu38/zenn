@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="450" viewBox="0 0 640 450" role="img" aria-labelledby="title">
-  <title id="title">目録も、本と同じ100万件</title>
+  <title id="title">Indexも、本と同じ100万件</title>
   <defs>
     <marker id="flow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#277b74"/></marker>
     <marker id="req" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#945e11" stroke-width="2"/></marker>
@@ -22,7 +22,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 .route{fill:#f4f6f8;stroke:#243b50;stroke-width:3}.leader{fill:none;stroke:#56738a;stroke-width:2}
   </style>
   <rect width="640" height="450" fill="#fffdf7"/>
-  <text x="24" y="48" class="h">目録も、本と同じ100万件</text>
+  <text x="24" y="48" class="h">Indexも、本と同じ100万件</text>
   <g id="shelf">
     <text x="44" y="100" class="s b">テーブル <tspan class="mono">books</tspan>　100万冊</text>
     <rect x="44" y="120" width="552" height="72" rx="6" fill="#f3ede2" stroke="#243b50" stroke-width="2"/>
@@ -53,7 +53,7 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="570" y="128" width="12" height="56" rx="2" class="spine"/>
   </g>
   <g id="catalog">
-    <text x="44" y="244" class="s b">Index（目録）　100万件</text>
+    <text x="44" y="244" class="s b">Index　100万件</text>
     <rect x="36" y="256" width="568" height="88" rx="14" class="hot"/>
     <rect x="44" y="264" width="552" height="72" rx="6" class="ipage"/>
     <rect x="58" y="280" width="12" height="40" rx="2" class="row"/>
@@ -83,5 +83,5 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
     <rect x="570" y="280" width="12" height="40" rx="2" class="row"/>
   </g>
   <rect x="24" y="370" width="592" height="60" rx="10" fill="#fff0d3" stroke="#243b50" stroke-width="2.5"/>
-  <text x="44" y="409" class="b">目録を全部読まずに、目的の場所へ行ける？</text>
+  <text x="44" y="409" class="b">Indexを全部読まずに、目的の場所へ行ける？</text>
 </svg>

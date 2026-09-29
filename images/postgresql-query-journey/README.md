@@ -17,7 +17,7 @@ SVGを原本とし、PNGは原本から書き出します。PNGへ直接加筆�
 | 第2章 | 一致した後も、最後まで比べる | [SVG](sources/05-linear-scan.svg) | [PNG](05-linear-scan.png) |
 | 第2章 | Limitが次のレコードを求めなくなる | [SVG](sources/05-limit-search.svg) | [PNG](05-limit-search.png) |
 | 第2章 | 位置で変わる検索件数 | [SVG](sources/05-limit-bands.svg) | [PNG](05-limit-bands.png) |
-| 第3章 | 目録も、本と同じ100万件 | [SVG](sources/06-catalog-question.svg) | [PNG](06-catalog-question.png) |
+| 第3章 | Indexも、本と同じ100万件 | [SVG](sources/06-catalog-question.svg) | [PNG](06-catalog-question.png) |
 | 第3章 | 境目を見て、開く箱を選ぶ | [SVG](sources/06-btree-path.svg) | [PNG](06-btree-path.png) |
 | 第3章 | 2段の案内板で、8を探す | [SVG](sources/06-two-level-path.svg) | [PNG](06-two-level-path.png) |
 | 第3章 | 100万冊でも、読むのは3枚 | [SVG](sources/06-tree-levels.svg) | [PNG](06-tree-levels.png) |

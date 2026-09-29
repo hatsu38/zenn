@@ -26,8 +26,8 @@ text{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;font-size:24px;fill:#
 
   <g id="step-1">
     <rect x="24" y="72" width="592" height="320" rx="10" class="panel"/>
-    <text x="44" y="104" class="s b">① 目録の順に、1冊ずつ取りに行く</text>
-    <text x="44" y="134" class="m">目録の項目（題名の順）</text>
+    <text x="44" y="104" class="s b">① Indexの順に、1冊ずつ取りに行く</text>
+    <text x="44" y="134" class="m">Indexの項目（題名の順）</text>
     <g id="index-items">
       <rect x="44" y="146" width="266" height="34" rx="4" class="ipage"/>
       <text x="56" y="170" class="mono">40000</text>
