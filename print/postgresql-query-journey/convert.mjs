@@ -28,6 +28,14 @@ function detailsKind(slug, title) {
   return { name: 'note', label: '補足' };
 }
 
+// 表の番号と題の行（例「表9.1　結合の方法」）。番号は章番号か付録の A・B と、章の中の順番
+const TABLE_CAPTION = /^表(?:\d+|[A-Z])\.\d+　\S/;
+
+// 「図4.4」「表A.1」が行末で「図」と「4.4」に分かれないよう、番号をひとまとまりにする（theme/book.css の .aid-number）
+function keepAidNumbers(html) {
+  return html.replace(/[図表](?:\d+|[A-Z])\.\d+/g, (number) => `<span class="aid-number">${number}</span>`);
+}
+
 function readChapterSlugs() {
   const config = readFileSync(join(bookDir, 'config.yaml'), 'utf8');
   const lines = config.split('\n');
@@ -168,7 +176,7 @@ function convertChapter(slug, usedImages, edition) {
       const fileName = src.startsWith(zennImagePrefix) ? src.slice(zennImagePrefix.length) : src;
       usedImages.add(fileName);
       const captionLine = lines[i + 1]?.match(/^\*(.+)\*\s*$/);
-      const caption = captionLine ? `<figcaption>${inlineToHtml(captionLine[1])}</figcaption>` : '';
+      const caption = captionLine ? `<figcaption>${keepAidNumbers(inlineToHtml(captionLine[1]))}</figcaption>` : '';
       if (captionLine) i++;
       // 章の最初の節（##）より前にある図は、章の冒頭の文より上に来ないよう、紙面で浮かせない
       // （theme/book.css の figure.lead）。序章の冒頭の図が当てはまる
@@ -177,11 +185,18 @@ function convertChapter(slug, usedImages, edition) {
       continue;
     }
 
+    // 表の直前の「表9.1　題」の行は、表の見出しにする（theme/book.css の p.table-caption）。
+    // HTML の段落の後に空行を置かないと、続く表の行まで HTML として扱われる
+    if (TABLE_CAPTION.test(line) && lines[i + 1]?.startsWith('|')) {
+      out.push(`<p class="table-caption">${keepAidNumbers(inlineToHtml(line))}</p>`, '');
+      continue;
+    }
+
     if (line.startsWith('## ')) sectionSeen = true;
     // 外部リンクを注にしてから、Zenn の脚注を埋め込む（逆にすると、注の中のリンクまで注になる）
     const unlinked = unlinkInternal(line);
     const linked = edition === 'print' ? footnoteExternalLinks(unlinked) : unlinked;
-    out.push(inlineFootnoteRefs(linked, notes, edition));
+    out.push(keepAidNumbers(inlineFootnoteRefs(linked, notes, edition)));
   }
 
   if (containers.length > 0) throw new Error(`${slug}: ::: の閉じ忘れがあります`);
