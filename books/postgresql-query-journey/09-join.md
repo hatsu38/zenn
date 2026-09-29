@@ -305,6 +305,8 @@ SHOW hash_mem_multiplier;
 
 同じ番号は同じ組にそろうので、ほかの組の本と比べなくても、照合の漏れは出ません。メモリに置くのは、いつも1組分のハッシュ表だけです。
 
+組は箱の別名ではありません。ハッシュ表をいくつに分けて順に作るかの単位で、1組分のハッシュ表の中にも、番号の余りで三つの箱に分けたHash Joinの図のように、箱があります。1週間分の出力の`Buckets: 131072  Batches: 16`は、箱が131,072個あるハッシュ表を、16組に分けて1組ずつ作った、と読めます。
+
 [^hashjoin-batch]: 組を決める計算と、組ごとの一時ファイルへの書き出しは、[PostgreSQL 18のソース](https://github.com/postgres/postgres/blob/REL_18_STABLE/src/backend/executor/nodeHashjoin.c)と、同じフォルダの`nodeHash.c`（`ExecHashGetBucketAndBatch`）で確かめました。組の数は、本を読み始める前に決めます。実行の途中で組を増やしたときは`Batches: 16 (originally 8)`のように元の数も表示されるので（[explain.c](https://github.com/postgres/postgres/blob/REL_18_STABLE/src/backend/commands/explain.c)）、今回の16は最初から決めていた数です。
 
 出力の数字は、この手順と対応しています。親の値は子の値を含むので、`Hash Join`の`written=7404`には、子の`Hash`が手順1で本を書き出した`temp written=5943`が入っています。残りの1,461ブロックは、`Hash Join`自身が手順2で書き出した記録です。`read=7404`は、手順3で、書いた分をすべて読み戻した量です。
